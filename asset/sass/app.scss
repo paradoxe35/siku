@@ -1,0 +1,42 @@
+@font-face {
+    font-family: Poppins;
+    src: url('./fonts/Poppins/Poppins-Regular.ttf');
+    font-weight: 400;
+    font-style: normal;
+}
+
+body,
+html {
+    padding: 0;
+    margin: 0;
+    background-color: #f8f9fe;
+    color: #525f7f;
+}
+body {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-size: 16px;
+}
+body,
+button,
+input {
+    font-family: Poppins, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
+        Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue,
+        sans-serif;
+}
+* {
+    box-sizing: border-box;
+    outline: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+@import "~nprogress/nprogress.css";
+@import "@lib/argon/scss/argon";
+@import './navbar';
+@import "./dist/home";
+
+#nprogress .bar {
+    height: 3px !important;
+    background: var(--primary) !important;
+    z-index: 55441 !important;
+}

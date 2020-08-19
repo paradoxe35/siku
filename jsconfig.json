@@ -1,0 +1,35 @@
+{
+    "compilerOptions": {
+        "experimentalDecorators": true,
+        "sourceMap": true,
+        "moduleResolution": "node",
+        "esModuleInterop": true,
+        "allowSyntheticDefaultImports": true,
+        "baseUrl": ".",
+        "module": "es2015",
+        "paths": {
+            "@/*": [
+                "asset/*"
+            ],
+            "@js/*": [
+                "asset/js/*"
+            ],
+            "@sass/*": [
+                "asset/sass/*"
+            ],
+            "@img/*": [
+                "asset/img/*"
+            ],
+            "@fonts/*": [
+                "asset/img/fonts/*"
+            ],
+        }
+    },
+    "include": [
+        "asset/js/**/*.js",
+        "asset/js/**/*.jsx",
+    ],
+    "exclude": [
+        "node_modules"
+    ]
+}

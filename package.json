@@ -1,0 +1,46 @@
+{
+    "private": true,
+    "scripts": {
+        "dev": "npm run development",
+        "development": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
+        "watch": "npm run development -- --watch",
+        "watch-poll": "npm run watch -- --watch-poll",
+        "hot": "cross-env NODE_ENV=development node_modules/webpack-dev-server/bin/webpack-dev-server.js --inline --hot --disable-host-check --config=node_modules/laravel-mix/setup/webpack.config.js",
+        "prod": "npm run production",
+        "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js"
+    },
+    "devDependencies": {
+        "@babel/plugin-proposal-class-properties": "^7.10.4",
+        "@babel/preset-react": "^7.10.4",
+        "browser-sync": "^2.26.12",
+        "browser-sync-webpack-plugin": "^2.0.1",
+        "cross-env": "^7.0",
+        "laravel-mix": "^5.0.1",
+        "resolve-url-loader": "^3.1.0",
+        "sass": "^1.15.2",
+        "sass-loader": "^8.0.0"
+    },
+    "dependencies": {
+        "@grafikart/spinning-dots-element": "^1.1.0",
+        "@stimulus/polyfills": "^1.1.1",
+        "@swup/forms-plugin": "^1.0.1",
+        "@swup/head-plugin": "^1.0.2",
+        "@swup/scripts-plugin": "^1.1.0",
+        "@swup/scroll-plugin": "^1.0.6",
+        "axios": "^0.19.2",
+        "bootstrap": "^4.5.2",
+        "codex-notifier": "^1.1.2",
+        "dropify": "^0.2.2",
+        "i18next": "^19.7.0",
+        "intersection-observer": "^0.11.0",
+        "jquery": "^3.5.1",
+        "lozad": "^1.15.0",
+        "nprogress": "^0.2.0",
+        "popper.js": "^1.16.1",
+        "react": "^16.13.1",
+        "react-dom": "^16.13.1",
+        "react-i18next": "^11.7.0",
+        "stimulus": "^1.1.1",
+        "swup": "^2.0.11"
+    }
+}
