@@ -13,7 +13,7 @@
             <div class="row justify-content-center">
                 <div class="col-md-3 mb-3">
                     <a href="{{ route('sign-in') }}" class="btn btn-primary btn-block">
-                        <span class="btn-inner--text">{{ __("Se connecter à mon compte") }}</span>
+                        <span class="btn-inner--text">{{ __("Se connecter") }}</span>
                     </a>
                 </div>
                 <div class="col-md-3 mb-3">

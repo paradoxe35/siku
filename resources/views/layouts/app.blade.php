@@ -8,9 +8,10 @@
     <title>{{ $app_name }}</title>
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="{{ mix('bundles/css/style.css') }}" rel="stylesheet">
+    @yield('style')
 </head>
 
-<body>
+<body class="@yield('body-class')">
     <div id="app-ndowa">
         @yield('content')
     </div>

@@ -1,0 +1,23 @@
+.unauthenticated-content {
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+.signup-backdrop-pattern {
+    background: url(/img/svg/signup.svg) no-repeat;
+    background-size: contain;
+    background-position: center;
+    height: 70vh;
+    margin-top: 15vh;
+    width: 100%;
+}
+
+
+.signin-backdrop-pattern {
+    background: url(/img/svg/signin.svg) no-repeat;
+    background-size: contain;
+    background-position-x: 35%;
+    background-position-y: center;
+    height: 50%;
+    margin-top: 10vh;
+}

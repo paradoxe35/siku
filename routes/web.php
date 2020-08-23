@@ -14,22 +14,17 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('home');
-})->name('home');
+Route::view('/', 'home')->name('home');
 
-Route::get('/pricing', function () {
-    return view('pricing');
-})->name('pricing');
+Route::view('/pricing', 'pricing')->name('pricing');
 
-Route::get('/get-started', function () {
-    return view('get-started');
-})->name('get-started');
+Route::view('/get-started', 'get-started')->name('get-started');
 
-Route::get('/sign-in', function () {
-    return view('auth.sign-in');
-})->name('sign-in');
+Route::view('/sign-in', 'auth.sign-in')->name('sign-in');
 
-Route::get('/sign-up', function () {
-    return view('auth.sign-up');
-})->name('sign-up');
+Route::view('/sign-up', 'auth.sign-up')->name('sign-up');
+
+Route::prefix('customer')
+    ->group(function () {
+        Route::view('get-started', 'customer-config');
+    });

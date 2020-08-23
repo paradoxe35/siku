@@ -1,6 +1,7 @@
 const mix = require('laravel-mix');
 const path = require('path');
 
+require('laravel-mix-merge-manifest');
 
 /*
  |--------------------------------------------------------------------------
@@ -14,11 +15,8 @@ const path = require('path');
  */
 
 mix.react('asset/js/app.js', 'public/bundles/js/application.js')
-    .sass('asset/sass/app.scss', 'public/bundles/css/style.css')
-    .extract()
-
-// mix.react('asset/js/admin/dashboard.js', 'public/js/dashboard.js')
-// mix.sass('asset/sass/admin/dashboard.scss', 'public/css/dashboard.css')
+    .extract(['jquery', 'swup', 'bootstrap', 'stimulus', '@grafikart/spinning-dots-element', 'dropify'])
+    .mergeManifest()
 
 mix.webpackConfig({
     resolve: {
@@ -27,8 +25,6 @@ mix.webpackConfig({
             '@js': path.resolve(__dirname, 'asset/js/'),
             '@sass': path.resolve(__dirname, 'asset/sass/'),
             '@lib': path.resolve(__dirname, 'asset/lib/'),
-            // '@img': path.resolve(__dirname, 'asset/img/'),
-            // '@fonts': path.resolve(__dirname, 'asset/img/fonts/'),
         }
     },
 });

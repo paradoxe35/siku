@@ -2,17 +2,16 @@
 
 @section('content')
 @include('layouts.navbar')
-<div class="home-hero ">
+<div class="home-hero">
     <section id="hero">
-        <div class="inner ml-3">
+        <div class="inner">
             <div class="container-fluid">
-                <div class="row justify-content-center">
-                    <div class="col-md-1 col-lg-1"></div>
-                    <div class="col-12 col-md-5 col-lg-5">
+                <div class="row">
+                    <div class="col-12 col-md-5 offset-md-1">
                         <div class="main-content">
                             <h1>{{ __('Informer et distribuer vos invitations en un temps record') }}</h1>
                             <h4>
-                                {{ __("Le meilleur et plus sûr moyen d'inviter vos membres et connaissances à votre mariage") }}
+                                {{ __("Le meilleur et plus sûr moyen d'inviter vos membres et connaissances à vos evenements") }}.
                             </h4>
                             <a href="{{ route('get-started') }}" class="btn btn-icon btn-primary mt-3">
                                 <span class="nav-link-inner--text">{{ __('Commencer') }}</span>

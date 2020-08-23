@@ -1,6 +1,9 @@
 {
     "private": true,
     "scripts": {
+        "start": "concurrently \"npm:watch\" \"npm:css-watch\"",
+        "css-watch": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --progress --watch --hide-modules --env.mixfile=webpack.css.mix.js --config=node_modules/laravel-mix/setup/webpack.config.js",
+        "css-dev": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --progress --hide-modules --env.mixfile=webpack.css.mix.js --config=node_modules/laravel-mix/setup/webpack.config.js",
         "dev": "npm run development",
         "development": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
         "watch": "npm run development -- --watch",
@@ -14,8 +17,10 @@
         "@babel/preset-react": "^7.10.4",
         "browser-sync": "^2.26.12",
         "browser-sync-webpack-plugin": "^2.0.1",
+        "concurrently": "^5.3.0",
         "cross-env": "^7.0",
-        "laravel-mix": "^5.0.1",
+        "laravel-mix": "^5.0.5",
+        "laravel-mix-merge-manifest": "^0.1.2",
         "resolve-url-loader": "^3.1.0",
         "sass": "^1.15.2",
         "sass-loader": "^8.0.0"
