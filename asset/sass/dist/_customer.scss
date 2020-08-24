@@ -1,0 +1,32 @@
+.customer-settings {
+    #personnal-settings {
+        content: url(/img/svg/personal-settings.svg);
+        height: 70vh;
+        width: 100%;
+    }
+}
+
+.balance-customer-sidebar {
+    .optimizeLegibility {
+        text-rendering: optimizeLegibility;
+    }
+    .balance {
+        font-size: 24px;
+    }
+    .upgrade-action {
+        vertical-align: text-bottom;
+        margin-bottom: 2px;
+        margin-top: 0;
+        margin-left: 8px;
+        position: relative;
+        z-index: 2;
+        background: rgba(135, 31, 255, 0.2);
+        color: #871fff;
+        border-radius: 10px;
+        font-size: 0.6rem;
+        line-height: 1.4rem;
+        padding: 2px 8px;
+        display: inline-block;
+        font-weight: 600;
+    }
+}

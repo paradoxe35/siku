@@ -25,6 +25,11 @@ Route::view('/sign-in', 'auth.sign-in')->name('sign-in');
 Route::view('/sign-up', 'auth.sign-up')->name('sign-up');
 
 Route::prefix('customer')
+    ->name('customer.')
     ->group(function () {
-        Route::view('get-started', 'customer-config');
+        Route::view('get-started', 'customer-config')->name('config');
+        Route::prefix('uuid')
+            ->group(function () {
+                Route::view('/', 'customer')->name('home');
+            });
     });

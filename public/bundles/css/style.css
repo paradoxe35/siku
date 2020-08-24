@@ -28225,6 +28225,31 @@ div.loading-ntf-abs .uil-ring-css-abs {
   width: 100%;
 }
 
+.balance-customer-sidebar .optimizeLegibility {
+  text-rendering: optimizeLegibility;
+}
+
+.balance-customer-sidebar .balance {
+  font-size: 24px;
+}
+
+.balance-customer-sidebar .upgrade-action {
+  vertical-align: text-bottom;
+  margin-bottom: 2px;
+  margin-top: 0;
+  margin-left: 8px;
+  position: relative;
+  z-index: 2;
+  background: rgba(135, 31, 255, 0.2);
+  color: #871fff;
+  border-radius: 10px;
+  font-size: 0.6rem;
+  line-height: 1.4rem;
+  padding: 2px 8px;
+  display: inline-block;
+  font-weight: 600;
+}
+
 #nprogress .bar {
   height: 3px !important;
   background: var(--primary) !important;

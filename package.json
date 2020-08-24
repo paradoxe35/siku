@@ -36,6 +36,8 @@
         "bootstrap": "^4.5.2",
         "codex-notifier": "^1.1.2",
         "dropify": "^0.2.2",
+        "dropzone": "^5.7.2",
+        "emailjs-com": "^2.6.3",
         "i18next": "^19.7.0",
         "intersection-observer": "^0.11.0",
         "jquery": "^3.5.1",
@@ -45,6 +47,7 @@
         "react": "^16.13.1",
         "react-dom": "^16.13.1",
         "react-i18next": "^11.7.0",
+        "slim-select": "^1.26.0",
         "stimulus": "^1.1.1",
         "swup": "^2.0.11"
     }

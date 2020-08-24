@@ -10,5 +10,16 @@ export const EVENT_VALUE = {
     route: null,
     price: null,
     created_at: null,
-    confirmed: null
+    confirmed: null,
+    active: null,
+    hash: null,
+    guests: null,
+    user: {
+        name: null,
+        hash: null
+    },
+    center: {
+        phone: null,
+        active: null
+    }
 }

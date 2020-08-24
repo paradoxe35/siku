@@ -15,7 +15,7 @@ require('laravel-mix-merge-manifest');
  */
 
 mix.react('asset/js/app.js', 'public/bundles/js/application.js')
-    .extract(['jquery', 'swup', 'bootstrap', 'stimulus', '@grafikart/spinning-dots-element', 'dropify'])
+    .extract(['jquery', 'swup', 'bootstrap', 'stimulus', '@grafikart/spinning-dots-element', 'dropify', 'codex-notifier'])
     .mergeManifest()
 
 mix.webpackConfig({

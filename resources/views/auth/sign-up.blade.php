@@ -6,10 +6,10 @@
     {{ __("Vous avez déjà un compte") }}?
     <a href="{{ route('sign-in') }}">{{ __("Se connecter") }}</a>.
 </p>
-<form method="POST" action="{{ route('sign-up') }}">
+<form method="POST" action="{{ route('sign-up') }}" data-controller="Auth--Signup">
     @csrf
     <div class="form-group row">
-        <div class="col-lg-6">
+        <div class="col-lg-5">
             <input id="email" type="email" class="form-control @error('email') is-invalid @enderror"
                 placeholder="{{ __("E-Mail Adresse") }}" name="email" value="{{ old('email') }}" required
                 autocomplete="email">
@@ -19,15 +19,23 @@
             </span>
             @enderror
         </div>
-        <div class="col-lg-6">
-            <input id="phone" type="tel" class="form-control @error('phone') is-invalid @enderror"
-                placeholder="{{ __("Numéro de téléphone") }}" name="phone" value="{{ old('phone') }}" required
-                autocomplete="phone">
-            @error('phone')
-            <span class="invalid-feedback" role="alert">
-                <strong>{{ $message }}</strong>
-            </span>
-            @enderror
+        <div class="col-lg-7">
+            <div class="input-group input-group-merge">
+                <div class="input-group-prepend">
+                    <div class="p-1 border">
+                        <select class="text-sm" data-target="Auth--Signup.countryCodeBtn" style="margin-top: 3px;" data-toggle="select">
+                        </select>
+                    </div>
+                </div>
+                <input id="phone" type="tel" class="form-control border pl-2 @error('phone') is-invalid @enderror"
+                    placeholder="{{ __("Numéro de téléphone") }}" name="phone" value="{{ old('phone') }}" required
+                    autocomplete="phone">
+                @error('phone')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+                @enderror
+            </div>
         </div>
     </div>
 

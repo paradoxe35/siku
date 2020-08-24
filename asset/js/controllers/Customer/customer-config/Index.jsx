@@ -24,7 +24,8 @@ const CustomerConfig = () => {
 
     // fetch all events
     useEffect(() => {
-        setStarted(false)
+        (new Promise(resolve => setTimeout(() => resolve(true), 2000)))
+        .then(() => setStarted(false))
         // setPaginate({})
     }, [])
     const addEvent = useCallback((event) => setEvents(e => [...e, event]))
@@ -59,28 +60,28 @@ const CustomerConfig = () => {
     const eventValue = useMemo(() => ({ ...currentEvent, updateEvent }), [currentEvent])
     // handling Event session context
     return <div className="card" ref={parentElemt}>
-            <div className="card-body">
-                <div className="d-flex justify-content-between mb-2">
-                    <h4>{t(components[index].title)}</h4>
-                    {(index === 0 && !started) &&
-                        <button type="button" onClick={() => setIndex(I_NEW_EVENT)} className="btn btn-sm btn-primary">
-                            {t('Créer')}
-                        </button>
-                    }
+        <div className="card-body">
+            <div className="d-flex justify-content-between mb-2">
+                <h4>{t(components[index].title)}</h4>
+                {(index === 0 && !started) &&
+                    <button type="button" onClick={() => setIndex(I_NEW_EVENT)} className="btn btn-sm btn-primary">
+                        {t('Créer')}
+                    </button>
+                }
 
-                    {(index !== 0 && !started) &&
-                        <button type="button" onClick={() => setIndex(I_EVENTS)} className="btn btn-sm btn-primary">
-                            <i className="ni ni-bold-left"></i>
-                        </button>
-                    }
-                </div>
-                <EventContext.Provider value={eventValue}>
-                    {components[index].component}
-                </EventContext.Provider>
-                {index === 0 && <Paginate pagination={paginate} />}
+                {(index !== 0 && !started) &&
+                    <button type="button" onClick={() => setIndex(I_EVENTS)} className="btn btn-sm btn-primary">
+                        <i className="ni ni-bold-left"></i>
+                    </button>
+                }
             </div>
-            {loading && <FullLoader parent={parentElemt.current} />}
+            <EventContext.Provider value={eventValue}>
+                {components[index].component}
+            </EventContext.Provider>
+            {index === 0 && <Paginate pagination={paginate} />}
         </div>
+        {loading && <FullLoader parent={parentElemt.current} />}
+    </div>
 }
 
 /**
