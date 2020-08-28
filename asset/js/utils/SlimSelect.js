@@ -1,4 +1,3 @@
-import 'slim-select/dist/slimselect.css'
 import SlimSelect from 'slim-select'
 
 /**

@@ -12,13 +12,18 @@ require('laravel-mix-merge-manifest');
  |
  */
 
-mix.sass('asset/sass/app.scss', 'public/bundles/css/style.css')
+mix.sass('asset/sass/app.scss', 'css/style.css')
     .mergeManifest()
 
 if (mix.inProduction()) {
-    mix.version();
+    require('laravel-mix-versionhash')
+    mix.versionHash({
+        length: 16
+    });
 }
 
+mix.setPublicPath('public/compiled/')
+mix.setResourceRoot('/compiled/')
 mix.webpackConfig({
     resolve: {
         alias: {

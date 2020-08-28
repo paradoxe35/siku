@@ -5,7 +5,15 @@ export default class extends Controller {
     static targets = ['countryCodeBtn']
 
     initialize() {
+
+    }
+
+    connect() {
         this.initSelect2()
+    }
+
+    disconnect() {
+        this.select && this.select.destroy()
     }
 
     async initSelect2() {
@@ -13,6 +21,7 @@ export default class extends Controller {
         const select = slim(this.countryCodeBtn, {
             placeholder: '...'
         })
+        this.select = select
         const c = await this.customerCountryApi()
         if (c) {
             const code = `+${c.location.calling_code}`
@@ -22,7 +31,7 @@ export default class extends Controller {
             ])
         }
         select.onChange = (info) => {
-            console.log(info);
+            console.log(info.value);
         }
     }
 
@@ -35,6 +44,9 @@ export default class extends Controller {
         }
     }
 
+    /**
+     * @returns { HTMLElement }
+     */
     get countryCodeBtn() {
         return this.countryCodeBtnTarget
     }

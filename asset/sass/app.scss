@@ -30,19 +30,24 @@ input {
     -webkit-tap-highlight-color: transparent;
 }
 
-@import "~nprogress/nprogress.css";
+@import './module';
 @import "@lib/argon/scss/argon";
 @import "@lib/nucleo/scss/nucleo.scss";
-@import "./navbar";
-@import "./loading";
+@import "./elements/loading";
+@import "./elements/navbar";
 @import "./dist/home";
 @import "./dist/unauth";
 @import "./dist/customer";
 
-#nprogress .bar {
-    height: 3px !important;
-    background: var(--primary) !important;
-    z-index: 55441 !important;
+#nprogress {
+    .bar {
+        height: 3px !important;
+        background: var(--primary) !important;
+        z-index: 55441 !important;
+    }
+    .spinner {
+        display: none !important;
+    }
 }
 
 .white-overlay {

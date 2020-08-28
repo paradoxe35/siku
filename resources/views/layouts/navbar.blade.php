@@ -5,10 +5,15 @@
             <a class="navbar-brand" href="{{ route('home') }}">
                 <h1>{{ $app_name }}</h1>
             </a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapse"
-                aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
+            <div class="sidenav-toggler d-xl-none d-lg-none d-md-none active " type="button" data-toggle="collapse"
+                data-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <div class="sidenav-toggler-inner">
+                    <i class="sidenav-toggler-line"></i>
+                    <i class="sidenav-toggler-line"></i>
+                    <i class="sidenav-toggler-line"></i>
+                </div>
+            </div>
             <div class="navbar-collapse navbar-custom-collapse collapse" id="navbar-collapse">
                 <div class="navbar-collapse-header">
                     <div class="row">

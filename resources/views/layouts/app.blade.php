@@ -7,7 +7,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ $app_name }}</title>
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
-    <link href="{{ mix('bundles/css/style.css') }}" rel="stylesheet">
+    <link href="{{ mix('css/style.css', 'compiled') }}" rel="stylesheet">
     @yield('style')
 </head>
 
@@ -16,9 +16,9 @@
         @yield('content')
     </div>
     @include('layouts.footer')
-    <script src="{{ mix('bundles/js/manifest.js') }}"></script>
-    <script src="{{ mix('bundles/js/vendor.js') }}"></script>
-    <script src="{{ mix('bundles/js/application.js') }}"></script>
+    <script src="{{ mix('js/manifest.js', 'compiled') }}"></script>
+    <script src="{{ mix('js/vendor.js', 'compiled') }}"></script>
+    <script src="{{ mix('js/application.js', 'compiled') }}"></script>
 </body>
 
 </html>

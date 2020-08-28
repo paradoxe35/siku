@@ -20,7 +20,7 @@
             </div>
             <div class="blur-content mt-6">
                 <div class="row justify-content-center">
-                    <div class="col-12 col-md-8 col-lg-7" data-controller="Customer--Customer-Config">
+                    <div class="col-12 col-md-8 col-lg-7" data-controller="Customer--Config">
                         <div class="card bg-transparent shadow-none">
                             <div class="card-body text-center">
                                 <spinning-dots style="width:50px;stroke-width:8px;color: #5e72e4;" />

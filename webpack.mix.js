@@ -2,6 +2,7 @@ const mix = require('laravel-mix');
 const path = require('path');
 
 require('laravel-mix-merge-manifest');
+require('laravel-mix-clean');
 
 /*
  |--------------------------------------------------------------------------
@@ -14,10 +15,13 @@ require('laravel-mix-merge-manifest');
  |
  */
 
-mix.react('asset/js/app.js', 'public/bundles/js/application.js')
+mix.react('asset/js/app.js', 'js/application.js')
     .extract(['jquery', 'swup', 'bootstrap', 'stimulus', '@grafikart/spinning-dots-element', 'dropify', 'codex-notifier'])
     .mergeManifest()
+mix.clean()
 
+mix.setPublicPath('public/compiled/')
+mix.setResourceRoot('/compiled/')
 mix.webpackConfig({
     resolve: {
         alias: {
@@ -27,15 +31,29 @@ mix.webpackConfig({
             '@lib': path.resolve(__dirname, 'asset/lib/'),
         }
     },
+    output: {
+        publicPath: '/compiled/',
+    }
 });
+
 
 if (!mix.inProduction()) {
     mix.sourceMaps(false)
 }
 
 if (mix.inProduction()) {
-    mix.version();
+    require('laravel-mix-versionhash')
+    mix.versionHash({
+        length: 16
+    })
 }
+
+mix.options({
+    hmrOptions: {
+        host: '0.0.0.0',
+        port: 8080
+    }
+})
 
 mix.disableNotifications();
 mix.browserSync({

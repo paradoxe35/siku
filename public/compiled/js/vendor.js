@@ -1,4 +1,4 @@
-(window["webpackJsonp"] = window["webpackJsonp"] || []).push([["/bundles/js/vendor"],{
+(window["webpackJsonp"] = window["webpackJsonp"] || []).push([["/js/vendor"],{
 
 /***/ "./node_modules/@grafikart/spinning-dots-element/index.js":
 /*!****************************************************************!*\

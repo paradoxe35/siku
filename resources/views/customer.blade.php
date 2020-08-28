@@ -34,25 +34,7 @@
 <div class="main-content" data-controller="Customer" id="panel">
     @include('layouts.auth-navbar')
     <div class="container-fluid mt-7">
-        <div class="alert alert-secondary alert-dismissible fade show bg-white" role="alert">
-            <span class="alert-text">
-                <div class="checklist-item checklist-item-danger">
-                    <div class="checklist-info">
-                        <h6 class="checklist-title mb-0">
-                            <span class="alert-icon">Erreur</span>
-                        </h6>
-                        <ul>
-                            <li>10:30 AM</li>
-                            <li>10:30 AM</li>
-                        </ul>
-                    </div>
-                </div>
-            </span>
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-
+        @yield('customer-content')
     </div>
 </div>
 @endsection
