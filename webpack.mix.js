@@ -48,13 +48,6 @@ if (mix.inProduction()) {
     })
 }
 
-mix.options({
-    hmrOptions: {
-        host: '0.0.0.0',
-        port: 8080
-    }
-})
-
 mix.disableNotifications();
 mix.browserSync({
     proxy: 'localhost:8000',
