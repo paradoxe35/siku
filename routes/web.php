@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', 'HomeController')->name('home');
 Route::get('/pricing', 'PricingController')->name('pricing');
-Route::get('/event', 'EventController')->name('event');
+Route::get('/events', 'EventsController')->name('events');
 Route::get('/services', 'ServicesController')->name('services');
 Route::get('/contact-us', 'ContactUsController')->name('contact-us');
 
@@ -31,11 +31,13 @@ Route::group([], function () {
         });
 });
 
+Route::post('locale', 'LocalizeController@changeLang')->name('locale');
+
 Route::prefix('customer')
     ->namespace('Customer')
     ->name('customer.')
     ->group(function () {
-        Route::get('config', 'ConfigController@index')->name('config');
+        Route::get('events', 'ConfigController@index')->name('config');
         Route::prefix('{event}')
             ->group(function () {
                 Route::get('/product', 'ProductController@index')->name('product');
@@ -45,4 +47,13 @@ Route::prefix('customer')
                 Route::get('/settings', 'SettingsController@index')->name('settings');
                 Route::get('/account', 'AccountController@index')->name('account');
             });
+    });
+
+Route::namespace('Admin')
+    ->prefix('dash')
+    ->name('admin.')
+    // ->middleware(['auth', 'admin'])
+    ->group(function () {
+        Route::redirect('', 'home');
+        Route::get('home', 'HomeDashController@index')->name('home');
     });

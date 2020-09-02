@@ -11,7 +11,7 @@
                         <div class="main-content">
                             <h1>{{ __('Informer et distribuer vos invitations en un temps record') }}</h1>
                             <h4>
-                                {{ __("Le meilleur et plus sûr moyen d'inviter vos membres et connaissances à vos evenements") }}.
+                                {{ __("Le meilleur et plus sûr moyen d'inviter vos membres et connaissances à vos événements") }}.
                             </h4>
                             <a href="{{ route('get-started') }}" class="btn btn-icon btn-primary mt-3">
                                 <span class="nav-link-inner--text">{{ __('Commencer') }}</span>
@@ -33,12 +33,13 @@
     <div class="container">
         <div class="row justify-content-center text-center">
             <div class="col-md-8">
-                <h2 class="display-3">Comment ça marche?</h2>
+                <h2 class="display-3">{{ __('Comment ça marche') }}?</h2>
                 <p class="lead">
-                    Argon is a completly new product built on our newest re-built from scratch framework structure that
-                    is meant to make our products more intuitive,
-                    more adaptive and, needless to say, so much easier to customize. Let Argon amaze you with its cool
-                    features and build tools and get your project to a whole new level.
+                  {{ $app_name  }} 
+                  {{ __('est un tout nouveau produit basé sur une structure de distribution d\'annonces intuitive qui vise à la rendre plus réactifs et bien sûr beaucoup plus faciles à gérer') }}.
+                  {{ 'Laissez' }}
+                  {{ $app_name  }} 
+                  {{ __('vous fournir ses fonctionnalités intéressantes et ses outils de validation, qui vous aménagerons bien') }}.
                 </p>
             </div>
         </div>
@@ -52,51 +53,42 @@
                     <div class="col-lg-4">
                         <div class="card card-lift--hover shadow border-0">
                             <div class="card-body py-5">
-                                <div class="icon icon-shape bg-gradient-primary text-white rounded-circle mb-4">
-                                    @include('template.svg.sms')
+                                <div class="text-center text-md-left">
+                                    <div class="icon icon-shape bg-gradient-default text-white rounded-circle mb-4">
+                                        @include('template.svg.sms')
+                                    </div>
+                                    <h4 class="h3 text-default text-uppercase">{{ __("SMS") }}</h4>
                                 </div>
-                                <h4 class="h3 text-primary text-uppercase">{{ __("SMS") }}</h4>
                                 <p class="description mt-3">Argon is built on top of the most popular open source
                                     toolkit for developing with HTML, CSS, and JS.</p>
-                                <div>
-                                    <span class="badge badge-pill badge-primary">bootstrap 4</span>
-                                    <span class="badge badge-pill badge-primary">dashboard</span>
-                                    <span class="badge badge-pill badge-primary">template</span>
-                                </div>
                             </div>
                         </div>
                     </div>
                     <div class="col-lg-4">
                         <div class="card card-lift--hover shadow border-0">
                             <div class="card-body py-5">
-                                <div class="icon icon-shape bg-gradient-success text-white rounded-circle mb-4">
-                                    @include('template.svg.whatsapp')
+                                <div class="text-center text-md-left">
+                                    <div class="icon icon-shape bg-gradient-default text-white rounded-circle mb-4">
+                                        @include('template.svg.whatsapp')
+                                    </div>
+                                    <h4 class="h3 text-default text-uppercase">{{ __("WhatsApp") }}</h4>
                                 </div>
-                                <h4 class="h3 text-success text-uppercase">{{ __("WhatsApp") }}</h4>
                                 <p class="description mt-3">Use Argons's included npm and gulp scripts to compile source
                                     code, run tests, and more with just a few simple commands.</p>
-                                <div>
-                                    <span class="badge badge-pill badge-success">npm</span>
-                                    <span class="badge badge-pill badge-success">gulp</span>
-                                    <span class="badge badge-pill badge-success">build tools</span>
-                                </div>
                             </div>
                         </div>
                     </div>
                     <div class="col-lg-4">
                         <div class="card card-lift--hover shadow border-0">
                             <div class="card-body py-5">
-                                <div class="icon icon-shape bg-gradient-warning text-white rounded-circle mb-4">
-                                    @include('template.svg.qr-code')
+                                <div class="text-center text-md-left">
+                                    <div class="icon icon-shape bg-gradient-default text-white rounded-circle mb-4">
+                                        @include('template.svg.qr-code')
+                                    </div>
+                                    <h4 class="h3 text-default text-uppercase">{{ __("QR Code") }}</h4>
                                 </div>
-                                <h4 class="h3 text-warning text-uppercase">{{ __("QR Code") }}</h4>
                                 <p class="description mt-3">Argon makes customization easier than ever before. You get
                                     all the tools to make your website building process a breeze.</p>
-                                <div>
-                                    <span class="badge badge-pill badge-warning">sass</span>
-                                    <span class="badge badge-pill badge-warning">design</span>
-                                    <span class="badge badge-pill badge-warning">customize</span>
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -153,7 +145,7 @@
     <div class="container">
         <div class="row row-grid justify-content-center">
             <div class="col-lg-8 text-center">
-                <h2 class="display-3">Do you love this awesome</h2>
+                <h2 class="display-3">{{ __("C'est cool, n'est-ce pas") }}?</h2>
                 <p class="lead">Cause if you do, it can be yours now. Hit the button below to navigate to get the free
                     version or purchase a license for your next project. Build a new web app or give an old Bootstrap
                     project a new look!

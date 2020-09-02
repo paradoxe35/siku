@@ -31,7 +31,7 @@
 
 @section('content')
 @include('layouts.auth-sidebar')
-<div class="main-content" data-controller="Customer" id="panel">
+<div class="main-content" data-controller="Admin-Customer" id="panel">
     @include('layouts.auth-navbar')
     <div class="container-fluid mt-7">
         @yield('customer-content')

@@ -12,10 +12,12 @@
 </head>
 
 <body class="@yield('body-class')">
-    <div id="app-ndowa">
+    <div id="app-main">
         @yield('content')
     </div>
-    @include('layouts.footer')
+    <div id="app-footer">
+        @include('layouts.footer')
+    </div>
     <script src="{{ mix('js/manifest.js', 'compiled') }}"></script>
     <script src="{{ mix('js/vendor.js', 'compiled') }}"></script>
     <script src="{{ mix('js/application.js', 'compiled') }}"></script>

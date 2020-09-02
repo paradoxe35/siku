@@ -14,6 +14,6 @@ class ContactUsController extends Controller
      */
     public function __invoke(Request $request)
     {
-        //
+        return view('contact-us');
     }
 }

@@ -5,6 +5,7 @@ const SCROLLING_NAVBAR_OFFSET_TOP = 50;
 export default class extends Controller {
 
     connect() {
+        this.scrollNav()
         window.addEventListener('scroll', this.scrollNav)
     }
 

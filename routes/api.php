@@ -18,7 +18,18 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::middleware('auth:api')
+Route::namespace('API')
+    ->name('api.')
     ->group(function () {
-        Route::apiResource('events', 'EventsController');
+        Route::middleware('auth:api')
+            ->group(function () {
+                Route::namespace('Customer')
+                    ->group(function () {
+                        Route::apiResource('events', 'EventsController');
+                    });
+            });
+        Route::get('country-pricing', "PricingController@getByCountry")->name('country-pricing');
+        Route::apiResource('customer-request', 'ContactUsController')->only([
+            'index', 'store', 'destroy'
+        ]);
     });

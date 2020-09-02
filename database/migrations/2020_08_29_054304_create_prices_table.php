@@ -15,6 +15,8 @@ class CreatePricesTable extends Migration
     {
         Schema::create('prices', function (Blueprint $table) {
             $table->id();
+            $table->string('country');
+            $table->string('country_code');
             $table->decimal('sms')->default(0.00);
             $table->decimal('whatsapp')->default(0.00);
             $table->decimal('tax')->default(0.00);

@@ -37,12 +37,12 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="#" class="nav-link">
+                        <a href="{{ route('services') }}" class="nav-link">
                             <span class="nav-link-inner--text">{{ __('Services') }}</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="#" class="nav-link">
+                        <a href="{{ route('events') }}" class="nav-link">
                             <span class="nav-link-inner--text">{{ __('Événements') }}</span>
                         </a>
                     </li>
@@ -50,7 +50,7 @@
                 <hr class="d-lg-none">
                 <ul class="navbar-nav align-items-lg-center ml-lg-auto">
                     <li class="nav-item d-none d-lg-block d-md-block ml-lg-4">
-                        <a href="#" class="btn btn-neutral btn-icon">
+                        <a href="{{ route('contact-us') }}" class="btn btn-neutral btn-icon">
                             <span class="nav-link-inner--text">{{ __('Nous contacter') }}</span>
                         </a>
                     </li>

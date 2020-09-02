@@ -23,7 +23,7 @@ export class SwupApp {
         const isIE = /* @cc_on!@ */ false || !!document.documentMode;
         if (!isIE) {
             swup = new Swup({
-                containers: ["#app-ndowa", /*"#app-swup-footer" */],
+                containers: ["#app-main", "#app-footer"],
                 plugins: [
                     new SwupScrollPlugin({
                         doScrollingRightAway: false,
@@ -44,6 +44,6 @@ export class SwupApp {
             swup.on('contentReplaced', () => (INprogress.unset() /*LozadObserver() */))
         }
         // LozadObserver()
-        return swup || {}
+        return swup
     }
 }

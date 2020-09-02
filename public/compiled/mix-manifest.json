@@ -1,3 +1,6 @@
 {
+    "/js/application.js": "/js/application.js",
+    "/js/manifest.js": "/js/manifest.js",
+    "/js/vendor.js": "/js/vendor.js",
     "/css/style.css": "/css/style.css"
 }

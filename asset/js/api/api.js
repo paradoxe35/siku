@@ -38,7 +38,6 @@ export const Axios = axios.create(params);
 export const AxiosAdmin = axios.create(params);
 
 export default class Api {
-    constructor(config = {}) { }
 
     static get Axs() {
         return Axios
@@ -81,8 +80,8 @@ export default class Api {
         let $datas = {};
         if (datas instanceof FormData) {
             datas.forEach((value, key) => ($datas[key] = value))
-        }else {
-            $datas = datas
+        } else {
+            $datas = { ...datas }
         }
         try {
             const res = this.Axs.put(url, $datas, config)
