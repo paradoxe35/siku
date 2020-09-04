@@ -1,13 +1,13 @@
+//@ts-check
 import { Controller } from "stimulus"
 import { customerRequestByEmailJs, customerCountryApi } from "../api/services"
 import { Notifier } from "../functions/notifier"
-import { customerResquest } from "../api/customer/CustomerRequest"
 import { Localize } from "../functions/localize"
+import { FormBtn, resetFormFields } from "../functions/dom"
+import { ApiRequest } from "../api/api"
 
 
 export default class extends Controller {
-    static targets = ['form']
-
     connect() {
         this.form.addEventListener('submit', this.handleCustomerRequest)
     }
@@ -17,18 +17,12 @@ export default class extends Controller {
     }
 
     /**
-     * @param { HTMLElement } target
-     * @returns { HTMLButtonElement }
-     */
-    btn = (target) => target.querySelector('button[type="submit"]')
-
-    /**
      * @param { FormData } form 
      */
     async validateForm(form) {
         return new Promise((resolve) => {
             let e = true
-            form.forEach((v) => (v.trim().length < 3) && (e = true))
+            form.forEach((v) => (v.toString().trim().length < 3) && (e = true))
             resolve(e)
         })
     }
@@ -38,9 +32,10 @@ export default class extends Controller {
      */
     handleCustomerRequest = async (e) => {
         e.preventDefault()
+        // @ts-ignore
         const form = new FormData(e.target)
         if (!(await this.validateForm(form))) return
-        const btn = this.btn(e.target)
+        const btn = FormBtn(e.target)
         btn.disabled = true
         customerRequestByEmailJs({
             app_name: form.get('app_name'),
@@ -55,7 +50,7 @@ export default class extends Controller {
                     en: 'Your request has been sent'
                 }))
                 form.append('sended', "send")
-                this.resetFields(form)
+                resetFormFields(form, this.element)
                 return true
             })
             .catch((_) => {
@@ -74,28 +69,19 @@ export default class extends Controller {
     /**
      * @param { FormData } form 
      */
-    resetFields(form) {
-        form.forEach((_, k) => {
-            const h = this.element.querySelector(`[name="${k}"]`)
-            h && (h.value = '')
-        })
-    }
-
-    /**
-     * @param { FormData } form 
-     */
     async storeRequest(form) {
         const countryApi = await customerCountryApi()
         form.append('country_name', countryApi ? countryApi.country_name : null)
         form.append('country_code', countryApi ? countryApi.country_code : null)
-        return await customerResquest(this.form.action, form)
+        return await ApiRequest('post', this.form.action, form)
     }
 
     /**
      * @returns { HTMLFormElement }
      */
     get form() {
-        return this.formTarget
+        // @ts-ignore
+        return this.targets.find('form')
     }
 
 }

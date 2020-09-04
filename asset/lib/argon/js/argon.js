@@ -38,11 +38,11 @@ const Layout = function () {
                 break;
         }
     })
-}()
+}
 const Tooltip = function () {
     const e = $('[data-toggle="tooltip"]');
     e.length && e.tooltip()
-}()
+}
 const Dropzones = function () {
     var e = $('[data-toggle="dropzone"]'),
         a = $('.dz-preview');
@@ -74,4 +74,11 @@ const Dropzones = function () {
             n.html(''),
             e.dropzone(o)
     }))
-}()
+}
+
+export const connect = () => {
+    const o = { Layout, Tooltip, Dropzones }
+    for (const key in o) {
+        o[key]()
+    }
+}

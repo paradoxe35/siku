@@ -24,12 +24,22 @@ Route::namespace('API')
         Route::middleware('auth:api')
             ->group(function () {
                 Route::namespace('Customer')
+                    ->prefix('customer')
+                    ->name('customer.')
                     ->group(function () {
                         Route::apiResource('events', 'EventsController');
+                        Route::namespace('Payments')
+                            ->name('payments.')
+                            ->group(function () {
+                                Route::get('link-page', "PaymentsController@customerPaymentLinkPage")->name('link-page');
+                                Route::post('custom-payment-validate', "PaymentsController@customPaymentValidate")
+                                    ->name('custom-payment-validate');
+                            });
                     });
             });
         Route::get('country-pricing', "PricingController@getByCountry")->name('country-pricing');
         Route::apiResource('customer-request', 'ContactUsController')->only([
             'index', 'store', 'destroy'
         ]);
+        Route::apiResource('cmp-details', "CompanyDetailsController")->except(['show']);
     });

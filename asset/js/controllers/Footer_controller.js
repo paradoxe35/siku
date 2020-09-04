@@ -1,6 +1,8 @@
+//@ts-check
 import { Controller } from "stimulus"
-import { SwupApp } from "@js/functions/Swup"
-import { ChangeLocale } from "@js/api/Locale"
+import { TurbolinksApp } from "../modules/turbolinks"
+import { setI18nLanguage, ApiRequest } from "../api/api"
+import { INprogress } from "../functions/NProgress"
 
 export default class extends Controller {
 
@@ -9,16 +11,31 @@ export default class extends Controller {
     }
 
     /**
+     * @param { string } lang 
+     */
+    async request(lang) {
+        INprogress.set()
+        const h = await ApiRequest('post', this.data.get('locale'), { locale: lang })
+        INprogress.unset()
+        return h
+    }
+    /**
      * @param { Event } param0 
      */
+    // @ts-ignore
     changeLocalize = async ({ target: { value } }) => {
-        await ChangeLocale(this.data.get('locale'), value)
+        await this.request(value)
         window.scrollTo({
             top: 0
         })
-        SwupApp.swup.loadPage({
-            url: window.location.pathname + window.location.search
-        }, true)
+        setI18nLanguage(value)
+        window.scrollTo({
+            top: 0
+        })
+        TurbolinksApp.isc.visit(
+            window.location.pathname + window.location.search,
+            { action: 'replace' }
+        )
     }
 
     disconnect() {

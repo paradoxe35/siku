@@ -1,3 +1,4 @@
+//@ts-check
 import { Controller } from "stimulus"
 
 const SCROLLING_NAVBAR_OFFSET_TOP = 50;

@@ -8,19 +8,20 @@
     <title>{{ $app_name }}</title>
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="{{ mix('css/style.css', 'compiled') }}" rel="stylesheet">
-    @yield('style')
+    <link href="{{ mix('css/module.css', 'compiled') }}" rel="stylesheet">
+    @yield('head-meta')
+    @yield('head-secondary')
+    <script src="{{ mix('js/manifest.js', 'compiled') }}" defer></script>
+    <script src="{{ mix('js/vendor.js', 'compiled') }}" defer></script>
+    <script src="{{ mix('js/application.js', 'compiled') }}" defer></script>
+    <meta name="turbolinks-cache-control" content="no-cache">
 </head>
 
 <body class="@yield('body-class')">
     <div id="app-main">
         @yield('content')
     </div>
-    <div id="app-footer">
-        @include('layouts.footer')
-    </div>
-    <script src="{{ mix('js/manifest.js', 'compiled') }}"></script>
-    <script src="{{ mix('js/vendor.js', 'compiled') }}"></script>
-    <script src="{{ mix('js/application.js', 'compiled') }}"></script>
+    @include('layouts.footer')
 </body>
 
 </html>

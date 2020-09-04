@@ -1,9 +1,8 @@
+//@ts-check
 import { customerCountryApi } from '../api/services'
 
-
 /**
- * 
- * @param {HTMLElement } select 
+ * @param { HTMLElement } select 
  * @param { CallableFunction } callbackData 
  */
 export const clientCountry = async (select, callbackData) => {

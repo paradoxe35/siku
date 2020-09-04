@@ -29,7 +29,8 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = RouteServiceProvider::HOME;
+    // RouteServiceProvider::HOME
+    protected $redirectTo = '/email/verify';
 
     /**
      * Create a new controller instance.
@@ -52,7 +53,10 @@ class RegisterController extends Controller
         return Validator::make($data, [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'phone' => ['required', 'regex:/^[0-9\-\(\)\/\+\s]*$/', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'country_name' => ['nullable', 'string'],
+            'country_code' => ['nullable', 'string']
         ]);
     }
 
@@ -67,7 +71,10 @@ class RegisterController extends Controller
         return User::create([
             'name' => $data['name'],
             'email' => $data['email'],
+            'phone' => $data['phone'],
             'password' => Hash::make($data['password']),
+            'country_name' => $data['country_name'],
+            'country_code' => $data['country_code']
         ]);
     }
 
@@ -79,5 +86,19 @@ class RegisterController extends Controller
     public function showRegistrationForm()
     {
         return view('auth.sign-up');
+    }
+
+    /**
+     * The user has been registered.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  mixed  $user
+     * @return mixed
+     */
+    protected function registered($request, $user)
+    {
+        return response()->json([
+            'redirect_url' => $this->redirectTo
+        ]);
     }
 }

@@ -24,8 +24,11 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->boolean('is_admin')->default(false);
             $table->string('admin_token')->nullable();
+            $table->string('country_name')->nullable();
+            $table->string('country_code')->nullable();
             $table->rememberToken();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

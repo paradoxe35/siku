@@ -1,3 +1,5 @@
+//@ts-check
+
 export const jsonToHtml = {
     makeParagraph(obj) {
         return `<p class="blog_post_text">

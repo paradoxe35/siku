@@ -1,15 +1,15 @@
 import '@stimulus/polyfills'
-import './functions/functions'
+import './functions/lib'
 import { Application } from "stimulus"
 import { definitionsFromContext } from "stimulus/webpack-helpers"
-import { SwupApp } from './functions/Swup'
 import $ from 'jquery'
 import '@js/utils/CustomElements'
+import { TurbolinksApp } from './modules/turbolinks'
 
 window.$ = window.jQuery = $
 import 'bootstrap'
 
-SwupApp.init()
+TurbolinksApp.start()
 const application = Application.start()
 const context = require.context("./controllers", true, /\.js$/)
 application.load(definitionsFromContext(context))

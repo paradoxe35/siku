@@ -13,6 +13,7 @@ require('laravel-mix-merge-manifest');
  */
 
 mix.sass('asset/sass/app.scss', 'css/style.css')
+    .sass('asset/sass/module.scss', 'css/module.css')
     .mergeManifest()
 
 if (mix.inProduction()) {

@@ -20,6 +20,7 @@ class CreateConsumedsTable extends Migration
             $table->foreignId('guest_id')->nullable()->constrained()->onDelete('set null');
             $table->double('amount')->default(0.00);
             $table->string('service');
+            $table->string('confirmed')->default(false);
             $table->timestamps();
         });
     }

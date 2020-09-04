@@ -1,12 +1,14 @@
 {
     "compilerOptions": {
+        "jsx": "react",
         "experimentalDecorators": true,
         "sourceMap": true,
         "moduleResolution": "node",
         "esModuleInterop": true,
         "allowSyntheticDefaultImports": true,
         "baseUrl": ".",
-        "module": "es2015",
+        "module": "esnext",
+        "target": "es5",
         "paths": {
             "@/*": [
                 "asset/*"
@@ -32,7 +34,5 @@
         "asset/js/**/*.js",
         "asset/js/**/*.jsx",
     ],
-    "exclude": [
-        "node_modules"
-    ]
+    "exclude": ["node_modules", "**/node_modules/*"]
 }

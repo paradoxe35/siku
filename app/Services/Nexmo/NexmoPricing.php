@@ -37,6 +37,16 @@ class NexmoPricing
     }
 
     /**
+     * @param string|null $code
+     * @return array|null
+     */
+    public function parseSmsPrice($code)
+    {
+        return collect($this->prices())
+            ->firstWhere('Country Code', $code) ?: null;
+    }
+
+    /**
      * @param string $filename
      * @return array
      */

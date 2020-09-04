@@ -1,28 +1,31 @@
-@extends('layouts.app')
+@extends('auth')
 
-@section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">{{ __('Verify Your Email Address') }}</div>
+@section('first')
+<h1>{{ __('Vérifiez votre adresse e-mail') }}</h1>
 
-                <div class="card-body">
-                    @if (session('resent'))
-                        <div class="alert alert-success" role="alert">
-                            {{ __('A fresh verification link has been sent to your email address.') }}
-                        </div>
-                    @endif
-
-                    {{ __('Before proceeding, please check your email for a verification link.') }}
-                    {{ __('If you did not receive the email') }},
-                    <form class="d-inline" method="POST" action="{{ route('verification.resend') }}">
-                        @csrf
-                        <button type="submit" class="btn btn-link p-0 m-0 align-baseline">{{ __('click here to request another') }}</button>.
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
+@if (session('resent'))
+<div class="alert border border-darken-1 border-success my-2" role="alert">
+    {{ __('Un nouveau lien de vérification a été envoyé à votre adresse e-mail') }}.
 </div>
+@endif
+
+<p>{{ __('Avant de continuer, veuillez vérifier votre e-mail pour un lien de vérification') }}.</p>
+<p>{{ __('si vous n\'avez pas reçu l\'e-mail') }}.</p>
+<form class="d-inline" method="POST" action="{{ route('verification.resend') }}">
+    @csrf
+    <button type="submit"
+        class="btn btn-default align-baseline">{{ __('Cliquez ici pour en demander un autre') }}</button>.
+</form>
+
+<p class="mt-3">
+    <small class="Vlt-grey-darker text-muted">
+        <div class="form text-sm">{{ __('Plus tard') }}
+            <a href="{{ route('customer.events') }}" >{{ __('Acceuil') }}</a>.
+        </div>
+    </small>
+</p>
+@endsection
+
+@section('second')
+<div class="signup-backdrop-pattern"></div>
 @endsection

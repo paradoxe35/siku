@@ -1,47 +1,38 @@
-@extends('layouts.app')
+@extends('auth')
 
-@section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">{{ __('Reset Password') }}</div>
-
-                <div class="card-body">
-                    @if (session('status'))
-                        <div class="alert alert-success" role="alert">
-                            {{ session('status') }}
-                        </div>
-                    @endif
-
-                    <form method="POST" action="{{ route('password.email') }}">
-                        @csrf
-
-                        <div class="form-group row">
-                            <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
-
-                                @error('email')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
-
-                        <div class="form-group row mb-0">
-                            <div class="col-md-6 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
-                                    {{ __('Send Password Reset Link') }}
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
+@section('first')
+<h1 class="display-4">{{ __('Réinitialiser le mot de passe') }}</h1>
+<p class="text-lead">
+    {{ __('Veuillez saisir votre adresse e-mail') }}.
+    {{ __('Vous recevrez un lien pour créer un nouveau mot de passe par e-mail') }}.
+</p>
+@if (session('status'))
+<div class="alert border border-darken-1 border-success my-2" role="alert">
+    {{ session('status') }}.
 </div>
+@endif
+<form method="POST" action="{{ route('password.email') }}">
+    @csrf
+    <div class="form-group my-4">
+        <input id="email" type="email" placeholder="{{ __('E-Mail Adresse') }}"
+            class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required
+            autofocus>
+        @error('email')
+        <span class="invalid-feedback" role="alert">
+            <strong>{{ $message }}</strong>
+        </span>
+        @enderror
+    </div>
+    <div class="form-group  mb-0">
+        <button type="submit" class="btn btn-default">
+            {{ __('Envoyer le lien') }}
+        </button>
+    </div>
+</form>
+@endsection
+
+
+@section('second')
+<div class="mt-9"></div>
+<div class="signin-backdrop-pattern"></div>
 @endsection

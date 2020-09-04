@@ -2,7 +2,7 @@
     id="sidenav-main">
     <div class="scrollbar-inner">
         <div class="sidenav-header">
-            <a class="navbar-brand">
+            <a class="navbar-brand" href="{{ route('customer.events') }}">
                 <span class="h1 font-weight-bold">{{ $app_name }}</span>
                 <small class="text-muted" style="font-size: .7rem">PNG_</small>
             </a>
@@ -16,7 +16,7 @@
                                 <span class="optimizeLegibility">
                                     <span class="text-sm">{{ __('Balance') }}</span><br>
                                     <b class="font-weight-bold balance">$ 0.77</b>
-                                    <a href="#">
+                                    <a href="javascript:;">
                                         <span class="upgrade-action">
                                             {{ __('Ajouter') }}
                                         </span>
@@ -26,45 +26,24 @@
                             </div>
                         </div>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" href="">
-                            <i class="ni ni-archive-2 text-default"></i>
-                            <span class="nav-link-text">{{ __('Produit') }}</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="">
-                            <i class="ni ni-collection text-default"></i>
-                            <span class="nav-link-text">{{ __('Modèles') }}</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="">
-                            <i class="ni ni-spaceship text-default"></i>
-                            <span class="nav-link-text">{{ __('Utilisation') }}</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="">
-                            <i class="ni ni-books text-default"></i>
-                            <span class="nav-link-text">{{ __('Rapport') }}</span>
-                        </a>
-                    </li>
                 </ul>
-                <hr class="my-3">
                 <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link" href="">
-                            <i class="ni ni-settings-gear-65 text-default"></i>
-                            <span class="nav-link-text">{{ __('Paramètres') }}</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="">
-                            <i class="ni ni-single-02 text-default"></i>
-                            <span class="nav-link-text">{{ __('Compte') }}</span>
-                        </a>
-                    </li>
+                    @foreach ($sidebarLinkList as $key => $section)
+                        @foreach ($section as $item)
+                        <li class="nav-item">
+                            <a class="nav-link {{ Str::contains(request()->fullUrl(), route($item['route'])) ? 'active' : '' }}"
+                                href="{{ route($item['route']) }}">
+                                <i class="ni ni-{{ $item['icon'] }} text-default"></i>
+                                <span class="nav-link-text">{{ $item['name'] }}</span>
+                            </a>
+                        </li>
+                        @endforeach
+                        @if ($key != (count($sidebarLinkList) - 1))
+                            </ul>
+                            <hr class="my-3">
+                            <ul class="navbar-nav">
+                        @endif
+                    @endforeach
                 </ul>
             </div>
         </div>

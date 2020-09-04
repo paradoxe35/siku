@@ -9,7 +9,7 @@ class EventRepository
     /**
      * @var Event
      */
-    private Event $event;
+    public Event $event;
 
     /**
      * @param Event $event
@@ -22,11 +22,8 @@ class EventRepository
     /**
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    private function newQuery() {
+    public function newQuery() {
         return $this->event->newQuery();
     }
 
-    public function getEvents() {
-        $this->newQuery();
-    }    
 }

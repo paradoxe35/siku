@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\Customer\SetValueForCustomerEventUrls;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -16,9 +17,11 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', 'HomeController')->name('home');
 Route::get('/pricing', 'PricingController')->name('pricing');
-Route::get('/events', 'EventsController')->name('events');
+Route::get('/events', 'PostsController')->name('posts');
 Route::get('/services', 'ServicesController')->name('services');
 Route::get('/contact-us', 'ContactUsController')->name('contact-us');
+
+Auth::routes(['login' => false, 'regiter' => false, 'verify' => true, 'reset' => true, 'confirm' => true]);
 
 Route::group([], function () {
     Route::get('/get-started', 'GetStartedController')->name('get-started');
@@ -36,24 +39,37 @@ Route::post('locale', 'LocalizeController@changeLang')->name('locale');
 Route::prefix('customer')
     ->namespace('Customer')
     ->name('customer.')
+    ->middleware(['auth'])
     ->group(function () {
-        Route::get('events', 'ConfigController@index')->name('config');
+        Route::get('events', 'EventsController@index')->name('events');
         Route::prefix('{event}')
+            ->middleware(SetValueForCustomerEventUrls::class)
             ->group(function () {
-                Route::get('/product', 'ProductController@index')->name('product');
-                Route::get('/models', 'ModelsController@index')->name('models');
-                Route::get('/utilization', 'UtilizationController@index')->name('utilization');
-                Route::get('/report', 'ReportController@index')->name('report');
-                Route::get('/settings', 'SettingsController@index')->name('settings');
-                Route::get('/account', 'AccountController@index')->name('account');
+                Route::name('event')
+                    ->group(function () {
+                        Route::get('/product', 'ProductController@index')->name('.product');
+                        Route::get('/models', 'ModelsController@index')->name('.models');
+                        Route::get('/utilization', 'UtilizationController@index')->name('.utilization');
+                        Route::get('/report', 'ReportController@index')->name('.report');
+                        Route::get('/settings', 'SettingsController@index')->name('.settings');
+                        Route::get('/account', 'AccountController@index')->name('.account');
+                        Route::get('', fn() => redirect(route('customer.event.product')));
+                        //payment routes
+                        Route::namespace('Payments')
+                            ->prefix('payments')
+                            ->name('.payments')
+                            ->group(function () {
+                                Route::get('/', "PaymentsController@index");
+                            });
+                    });
             });
     });
 
 Route::namespace('Admin')
     ->prefix('dash')
     ->name('admin.')
-    // ->middleware(['auth', 'admin'])
+    // ->middleware(['auth', 'admin-views'])
     ->group(function () {
-        Route::redirect('', 'home');
+        Route::redirect('', '/dash/home');
         Route::get('home', 'HomeDashController@index')->name('home');
     });

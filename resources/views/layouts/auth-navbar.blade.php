@@ -28,26 +28,30 @@
                 </ul>
                 <ul class="navbar-nav align-items-center  ml-auto ml-md-0 ">
                     <li class="nav-item">
-                        <a class="text-decoration-none text-default" href="#">
+                        <a class="text-decoration-none text-default" href="javascript:;">
                             <div class="media align-items-center">
                                 <span class="avatar avatar-sm rounded-circle">
                                     <i class="ni ni-circle-08"></i>
                                 </span>
                                 <div class="media-body ml-2 d-none d-md-block">
-                                    <span class="mb-0 text-sm font-weight-bold">John Snow</span>
+                                    <span class="mb-0 text-sm font-weight-bold">{{ Auth::user()->name }}</span>
                                 </div>
                             </div>
                         </a>
                     </li>
                     <li class="nav-item mx-3">
-                        <a class="text-decoration-none text-default" href="#">
-                            <div class="media align-items-center">
-                                <div class="media-body ml-2 d-none d-md-block">
-                                    <i class="ni ni-fat-remove"></i>
-                                </div>
-                                <span class="mb-0 text-sm  font-weight-bold">{{ __('Déconnexion') }}</span>
+                        <div class="media align-items-center">
+                            <div class="media-body ml-2 d-none d-md-block">
+                                <i class="ni ni-fat-remove"></i>
                             </div>
-                        </a>
+                            <div data-controller="Auth--SigninOrAuth">
+                                <button type="submit" data-action="Auth--SigninOrAuth#action"
+                                    data-url="{{ route('logout') }}"
+                                    class="btn btn-link mb-0 p-0 text-sm text-default font-weight-bold">
+                                    {{ __('Déconnexion') }}
+                                </button>
+                            </div>
+                        </div>
                     </li>
                 </ul>
             </div>

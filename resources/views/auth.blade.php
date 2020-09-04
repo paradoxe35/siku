@@ -1,12 +1,7 @@
 @extends('layouts.app')
 
-@section('style')
-<style>
-    #footer-main {
-        display: none;
-    }
-</style>
-@endsection
+@section('body-class', 'no-footer')
+
 @section('content')
 @include('layouts.nav-logo')
 <div class="container-fluid pl-0">

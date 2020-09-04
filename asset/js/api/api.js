@@ -1,30 +1,31 @@
+//@ts-check
 import axios from 'axios'
-/**
- * 
- * @param {string} name 
- */
-export const getCookie = (name) => {
-    const cookieArr = document.cookie.split(";")
-    for (let index = 0; index < cookieArr.length; index++) {
-        const cookiePair = cookieArr[index].split("=");
-        if (name === cookiePair[0].trim()) {
-            return decodeURIComponent(cookiePair[1])
-        }
-    }
-    return null
-}
+import { Notifier } from '@js/functions/notifier'
+import { HtmlAlert } from '@js/functions/dom'
 
 export const setI18nLanguage = (lang) => {
     axios.defaults.headers.common['Accept-Language'] = lang
     document.querySelector('html').setAttribute('lang', lang)
 }
 
-export const setCookie = (name, value, daysToLive) => {
-    let cookie = `${name}=${encodeURIComponent(value)}`
-    if (typeof daysToLive === 'number') {
-        cookie += `; max-age=${daysToLive * 24 * 60 * 60}`
+export const errorResponse = (error, mustNotifierErrors = false) => {
+    if (error.response && mustNotifierErrors)
+        Notifier.error(HtmlAlert.message(error.response.data));
+    return Promise.reject(error.response ? error.response.data : error)
+}
+
+/**
+ * @param {string} method 
+ * @param {string} url 
+ * @param { FormData | Object } datas 
+ * @returns { Promise<import('axios').AxiosResponse<any>> }
+ */
+export const ApiRequest = async (method = 'get', url, datas = {}, mustNotifierErrors = false) => {
+    try {
+        return await Api[method.toLowerCase()](url, datas)
+    } catch (error) {
+        return errorResponse(error, mustNotifierErrors)
     }
-    document.cookie = cookie
 }
 
 const params = {
@@ -70,12 +71,6 @@ export default class Api {
         }
     }
 
-    /**
-     * 
-     * @param { string } url 
-     * @param {FormData || Object} datas 
-     * @param { string } config 
-     */
     static async put(url, datas = {}, config = {}) {
         let $datas = {};
         if (datas instanceof FormData) {

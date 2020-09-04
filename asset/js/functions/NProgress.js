@@ -1,3 +1,4 @@
+//@ts-check
 import NProgress from 'nprogress';
 
 NProgress.configure({

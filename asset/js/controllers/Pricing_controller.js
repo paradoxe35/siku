@@ -1,11 +1,11 @@
+//@ts-check
 import { Controller } from "stimulus"
 import { clientCountry } from "@js/functions/services"
 import { countriesFlagAndEmojis } from "@js/api/services"
-import { getTariffByCountry } from "@js/api/tariff/tariff"
 import { Localize } from "../functions/localize"
+import { ApiRequest } from "../api/api"
 
 export default class extends Controller {
-    static targets = ['countrySelectField', 'guestField', 'smsPrice', 'wtspPrice']
     url = {
         countryPricing: this.data.get('countryPricing')
     }
@@ -48,6 +48,7 @@ export default class extends Controller {
      */
     roundByGuestValue(m) {
         const g = this.guestField.value;
+        // @ts-ignore
         return m !== null ? (m * (!isNaN(g) && +g > 0 ? +g : 1)).nround(3) : null;
     }
 
@@ -55,7 +56,7 @@ export default class extends Controller {
      * @param { string } countryCode 
      */
     connectedCountry(countryCode) {
-        getTariffByCountry(this.url.countryPricing, countryCode)
+        ApiRequest('get', `${this.url.countryPricing}?country_code=${countryCode}`, {})
             .then(({ data }) => {
                 this.prices.sms = data.prices.sms
                 this.prices.whatsapp = data.prices.whatsapp
@@ -85,15 +86,18 @@ export default class extends Controller {
     /**
      * @param { Event } e 
      */
+    // @ts-ignore
     updatePrices = ({ target: { value } }) => {
         const typing = isNaN(value) || +value < 1 || +value > 1000000;
         if (typing || (!this.prices.sms && !this.prices.whatsapp)) return
         this.showPricesText({
             prices: {
                 sms: this.prices.sms !== null ?
+                    // @ts-ignore
                     (this.prices.sms * (+value)).nround(3) :
                     null,
                 whatsapp: this.prices.whatsapp !== null ?
+                    // @ts-ignore
                     (this.prices.whatsapp * (+value)).nround(3) :
                     null
             }
@@ -101,24 +105,25 @@ export default class extends Controller {
     }
 
     /**
-     * @returns { HTMLElement }
+     * @returns { HTMLElement|Element }
      */
     get smsPrice() {
-        return this.smsPriceTarget
+        return this.targets.find('smsPrice')
     }
 
     /**
-     * @returns { HTMLElement }
+     * @returns { HTMLElement | Element }
      */
     get wtspPrice() {
-        return this.wtspPriceTarget
+        return this.targets.find('wtspPrice')
     }
 
     /**
      * @returns { HTMLElement }
      */
     get countrySelectField() {
-        return this.countrySelectFieldTarget
+        // @ts-ignore
+        return this.targets.find('countrySelectField')
     }
 
 
@@ -126,6 +131,7 @@ export default class extends Controller {
      * @returns { HTMLInputElement }
      */
     get guestField() {
-        return this.guestFieldTarget
+        // @ts-ignore
+        return this.targets.find('guestField')
     }
 }

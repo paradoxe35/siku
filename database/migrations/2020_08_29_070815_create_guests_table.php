@@ -19,6 +19,7 @@ class CreateGuestsTable extends Migration
             $table->string('name');
             $table->string('phone');
             $table->string('code');
+            $table->integer('autorized');
             $table->timestamps();
         });
     }

@@ -48,4 +48,30 @@ class LoginController extends Controller
         return view('auth.sign-in');
     }
 
+    /**
+     * The user has been authenticated.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  mixed  $user
+     * @return mixed
+     */
+    protected function authenticated($request, $user)
+    {
+        return response()->json([
+            'redirect_url' => $user->is_admin ? route('admin.home', [], false) : route('customer.events', [], false)
+        ]);
+    }
+
+    /**
+     * The user has logged out of the application.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return mixed
+     */
+    protected function loggedOut($request)
+    {
+        return response()->json([
+            'redirect_url' => route('sign-in', [], false)
+        ]);
+    }
 }

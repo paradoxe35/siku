@@ -1,4 +1,4 @@
-
+//@ts-check
 /**
  * @param { Object } trans 
  * @param { string } defaults

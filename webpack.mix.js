@@ -16,9 +16,8 @@ require('laravel-mix-clean');
  */
 
 mix.react('asset/js/app.js', 'js/application.js')
-    .extract(['jquery', 'swup', 'bootstrap', 'stimulus', '@grafikart/spinning-dots-element', 'dropify', 'codex-notifier'])
+    .extract(['jquery', 'bootstrap', 'stimulus', '@grafikart/spinning-dots-element', 'dropify', 'codex-notifier'])
     .mergeManifest()
-mix.clean()
 
 mix.setPublicPath('public/compiled/')
 mix.setResourceRoot('/compiled/')
@@ -42,6 +41,7 @@ if (!mix.inProduction()) {
 }
 
 if (mix.inProduction()) {
+    mix.clean()
     require('laravel-mix-versionhash')
     mix.versionHash({
         length: 16
@@ -54,7 +54,15 @@ mix.browserSync({
     watch: true,
     files: ["./resources", "./asset"],
     notify: false,
-    open: false
+    open: false,
+    snippetOptions: {
+        rule: {
+            match: /<\/head>/i,
+            fn: function (snippet, match) {
+                return snippet + match;
+            }
+        }
+    }
 });
 
 mix.copyDirectory('asset/img/svg', 'public/img/svg');

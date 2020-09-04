@@ -30,7 +30,6 @@ input {
     -webkit-tap-highlight-color: transparent;
 }
 
-@import './module';
 @import "@lib/argon/scss/argon";
 @import "@lib/nucleo/scss/nucleo.scss";
 @import "./elements/loading";
@@ -38,6 +37,8 @@ input {
 @import "./dist/home";
 @import "./dist/unauth";
 @import "./dist/customer";
+@import "./elements/callout";
+@import "./elements/sidebar";
 
 #nprogress {
     .bar {
@@ -48,6 +49,17 @@ input {
     .spinner {
         display: none !important;
     }
+}
+
+.clickable-list:hover {
+    background-color: #eeeeee;
+    cursor: pointer;
+}
+
+.turbolinks-progress-bar {
+    height: 3px;
+    background-color: var(--primary);
+    z-index: 55441 !important;
 }
 
 .white-overlay {
@@ -86,3 +98,16 @@ input {
         transition: all 0.15s ease;
     }
 }
+
+.no-footer {
+    #footer-main {
+        display: none;
+    }
+}
+
+// #footer-main {
+//     background-image: url("/img/svg/footer_shap.svg");
+//     background-repeat: no-repeat;
+//     background-position: 0 -1px;
+//     background-size: 100% 200px;
+// }
