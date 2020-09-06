@@ -1,3 +1,4 @@
+//@ts-check
 import { Controller } from "stimulus"
 import store, { ReduxDispatch } from '@js/store'
 import { connectUser } from "@js/store/features/UserSlice"
@@ -20,6 +21,7 @@ export default class extends Controller {
 
     initUserInStore() {
         const o = store.getState().userAuth
+        // @ts-ignore
         const user = window.auth
         if (this.mustDispache(user, o))
             ReduxDispatch(connectUser(user));
@@ -27,6 +29,7 @@ export default class extends Controller {
 
     initCurrentEventInStore() {
         const o = store.getState().workingEvent
+        // @ts-ignore
         const event = window.customerEvent
         if (this.mustDispache(event, o))
             ReduxDispatch(setCurrentEvent(event));
@@ -34,6 +37,7 @@ export default class extends Controller {
 
     initCustomerBalanceInStore() {
         const { balance } = store.getState().customerBalance
+        // @ts-ignore
         const data = window.customerBalance
         if (data && balance !== data.balance || !data)
             ReduxDispatch(setBalance(data));

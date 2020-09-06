@@ -46,6 +46,11 @@
                             <span class="nav-link-inner--text">{{ __('Événements') }}</span>
                         </a>
                     </li>
+                    <li class="nav-item d-xl-none d-lg-none d-md-none">
+                        <a href="{{ route('contact-us') }}" class="nav-link">
+                            <span class="nav-link-inner--text">{{ __('Nous contacter') }}</span>
+                        </a>
+                    </li>
                 </ul>
                 <hr class="d-lg-none">
                 <ul class="navbar-nav align-items-lg-center ml-lg-auto">

@@ -16,4 +16,54 @@
     -o-transition: padding 0.2s linear;
     transition: padding 0.2s linear;
     background-color: #ffffff !important;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.068), 0 2px 10px 0 rgba(0, 0, 0, 0.041)
+}
+
+.nav-tabs--header::-webkit-scrollbar {
+    height: 0.2rem;
+}
+
+.nav-tabs--header {
+    padding-bottom: 1rem;
+}
+
+.nav-tabs--header::-webkit-scrollbar-thumb {
+    background-color: darkgrey;
+    /* outline: 1px solid slategrey; */
+    border-radius: 12px;
+    margin-top: 32px;
+
+}
+
+.nav-tabs--header {
+    overflow-x: auto;
+    margin-bottom: 20px;
+    .custom-nav-tabs {
+        flex-wrap: nowrap;
+        .nav-item .nav-link {
+            padding-top: 10px;
+            padding-bottom: 10px;
+            margin-right: 12px;
+        }
+
+        .nav-item {
+            .active {
+                background: #ffffff;
+                font-weight: bold;
+                position: relative;
+                border: none;
+            }
+
+            .active::after {
+                background: #131415;
+                left: 0;
+                width: 100%;
+                bottom: 0;
+                content: "";
+                height: 1.8px;
+                position: absolute;
+                transition: none;
+            }
+        }
+    }
 }

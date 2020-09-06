@@ -95,16 +95,15 @@ class Event extends Model
     /**
      * @return int
      */
-    public function totalBalance() {
-        return $this->AllBalance()->where('confirmed', true)->sum('amount');
+    public function invitationSent() {
+        return $this->consumeds()->where('confirmed', true)->count();
     }
 
     /**
      * @return int
      */
-    public function invitationSent() {
-        return $this->AllBalance()->where('confirmed', true)->count();
-
+    public function totalBalance() {
+        return $this->AllBalance()->where('confirmed', true)->sum('amount');
     }
 
     /**

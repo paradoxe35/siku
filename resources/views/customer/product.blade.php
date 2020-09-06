@@ -6,7 +6,7 @@
     <h1 class="display-4">{{ $event['name'] }}</h1>
     <div class="row mb-0">
         <div class="col-xl-3 col-md-6">
-            <div class="card shadow-none border border-darken-1 shadow-sm">
+            <div class="card shadow-sm">
                 <div class="card-body">
                     <div class="row">
                         <div class="col">
@@ -32,7 +32,7 @@
             </div>
         </div>
         <div class="col-xl-3 col-md-6">
-            <div class="card shadow-none border border-darken-1 shadow-sm">
+            <div class="card shadow-sm">
                 <div class="card-body">
                     <div class="row">
                         <div class="col">
@@ -58,7 +58,7 @@
             </div>
         </div>
         <div class="col-xl-3 col-md-6">
-            <div class="card shadow-none border border-darken-1 shadow-sm">
+            <div class="card shadow-sm">
                 <div class="card-body">
                     <div class="row">
                         <div class="col">
@@ -84,7 +84,7 @@
             </div>
         </div>
         <div class="col-xl-3 col-md-6">
-            <div class="card shadow-none border border-darken-1 shadow-sm">
+            <div class="card shadow-sm">
                 <div class="card-body">
                     <div class="row">
                         <div class="col">

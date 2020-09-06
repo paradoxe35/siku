@@ -74,6 +74,14 @@ class ProductPrice
     }
 
     /**
+     * @return \Illuminate\Contracts\Cache\Repository
+     */
+    public function cache()
+    {
+        return Cache::store('redis');
+    }
+
+    /**
      * @param integer $amount
      * @return integer|null
      */
@@ -84,8 +92,8 @@ class ProductPrice
         if ($get) return $get;
 
         // return cache result
-        $cache = Cache::get('PriceUSD');
-        
+        $cache = $this->cache()->get('PriceUSD');
+
         if ($cache) {
             PriceUSD::set($cache);
             return $cache;
@@ -99,7 +107,7 @@ class ProductPrice
             $rates = (object) $response->json()['rates'];
             PriceUSD::set($rates->USD);
             // cache result
-            Cache::put('PriceUSD', $rates->USD, (600 * 3));
+            $this->cache()->put('PriceUSD', $rates->USD, (600 * 3));
 
             return $rates->USD;
         } catch (\Throwable $th) {
