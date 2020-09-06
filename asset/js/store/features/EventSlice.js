@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit'
 const INITIALSTATE = null
 
 const workingEvent = createSlice({
-    name: 'userAuth',
+    name: 'workingEvent',
     initialState: INITIALSTATE,
     reducers: {
         setCurrentEvent: (state, action) => (state = action.payload),

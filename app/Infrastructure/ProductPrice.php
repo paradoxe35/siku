@@ -5,6 +5,7 @@ namespace App\Infrastructure;
 use App\Infrastructure\BasePrice;
 use App\Repositories\BasePriceRepository;
 use App\Services\Nexmo\NexmoPricing;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 
 class PriceUSD
@@ -78,7 +79,17 @@ class ProductPrice
      */
     public function USDbase()
     {
-        if (PriceUSD::get()) PriceUSD::get();
+        // get change from runtime
+        $get = PriceUSD::get();
+        if ($get) return $get;
+
+        // return cache result
+        $cache = Cache::get('PriceUSD');
+        
+        if ($cache) {
+            PriceUSD::set($cache);
+            return $cache;
+        }
 
         try {
             $response = Http::timeout(5)->get(self::$exchangeApi);
@@ -87,7 +98,9 @@ class ProductPrice
 
             $rates = (object) $response->json()['rates'];
             PriceUSD::set($rates->USD);
-            
+            // cache result
+            Cache::put('PriceUSD', $rates->USD, (600 * 3));
+
             return $rates->USD;
         } catch (\Throwable $th) {
             //throw $th;

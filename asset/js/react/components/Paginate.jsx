@@ -6,18 +6,18 @@ export const Paginate = ({ pagination = {}, onChange }) => {
     const content = <nav aria-label="Page navigation" className="mt-3">
         <ul className="pagination justify-content-start">
             <li className={`page-item ${prev ? 'active' : ''}`}>
-                <a className={`page-link ${!prev ? 'disabled' : ''}`}
+                <button disabled={!prev} className={`page-link ${!prev ? 'disabled' : ''}`}
                     rel="prev" onClick={() => onChange(prev)} aria-label="« Précédent">
                     <i className="ni ni-bold-left"></i>
                     <span className="sr-only">Previous</span>
-                </a>
+                </button>
             </li>
             <li className={`page-item ${next ? 'active' : ''}`}>
-                <a className={`page-link ${!next ? 'disabled' : ''}`}
+                <button disabled={!next} className={`page-link ${!next ? 'disabled' : ''}`}
                     rel="next" onClick={() => onChange(next)} aria-label="Suivant »">
                     <i className="ni ni-bold-right"></i>
                     <span className="sr-only">Next</span>
-                </a>
+                </button>
             </li>
         </ul>
     </nav>

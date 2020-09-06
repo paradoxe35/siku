@@ -48,7 +48,6 @@ Route::prefix('customer')
                 Route::name('event')
                     ->group(function () {
                         Route::get('/product', 'ProductController@index')->name('.product');
-                        Route::get('/models', 'ModelsController@index')->name('.models');
                         Route::get('/utilization', 'UtilizationController@index')->name('.utilization');
                         Route::get('/report', 'ReportController@index')->name('.report');
                         Route::get('/settings', 'SettingsController@index')->name('.settings');

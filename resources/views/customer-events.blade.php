@@ -4,10 +4,7 @@
 
 @section('content')
 @include('layouts.auth-navbar', ['top' => true])
-<script data-controller="Admin-Customer">
-    window.auth = @json(Auth::user())
-</script>
-<div class="main-content customer-settings">
+<div class="main-content customer-settings" data-controller="Admin-Customer">
     <div class="container-fluid">
         <div class="blur--section mt-6">
             <div class="icons-container blur-item text-center d-none d-md-block">
@@ -34,4 +31,5 @@
         </div>
     </div>
 </div>
+@include('template.customer-common-datas')
 @endsection

@@ -98,7 +98,7 @@ class RegisterController extends Controller
     protected function registered($request, $user)
     {
         return response()->json([
-            'redirect_url' => $this->redirectTo
+            'redirect_url' => $this->redirectTo . "?customer_name=" . $user->name
         ]);
     }
 }

@@ -27,11 +27,6 @@ class SidebarComposer
                     'route' => 'customer.event.product'
                 ],
                 [
-                    'name' => __('Modèles'),
-                    'icon' => 'collection',
-                    'route' => 'customer.event.models'
-                ],
-                [
                     'name' => __('Utilisation'),
                     'icon' => 'spaceship',
                     'route' => 'customer.event.utilization'

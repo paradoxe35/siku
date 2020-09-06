@@ -37,29 +37,30 @@ class PaymentsController extends Controller
         $event = $user->events()->findByHashidOrFail($eventId);
 
         //validate payment code
-        $customPay = $event->customPayment()->firstWhere('payment_code', $code);
+        $customPay = $user->customPayment()->firstWhere('payment_code', $code);
 
         // raising if not match code
         if (!$customPay || !$customPay->active) abort(404, trans('Votre code paiement est invalid'));
 
         // check it doen't already exist
-        $inBalance = $event->AllBalance()->firstWhere('custom_payment_id', $customPay->id);
+        $inBalance = $user->AllBalance()->firstWhere('custom_payment_id', $customPay->id);
 
         // exist code in customer event balance
         if ($inBalance) abort(400, trans("Le code utilisé n'est plus actif"));
 
-        // store in balance
-        $event->AllBalance()->create([
+        // store in balance in user related
+        $user->AllBalance()->create([
+            'event_id' => $event->id,
             'token' => $code,
             'confirmed' => true,
             'amount' => $customPay->amount,
             'custom_payment_id' => $customPay->id
         ]);
 
-        $event->refresh();
+        $user->refresh();
 
         return [
-            'new_balance' => $event->balance(),
+            'new_balance' => $user->balance(),
             'confirmed' => true
         ];
     }

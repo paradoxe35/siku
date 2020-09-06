@@ -15,9 +15,8 @@ export default class extends Controller {
      */
     async request(lang) {
         INprogress.set()
-        const h = await ApiRequest('post', this.data.get('locale'), { locale: lang })
-        INprogress.unset()
-        return h
+        ApiRequest('post', this.data.get('locale'), { locale: lang })
+            .finally(() => INprogress.unset())
     }
     /**
      * @param { Event } param0 

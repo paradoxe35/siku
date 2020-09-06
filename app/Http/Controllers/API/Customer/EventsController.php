@@ -32,9 +32,15 @@ class EventsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return new EventCollection($this->event->newQuery()->paginate(3));
+        $user = $request->user();
+
+        $events = $user->events()->latest()->paginate(3);
+
+        $events->withPath(route('api.customer.events.index', [], false));
+
+        return new EventCollection($events);
     }
 
     /**
@@ -48,7 +54,7 @@ class EventsController extends Controller
         $user = $request->user();
         $request->validate([
             'event_name' => [
-                'required', 'string', 'min:2', 'max:255',
+                'required', 'string', 'min:2', 'max:50',
                 Rule::unique('events', 'name')->where(function ($query) use ($user) {
                     return $query->where('user_id', $user->id);
                 })

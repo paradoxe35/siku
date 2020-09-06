@@ -12,11 +12,14 @@
                 <ul class="navbar-nav">
                     <li class="nav-item">
                         <div class="nav-link">
-                            <div class="balance-customer-sidebar mb-3">
+                            <div class="balance-customer-sidebar mb-3" id="balance-customer-sidebar" 
+                                    data-turbolinks-permanent data-controller="Customer--App--Balance">
                                 <span class="optimizeLegibility">
-                                    <span class="text-sm">{{ __('Balance') }}</span><br>
-                                    <b class="font-weight-bold balance">$ 0.77</b>
-                                    <a href="javascript:;">
+                                    <span class="text-sm">{{ __('Balance') }} <small>({{ __('Crédit') }})</small></span><br>
+                                    <b class="font-weight-bold balance">
+                                        $ <span data-target="Customer--App--Balance.showBalance"></span>
+                                    </b>
+                                    <a href="{{ route('customer.event.payments') }}">
                                         <span class="upgrade-action">
                                             {{ __('Ajouter') }}
                                         </span>

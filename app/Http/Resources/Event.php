@@ -21,7 +21,6 @@ class Event extends JsonResource
             'name' => $this->name,
             'route' => $this->route(),
             'price' => $p['prices'],
-            'balance' => $this->balance(),
             'active' => $this->active,
             'hash' => $this->hashid(),
             'guests' => $p['guests'],

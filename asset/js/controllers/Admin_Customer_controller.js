@@ -1,12 +1,14 @@
 import { Controller } from "stimulus"
-import { ReduxDispatch } from '@js/store'
+import store, { ReduxDispatch } from '@js/store'
 import { connectUser } from "@js/store/features/UserSlice"
 import { setCurrentEvent } from "../store/features/EventSlice"
+import { setBalance } from "../store/features/BalanceSlice"
 
 export default class extends Controller {
     initStore = {
         initUserInStore: this.initUserInStore,
-        initCurrentEventInStore: this.initCurrentEventInStore
+        initCurrentEventInStore: this.initCurrentEventInStore,
+        initCustomerBalanceInStore: this.initCustomerBalanceInStore
     }
 
     async initialize() {
@@ -17,13 +19,30 @@ export default class extends Controller {
     }
 
     initUserInStore() {
-        if (window.auth)
-            ReduxDispatch(connectUser(window.auth));
+        const o = store.getState().userAuth
+        const user = window.auth
+        if (this.mustDispache(user, o))
+            ReduxDispatch(connectUser(user));
     }
 
     initCurrentEventInStore() {
-        if (window.customerEvent)
-            ReduxDispatch(setCurrentEvent(window.customerEvent));
+        const o = store.getState().workingEvent
+        const event = window.customerEvent
+        if (this.mustDispache(event, o))
+            ReduxDispatch(setCurrentEvent(event));
+    }
+
+    initCustomerBalanceInStore() {
+        const { balance } = store.getState().customerBalance
+        const data = window.customerBalance
+        if (data && balance !== data.balance || !data)
+            ReduxDispatch(setBalance(data));
+    }
+
+    mustDispache(p, s) {
+        if ((p && s && p.id !== s.id) || (p && !s))
+            return true;
+        return false;
     }
 
 }

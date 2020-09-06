@@ -26,7 +26,7 @@ class SpinningDots extends Component
     public function render()
     {
         return <<<'blade'
-            <spinning-dots style="width:40px;stroke-width:6px;color: {{ $color }};" />
+            <spinning-dots style="width:35px;stroke-width:5px;color: {{ $color }};" />
         blade;
     }
 }

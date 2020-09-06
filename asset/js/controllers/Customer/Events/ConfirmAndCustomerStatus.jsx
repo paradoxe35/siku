@@ -1,16 +1,20 @@
 //@ts-check
 import React, { useContext, useState, useEffect, useRef } from 'react'
-import { connect } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { useTranslation } from "react-i18next";
 import { EventContext } from '@js/react/contexts';
 import { DefaultButton } from '@/js/react/components/Buttons';
 import { TurbolinksApp } from '@/js/modules/turbolinks';
 import { ApiRequest } from '@/js/api/api';
 import { URLS } from '@/js/react/vars';
+import { setBalanceAmount } from '@/js/store/features/BalanceSlice';
 
-const EProfil = ({ userAuth }) => {
+const EProfil = ({ }) => {
     const { t } = useTranslation();
     const event = useContext(EventContext)
+    // @ts-ignore
+    const userAuth = useSelector(state => state.userAuth)
+
     return <div className="card">
         <div className="card-body">
             <div className="row justify-content-between align-items-center">
@@ -50,6 +54,8 @@ const ValidateCustomPayment = () => {
     const [loading, setLoading] = useState(false)
     const event = useContext(EventContext)
     const inputField = useRef(null)
+    //redux store dispacher
+    const dispache = useDispatch()
 
     const handleValidation =/** @param { React.FormEvent<HTMLFormElement> } e */  (e) => {
         e.preventDefault()
@@ -59,7 +65,9 @@ const ValidateCustomPayment = () => {
         ApiRequest('post', `${URLS.customPaymentValidate}?event_id=${event.hash}`, form, true)
             .finally(() => (setLoading(false)))
             .then(({ data }) => {
-                data.confirmed && event.updateEvent({ ...event, balance: data.new_balance })
+                // dispache new redux balance 
+                data.confirmed && dispache(setBalanceAmount(data.new_balance))
+                // reset payment field
                 inputField.current && (inputField.current.value = '')
             })
     }
@@ -89,6 +97,9 @@ const EStatus = ({ handleLoading }) => {
         TurbolinksApp.isc.visit(event.route)
     }
     const eventParam = `?event_id=${event.hash}`
+
+    // @ts-ignore
+    const { balance } = useSelector(state => state.customerBalance)
 
     const goToPaymentPage = () => {
         handleLoading(true)
@@ -137,7 +148,7 @@ const EStatus = ({ handleLoading }) => {
                     <small className="">{t("Votre Balance(le montant prêt à l'usage)")}.</small>
                     <div className="mb-1">
                         {t("Balance")} <span className="text-sm font-weight-bold">
-                            ${event.balance || 0}
+                            ${balance || 0}
                         </span>
                     </div>
                 </div>
@@ -159,14 +170,13 @@ const EStatus = ({ handleLoading }) => {
     </div>
 }
 
-export const ConfirmAndCustomerStatusComponent = ({ handleLoading, userAuth }) => {
+const ConfirmAndCustomerStatus = ({ handleLoading }) => {
     return <>
         <div className="card-deck">
             <EStatus handleLoading={handleLoading} />
-            <EProfil userAuth={userAuth} />
+            <EProfil />
         </div>
     </>
 }
 
-const mapStateToProps = (state) => ({ userAuth: state.userAuth })
-export const ConfirmAndCustomerStatus = connect(mapStateToProps)(ConfirmAndCustomerStatusComponent)
+export default ConfirmAndCustomerStatus

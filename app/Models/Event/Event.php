@@ -55,7 +55,7 @@ class Event extends Model
      */
     public function route()
     {
-        return route('customer.event', ['event' => $this->hashid()]);
+        return route('customer.event', ['event' => $this->hashid()], false);
     }
 
     /**
@@ -80,9 +80,31 @@ class Event extends Model
          * @var double $total
          * @var double $consumed
          */
-        $total = $this->AllBalance()->where('confirmed', true)->sum('amount');
-        $consumed = $this->consumeds()->where('confirmed', true)->sum('amount');
+        $total = $this->totalBalance();;
+        $consumed = $this->totalConsumeds();
         return round(($total - $consumed), 3);
+    }
+
+    /**
+     * @return int
+     */
+    public function totalConsumeds() {
+        return $this->consumeds()->where('confirmed', true)->sum('amount');
+    }
+
+    /**
+     * @return int
+     */
+    public function totalBalance() {
+        return $this->AllBalance()->where('confirmed', true)->sum('amount');
+    }
+
+    /**
+     * @return int
+     */
+    public function invitationSent() {
+        return $this->AllBalance()->where('confirmed', true)->count();
+
     }
 
     /**

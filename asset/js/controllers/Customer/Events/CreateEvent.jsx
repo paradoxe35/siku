@@ -6,9 +6,11 @@ import { I_PROFILE_STATUS, URLS, LANG } from '@/js/react/vars';
 import { ApiRequest } from '@js/api/api';
 import { EventContext } from '@js/react/contexts';
 import Datetime from '@/js/react/components/Datetime';
+import { Notifier } from '@/js/functions/notifier';
+import { Localize } from '@/js/functions/localize';
 
 
-const CreateEventComponent = ({ updateComponentIndex, addEvent }) => {
+const CreateEvent = ({ updateComponentIndex, addEvent }) => {
     const { t } = useTranslation();
     const [loading, setloading] = useState(false)
     const { updateEvent } = useContext(EventContext)
@@ -25,7 +27,13 @@ const CreateEventComponent = ({ updateComponentIndex, addEvent }) => {
         ApiRequest('post', URLS.eventStore, form, true)
             .finally(() => (setloading(false)))
             .then(({ data }) => {
-                data.data && newState(data.data)
+                if (data.data) {
+                    Notifier.sussess(Localize({
+                        fr: 'Événement créé avec succès',
+                        en: 'Event created successfully'
+                    }))
+                    newState(data.data)
+                }
             })
     }, [])
     return <>
@@ -43,7 +51,7 @@ const CreateEventComponent = ({ updateComponentIndex, addEvent }) => {
             <div className="row">
                 <div className="col-md-6">
                     <div className="form-group">
-                        <Datetime locale={LANG}
+                        <Datetime locale='fr'
                             dateFormat="YYYY-MM-DD"
                             inputProps={{
                                 placeholder: t("Date d'événement"),
@@ -56,7 +64,7 @@ const CreateEventComponent = ({ updateComponentIndex, addEvent }) => {
                         <div className="input-group input-group-merge">
                             <input
                                 className="form-control form-control-muted" name="event_guest"
-                                placeholder={t("Nombre d'invité")} type="number" required />
+                                placeholder={t("Nombre d'invité présumé")} type="number" required />
                         </div>
                     </div>
                 </div>
@@ -83,4 +91,5 @@ const CreateEventComponent = ({ updateComponentIndex, addEvent }) => {
         </form>
     </>
 }
-export const CreateEvent = CreateEventComponent
+
+export default CreateEvent

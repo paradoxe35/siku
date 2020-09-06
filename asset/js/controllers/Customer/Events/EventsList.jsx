@@ -1,13 +1,15 @@
 //@ts-check
-import React, { useContext } from 'react'
-import { connect } from 'react-redux'
+import React from 'react'
+import { useSelector } from 'react-redux'
 import { Empty } from '@/js/react/components/Empty';
 import { useTranslation } from "react-i18next";
 import { TurbolinksApp } from '@/js/modules/turbolinks';
 
 
-const EventsListComponent = ({ events = [], started, userAuth }) => {
+export const EventsList = ({ events = [], started }) => {
     const { t } = useTranslation();
+    // @ts-ignore
+    const userAuth = useSelector(state => state.userAuth)
     const goToHome = function (event) {
         TurbolinksApp.isc.visit(event.route)
     }
@@ -18,8 +20,8 @@ const EventsListComponent = ({ events = [], started, userAuth }) => {
                     <li className="list-group-item my-2 border border-darken-1 clickable-list" onClick={() => goToHome(e)} key={e.id}>
                         <div className="d-flex justify-content-between align-items-center">
                             {e.name}
-                            <span className={`badge badge-info badge-pill`}>
-                                ${e.balance || 0}
+                            <span className={`badge ${e.active ? 'badge-success' : 'badge-warning'} badge-pill`}>
+                                {e.active ? <i className="ni ni-check-bold"></i> : <i className="ni ni-settings-gear-65"></i>}
                             </span>
                         </div>
                         <small className="text-muted">
@@ -44,5 +46,3 @@ const EventsListComponent = ({ events = [], started, userAuth }) => {
         </>
     )
 }
-const mapStateToProps = (state) => ({ userAuth: state.userAuth })
-export const EventsList = connect(mapStateToProps)(EventsListComponent)

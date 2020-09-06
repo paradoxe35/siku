@@ -53,6 +53,7 @@ class ViewServiceProvider extends ServiceProvider
                 $event = $user->events()->findByHashid($eventId);
                 $ressource = new Event($event);
                 $view->with('event', $ressource->toArray($request));
+                $view->with('customer_event', $event);
             }
         });
     }

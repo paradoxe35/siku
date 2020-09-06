@@ -26,15 +26,19 @@
                     </li>
                     @endif
                 </ul>
-                <ul class="navbar-nav align-items-center  ml-auto ml-md-0 ">
+                <ul class="navbar-nav align-items-center  ml-auto ml-md-0">
+                    <li class="nav-item mr-3">
+                        @include('layouts.change-locale')
+                    </li>
                     <li class="nav-item">
-                        <a class="text-decoration-none text-default" href="javascript:;">
+                        <a class="text-decoration-none text-default"
+                            href="{{ !empty($event) ? route('customer.event.account'): 'javascript:;' }}">
                             <div class="media align-items-center">
-                                <span class="avatar avatar-sm rounded-circle">
+                                <span class="avatar avatar-sm rounded-circle avatar-xs">
                                     <i class="ni ni-circle-08"></i>
                                 </span>
                                 <div class="media-body ml-2 d-none d-md-block">
-                                    <span class="mb-0 text-sm font-weight-bold">{{ Auth::user()->name }}</span>
+                                    <span class="mb-0 text-xs font-weight-bold">{{ Auth::user()->name }}</span>
                                 </div>
                             </div>
                         </a>
@@ -47,7 +51,7 @@
                             <div data-controller="Auth--SigninOrAuth">
                                 <button type="submit" data-action="Auth--SigninOrAuth#action"
                                     data-url="{{ route('logout') }}"
-                                    class="btn btn-link mb-0 p-0 text-sm text-default font-weight-bold">
+                                    class="btn btn-link mb-0 p-0 text-xs text-default font-weight-bold ">
                                     {{ __('Déconnexion') }}
                                 </button>
                             </div>

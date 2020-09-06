@@ -17,9 +17,12 @@ class CheckLocale
     public function handle($request, Closure $next)
     {
         $user = $request->user();
+
         if ($user && $user->locale) {
+
             App::setLocale($user->locale);
         } else {
+
             App::setLocale($request->cookies->get('locale', 'fr'));
         }
         return $next($request);

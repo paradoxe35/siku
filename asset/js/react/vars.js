@@ -17,7 +17,6 @@ export const EVENT_VALUE = {
         sms: 0,
         whatsapp: null
     },
-    balance: 0,
     created_at: null,
     active: null,
     hash: null,

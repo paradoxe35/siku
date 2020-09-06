@@ -2,6 +2,9 @@
 
 namespace App;
 
+use App\Models\Balance\Balance;
+use App\Models\Balance\Consumed;
+use App\Models\CustomPayment;
 use App\Models\Event\Event;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -71,5 +74,59 @@ class User extends Authenticatable implements MustVerifyEmail
     public function getNameAttribute($value)
     {
         return ucwords(Str::lower($value));
+    }
+
+    /**
+     * @return double
+     */
+    public function balance()
+    {
+        /**
+         * @var double $total
+         * @var double $consumed
+         */
+        $total = $this->AllBalance()->where('confirmed', true)->sum('amount');
+        $consumed = $this->consumeds()->where('confirmed', true)->sum('amount');
+        return round(($total - $consumed), 3);
+    }
+
+    /**
+     * @return int
+     */
+    public function totalConsumeds()
+    {
+        return $this->consumeds()->where('confirmed', true)->sum('amount');
+    }
+
+    /**
+     * @return int
+     */
+    public function totalBalance()
+    {
+        return $this->AllBalance()->where('confirmed', true)->sum('amount');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function AllBalance()
+    {
+        return $this->hasMany(Balance::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function consumeds()
+    {
+        return $this->hasMany(Consumed::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function customPayment()
+    {
+        return $this->hasMany(CustomPayment::class);
     }
 }
