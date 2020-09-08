@@ -26,7 +26,7 @@ const RouteTabs = ({ links, routes }) => {
                 <Suspense fallback={<FullLoader parent={parentElemt.current} />}>
                     <Switch>
                         <Route exact path="/">
-                            <Redirect to={routes[0].path} />
+                            <Redirect to={links[0].to} />
                         </Route>
                         {routes.map((route, k) => {
                             return <Route key={k.toString()} path={route.path}>

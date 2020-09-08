@@ -3,7 +3,10 @@ import { Controller } from "stimulus"
 
 export default class extends Controller {
 
-    urls = {}
+    urls = {
+        eventTemplates: this.data.get('eventTemplates'),
+        eventTemplatesStore: this.data.get('eventTemplatesStore'),
+    }
 
     async connect() {
         const { init } = await import('./Product/index.jsx')

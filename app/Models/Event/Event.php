@@ -6,6 +6,7 @@ use App\Infrastructure\ProductPrice;
 use App\Models\Balance\Balance;
 use App\Models\Balance\Consumed;
 use App\Models\CustomPayment;
+use App\Models\Template\Template;
 use App\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
@@ -88,23 +89,35 @@ class Event extends Model
     /**
      * @return int
      */
-    public function totalConsumeds() {
+    public function totalConsumeds()
+    {
         return $this->consumeds()->where('confirmed', true)->sum('amount');
     }
 
     /**
      * @return int
      */
-    public function invitationSent() {
+    public function invitationSent()
+    {
         return $this->consumeds()->where('confirmed', true)->count();
     }
 
     /**
      * @return int
      */
-    public function totalBalance() {
+    public function totalBalance()
+    {
         return $this->AllBalance()->where('confirmed', true)->sum('amount');
     }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function templates()
+    {
+        return $this->hasMany(Template::class);
+    }
+
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

@@ -6,12 +6,13 @@ import { useTranslation, initReactI18next } from "react-i18next";
 import { setURLS, setLang } from '@/js/react/vars';
 import ReduxProvider from '@/js/react/components/ReduxProvider';
 import RouteTabs from '@/js/react/components/RouteTabs';
+import '@lib/sms/sms_counter';
+
 
 const Guests = lazy(() => import('./guests/Guests'))
 const Templates = lazy(() => import('./template/Templates'))
 const Historical = lazy(() => import('./historical/Historical'))
 const Qrcode = lazy(() => import('./qrcode/Qrcode'))
-const Send = lazy(() => import('./send/Send'))
 
 const CustomerProduct = () => {
     const { t } = useTranslation();
@@ -19,24 +20,20 @@ const CustomerProduct = () => {
     return <>
         <RouteTabs links={[
             {
-                to: '/guests',
-                name: t('Invités')
-            },
-            {
                 to: '/templates',
                 name: t('Modèles')
-            },
-            {
-                to: '/historical',
-                name: t('Historique')
             },
             {
                 to: '/qr-code',
                 name: t('Qr Code')
             },
             {
-                to: '/send-inv',
-                name: t('Envoi')
+                to: '/guests',
+                name: t('Invités et envoi')
+            },
+            {
+                to: '/historical',
+                name: t('Historique')
             },
         ]}
             routes={[
@@ -51,10 +48,6 @@ const CustomerProduct = () => {
                 {
                     component: <Historical />,
                     path: '/historical'
-                },
-                {
-                    component: <Send />,
-                    path: '/send-inv'
                 },
                 {
                     component: <Qrcode />,

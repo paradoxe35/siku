@@ -14,13 +14,16 @@ export const HtmlAlert = {
     /**
      * @param { HTMLElement| Element } parent 
      * @param { ObjectConstructor | string } message
+     * @param { boolean } showIcon 
+     * @param { string } icon 
+     * @param { string } type 
      */
-    show(parent, message) {
-        if (!parent) return
-        this.parents.push(parent)
-        parent.innerHTML = `
-            <div class="callout alert alert-dismissible fade show border border-darken-1 border-danger" role="alert">
-                <span class="alert-icon text-danger"><i class="ni ni-fat-remove"></i></span>
+    show(parent, message, showIcon = true, icon = 'fat-remove', type = 'danger') {
+        const content = `
+            <div class="callout alert alert-dismissible fade show border border-darken-1 border-${type}" role="alert">
+                ${showIcon ? `
+                    <span class="alert-icon text-${type}"><i class="ni ni-${icon}"></i></span>
+                `: ''}
                 <div>
                     <span class="alert-text">
                         ${this.message(message)}
@@ -28,6 +31,11 @@ export const HtmlAlert = {
                 </div>
             </div>
         `
+        if (parent) {
+            this.parents.push(parent)
+            parent.innerHTML = content
+        }
+        return content
     },
     message(message) {
         if (message !== null || message !== undefined) {

@@ -19,6 +19,7 @@
     "devDependencies": {
         "@babel/plugin-proposal-class-properties": "^7.10.4",
         "@babel/preset-react": "^7.10.4",
+        "@types/react-redux": "^7.1.9",
         "browser-sync": "^2.26.12",
         "browser-sync-webpack-plugin": "^2.0.1",
         "clean-webpack-plugin": "^3.0.0",
@@ -57,7 +58,7 @@
         "react-i18next": "^11.7.0",
         "react-redux": "^7.2.1",
         "react-router-dom": "^5.2.0",
-        "react-transition-group": "^4.4.1",
+        "redux-thunk": "^2.3.0",
         "slim-select": "^1.26.0",
         "stimulus": "^1.1.1",
         "turbolinks": "^5.2.0"

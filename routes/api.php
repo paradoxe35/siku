@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\Customer\SetValueForCustomerEventUrls;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -28,6 +29,8 @@ Route::namespace('API')
                     ->name('customer.')
                     ->group(function () {
                         Route::apiResource('events', 'EventsController');
+                        Route::apiResource('events.templates', "EventTemplatesController");
+
                         Route::namespace('Payments')
                             ->name('payments.')
                             ->group(function () {

@@ -28,9 +28,6 @@ export default class extends Controller {
             top: 0
         })
         setI18nLanguage(value)
-        window.scrollTo({
-            top: 0
-        })
         TurbolinksApp.isc.visit(
             window.location.pathname + window.location.search,
             { action: 'replace' }

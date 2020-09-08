@@ -1,9 +1,20 @@
 @extends('customer')
 
 @section('customer-content')
-<div data-controller="Customer--Product">
-    <p><b><span>{{ __('Bienvenue à nouveau') }}, {{ Auth::user()->name }}</span></b></p>
-    <h1 class="display-4">{{ $event['name'] }}</h1>
+<div data-controller="Customer--Product"
+    data-Customer--Product-event-templates="{{ route('api.customer.events.templates.index') }}"
+    data-Customer--Product-event-templates-store="{{ route('api.customer.events.templates.store') }}">
+    <div class="row">
+        <div class="col">
+            <p><b><span>{{ __('Bienvenue à nouveau') }}, {{ Auth::user()->name }}</span></b></p>
+            <h1 class="display-4">{{ $event['name'] }}</h1>
+        </div>
+        <div class="col-auto text-xs">
+            <i class="ni ni-calendar-grid-58 text-primary"></i>
+            {{ __('Date d\'événement') }} <br>
+            <span class="ml-3">({{ $event['event_date'] }})</span>
+        </div>
+    </div>
     <div class="row mb-0">
         <div class="col-xl-3 col-md-6">
             <div class="card shadow-sm">
