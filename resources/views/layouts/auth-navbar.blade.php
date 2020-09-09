@@ -48,7 +48,7 @@
                             <div class="media-body ml-2 d-none d-md-block">
                                 <i class="ni ni-fat-remove"></i>
                             </div>
-                            <div data-controller="Auth--SigninOrAuth">
+                            <div data-controller="Auth--SigninOrAuth" data-Auth--SigninOrAuth-type="logout">
                                 <button type="submit" data-action="Auth--SigninOrAuth#action"
                                     data-url="{{ route('logout') }}"
                                     class="btn btn-link mb-0 p-0 text-xs text-default font-weight-bold ">

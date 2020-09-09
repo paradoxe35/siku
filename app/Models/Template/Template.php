@@ -5,6 +5,7 @@ namespace App\Models\Template;
 use App\Models\Event\Event;
 use App\User;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class Template extends Model
 {
@@ -19,6 +20,19 @@ class Template extends Model
      * @var array
      */
     protected $fillable = ['user_id', 'name', 'sms_total', 'per_sms', 'text_sms', 'text_whatsapp'];
+
+    
+    /**
+     * Get the user's first name.
+     *
+     * @param  string  $value
+     * @return string
+     */
+    public function getNameAttribute($value)
+    {
+        return ucwords(Str::lower($value));
+    }
+
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */

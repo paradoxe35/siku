@@ -14,6 +14,14 @@ class Template extends JsonResource
      */
     public function toArray($request)
     {
-        return parent::toArray($request);
+        return [
+            'id' => $this->id,
+            'name' => $this->name,
+            'sms' => $this->sms_total,
+            'text' => [
+                'sms' =>  $this->text_sms,
+                'whatsapp' => $this->text_whatsapp
+            ]
+        ];
     }
 }

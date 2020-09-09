@@ -1,14 +1,17 @@
 //@ts-check
-import React, { useEffect, useCallback, useState, useRef } from 'react'
+import React, { useEffect, useCallback, useState, useRef, useMemo, forwardRef } from 'react'
 import { useTranslation } from "react-i18next";
 import Help from './Help';
 import { Localize } from '@/js/functions/localize';
 import { DefaultButton } from '@/js/react/components/Buttons';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
-import { setTemplateTextAreaValue, setTemplateNameValue, fetchEventTemplates } from '@/js/store/features/product/TemplatesSlice';
+import { setTemplateTextAreaValue, setTemplateNameValue, fetchEventTemplates, eventTemplateAdded, eventTemplateRemoved } from '@/js/store/features/product/TemplatesSlice';
 import { URLS, ASYNC } from '@/js/react/vars';
 import { Empty } from '@/js/react/components/Empty';
+import { Notifier } from '@/js/functions/notifier';
+import { ApiRequest } from '@/js/api/api';
+import { createPortal } from 'react-dom';
 
 
 const defaultTemplate = {
@@ -21,26 +24,59 @@ const TEMPLATE_SECTION = {
     whatsapp: 'whatsapp'
 }
 
+const NEW_TEMPLATE_FORM = {
+    description: 'description',
+    name: 'name',
+    sms_total: 'sms_total',
+    per_sms: 'per_sms',
+    text_sms: 'text_sms',
+    text_whatsapp: 'text_whatsapp'
+}
+
+
+const ModalConfirm = forwardRef(
+    /**
+     * @param {{  chrildren?: Array, message?: any, onConfirm?: any, loading?: boolean  }} props
+     */
+    (props, ref) => {
+        const { t } = useTranslation()
+
+        return createPortal((
+            <div className="modal fade" ref={ref} tabIndex={-1} role="dialog" aria-hidden="true">
+                <div className="modal-dialog modal-dialog-centered modal-sm" role="document">
+                    <div className="modal-content">
+                        <div className="modal-body">{props.message || t('Êtes-vous sûr ?')}</div>
+                        <div className="modal-footer">
+                            <button type="button" className="btn btn-secondary btn-sm" data-dismiss="modal">{t('Non')}</button>
+                            <DefaultButton label={t('Ouais')} loading={props.loading} onClick={props.onConfirm} />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        ), document.body)
+    })
+
 /**
  * @param { { src: string, alt: string } } param0 
  */
 const ImgIcon = ({ src, alt }) => <img src={src} className="checkbox-icon" alt={alt} width="20" height="20" />
 
+
 /**
- * @param {{  onChange: any, icon?: boolean }} param0 
+ * @param {{  onChange: any, icon?: boolean, name?: string }} param0 
  */
-const SectionView = ({ onChange, icon = true }) => {
+const SectionView = ({ onChange, icon = true, name = "message_view" }) => {
     const { t } = useTranslation();
     return <div className="mb-3">
         <div className="custom-control custom-radio custom-control-inline">
-            <input type="radio" id="sms" defaultChecked onChange={onChange} name="message_view" value={TEMPLATE_SECTION.sms} className="custom-control-input" />
-            <label className="custom-control-label" htmlFor="sms">
+            <input type="radio" id={name + '-sms'} defaultChecked onChange={onChange} name={name} value={TEMPLATE_SECTION.sms} className="custom-control-input" />
+            <label className="custom-control-label" htmlFor={name + '-sms'}>
                 {icon && <ImgIcon src="/img/svg/sms.svg" alt="SMS" />} {t('SMS')}
             </label>
         </div>
         <div className="custom-control custom-radio custom-control-inline">
-            <input type="radio" id="whatsapp" onChange={onChange} name="message_view" value={TEMPLATE_SECTION.whatsapp} className="custom-control-input" />
-            <label className="custom-control-label" htmlFor="whatsapp">
+            <input type="radio" id={name + '-whatsapp'} onChange={onChange} name={name} value={TEMPLATE_SECTION.whatsapp} className="custom-control-input" />
+            <label className="custom-control-label" htmlFor={name + '-whatsapp'}>
                 {icon && <ImgIcon src="/img/svg/whatsapp.svg" alt="WhatsApp" />}  {t('WhatsApp')}
             </label>
         </div>
@@ -79,6 +115,7 @@ const caseSectionValue = (section, textValue) => {
 }
 
 
+
 const TextareaFieldAndDetail = () => {
     const { t } = useTranslation();
     /**
@@ -93,11 +130,15 @@ const TextareaFieldAndDetail = () => {
     const handleSection = useCallback(({ target: { value } }) => {
         setSection(value)
     }, [setSection])
-    const [textValue, setTextValue] = useState({
-        sms: '',
-        whatsapp: ''
-    })
-    const datasRefTextValue = useRef(textValue)
+
+    const defaultV = useMemo(() => {
+        return Localize(defaultTemplate)
+    }, [defaultTemplate, Localize])
+
+    const [textValue, setTextValue] = useState(!templateTextarea.sms ? {
+        sms: defaultV,
+        whatsapp: defaultV
+    } : templateTextarea)
 
     /**
      * @param { { sms: string, whatsapp: string }} sct 
@@ -131,24 +172,17 @@ const TextareaFieldAndDetail = () => {
     }
 
     const handleKeyUp = () => {
-        datasRefTextValue.current = textValue
+        dispche(setTemplateTextAreaValue(textValue))
     }
 
     useEffect(() => {
-        const v = templateTextarea
-        if (v.sms || v.whatsapp) {
-            setTextValue({ sms: v.sms, whatsapp: v.whatsapp })
-        } else {
-            const defaultValues = Localize(defaultTemplate)
-            setTextValue({ sms: defaultValues, whatsapp: defaultValues })
-        }
+        handleKeyUp()
 
         const time = setTimeout(() => {
             // @ts-ignore
             $('#message').countSms('#sms-counter')
         }, 500)
         return () => {
-            dispche(setTemplateTextAreaValue(datasRefTextValue.current))
             clearTimeout(time)
         }
     }, [])
@@ -165,12 +199,15 @@ const TextareaFieldAndDetail = () => {
                     value={caseSectionValue(section, textValue)}
                     placeholder={t("Entrez votre modèle texte ici") + '...'}
                     is="textarea-autogrow"
-                    name="description" className="form-control text-default"
+                    name={NEW_TEMPLATE_FORM.description}
+                    className="form-control text-default"
                     rows={8}></textarea>
             </div>
         </div>
     </>
 }
+
+
 
 const TemplateNameField = () => {
     const { t } = useTranslation();
@@ -192,103 +229,216 @@ const TemplateNameField = () => {
         <div className="input-group input-group-merge">
             <input
                 ref={nameField}
-                className="form-control" name="event_guest"
+                className="form-control"
+                name={NEW_TEMPLATE_FORM.name}
                 placeholder={t("Mom du modèle")} type="text" required />
         </div>
     </div>
 }
 
+
+
 /**
  * @param {{ 
- *      item: { id: number, name: string, sms: number, text: { sms: string, whatsapp: string }, show?: boolean }  
+ *      item: { id: number, name: string, sms: number, text: { sms: string, whatsapp: string }, show?: boolean },
+ *      onDelete?: (id: number) => void 
  *   }} param0 
  */
-const ListDescriptionText = ({ item }) => {
+const ListDescriptionText = ({ item, onDelete }) => {
     const { t } = useTranslation()
     const [section, setSection] = useState(TEMPLATE_SECTION.sms)
-    const handleSection = useCallback(({ target: { value } }) => {
+    const handleSection = ({ target: { value } }) => {
         setSection(value)
-    }, [setSection])
+    }
 
     return <>
         {item.show ? (
-            <div className="row">
+            <div className="row mt-3" onClick={e => e.stopPropagation()}>
                 <div className="col">
-                    <SectionView onChange={handleSection} icon={false} />
+                    <SectionView onChange={handleSection} icon={false} name={'template_view-' + item.id} />
                 </div>
                 <div className="col-auto">
-                    <button type="button" className="btn btn-secondary btn-sm text-primary">{t('Modifier')}</button>
-                    <button type="button" className="btn btn-secondary btn-sm text-danger">{t('Supprimer')}</button>
+                    <button type="button" onClick={(e) => {
+                        e.stopPropagation();
+                        onDelete(item.id);
+                    }} className="btn btn-secondary btn-sm text-danger">{t('Supprimer')}</button>
                 </div>
             </div>
         ) : ''}
         <p className="text-sm mb-0">
-            {item.show ? caseSectionValue(section, item.text) : caseSectionValue(section, item.text).slice(0, 101)}
+            {item.show ? caseSectionValue(section, item.text) : caseSectionValue(section, item.text).slice(0, 101) + '...'}
         </p>
     </>
 }
+
 
 const List = ({
     Ul: ({ children }) => {
         return <div className="list-group list-group-flush">{children}</div>
     },
     /**
-     * @param {{  data: Array<{ id: number, name: string, sms: number, text: { sms: string, whatsapp: string } }> }} param0
+     * @param {{  
+     *  data: Array<{ id: number, name: string, sms: number, text: { sms: string, whatsapp: string }, show?: boolean }>,
+     *  onDelete?: (id: number) => void 
+     * }} param0
      */
-    Li: ({ data = [] }) => {
-        const [datas, setDatas] = useState(data)
+    Li: ({ data, onDelete }) => {
+        const [datas, setDatas] = useState([])
         const { t } = useTranslation()
+
         useEffect(() => {
-            setDatas(d => d.map(g => ({ ...g, show: false })))
-        }, [])
+            setDatas(data.map(g => ({ ...g, show: false })))
+        }, [data])
         /**
-         * @param {number} id 
+         * @param {number} id
          */
-        const showItem = (id) => setDatas(d => d.map(g => ({ ...g, show: id === g.id })))
+        const showItem = (id, e) => {
+            // e.target.scrollIntoView()
+            setDatas(d => d.map(g => ({ ...g, show: (id === g.id && !g.show) })))
+        }
         return <>
             {datas.map(v => {
-                return <a href="javascript:;" key={v.id} onClick={() => showItem(v.id)} className="list-group-item list-group-item-action flex-column align-items-start py-4 px-4">
-                    <div className="d-flex w-100 justify-content-between">
+                return <a key={v.id} onClick={(e) => showItem(v.id, e)} className="list-group-item clickable-a list-group-item-action flex-column align-items-start py-4 px-4">
+                    <div className="d-flex w-100 justify-content-between" >
                         <h4 className="mb-1">{v.name}</h4>
                         <small>{t('SMS')} {v.sms}</small>
                     </div>
-                    <ListDescriptionText item={v} />
+                    <ListDescriptionText item={v} onDelete={onDelete} />
                 </a>
             })}
         </>
     }
 })
 
+
 const TemplatesList = () => {
     const { t } = useTranslation()
+    const modalConfirm = useRef(null)
+    const [deletionLoading, setDeletionLoading] = useState(false)
+    const [deletionId, setDeletionId] = useState(null)
     /**
      * @type { { ids: Array, entities: Object, loading: string, error: Object} }
      */
     // @ts-ignore
     const { ids, entities, loading } = useSelector(s => s.eventTemplates)
-    const dispache = useDispatch()
-
+    const dispach = useDispatch()
     useEffect(() => {
         // @ts-ignore
-        dispache(fetchEventTemplates(URLS.eventTemplates))
+        dispach(fetchEventTemplates(URLS.eventTemplates))
     }, [])
+
+    // delete event template
+    const handleDelete = useCallback(async (id) => {
+        setDeletionId(id)
+        if (modalConfirm.current)
+            $(modalConfirm.current).modal('show');
+    }, [modalConfirm.current, setDeletionId])
+
+    const deleteItem = useCallback(() => {
+        if (!deletionId) return
+        setDeletionLoading(true)
+        ApiRequest('delete', URLS.eventTemplates + '/' + deletionId, {}, true)
+            .finally(() => {
+                $(modalConfirm.current).modal('hide')
+                setDeletionLoading(false)
+                setDeletionId(null)
+            })
+            .then(() => dispach(eventTemplateRemoved(deletionId)))
+    }, [deletionId]);
+    // delete event template
+
     const datas = ids.map(k => entities[k])
-    const content = <List.Ul>
-        <List.Li data={datas} />
-    </List.Ul>
 
     return <>
+        {loading == ASYNC.idle && ids.length ? (
+            <>
+                <List.Ul>
+                    <List.Li data={datas} onDelete={handleDelete} />
+                </List.Ul>
+                <ModalConfirm loading={deletionLoading} onConfirm={deleteItem} ref={modalConfirm} />
+            </>
+        ) : ''}
         {/* @ts-ignore */}
-        {loading === ASYNC.pending ? <skeleton-box height="50" lines="3" /> : ''}
-        {loading === ASYNC.idle && !ids.length ? (<div className="mt-5">
-            <Empty message={t('Aucun modèle enregistré!')} />
-        </div>) : ''}
-        {loading === ASYNC.idle && ids.length ? content : ''}
+        {loading == ASYNC.pending ? <skeleton-box height="50" lines="3" /> : ''}
+        {loading == ASYNC.idle && !ids.length ? (
+            <div className="mt-5">
+                <Empty message={t('Aucun modèle enregistré!')} />
+            </div>
+        ) : ''}
+
     </>
 }
 
-const Templates = () => {
+/**
+ * @returns { boolean }
+ */
+const validateTemplate = (templateTextarea, requiredKeys) => {
+    const sms = requiredKeys.filter(k => templateTextarea.sms.indexOf(k) < 0)
+    const whatsapp = requiredKeys.filter(k => templateTextarea.whatsapp.indexOf(k) < 0)
+    if (sms.length) {
+        Notifier.error(sms.join(', ') + Localize({
+            fr: ' est / sont requis dans vos modèles sms text',
+            en: 'is / are required in your text sms templates'
+        }))
+    }
+    if (whatsapp.length) {
+        Notifier.error(whatsapp.join(', ') + Localize({
+            fr: ' est / sont requis dans vos modèles whatsapp text',
+            en: 'is / are required in your text whatsapp templates'
+        }))
+    }
+    return (!sms.length && !whatsapp.length)
+}
+
+const NewTemplate = () => {
+    const requiredKeys = ['{name}', '{code}']
     const { t } = useTranslation();
+    const [loading, setLoading] = useState(false)
+    const dispatch = useDispatch()
+    const formElement = useRef(null)
+
+    /**
+    * @type { { sms: string, whatsapp: string }} 
+    */
+    // @ts-ignore
+    const templateTextarea = useSelector(state => state.productTemplateEdit)
+
+    /**
+     * @param { React.FormEvent<HTMLFormElement> } e 
+     */
+    const handleSubmittion = async (e) => {
+        e.preventDefault()
+        if (!validateTemplate(templateTextarea, requiredKeys)) return
+        setLoading(true)
+        /**
+         * @type {{encoding: string, length: number, per_message: number, remaining: number, messages: number}}
+         */
+        // @ts-ignore
+        const smsMeta = SmsCounter.count(templateTextarea.sms)
+        // @ts-ignore
+        const form = new FormData(formElement.current)
+        form.append(NEW_TEMPLATE_FORM.per_sms, smsMeta.per_message.toString())
+        form.append(NEW_TEMPLATE_FORM.sms_total, smsMeta.messages.toString())
+        form.append(NEW_TEMPLATE_FORM.text_sms, templateTextarea.sms)
+        form.append(NEW_TEMPLATE_FORM.text_whatsapp, templateTextarea.whatsapp)
+
+        ApiRequest('post', URLS.eventTemplatesStore, form, true)
+            .then(({ data: { data } }) => dispatch(eventTemplateAdded(data)))
+            .finally(() => {
+                formElement.current.querySelector(`[name=${NEW_TEMPLATE_FORM.name}]`)
+                    .value = ''
+                setLoading(false)
+            })
+    }
+
+    return <form ref={formElement} method="post" onSubmit={handleSubmittion} autoComplete="off">
+        <TemplateNameField />
+        <TextareaFieldAndDetail />
+        <DefaultButton loading={loading} type="submit" label={t('Enregister')} />
+    </form>
+}
+
+const Templates = () => {
     return <>
         <Help />
         <div className="row">
@@ -301,11 +451,7 @@ const Templates = () => {
         </div>
         <div className="row justify-content-start">
             <div className="col-lg-6">
-                <form action="" method="post" autoComplete="off">
-                    <TemplateNameField />
-                    <TextareaFieldAndDetail />
-                    <DefaultButton label={t('Enregister')} />
-                </form>
+                <NewTemplate />
             </div>
             <div className="col-lg-6">
                 <TemplatesList />

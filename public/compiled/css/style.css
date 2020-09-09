@@ -28251,6 +28251,10 @@ div.loading-ntf-abs .uil-ring-css-abs {
   font-weight: 600;
 }
 
+.cdx-notifies {
+  z-index: 9999 !important;
+}
+
 #nprogress .bar {
   height: 3px !important;
   background: var(--primary) !important;
@@ -28259,6 +28263,10 @@ div.loading-ntf-abs .uil-ring-css-abs {
 
 #nprogress .spinner {
   display: none !important;
+}
+
+.clickable-a {
+  cursor: pointer;
 }
 
 .clickable-list:hover {

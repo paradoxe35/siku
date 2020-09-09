@@ -3,6 +3,8 @@ import { Controller } from "stimulus"
 import { TurbolinksApp } from "../modules/turbolinks"
 import { setI18nLanguage, ApiRequest } from "../api/api"
 import { INprogress } from "../functions/NProgress"
+import { ReduxDispatch } from "../store"
+import { DESTROY_SESSION } from "../store/action/types"
 
 export default class extends Controller {
 
@@ -27,6 +29,7 @@ export default class extends Controller {
         window.scrollTo({
             top: 0
         })
+        ReduxDispatch({ type: DESTROY_SESSION })
         setI18nLanguage(value)
         TurbolinksApp.isc.visit(
             window.location.pathname + window.location.search,

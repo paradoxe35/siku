@@ -40,6 +40,10 @@ input {
 @import "./elements/callout";
 @import "./elements/sidebar";
 
+.cdx-notifies {
+    z-index: 9999 !important;
+}
+
 #nprogress {
     .bar {
         height: 3px !important;
@@ -49,6 +53,10 @@ input {
     .spinner {
         display: none !important;
     }
+}
+
+.clickable-a {
+    cursor: pointer;
 }
 
 .clickable-list:hover {
