@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ $app_name }}</title>
-    <link rel="dns-prefetch" href="//fonts.gstatic.com">
+    <meta name="site-name" content="{{ $app_name }}" />
     <link href="{{ mix('css/style.css', 'compiled') }}" rel="stylesheet">
     <link href="{{ mix('css/module.css', 'compiled') }}" rel="stylesheet">
     @yield('head-meta')

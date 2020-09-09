@@ -28,6 +28,9 @@ Route::namespace('API')
                     ->prefix('customer')
                     ->name('customer.')
                     ->group(function () {
+                        Route::put('events/{event}/set-qr-code-logo', 'EventsController@setQcodeLogo')
+                            ->name('events.set-qr-code-logo');
+
                         Route::apiResource('events', 'EventsController');
                         Route::apiResource('events.templates', "EventTemplatesController")
                             ->except(['update', 'show']);

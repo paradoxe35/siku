@@ -28,7 +28,7 @@ class Event extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'event_date', 'hashid', 'short_id', 'desciption', 'is_public', 'active'
+        'name', 'event_date', 'hashid', 'short_id', 'desciption', 'is_public', 'active', 'qrcode_logo'
     ];
 
     /**
@@ -41,7 +41,7 @@ class Event extends Model
     ];
 
     /**
-     * Get the user's first name.
+     * Get the event name
      *
      * @param  string  $value
      * @return string
@@ -49,6 +49,17 @@ class Event extends Model
     public function getNameAttribute($value)
     {
         return ucwords(Str::lower($value));
+    }
+
+    /**
+     * Get the  event qrcode_logo
+     *
+     * @param  string  $value
+     * @return string
+     */
+    public function getQrcodeLogoAttribute($value)
+    {
+        return $value ? 'storage/' . $value : null;
     }
 
     /**

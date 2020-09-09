@@ -44,6 +44,7 @@
             padding-top: 10px;
             padding-bottom: 10px;
             margin-right: 12px;
+            white-space: nowrap;
         }
 
         .nav-item {
@@ -52,6 +53,7 @@
                 font-weight: bold;
                 position: relative;
                 border: none;
+                color: var(--primary);
             }
 
             .active::after {

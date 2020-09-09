@@ -1,5 +1,5 @@
 //@ts-check
-import React, { Suspense, useRef, lazy } from 'react'
+import React, { Suspense, useRef, lazy, useEffect } from 'react'
 import { HashRouter as Router, Switch, Route, NavLink, Redirect } from "react-router-dom";
 import { FullLoader } from '@/js/react/components/FullLoader';
 
@@ -11,6 +11,10 @@ const NotFound = lazy(() => import('@/js/react/components/NotFound'))
  */
 const RouteTabs = ({ links, routes }) => {
     const parentElemt = useRef(null)
+    useEffect(() => {
+        const activeNav = document.querySelector('.nav-tabs--header .nav-item .active')
+        activeNav && activeNav.scrollIntoView({ inline: "center" })
+    }, [])
     return <Router >
         <div className="nav-tabs--header">
             <ul className="nav nav-tabs custom-nav-tabs">

@@ -3,7 +3,9 @@
 @section('customer-content')
 <div data-controller="Customer--Product"
     data-Customer--Product-event-templates="{{ route('api.customer.events.templates.index') }}"
-    data-Customer--Product-event-templates-store="{{ route('api.customer.events.templates.store') }}">
+    data-Customer--Product-event-templates-store="{{ route('api.customer.events.templates.store') }}"
+    data-Customer--Product-qrcode-image="{{ asset($customer_event->qrcode_logo ?: 'img/mail.png')}}"
+    data-Customer--Product-set-qrlogo="{{ route('api.customer.events.set-qr-code-logo') }}">
     <div class="row">
         <div class="col">
             <p><b><span>{{ __('Bienvenue à nouveau') }}, {{ Auth::user()->name }}</span></b></p>

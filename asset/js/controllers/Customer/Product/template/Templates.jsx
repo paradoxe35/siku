@@ -12,6 +12,7 @@ import { Empty } from '@/js/react/components/Empty';
 import { Notifier } from '@/js/functions/notifier';
 import { ApiRequest } from '@/js/api/api';
 import { createPortal } from 'react-dom';
+import RowDivider from '@/js/react/components/RowDivider';
 
 
 const defaultTemplate = {
@@ -441,19 +442,13 @@ const NewTemplate = () => {
 const Templates = () => {
     return <>
         <Help />
-        <div className="row">
-            <div className="col-lg-6">
-                <hr className="my-2" />
-            </div>
-            <div className="col-lg-6">
-                <hr className="my-2" />
-            </div>
-        </div>
         <div className="row justify-content-start">
             <div className="col-lg-6">
+                <RowDivider />
                 <NewTemplate />
             </div>
             <div className="col-lg-6">
+                <RowDivider />
                 <TemplatesList />
             </div>
         </div>

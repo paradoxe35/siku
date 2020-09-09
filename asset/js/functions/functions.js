@@ -1,17 +1,20 @@
 //@ts-check
 /**
  * 
- * @param { Function } callback 
- * @param { number } delay 
+ * @param { Function } func 
+ * @param { number } wait 
  */
-export function debounce(callback, delay = 1000) {
-    let timer;
+export function debounce(func, wait = 1000, immediate) {
+    var timeout;
     return function () {
-        const args = arguments;
-        const context = this;
-        clearTimeout(timer);
-        timer = setTimeout(function () {
-            callback.apply(context, args);
-        }, delay)
-    }
+        var context = this, args = arguments;
+        var later = function () {
+            timeout = null;
+            if (!immediate) func.apply(context, args);
+        };
+        var callNow = immediate && !timeout;
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+        if (callNow) func.apply(context, args);
+    };
 }

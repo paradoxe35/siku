@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API\Customer;
 
+use App\Files\Images\ImageCompression;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Event as ResourcesEvent;
 use App\Http\Resources\EventCollection;
@@ -9,6 +10,7 @@ use App\Models\DefaultBalance;
 use App\Models\Event\Event;
 use App\Repositories\EventRepository;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 
@@ -117,6 +119,52 @@ class EventsController extends Controller
         }
 
         return null;
+    }
+
+    /**
+     * @return mixed
+     */
+    private function storage()
+    {
+        return Storage::disk('public');
+    }
+
+    /**
+     * set qr logo.
+     *
+     * @param  \App\Models\Event\Event  $event
+     * @return \Illuminate\Http\Response
+     */
+    public function setQcodeLogo(Request $request, Event $event, ImageCompression $img)
+    {
+        $request->validate([
+            'data_url' => ['required', 'string']
+        ]);
+
+        $hash = $event->hashid();
+
+        // formate data url to image format
+        $image_array_1 = explode(";", $request->data_url);
+
+        $image_array_2 = explode(",", $image_array_1[1]);
+
+        $image = base64_decode($image_array_2[1]);
+
+        $path = "events/logos/$hash/$hash.png";
+
+        $this->storage()->put($path, $image);
+
+        $filesource  = storage_path('app/public/' . $path);
+
+        // image compression
+        $img->compress_image($filesource, null, 50, null);
+
+        $event->qrcode_logo = $path;
+
+        $event->save();
+        $event->refresh();
+
+        return ['logo_path' => '/' . $event->qrcode_logo];
     }
 
     /**

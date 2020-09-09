@@ -28119,6 +28119,7 @@ div.loading-ntf-abs .uil-ring-css-abs {
   padding-top: 10px;
   padding-bottom: 10px;
   margin-right: 12px;
+  white-space: nowrap;
 }
 
 .nav-tabs--header .custom-nav-tabs .nav-item .active {
@@ -28126,6 +28127,7 @@ div.loading-ntf-abs .uil-ring-css-abs {
   font-weight: bold;
   position: relative;
   border: none;
+  color: var(--primary);
 }
 
 .nav-tabs--header .custom-nav-tabs .nav-item .active::after {
@@ -28249,6 +28251,23 @@ div.loading-ntf-abs .uil-ring-css-abs {
 .custom-sidebar .navbar-vertical.navbar-expand-xs .navbar-nav > .nav-item > .nav-link.active {
   color: #131415;
   font-weight: 600;
+}
+
+.btn-open-file {
+  position: relative;
+}
+
+.btn-open-file input[type=file] {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+  opacity: 0;
 }
 
 .cdx-notifies {

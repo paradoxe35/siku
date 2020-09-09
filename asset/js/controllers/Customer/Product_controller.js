@@ -6,6 +6,8 @@ export default class extends Controller {
     urls = {
         eventTemplates: this.data.get('eventTemplates'),
         eventTemplatesStore: this.data.get('eventTemplatesStore'),
+        qrcodeImage: this.data.get('qrcodeImage'),
+        setQrlogo: this.data.get('setQrlogo')
     }
 
     async connect() {

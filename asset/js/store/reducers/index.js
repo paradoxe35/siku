@@ -4,13 +4,15 @@ import workingEventReducer from '@js/store/features/EventSlice'
 import customerBalanceReducer from '@js/store/features/BalanceSlice'
 import { productTemplateReducer, eventTemplatesReducer } from '../features/product/TemplatesSlice'
 import { DESTROY_SESSION } from '../action/types'
+import { eventQrcodeLogoUrlReducer } from '../features/product/QrcodeLogoSlice'
 
 const appReducer = combineReducers({
     userAuth: userAuthReducer,
     workingEvent: workingEventReducer,
     customerBalance: customerBalanceReducer,
     productTemplateEdit: productTemplateReducer,
-    eventTemplates: eventTemplatesReducer
+    eventTemplates: eventTemplatesReducer,
+    eventQrcodeLogoUrl: eventQrcodeLogoUrlReducer
 })
 
 const rootReducer = (state, action) => {
