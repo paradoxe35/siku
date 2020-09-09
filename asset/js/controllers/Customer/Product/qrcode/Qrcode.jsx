@@ -85,12 +85,21 @@ const Qrcode = () => {
     const [src, setSrc] = useState('')
     const [loading, setLoading] = useState(false)
     const dispatch = useDispatch()
+
+    const cleaner = useRef(null)
+
     const siteName = useMemo(() =>
         document.querySelector("meta[name=site-name]")
             .getAttribute('content'),
         [])
 
+    let updateImageUrl = (value) => {
+        if (cleaner.current) return
+        setSrc(value)
+    }
+
     useEffect(() => {
+        cleaner.current = null
         /**
          * @type { HTMLCanvasElement }
          */
@@ -109,6 +118,9 @@ const Qrcode = () => {
             }
         });
         qrcode.toCanvas()
+        return () => {
+            cleaner.current = true
+        }
     }, [src])
 
     const saveQrImage = () => {
@@ -131,18 +143,18 @@ const Qrcode = () => {
         <div className="row justify-content-start">
             <div className="col-lg-6">
                 <RowDivider />
-                <div className="row">
-                    <div className="col text-center">
-                        <b>{t('Resultat')}</b>
+                <div className="text-center">
+                    <div className="text-xs text-muted mt-3 mb-2">
+                        {t('Les images de QR code auront la forme ci-dessus lors de l\'envoi de vos invitations')}.
                     </div>
                 </div>
-                <canvas ref={canvas} />
+                <canvas ref={canvas} style={{ overflow: 'hidden' }} />
             </div>
             <div className="col-lg-6">
                 <RowDivider />
                 <CropperImageView onSaveComponent={(
                     <DefaultButton loading={loading} onClick={saveQrImage} label={t('Enregistrer')} />
-                )} onDataImage={(v) => setSrc(v)} />
+                )} onDataImage={updateImageUrl} />
             </div>
         </div>
     </>

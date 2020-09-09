@@ -162,9 +162,10 @@ class EventsController extends Controller
         $event->qrcode_logo = $path;
 
         $event->save();
+        
         $event->refresh();
 
-        return ['logo_path' => '/' . $event->qrcode_logo];
+        return ['logo_path' => ('/' . $event->qrcode_logo . '?' . Str::random())];
     }
 
     /**

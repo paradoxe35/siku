@@ -1,5 +1,5 @@
 //@ts-check
-import React, { useEffect, useCallback, useState, useRef, useMemo, forwardRef } from 'react'
+import React, { useEffect, useCallback, useState, useRef, useMemo } from 'react'
 import { useTranslation } from "react-i18next";
 import Help from './Help';
 import { Localize } from '@/js/functions/localize';
@@ -11,8 +11,8 @@ import { URLS, ASYNC } from '@/js/react/vars';
 import { Empty } from '@/js/react/components/Empty';
 import { Notifier } from '@/js/functions/notifier';
 import { ApiRequest } from '@/js/api/api';
-import { createPortal } from 'react-dom';
 import RowDivider from '@/js/react/components/RowDivider';
+import ModalConfirm from '@/js/react/components/ModalConfirm';
 
 
 const defaultTemplate = {
@@ -35,27 +35,6 @@ const NEW_TEMPLATE_FORM = {
 }
 
 
-const ModalConfirm = forwardRef(
-    /**
-     * @param {{  chrildren?: Array, message?: any, onConfirm?: any, loading?: boolean  }} props
-     */
-    (props, ref) => {
-        const { t } = useTranslation()
-
-        return createPortal((
-            <div className="modal fade" ref={ref} tabIndex={-1} role="dialog" aria-hidden="true">
-                <div className="modal-dialog modal-dialog-centered modal-sm" role="document">
-                    <div className="modal-content">
-                        <div className="modal-body">{props.message || t('Êtes-vous sûr ?')}</div>
-                        <div className="modal-footer">
-                            <button type="button" className="btn btn-secondary btn-sm" data-dismiss="modal">{t('Non')}</button>
-                            <DefaultButton label={t('Ouais')} loading={props.loading} onClick={props.onConfirm} />
-                        </div>
-                    </div>
-                </div>
-            </div>
-        ), document.body)
-    })
 
 /**
  * @param { { src: string, alt: string } } param0 
@@ -114,7 +93,6 @@ const caseSectionValue = (section, textValue) => {
             break;
     }
 }
-
 
 
 const TextareaFieldAndDetail = () => {
@@ -236,7 +214,6 @@ const TemplateNameField = () => {
         </div>
     </div>
 }
-
 
 
 /**

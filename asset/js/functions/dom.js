@@ -20,7 +20,7 @@ export const HtmlAlert = {
      */
     show(parent, message, showIcon = true, icon = 'fat-remove', type = 'danger') {
         const content = `
-            <div class="callout alert alert-dismissible fade show border border-darken-1 border-${type}" role="alert">
+            <div class="callout alert alert-dismissible fade show border flex-column flex-md-row p-2 p-md-4 border-darken-1 border-${type}" role="alert">
                 ${showIcon ? `
                     <span class="alert-icon text-${type}"><i class="ni ni-${icon}"></i></span>
                 `: ''}

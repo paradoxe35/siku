@@ -2,7 +2,7 @@ import SlimSelect from 'slim-select'
 
 /**
  * @param { HTMLElement } element 
- * @param { Object } option
+ * @param { import('slim-select').Constructor } option
  */
 export const slim = (element, option = {}) => {
     return new SlimSelect({
