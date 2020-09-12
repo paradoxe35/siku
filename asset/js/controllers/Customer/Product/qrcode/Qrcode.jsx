@@ -1,6 +1,6 @@
 //@ts-check
 
-import React, { Fragment, useEffect, useRef, useState, useMemo } from 'react'
+import React, { Fragment, useEffect, useRef, useState, useMemo, useCallback } from 'react'
 import { useTranslation } from "react-i18next";
 import QrCodeWithLogo from "qrcode-with-logos";
 import Cropper from 'react-cropper';
@@ -93,10 +93,10 @@ const Qrcode = () => {
             .getAttribute('content'),
         [])
 
-    let updateImageUrl = (value) => {
+    let updateImageUrl = useCallback((value) => {
         if (cleaner.current) return
         setSrc(value)
-    }
+    }, [setSrc])
 
     useEffect(() => {
         cleaner.current = null

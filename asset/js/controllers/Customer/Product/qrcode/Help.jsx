@@ -13,6 +13,7 @@ const Help = () => {
         - ${t("L'image QR Code contiendra le code d'invité encodé et le contenu du code peut être décodé rapidement après avoir été lu par un lecteur de code-barres, un téléphone mobile, un smartphone, ou encore une webcam")}. <br>
         - ${t("Nous fournissons une application mobile en connexe pour le décodage et la validation de codes ou image QR Code de vos invités, et qui servira à authentifier leurs invitations")}. <br>
         - ${t("Si vous n'êtes pas intéressé, sachez que c'est facultatif")}. <br>
+        - ${t("Après avoir effectué vos modifications, n'oubliez pas de cliquer sur le bouton Enregistrer")}. <br>
     `
     return <>
         <ShowHelp>

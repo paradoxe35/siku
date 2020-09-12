@@ -1,12 +1,12 @@
 //@ts-check
 import React, { Fragment, lazy } from 'react'
 import { render, unmountComponentAtNode } from 'react-dom'
-import i18n from "i18next";
-import { useTranslation, initReactI18next } from "react-i18next";
+import { useTranslation } from "react-i18next";
 import { setURLS, setLang } from '@/js/react/vars';
 import ReduxProvider from '@/js/react/components/ReduxProvider';
 import RouteTabs from '@/js/react/components/RouteTabs';
 import '@lib/sms/sms_counter';
+import { i18nReactInit } from '@/js/react/i18n';
 
 
 const Guests = lazy(() => import('./guests/Guests'))
@@ -64,19 +64,7 @@ const CustomerProduct = () => {
  * @param { Object } urls 
  */
 export const init = (element, locale, urls = {}) => {
-    i18n
-        .use(initReactI18next)
-        .init({
-            resources: {
-                en: {
-                    translation: {}
-                }
-            },
-            lng: locale,
-            interpolation: {
-                escapeValue: false
-            }
-        });
+    i18nReactInit(locale)
     setURLS(urls)
     setLang(locale)
     render((

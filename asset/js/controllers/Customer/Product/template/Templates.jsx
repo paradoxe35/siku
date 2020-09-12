@@ -13,6 +13,7 @@ import { Notifier } from '@/js/functions/notifier';
 import { ApiRequest } from '@/js/api/api';
 import RowDivider from '@/js/react/components/RowDivider';
 import ModalConfirm from '@/js/react/components/ModalConfirm';
+import { caseSection, caseSectionValue, KeysRequiredInText, SectionView, TEMPLATE_SECTION, TextAreatEdit, useSectionText } from './Sections';
 
 
 const defaultTemplate = {
@@ -20,10 +21,6 @@ const defaultTemplate = {
     fr: (`Cher frère / sœur {name}, je veux vous exprimer mon souhait de vous voir le jour de mon mariage spécial, qui sera au date du 2020-10-01 14:08 à la salle Les Victorieux, et c'est pourquoi je vous envoie ce message. J'ai hâte de vous voir le jour où je me marierai car la cérémonie sera un peu moins complète sans vous. Je t'aime!\nVotre code d'invitation est: {code}\n{url} utiliser ce lien, si vous voulez votre code en image.`).trim()
 }
 
-const TEMPLATE_SECTION = {
-    sms: 'sms',
-    whatsapp: 'whatsapp'
-}
 
 const NEW_TEMPLATE_FORM = {
     description: 'description',
@@ -35,68 +32,7 @@ const NEW_TEMPLATE_FORM = {
 }
 
 
-
-/**
- * @param { { src: string, alt: string } } param0 
- */
-const ImgIcon = ({ src, alt }) => <img src={src} className="checkbox-icon" alt={alt} width="20" height="20" />
-
-
-/**
- * @param {{  onChange: any, icon?: boolean, name?: string }} param0 
- */
-const SectionView = ({ onChange, icon = true, name = "message_view" }) => {
-    const { t } = useTranslation();
-    return <div className="mb-3">
-        <div className="custom-control custom-radio custom-control-inline">
-            <input type="radio" id={name + '-sms'} defaultChecked onChange={onChange} name={name} value={TEMPLATE_SECTION.sms} className="custom-control-input" />
-            <label className="custom-control-label" htmlFor={name + '-sms'}>
-                {icon && <ImgIcon src="/img/svg/sms.svg" alt="SMS" />} {t('SMS')}
-            </label>
-        </div>
-        <div className="custom-control custom-radio custom-control-inline">
-            <input type="radio" id={name + '-whatsapp'} onChange={onChange} name={name} value={TEMPLATE_SECTION.whatsapp} className="custom-control-input" />
-            <label className="custom-control-label" htmlFor={name + '-whatsapp'}>
-                {icon && <ImgIcon src="/img/svg/whatsapp.svg" alt="WhatsApp" />}  {t('WhatsApp')}
-            </label>
-        </div>
-    </div>
-}
-
-
-/**
- * @param {{  section: string  }} param0 
- */
-const SmsDetail = ({ section }) => {
-    const { t } = useTranslation();
-    return <ul id="sms-counter" className={section != TEMPLATE_SECTION.sms ? 'd-none' : ''}>
-        <li>{t('sms')}: <span className="messages"></span></li>
-        <li>{t('Par sms')}: <span className="per_message"></span></li>
-        <li>{t('Restant')}: <span className="remaining"></span></li>
-    </ul>
-}
-
-/**
- * @param { string } section 
- * @param { { sms: string, whatsapp: string }} textValue 
- */
-const caseSectionValue = (section, textValue) => {
-    switch (section) {
-        case TEMPLATE_SECTION.sms:
-            return textValue.sms
-            break;
-        case TEMPLATE_SECTION.whatsapp:
-            return textValue.whatsapp
-            break;
-        default:
-            return ''
-            break;
-    }
-}
-
-
 const TextareaFieldAndDetail = () => {
-    const { t } = useTranslation();
     /**
     * @type { { sms: string, whatsapp: string }} 
     */
@@ -104,11 +40,7 @@ const TextareaFieldAndDetail = () => {
     const templateTextarea = useSelector(state => state.productTemplateEdit)
     const dispche = useDispatch()
 
-    const [section, setSection] = useState(TEMPLATE_SECTION.sms)
-
-    const handleSection = useCallback(({ target: { value } }) => {
-        setSection(value)
-    }, [setSection])
+    const { section, handleSection } = useSectionText()
 
     const defaultV = useMemo(() => {
         return Localize(defaultTemplate)
@@ -120,70 +52,27 @@ const TextareaFieldAndDetail = () => {
     } : templateTextarea)
 
     /**
-     * @param { { sms: string, whatsapp: string }} sct 
-     * @param { string } value 
-     */
-    const caseSection = (sct, value) => {
-        let y = {
-            sms: '',
-            whatsapp: ''
-        }
-        switch (section) {
-            case TEMPLATE_SECTION.sms:
-                y = { sms: value, whatsapp: sct.whatsapp }
-                break;
-            case TEMPLATE_SECTION.whatsapp:
-                y = { sms: sct.sms, whatsapp: value }
-                break;
-            default:
-                break;
-        }
-        return { ...y }
-    }
-
-    /**
      * @param {React.ChangeEvent<HTMLTextAreaElement>} param0 
      */
-    const handleTextChange = ({ target: { value } }) => {
-        setTextValue(k => {
-            return caseSection(k, value)
-        })
-    }
+    const handleTextChange = useCallback(({ target: { value } }) => {
+        setTextValue(k => caseSection(section, k, value))
+    }, [setTextValue, caseSection, section])
 
-    const handleKeyUp = () => {
+    const handleKeyUp = useCallback(() => {
         dispche(setTemplateTextAreaValue(textValue))
-    }
+    }, [textValue, dispche, setTemplateTextAreaValue])
 
     useEffect(() => {
         handleKeyUp()
-
-        const time = setTimeout(() => {
-            // @ts-ignore
-            $('#message').countSms('#sms-counter')
-        }, 500)
-        return () => {
-            clearTimeout(time)
-        }
     }, [])
 
-    return <>
-        <SectionView onChange={handleSection} />
-        <div className="form-group">
-            <SmsDetail section={section} />
-            <div className="input-group input-group-merge">
-                <textarea required
-                    id="message"
-                    onChange={handleTextChange}
-                    onKeyUp={handleKeyUp}
-                    value={caseSectionValue(section, textValue)}
-                    placeholder={t("Entrez votre modèle texte ici") + '...'}
-                    is="textarea-autogrow"
-                    name={NEW_TEMPLATE_FORM.description}
-                    className="form-control text-default"
-                    rows={8}></textarea>
-            </div>
-        </div>
-    </>
+    return <TextAreatEdit
+        section={section}
+        handleTextChange={handleTextChange}
+        handleKeyUp={handleKeyUp}
+        textValue={textValue}
+        name={NEW_TEMPLATE_FORM.description}
+        handleSection={handleSection} />
 }
 
 
@@ -215,6 +104,53 @@ const TemplateNameField = () => {
     </div>
 }
 
+const NewTemplate = () => {
+    const requiredKeys = KeysRequiredInText
+    const { t } = useTranslation();
+    const [loading, setLoading] = useState(false)
+    const dispatch = useDispatch()
+    const formElement = useRef(null)
+
+    /**
+    * @type { { sms: string, whatsapp: string }} 
+    */
+    // @ts-ignore
+    const templateTextarea = useSelector(state => state.productTemplateEdit)
+
+    /**
+     * @param { React.FormEvent<HTMLFormElement> } e 
+     */
+    const handleSubmittion = async (e) => {
+        e.preventDefault()
+        if (!validateTemplate(templateTextarea, requiredKeys)) return
+        setLoading(true)
+        /**
+         * @type {{encoding: string, length: number, per_message: number, remaining: number, messages: number}}
+         */
+        // @ts-ignore
+        const smsMeta = SmsCounter.count(templateTextarea.sms)
+        // @ts-ignore
+        const form = new FormData(formElement.current)
+        form.append(NEW_TEMPLATE_FORM.per_sms, smsMeta.per_message.toString())
+        form.append(NEW_TEMPLATE_FORM.sms_total, smsMeta.messages.toString())
+        form.append(NEW_TEMPLATE_FORM.text_sms, templateTextarea.sms)
+        form.append(NEW_TEMPLATE_FORM.text_whatsapp, templateTextarea.whatsapp)
+
+        ApiRequest('post', URLS.eventTemplatesStore, form, true)
+            .then(({ data: { data } }) => dispatch(eventTemplateAdded(data)))
+            .finally(() => {
+                formElement.current.querySelector(`[name=${NEW_TEMPLATE_FORM.name}]`)
+                    .value = ''
+                setLoading(false)
+            })
+    }
+
+    return <form ref={formElement} method="post" onSubmit={handleSubmittion} autoComplete="off">
+        <TemplateNameField />
+        <TextareaFieldAndDetail />
+        <DefaultButton loading={loading} type="submit" label={t('Enregister')} />
+    </form>
+}
 
 /**
  * @param {{ 
@@ -224,10 +160,7 @@ const TemplateNameField = () => {
  */
 const ListDescriptionText = ({ item, onDelete }) => {
     const { t } = useTranslation()
-    const [section, setSection] = useState(TEMPLATE_SECTION.sms)
-    const handleSection = ({ target: { value } }) => {
-        setSection(value)
-    }
+    const { handleSection, section } = useSectionText()
 
     return <>
         {item.show ? (
@@ -368,53 +301,7 @@ const validateTemplate = (templateTextarea, requiredKeys) => {
     return (!sms.length && !whatsapp.length)
 }
 
-const NewTemplate = () => {
-    const requiredKeys = ['{name}', '{code}']
-    const { t } = useTranslation();
-    const [loading, setLoading] = useState(false)
-    const dispatch = useDispatch()
-    const formElement = useRef(null)
 
-    /**
-    * @type { { sms: string, whatsapp: string }} 
-    */
-    // @ts-ignore
-    const templateTextarea = useSelector(state => state.productTemplateEdit)
-
-    /**
-     * @param { React.FormEvent<HTMLFormElement> } e 
-     */
-    const handleSubmittion = async (e) => {
-        e.preventDefault()
-        if (!validateTemplate(templateTextarea, requiredKeys)) return
-        setLoading(true)
-        /**
-         * @type {{encoding: string, length: number, per_message: number, remaining: number, messages: number}}
-         */
-        // @ts-ignore
-        const smsMeta = SmsCounter.count(templateTextarea.sms)
-        // @ts-ignore
-        const form = new FormData(formElement.current)
-        form.append(NEW_TEMPLATE_FORM.per_sms, smsMeta.per_message.toString())
-        form.append(NEW_TEMPLATE_FORM.sms_total, smsMeta.messages.toString())
-        form.append(NEW_TEMPLATE_FORM.text_sms, templateTextarea.sms)
-        form.append(NEW_TEMPLATE_FORM.text_whatsapp, templateTextarea.whatsapp)
-
-        ApiRequest('post', URLS.eventTemplatesStore, form, true)
-            .then(({ data: { data } }) => dispatch(eventTemplateAdded(data)))
-            .finally(() => {
-                formElement.current.querySelector(`[name=${NEW_TEMPLATE_FORM.name}]`)
-                    .value = ''
-                setLoading(false)
-            })
-    }
-
-    return <form ref={formElement} method="post" onSubmit={handleSubmittion} autoComplete="off">
-        <TemplateNameField />
-        <TextareaFieldAndDetail />
-        <DefaultButton loading={loading} type="submit" label={t('Enregister')} />
-    </form>
-}
 
 const Templates = () => {
     return <>

@@ -16,10 +16,17 @@ class CreateGuestsTable extends Migration
         Schema::create('guests', function (Blueprint $table) {
             $table->id();
             $table->foreignId('event_id')->constrained()->onDelete('cascade');
+            $table->foreignId('user_id')->nullable()->constrained()->onDelete('set null');
             $table->string('name');
             $table->string('phone');
             $table->string('code');
             $table->integer('autorized');
+            $table->integer('sms_total')->nullable();
+            $table->longText('text_sms')->nullable();
+            $table->longText('text_whatsapp')->nullable();
+            $table->boolean('can_send_sms')->default(true);
+            $table->boolean('can_send_whatsapp')->default(true);
+            $table->boolean('can_include_qrcode')->default(true);
             $table->timestamps();
         });
     }

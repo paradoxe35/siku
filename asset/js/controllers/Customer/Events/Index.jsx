@@ -1,8 +1,7 @@
 //@ts-check
 import React, { useCallback, useRef, useState, useMemo, useEffect, lazy, Suspense, Fragment } from 'react'
 import { render, unmountComponentAtNode } from 'react-dom'
-import i18n from "i18next";
-import { useTranslation, initReactI18next } from "react-i18next";
+import { useTranslation } from "react-i18next";
 import { Paginate } from '@/js/react/components/Paginate';
 import { FullLoader } from '@/js/react/components/FullLoader';
 import { I_EVENTS, EVENT_VALUE, I_NEW_EVENT, setURLS, URLS, setLang } from '@/js/react/vars';
@@ -10,6 +9,7 @@ import { EventContext } from '@js/react/contexts';
 import { EventsList } from './EventsList';
 import ReduxProvider from '@/js/react/components/ReduxProvider';
 import { ApiRequest } from '@/js/api/api';
+import { i18nReactInit } from '@/js/react/i18n';
 
 const CreateEvent = lazy(() => import('./CreateEvent'))
 const ConfirmAndCustomerStatus = lazy(() => import('./ConfirmAndCustomerStatus'))
@@ -109,19 +109,7 @@ const Index = () => {
  * @param { Object } urls 
  */
 export const init = (element, locale, urls = {}) => {
-    i18n
-        .use(initReactI18next)
-        .init({
-            resources: {
-                en: {
-                    translation: {}
-                }
-            },
-            lng: locale,
-            interpolation: {
-                escapeValue: false
-            }
-        });
+    i18nReactInit(locale)
     setURLS(urls)
     setLang(locale)
     render((
