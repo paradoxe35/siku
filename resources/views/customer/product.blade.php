@@ -6,7 +6,9 @@
     data-Customer--Product-event-templates-store="{{ route('api.customer.events.templates.store') }}"
     data-Customer--Product-qrcode-image="{{ asset($customer_event->qrcode_logo ?: 'img/mail.png')}}"
     data-Customer--Product-set-qrlogo="{{ route('api.customer.events.set-qr-code-logo') }}"
-    data-Customer--Product-country-pricing="{{ route('api.country-pricing') }}">
+    data-Customer--Product-country-pricing="{{ route('api.country-pricing') }}"
+    data-Customer--Product-event-guests="{{ route('api.customer.events.guests.index') }}"
+    data-Customer--Product-event-guests-store="{{ route('api.customer.events.guests.store') }}">
     <div class="row">
         <div class="col">
             <p><b><span>{{ __('Bienvenue à nouveau') }}, {{ Auth::user()->name }}</span></b></p>

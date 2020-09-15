@@ -10,6 +10,7 @@ import { EventsList } from './EventsList';
 import ReduxProvider from '@/js/react/components/ReduxProvider';
 import { ApiRequest } from '@/js/api/api';
 import { i18nReactInit } from '@/js/react/i18n';
+import { useFullLoading } from '@/js/react/hooks';
 
 const CreateEvent = lazy(() => import('./CreateEvent'))
 const ConfirmAndCustomerStatus = lazy(() => import('./ConfirmAndCustomerStatus'))
@@ -88,8 +89,8 @@ const CustomerEvents = ({ setLoading = null, handleLoading }) => {
 }
 
 const Index = () => {
-    const parentElemt = useRef(null)
-    const [loading, setLoading] = useState(false)
+    const { parentElemt, fullLoading: loading, setFullLoading: setLoading } = useFullLoading()
+
     const handleLoading = useCallback((status) => setLoading(status), [])
 
     return <div className="card" ref={parentElemt}>

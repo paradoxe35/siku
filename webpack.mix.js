@@ -16,6 +16,7 @@ require('laravel-mix-clean');
  */
 
 mix.react('asset/js/app.js', 'js/application.js')
+    .js("asset/modules/js/qrcode.js", "js/qrcode-app.js")
     .extract(['jquery', 'bootstrap', 'stimulus', '@grafikart/spinning-dots-element', 'dropify', 'codex-notifier'])
     .mergeManifest()
 

@@ -13,12 +13,12 @@ import { Notifier } from '@/js/functions/notifier';
 import { ApiRequest } from '@/js/api/api';
 import RowDivider from '@/js/react/components/RowDivider';
 import ModalConfirm from '@/js/react/components/ModalConfirm';
-import { caseSection, caseSectionValue, KeysRequiredInText, SectionView, TEMPLATE_SECTION, TextAreatEdit, useSectionText } from './Sections';
+import { caseSection, KeysRequiredInText, List, ListDescriptionText, SectionView, smsCount, TEMPLATE_SECTION, TextAreatEdit, useItemDeletion, useSectionText, validateTemplate } from './Sections';
 
 
 const defaultTemplate = {
-    en: (`Dear brother/sister {name}, I want to express my wish to see you on my special wedding day, which will be on 2020-10-01 14:08 at the Les Victorieux room, and this is why I am sending you this message. I look forward to seeing you on the day I tie the knot because the ceremony will be a little less complete without you. I love you!\nYour invitation code is: {code}\n {url} use this link, if you want your code in picture.`).trim(),
-    fr: (`Cher frère / sœur {name}, je veux vous exprimer mon souhait de vous voir le jour de mon mariage spécial, qui sera au date du 2020-10-01 14:08 à la salle Les Victorieux, et c'est pourquoi je vous envoie ce message. J'ai hâte de vous voir le jour où je me marierai car la cérémonie sera un peu moins complète sans vous. Je t'aime!\nVotre code d'invitation est: {code}\n{url} utiliser ce lien, si vous voulez votre code en image.`).trim()
+    en: (`Dear brother/sister {name}, I want to express my wish to see you on my special wedding day, which will be on 2020-10-01 14:08 at the Les Victorieux room, and this is why I am sending you this message. I look forward to seeing you on the day I tie the knot because the ceremony will be a little less complete without you. I love you!\nYour invitation code is: {code}.\n {url} use this link, if you want your code in picture.`).trim(),
+    fr: (`Cher frère / sœur {name}, je veux vous exprimer mon souhait de vous voir le jour de mon mariage spécial, qui sera au date du 2020-10-01 14:08 à la salle Les Victorieux, et c'est pourquoi je vous envoie ce message. J'ai hâte de vous voir le jour où je me marierai car la cérémonie sera un peu moins complète sans vous. Je t'aime!\nVotre code d'invitation est: {code}.\n {url} utiliser ce lien, si vous voulez votre code en image.`).trim()
 }
 
 
@@ -124,11 +124,8 @@ const NewTemplate = () => {
         e.preventDefault()
         if (!validateTemplate(templateTextarea, requiredKeys)) return
         setLoading(true)
-        /**
-         * @type {{encoding: string, length: number, per_message: number, remaining: number, messages: number}}
-         */
-        // @ts-ignore
-        const smsMeta = SmsCounter.count(templateTextarea.sms)
+
+        const smsMeta = smsCount(templateTextarea.sms)
         // @ts-ignore
         const form = new FormData(formElement.current)
         form.append(NEW_TEMPLATE_FORM.per_sms, smsMeta.per_message.toString())
@@ -152,81 +149,9 @@ const NewTemplate = () => {
     </form>
 }
 
-/**
- * @param {{ 
- *      item: { id: number, name: string, sms: number, text: { sms: string, whatsapp: string }, show?: boolean },
- *      onDelete?: (id: number) => void 
- *   }} param0 
- */
-const ListDescriptionText = ({ item, onDelete }) => {
-    const { t } = useTranslation()
-    const { handleSection, section } = useSectionText()
-
-    return <>
-        {item.show ? (
-            <div className="row mt-3" onClick={e => e.stopPropagation()}>
-                <div className="col">
-                    <SectionView onChange={handleSection} icon={false} name={'template_view-' + item.id} />
-                </div>
-                <div className="col-auto">
-                    <button type="button" onClick={(e) => {
-                        e.stopPropagation();
-                        onDelete(item.id);
-                    }} className="btn btn-secondary btn-sm text-danger">{t('Supprimer')}</button>
-                </div>
-            </div>
-        ) : ''}
-        <p className="text-sm mb-0">
-            {item.show ? caseSectionValue(section, item.text) : caseSectionValue(section, item.text).slice(0, 101) + '...'}
-        </p>
-    </>
-}
-
-
-const List = ({
-    Ul: ({ children }) => {
-        return <div className="list-group list-group-flush">{children}</div>
-    },
-    /**
-     * @param {{  
-     *  data: Array<{ id: number, name: string, sms: number, text: { sms: string, whatsapp: string }, show?: boolean }>,
-     *  onDelete?: (id: number) => void 
-     * }} param0
-     */
-    Li: ({ data, onDelete }) => {
-        const [datas, setDatas] = useState([])
-        const { t } = useTranslation()
-
-        useEffect(() => {
-            setDatas(data.map(g => ({ ...g, show: false })))
-        }, [data])
-        /**
-         * @param {number} id
-         */
-        const showItem = (id, e) => {
-            // e.target.scrollIntoView()
-            setDatas(d => d.map(g => ({ ...g, show: (id === g.id && !g.show) })))
-        }
-        return <>
-            {datas.map(v => {
-                return <a key={v.id} onClick={(e) => showItem(v.id, e)} className="list-group-item clickable-a list-group-item-action flex-column align-items-start py-4 px-4">
-                    <div className="d-flex w-100 justify-content-between" >
-                        <h4 className="mb-1">{v.name}</h4>
-                        <small>{t('SMS')} {v.sms}</small>
-                    </div>
-                    <ListDescriptionText item={v} onDelete={onDelete} />
-                </a>
-            })}
-        </>
-    }
-})
-
 
 const TemplatesList = () => {
     const { t } = useTranslation()
-    const modalConfirm = useRef(null)
-    const [deletionLoading, setDeletionLoading] = useState(false)
-    const [deletionId, setDeletionId] = useState(null)
     /**
      * @type { { ids: Array, entities: Object, loading: string, error: Object} }
      */
@@ -238,22 +163,22 @@ const TemplatesList = () => {
         dispach(fetchEventTemplates(URLS.eventTemplates))
     }, [])
 
-    // delete event template
-    const handleDelete = useCallback(async (id) => {
-        setDeletionId(id)
-        if (modalConfirm.current)
-            $(modalConfirm.current).modal('show');
-    }, [modalConfirm.current, setDeletionId])
+    const {
+        deletionId,
+        setDeletionLoading,
+        modalConfirm,
+        closeModal,
+        handleDelete,
+        deletionLoading
+    } = useItemDeletion()
+
+
 
     const deleteItem = useCallback(() => {
         if (!deletionId) return
         setDeletionLoading(true)
         ApiRequest('delete', URLS.eventTemplates + '/' + deletionId, {}, true)
-            .finally(() => {
-                $(modalConfirm.current).modal('hide')
-                setDeletionLoading(false)
-                setDeletionId(null)
-            })
+            .finally(() => closeModal())
             .then(() => dispach(eventTemplateRemoved(deletionId)))
     }, [deletionId]);
     // delete event template
@@ -264,7 +189,15 @@ const TemplatesList = () => {
         {loading == ASYNC.idle && ids.length ? (
             <>
                 <List.Ul>
-                    <List.Li data={datas} onDelete={handleDelete} />
+                    <List.Li data={datas}>
+                        {v => <>
+                            <div className="d-flex w-100 justify-content-between" >
+                                <h4 className="mb-1">{v.name}</h4>
+                                <small>{t('SMS')} {v.sms}</small>
+                            </div>
+                            <ListDescriptionText item={v} onDelete={handleDelete} />
+                        </>}
+                    </List.Li>
                 </List.Ul>
                 <ModalConfirm loading={deletionLoading} onConfirm={deleteItem} ref={modalConfirm} />
             </>
@@ -279,28 +212,6 @@ const TemplatesList = () => {
 
     </>
 }
-
-/**
- * @returns { boolean }
- */
-const validateTemplate = (templateTextarea, requiredKeys) => {
-    const sms = requiredKeys.filter(k => templateTextarea.sms.indexOf(k) < 0)
-    const whatsapp = requiredKeys.filter(k => templateTextarea.whatsapp.indexOf(k) < 0)
-    if (sms.length) {
-        Notifier.error(sms.join(', ') + Localize({
-            fr: ' est / sont requis dans vos modèles sms text',
-            en: 'is / are required in your text sms templates'
-        }))
-    }
-    if (whatsapp.length) {
-        Notifier.error(whatsapp.join(', ') + Localize({
-            fr: ' est / sont requis dans vos modèles whatsapp text',
-            en: 'is / are required in your text whatsapp templates'
-        }))
-    }
-    return (!sms.length && !whatsapp.length)
-}
-
 
 
 const Templates = () => {

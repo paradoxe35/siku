@@ -1,5 +1,5 @@
 //@ts-check
-import React, { Fragment, useEffect, useRef, useCallback, useState, memo, useMemo } from 'react'
+import React, { Fragment, useEffect, useRef, useCallback, useState, memo, useMemo, createContext, useContext } from 'react'
 import { useTranslation } from "react-i18next";
 import Help from './Help';
 import RowDivider from '@/js/react/components/RowDivider';
@@ -13,8 +13,14 @@ import { DefaultButton } from '@/js/react/components/Buttons';
 import PhoneInput from '@/js/react/components/PhoneInput';
 import { isValidPhoneNumber, parsePhoneNumber } from 'react-phone-number-input';
 import ModalConfirm from '@/js/react/components/ModalConfirm';
-import { caseSection, caseSectionValue, KeysRequiredInText, SectionView, TEMPLATE_SECTION, TextAreatEdit, useSectionText } from '../template/Sections';
+import { caseSection, caseSectionValue, KeysRequiredInText, List, ListDescriptionText, SectionView, smsCount, TEMPLATE_SECTION, TextAreatEdit, useItemDeletion, useSectionText, validateTemplateSms, validateTemplateWhatsapp } from '../template/Sections';
 import { ApiRequest } from '@/js/api/api';
+import { Pagination } from 'react-laravel-paginex'
+import CustomCheckbox from '@/js/react/components/CustomCheckbox';
+import { Empty } from '@/js/react/components/Empty';
+import { Notifier } from '@/js/functions/notifier';
+import { useFullLoading } from '@/js/react/hooks';
+import { FullLoader } from '@/js/react/components/FullLoader';
 
 const SERVICES = {
     ...TEMPLATE_SECTION,
@@ -29,21 +35,14 @@ const NEW_GUEST_FORM = {
     text_sms: 'text_sms',
     text_whatsapp: 'text_whatsapp',
     qrcode: 'qrcode',
-    sendMessage: 'can_send'
+    can_send: 'can_send',
+    can_send_sms: 'can_send_sms',
+    can_send_whatsapp: 'can_send_whatsapp',
+    can_include_qrcode: 'can_include_qrcode',
+    sms_total: 'sms_total',
+    country_code: 'country_code',
+    country_call: 'country_call'
 }
-
-
-const CustomCheckbox = memo( /**  @param { any } props */(props) => {
-    // @ts-ignore
-    const { value, name = null, label = '', onChange = null, defaultChecked } = props
-    const random = parseInt((Math.random() * Date.now()).toString(), 10)
-    return <div className="custom-control custom-checkbox">
-        <input type="checkbox"
-            defaultChecked={defaultChecked}
-            className="custom-control-input" name={name} onChange={onChange} id={name + random} value={value} />
-        <label className="custom-control-label" htmlFor={name + random}>{label}</label>
-    </div>
-})
 
 const ServiceUse = ({ onSelect }) => {
     const { t } = useTranslation();
@@ -82,7 +81,7 @@ const QrcodeCase = () => {
         <div className="text-xs text-muted mt-3 mb-2">
             {t('Cocher cette case si vous souhaitez que le code d\'invitation en image Qr code soit inclus dans le message')}.
         </div>
-        <CustomCheckbox value={NEW_GUEST_FORM.qrcode} name={NEW_GUEST_FORM.qrcode} label={t('Qr code Image')} />
+        <CustomCheckbox name={NEW_GUEST_FORM.can_include_qrcode} label={t('Qr code Image')} />
     </div>
 }
 
@@ -130,7 +129,7 @@ const EstimatePrice = ({ disabledTextField, services, textValues, phone }) => {
         if (disabledTextField) return
         const dataPhone = parsePhoneNumber(phone)
         // @ts-ignore
-        const sms = SmsCounter.count(textValues[SERVICES.sms])
+        const sms = smsCount(textValues[SERVICES.sms])
         setLoading(true)
         ApiRequest('get', `${URLS.countryPricing}?country_code=${dataPhone.country}`, {}, true)
             .then(({ data: { prices: { sms: smsPrice, whatsapp } } }) => {
@@ -171,6 +170,13 @@ const EstimatePrice = ({ disabledTextField, services, textValues, phone }) => {
     </>
 }
 
+const Event_Guests_Name = 'event_guests_list'
+
+const DispachGuestDetail = (datas) => {
+    window.dispatchEvent(new CustomEvent(Event_Guests_Name, {
+        detail: datas
+    }))
+}
 
 
 const CreateNewGuest = () => {
@@ -310,14 +316,51 @@ const CreateNewGuest = () => {
         }
     }, [setTextValues, textValues, fields[NEW_GUEST_FORM.name]])
 
+    const [onSave, setOnSave] = useState(false)
+
     /**
      * @param { React.FormEvent<HTMLFormElement> } e 
      */
     const saveGuest = (e) => {
         e.preventDefault()
-        const { target } = e
-    }
+        if (disabledTextField) return
 
+        const { target } = e
+        const keys = KeysRequiredInText
+        const vsms = services.includes(SERVICES.sms)
+        const vwhatsapp = services.includes(SERVICES.whatsapp)
+
+        if (vsms && !validateTemplateSms(finalTextValue.current, [keys[1]])) {
+            return
+        }
+
+        if (vwhatsapp && !validateTemplateWhatsapp(finalTextValue.current, [keys[1]])) {
+            return
+        }
+
+        const text = finalTextValue.current
+        const countSms = smsCount(text.sms)
+        const dataPhone = parsePhoneNumber(phone)
+        // @ts-ignore
+        const form = new FormData(target)
+        form.append(NEW_GUEST_FORM.text_sms, text.sms)
+        form.append(NEW_GUEST_FORM.text_whatsapp, text.whatsapp)
+        vsms && form.append(NEW_GUEST_FORM.can_send_sms, 'on')
+        vwhatsapp && form.append(NEW_GUEST_FORM.can_send_whatsapp, 'on')
+        form.append(NEW_GUEST_FORM.sms_total, countSms.messages.toString())
+        form.append(NEW_GUEST_FORM.template_id, selectedTemplate);
+        form.append(NEW_GUEST_FORM.phone, dataPhone.number);
+        form.append(NEW_GUEST_FORM.country_code, dataPhone.country);
+        form.append(NEW_GUEST_FORM.country_call, dataPhone.countryCallingCode);
+
+        setOnSave(true)
+        ApiRequest('post', URLS.eventGuestsStore, form, true)
+            .finally(() => { setOnSave(false) })
+            .then(({ data }) => {
+                DispachGuestDetail(data)
+                Notifier.sussess(t('Créé avec succès !'))
+            })
+    }
 
     return <div className="new-guest">
         <div className="mb-4">
@@ -342,7 +385,6 @@ const CreateNewGuest = () => {
                                 value={phone}
                                 className="form-control"
                                 placeholder={t("Numéro de téléphone de l'invité")}
-                                name={NEW_GUEST_FORM.phone}
                                 onChange={onPhoneValueChange}
                             />
                         </div>
@@ -390,11 +432,12 @@ const CreateNewGuest = () => {
                 <div className="text-xs text-muted mt-3 mb-2">
                     {t("Cochez cette case si vous souhaitez enregistrer l'invité et envoyer le message en même temps")}.
                 </div>
-                <CustomCheckbox name={NEW_GUEST_FORM.sendMessage} label={t('Enregister et envoyer')} />
+                <CustomCheckbox name={NEW_GUEST_FORM.can_send} label={t('Enregister et envoyer')} />
             </div>
             <div className="mt-4">
                 <DefaultButton
                     type="submit"
+                    loading={onSave}
                     disabled={disabledTextField}
                     label={t('Enregistrer')} />
                 <EstimatePrice
@@ -414,6 +457,118 @@ const CreateNewGuest = () => {
     </div>
 }
 
+const GuestList = ({ datas, setFullLoading }) => {
+    const { t } = useTranslation()
+
+    const getData = useCallback(({ page }) => {
+        if (!datas.meta || datas.meta.current_page == page) return
+        setFullLoading(true)
+        ApiRequest('get', URLS.eventGuests + '?page=' + page)
+            .finally(() => setFullLoading(false))
+            .then(({ data }) => DispachGuestDetail(data))
+    }, [datas])
+
+    const {
+        deletionId,
+        setDeletionLoading,
+        closeModal,
+        modalConfirm,
+        handleDelete,
+        deletionLoading
+    } = useItemDeletion()
+
+    const deleteItem = useCallback(() => {
+        if (!deletionId) return
+        setDeletionLoading(true)
+        ApiRequest('delete', URLS.eventGuests + '/' + deletionId, {}, true)
+            .finally(() => closeModal())
+            .then(({ data }) => DispachGuestDetail(data))
+    }, [deletionId]);
+
+    return <>
+        {datas.meta && datas.meta.total >
+            datas.meta.per_page && <Pagination
+                buttonIcons={true}
+                prevButtonIcon='ni ni-bold-left'
+                nextButtonIcon='ni ni-bold-right'
+                changePage={getData}
+                data={datas} />}
+        <List.Ul>
+            <List.Li data={datas.data || []}>
+                {v => <>
+                    <div className="d-flex w-100 justify-content-between" >
+                        <h4 className="mb-1">{v.name}</h4>
+                        <small>{t('SMS')} {v.sms}</small>
+                    </div>
+                    <ListDescriptionText item={v} onDelete={handleDelete} />
+                </>}
+            </List.Li>
+        </List.Ul>
+        <ModalConfirm loading={deletionLoading} onConfirm={deleteItem} ref={modalConfirm} />
+    </>
+}
+
+
+const GuestsListProvider = () => {
+    const { t } = useTranslation()
+    const [loading, setLoading] = useState(false)
+    const [datas, setDatas] = useState({})
+
+    const [showAll, setShowAll] = useState(false)
+
+    const handleGuestList = (e) => {
+        setShowAll(false)
+        setDatas(e.detail)
+    }
+
+    const { fullLoading, parentElemt, setFullLoading } = useFullLoading()
+
+    useEffect(() => {
+        setLoading(true)
+        ApiRequest('get', URLS.eventGuests)
+            .finally(() => setLoading(false))
+            .then(({ data }) => setDatas(data))
+        window.addEventListener(Event_Guests_Name, handleGuestList)
+        return () => {
+            window.removeEventListener(Event_Guests_Name, handleGuestList)
+        }
+    }, [])
+
+    const showAllHandle = useCallback(({ target: { checked } }) => {
+        setShowAll(checked)
+        setFullLoading(true)
+        ApiRequest('get', URLS.eventGuests + (checked ? '?all=true' : ''))
+            .finally(() => setFullLoading(false))
+            .then(({ data }) => setDatas(data))
+    }, [])
+
+    return <div ref={parentElemt}>
+        {fullLoading && <FullLoader parent={parentElemt.current} />}
+
+        <div className="row">
+            <div className="col">
+                <DefaultButton textColor="text-primary" color="secondary" label={t('Tout envoyer')} />
+            </div>
+            <div className="col-auto">
+                <CustomCheckbox
+                    onChange={showAllHandle}
+                    checked={showAll}
+                    label={t('Tout afficher')} />
+            </div>
+        </div>
+        <div className="my-3" />
+        <GuestList datas={datas} setFullLoading={setFullLoading} />
+        {/* @ts-ignore */}
+        {loading ? <skeleton-box height="50" lines="3" /> : ''}
+        {/*  @ts-ignore */}
+        {!loading && datas.meta && !datas.meta.total ? (
+            <div className="mt-5">
+                <Empty message={t('Aucun Invité enregistré!')} />
+            </div>
+        ) : ''}
+    </div>
+}
+
 const Guests = () => {
     const { t } = useTranslation();
 
@@ -430,7 +585,7 @@ const Guests = () => {
             </div>
             <div className="col-lg-5">
                 <RowDivider />
-                <DefaultButton textColor="text-primary" color="secondary" label={t('Tout envoyer')} />
+                <GuestsListProvider />
             </div>
         </div>
     </div>

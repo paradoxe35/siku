@@ -35,6 +35,9 @@ Route::namespace('API')
                         Route::apiResource('events.templates', "EventTemplatesController")
                             ->except(['update', 'show']);
 
+                        Route::apiResource('events.guests', "EventGuestsController")
+                            ->except(['update', 'show']);
+
                         Route::namespace('Payments')
                             ->name('payments.')
                             ->group(function () {

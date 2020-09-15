@@ -8,8 +8,12 @@ export default class extends Controller {
         eventTemplatesStore: this.data.get('eventTemplatesStore'),
         qrcodeImage: this.data.get('qrcodeImage'),
         setQrlogo: this.data.get('setQrlogo'),
-        countryPricing: this.data.get('countryPricing')
+        countryPricing: this.data.get('countryPricing'),
+        eventGuests: this.data.get('eventGuests'),
+        eventGuestsStore: this.data.get('eventGuestsStore')
     }
+
+    initialize() { }
 
     async connect() {
         const { init } = await import('./Product/index.jsx')

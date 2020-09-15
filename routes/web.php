@@ -23,6 +23,9 @@ Route::get('/contact-us', 'ContactUsController')->name('contact-us');
 
 Auth::routes(['login' => false, 'regiter' => false, 'verify' => true, 'reset' => true, 'confirm' => true]);
 
+
+Route::get('/{event}/{code}', 'QrCodeController')->name('qrcode');
+
 Route::group([], function () {
     Route::get('/get-started', 'GetStartedController')->name('get-started');
     Route::namespace('Auth')

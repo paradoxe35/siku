@@ -56,6 +56,11 @@ input {
     }
 }
 
+.page-item .page-link, .page-item span {
+    width: 26px !important;
+    height: 26px !important;
+}
+
 .clickable-a {
     cursor: pointer;
 }

@@ -1,6 +1,6 @@
 //@ts-check
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { ApiRequest } from "../api/api"
 
 /**
@@ -33,4 +33,16 @@ export const useFetch = (mustRefreshValue = 0) => {
     }, [mustRefreshValue]);
 
     return { fetchLoading: loading, error, setRequest, datas }
+}
+
+
+export const useFullLoading = () => {
+    const parentElemt = useRef(null)
+    const [loading, setLoading] = useState(false)
+
+    return {
+        parentElemt,
+        fullLoading: loading,
+        setFullLoading: setLoading
+    }
 }

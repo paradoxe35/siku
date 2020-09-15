@@ -13,7 +13,7 @@ class BasePrice
     /**
      * @var float
      */
-    private static $amount = 0.048;
+    private static $amount = 0.058;
 
     /**
      * @param BaseRepository $rs

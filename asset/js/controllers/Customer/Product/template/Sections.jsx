@@ -1,12 +1,23 @@
 //@ts-check
-import React, { Fragment, useCallback, useEffect, useState } from 'react'
+import React, { Fragment, useCallback, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next';
+import { Localize } from '@/js/functions/localize';
+import { Notifier } from '@/js/functions/notifier';
 
 export const KeysRequiredInText = ['{name}', '{code}']
 
 export const TEMPLATE_SECTION = {
     sms: 'sms',
     whatsapp: 'whatsapp'
+}
+
+/**
+ * @param {string} sms 
+ * @returns {{encoding: string, length: number, per_message: number, remaining: number, messages: number}}
+ */
+export const smsCount = (sms) => {
+    // @ts-ignore
+    return window.SmsCounter.count(sms)
 }
 
 export const useSectionText = () => {
@@ -18,6 +29,145 @@ export const useSectionText = () => {
     return { handleSection, section }
 }
 
+
+export const useItemDeletion = () => {
+    const modalConfirm = useRef(null)
+    const [deletionLoading, setDeletionLoading] = useState(false)
+    const [deletionId, setDeletionId] = useState(null)
+
+    // delete event template
+    const handleDelete = useCallback(async (id) => {
+        setDeletionId(id)
+        if (modalConfirm.current)
+            $(modalConfirm.current).modal('show');
+    }, [modalConfirm.current, setDeletionId])
+
+
+    const closeModal = () => {
+        $(modalConfirm.current).modal('hide')
+        setDeletionLoading(false)
+        setDeletionId(null)
+    }
+
+    return {
+        modalConfirm,
+        deletionLoading,
+        setDeletionLoading,
+        deletionId,
+        setDeletionId,
+        handleDelete,
+        closeModal
+    }
+}
+
+/**
+ * @returns { boolean }
+ * @param { Object } templateTextarea 
+ * @param { Array } requiredKeys 
+ */
+export const validateTemplateSms = (templateTextarea, requiredKeys) => {
+    const sms = requiredKeys.filter(k => templateTextarea.sms.indexOf(k) < 0)
+    if (sms.length) {
+        Notifier.error(sms.join(', ') + Localize({
+            fr: ' est / sont requis dans vos modèles sms text',
+            en: 'is / are required in your text sms templates'
+        }))
+    }
+    return !!!sms.length;
+}
+
+/**
+ * @returns { boolean }
+ * @param { Object } templateTextarea 
+ * @param { Array } requiredKeys 
+ */
+export const validateTemplateWhatsapp = (templateTextarea, requiredKeys) => {
+    const whatsapp = requiredKeys.filter(k => templateTextarea.whatsapp.indexOf(k) < 0)
+    if (whatsapp.length) {
+        Notifier.error(whatsapp.join(', ') + Localize({
+            fr: ' est / sont requis dans vos modèles whatsapp text',
+            en: 'is / are required in your text whatsapp templates'
+        }))
+    }
+    return !!!whatsapp.length;
+}
+
+/**
+ * @returns { boolean }
+ * @param { Object } templateTextarea 
+ * @param { Array } requiredKeys 
+ */
+export const validateTemplate = (templateTextarea, requiredKeys) => {
+    const whatsapp = validateTemplateWhatsapp(templateTextarea, requiredKeys)
+    const sms = validateTemplateSms(templateTextarea, requiredKeys)
+    return (sms && whatsapp)
+}
+
+
+/**
+ * @param {{ 
+    *      item: { id: number, name: string, sms: number, text: { sms: string, whatsapp: string }, show?: boolean },
+    *      onDelete?: (id: number) => void 
+    *   }} param0 
+    */
+export const ListDescriptionText = ({ item, onDelete }) => {
+    const { t } = useTranslation()
+    const { handleSection, section } = useSectionText()
+
+    return <>
+        {item.show ? (
+            <div className="row mt-3" onClick={e => e.stopPropagation()}>
+                <div className="col">
+                    <SectionView onChange={handleSection} icon={false} name={'template_view-' + item.id} />
+                </div>
+                <div className="col-auto">
+                    <button type="button" onClick={(e) => {
+                        e.stopPropagation();
+                        onDelete(item.id);
+                    }} className="btn btn-secondary btn-sm text-danger">{t('Supprimer')}</button>
+                </div>
+            </div>
+        ) : ''}
+        <p className="text-sm mb-0" style={{ cursor: 'default' }} onClick={e => e.stopPropagation()}>
+            {item.show ? caseSectionValue(section, item.text) : caseSectionValue(section, item.text).slice(0, 101) + '...'}
+        </p>
+    </>
+}
+
+
+export const List = ({
+    Ul: ({ children }) => {
+        return <div className="list-group list-group-flush">{children}</div>
+    },
+    /**
+     * @param {{  
+     *  data: Array<{ id: number, name: string, sms: number, text: { sms: string, whatsapp: string }, show?: boolean }>,
+     *  children?: any
+     * }} param0
+     */
+    Li: ({ data, children }) => {
+        const [datas, setDatas] = useState([])
+        const { t } = useTranslation()
+
+        useEffect(() => {
+            setDatas(data.map(g => ({ ...g, show: false })))
+        }, [data])
+        /**
+         * @param {number} id
+         */
+        const showItem = (id, e) => {
+            // e.target.scrollIntoView()
+            setDatas(d => d.map(g => ({ ...g, show: (id === g.id && !g.show) })))
+        }
+        return <>
+            {datas.map(v => {
+                return <a key={v.id} onClick={(e) => showItem(v.id, e)} className="list-group-item clickable-a clickable-list flex-column align-items-start py-4 px-4">
+                    {children(v)}
+                </a>
+            })}
+        </>
+    }
+})
 
 /**
 * @param { string } section 

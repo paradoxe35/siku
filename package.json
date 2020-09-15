@@ -32,7 +32,8 @@
         "redux-devtools": "^3.6.1",
         "resolve-url-loader": "^3.1.0",
         "sass": "^1.15.2",
-        "sass-loader": "^8.0.0"
+        "sass-loader": "^8.0.0",
+        "vue-template-compiler": "^2.6.12"
     },
     "dependencies": {
         "@grafikart/spinning-dots-element": "^1.1.0",
@@ -59,6 +60,7 @@
         "react-datetime": "^2.16.3",
         "react-dom": "^16.13.1",
         "react-i18next": "^11.7.0",
+        "react-laravel-paginex": "^2.0.8",
         "react-phone-number-input": "^3.0.25",
         "react-redux": "^7.2.1",
         "react-router-dom": "^5.2.0",

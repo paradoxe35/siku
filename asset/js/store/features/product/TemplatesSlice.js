@@ -1,6 +1,5 @@
-import { createEntityAdapter, createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import { ApiRequest } from '@/js/api/api'
-
+import { createEntityAdapter, createSlice } from '@reduxjs/toolkit'
+import Async from '@js/store/async'
 
 const INITIALSTATE = {
     sms: null,
@@ -44,25 +43,9 @@ export const {
 export const productTemplateReducer = productTemplateLastText.reducer
 
 
-const onePerEvent = (event_id, workingEvent) => {
-    return event_id !== null && event_id == workingEvent.id
-}
+//@ts-check
 
-const getDatas = (payload) => (typeof payload !== 'object' ? [] : payload)
-
-// get templates
-
-export const fetchEventTemplates = createAsyncThunk(
-    'events/fetchTemplates',
-    async (url, { getState, requestId }) => {
-        const { eventTemplates: { currentRequestId, loading, event_id, entities }, workingEvent } = getState()
-        if (loading !== 'pending' || requestId !== currentRequestId || onePerEvent(event_id, workingEvent)) {
-            return { data: Object.keys(entities).map(k => entities[k]), event_id: workingEvent.id }
-        }
-        const { data: { data } } = await ApiRequest('get', url, {}, true)
-        return { data, event_id: workingEvent.id }
-    }
-)
+export const fetchEventTemplates = Async.fetchAsync('events/fetchTemplates')
 
 const eventTemplatesAdapter = createEntityAdapter({
     sortComparer: (a, b) => a.name.localeCompare(b.name)
@@ -70,41 +53,12 @@ const eventTemplatesAdapter = createEntityAdapter({
 
 const eventTemplatesSlice = createSlice({
     name: 'eventTemplates',
-    initialState: eventTemplatesAdapter.getInitialState({
-        loading: 'idle',
-        currentRequestId: undefined,
-        error: null,
-        event_id: null
-    }),
+    initialState: eventTemplatesAdapter.getInitialState(Async.initialState),
     reducers: {
         eventTemplateAdded: eventTemplatesAdapter.addOne,
         eventTemplateRemoved: eventTemplatesAdapter.removeOne,
     },
-    extraReducers: {
-        [fetchEventTemplates.pending]: (state, action) => {
-            if (state.loading === 'idle') {
-                state.loading = 'pending'
-                state.currentRequestId = action.meta.requestId
-            }
-        },
-        [fetchEventTemplates.fulfilled]: (state, action) => {
-            const { requestId } = action.meta
-            if (state.loading === 'pending' && state.currentRequestId === requestId) {
-                state.loading = 'idle'
-                eventTemplatesAdapter.setAll(state, getDatas(action.payload.data))
-                state.currentRequestId = undefined
-                state.event_id = action.payload.event_id
-            }
-        },
-        [fetchEventTemplates.rejected]: (state, action) => {
-            const { requestId } = action.meta
-            if (state.loading === 'pending' && state.currentRequestId === requestId) {
-                state.loading = 'idle'
-                state.error = action.error
-                state.currentRequestId = undefined
-            }
-        }
-    }
+    extraReducers: Async.extraReducers(fetchEventTemplates, eventTemplatesAdapter)
 })
 
 export const {

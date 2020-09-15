@@ -451,7 +451,7 @@ eval("var g;\n\n// This works in non-strict mode\ng = (function() {\n\treturn th
 
 /***/ }),
 
-/***/ 1:
+/***/ 2:
 /*!***********************************************************************************************!*\
   !*** multi jquery bootstrap stimulus @grafikart/spinning-dots-element dropify codex-notifier ***!
   \***********************************************************************************************/
