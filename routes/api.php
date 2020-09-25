@@ -30,6 +30,9 @@ Route::namespace('API')
                     ->group(function () {
                         Route::put('events/{event}/set-qr-code-logo', 'EventsController@setQcodeLogo')
                             ->name('events.set-qr-code-logo');
+                        
+                        Route::get('events/{event}/in-queue-process', "EventsController@inQueueProcess")
+                            ->name('events.in-queue-process');
 
                         Route::apiResource('events', 'EventsController');
                         Route::apiResource('events.templates', "EventTemplatesController")
@@ -37,6 +40,12 @@ Route::namespace('API')
 
                         Route::apiResource('events.guests', "EventGuestsController")
                             ->except(['update', 'show']);
+
+                        Route::post('events/{event}/guests/{guest}/send', "EventGuestsController@send")
+                            ->name('events.guests.send');
+                        
+                        Route::post('events/{event}/guests/sendall', "EventGuestsController@sendall")
+                            ->name('events.guests.sendall');
 
                         Route::namespace('Payments')
                             ->name('payments.')

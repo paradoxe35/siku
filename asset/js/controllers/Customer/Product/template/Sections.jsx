@@ -107,10 +107,10 @@ export const validateTemplate = (templateTextarea, requiredKeys) => {
 /**
  * @param {{ 
     *      item: { id: number, name: string, sms: number, text: { sms: string, whatsapp: string }, show?: boolean },
-    *      onDelete?: (id: number) => void 
+    *      onDelete?: (id: number) => void, canShown?: Array
     *   }} param0 
     */
-export const ListDescriptionText = ({ item, onDelete }) => {
+export const ListDescriptionText = ({ item, onDelete, canShown = null }) => {
     const { t } = useTranslation()
     const { handleSection, section } = useSectionText()
 
@@ -118,7 +118,7 @@ export const ListDescriptionText = ({ item, onDelete }) => {
         {item.show ? (
             <div className="row mt-3" onClick={e => e.stopPropagation()}>
                 <div className="col">
-                    <SectionView onChange={handleSection} icon={false} name={'template_view-' + item.id} />
+                    <SectionView onChange={handleSection} icon={false} name={'template_view-' + item.id} canShown={canShown} />
                 </div>
                 <div className="col-auto">
                     <button type="button" onClick={(e) => {
@@ -161,7 +161,7 @@ export const List = ({
         }
         return <>
             {datas.map(v => {
-                return <a key={v.id} onClick={(e) => showItem(v.id, e)} className="list-group-item clickable-a clickable-list flex-column align-items-start py-4 px-4">
+                return <a key={String(v.id)} onClick={(e) => showItem(v.id, e)} className="list-group-item clickable-a clickable-list flex-column align-items-start py-4 px-4">
                     {children(v)}
                 </a>
             })}
@@ -210,8 +210,6 @@ export const caseSection = (section, lastState, value) => {
     return { ...y }
 }
 
-
-
 /**
  * @param {{  section: string  }} param0 
  */
@@ -229,25 +227,32 @@ export const SmsDetail = ({ section }) => {
  */
 export const ImgIcon = ({ src, alt }) => <img src={src} className="checkbox-icon" alt={alt} width="20" height="20" />
 
+const canShow = (p, n) => (p === null || (typeof p === 'object' && p.includes(n)))
 
 /**
- * @param {{  onChange: any, icon?: boolean, name?: string }} param0 
+ * @param {{  onChange: any, icon?: boolean, name?: string, canShown?: Array }} param0 
  */
-export const SectionView = ({ onChange, icon = true, name = "message_view" }) => {
+export const SectionView = ({ onChange, icon = true, name = "message_view", canShown = null }) => {
     const { t } = useTranslation();
     return <div className="mb-3">
-        <div className="custom-control custom-radio custom-control-inline">
-            <input type="radio" id={name + '-sms'} defaultChecked onChange={onChange} name={name} value={TEMPLATE_SECTION.sms} className="custom-control-input" />
-            <label className="custom-control-label" htmlFor={name + '-sms'}>
-                {icon && <ImgIcon src="/img/svg/sms.svg" alt="SMS" />} {t('SMS')}
-            </label>
-        </div>
-        <div className="custom-control custom-radio custom-control-inline">
-            <input type="radio" id={name + '-whatsapp'} onChange={onChange} name={name} value={TEMPLATE_SECTION.whatsapp} className="custom-control-input" />
-            <label className="custom-control-label" htmlFor={name + '-whatsapp'}>
-                {icon && <ImgIcon src="/img/svg/whatsapp.svg" alt="WhatsApp" />}  {t('WhatsApp')}
-            </label>
-        </div>
+        {
+            canShow(canShown, TEMPLATE_SECTION.sms) &&
+            <div className="custom-control custom-radio custom-control-inline">
+                <input type="radio" id={name + '-sms'} defaultChecked onChange={onChange} name={name} value={TEMPLATE_SECTION.sms} className="custom-control-input" />
+                <label className="custom-control-label" htmlFor={name + '-sms'}>
+                    {icon && <ImgIcon src="/img/svg/sms.svg" alt="SMS" />} {t('SMS')}
+                </label>
+            </div>
+        }
+        {
+            canShow(canShown, TEMPLATE_SECTION.whatsapp) &&
+            <div className="custom-control custom-radio custom-control-inline">
+                <input type="radio" id={name + '-whatsapp'} onChange={onChange} name={name} value={TEMPLATE_SECTION.whatsapp} className="custom-control-input" />
+                <label className="custom-control-label" htmlFor={name + '-whatsapp'}>
+                    {icon && <ImgIcon src="/img/svg/whatsapp.svg" alt="WhatsApp" />}  {t('WhatsApp')}
+                </label>
+            </div>
+        }
     </div>
 }
 

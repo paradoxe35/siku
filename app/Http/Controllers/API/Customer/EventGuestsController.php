@@ -4,6 +4,8 @@ namespace App\Http\Controllers\API\Customer;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\GuestCollection;
+use App\Jobs\ProcessInvitations;
+use App\Jobs\ProcessInvitation;
 use App\Models\Event\Event;
 use App\Models\Event\Guest;
 use Illuminate\Http\Request;
@@ -113,25 +115,46 @@ class EventGuestsController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
+     * send the specified resource in storage.
+     * @param  \App\Models\Event\Event  $event
      * @param  \App\Models\Event\Guest  $guest
      * @return \Illuminate\Http\Response
      */
-    public function show(Guest $guest)
+    public function send(Event $event, Guest $guest)
     {
-        //
+        ProcessInvitation::dispatch($guest)->onQueue('invitation');
+        return [true];
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Event\Guest  $guest
+     * send all resource in storage.
+     * @param  \App\Models\Event\Event  $event
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Guest $guest)
+    public function sendall(Event $event, Request $request)
     {
-        //
+        $process = !$event->InQueueProcess();
+
+        if ($process) {
+            ProcessInvitations::dispatch($event, $event->id)
+                ->onQueue('invitation');
+        }
+
+        $guests = $event->guests;
+
+        $processed = collect($guests)->filter(function ($v, $k) {
+            $h = $v->sendHistorical;
+
+            $sended_sms = $v->can_send_sms ? ($h ? $h->sended_sms : false) : true;
+
+            $sended_whatsapp = $v->can_send_whatsapp ? ($h ? $h->sended_whatsapp : false) : true;
+
+            return ($sended_sms && $sended_whatsapp);
+        })->count();
+
+        return [
+            'processed' => $processed,
+            'total' => $guests->count()
+        ];
     }
 }

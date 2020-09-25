@@ -5,6 +5,7 @@ namespace App\Models\Event;
 use App\Models\Template\Template;
 use App\User;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class Guest extends Model
 {
@@ -23,6 +24,37 @@ class Guest extends Model
         'text_sms', 'text_whatsapp', 'can_send_sms', 'can_send_whatsapp',
         'can_include_qrcode', 'country_code', 'country_call', 'user_id'
     ];
+
+    /**
+     * Get the user's first name.
+     *
+     * @param  string  $value
+     * @return string
+     */
+    public function getNameAttribute($value)
+    {
+        return ucwords(Str::lower($value));
+    }
+
+    /**
+     * @param mixed $value
+     * 
+     * @return bool 
+     */
+    public function getCanSendSmsAttribute($value)
+    {
+        return boolval($value);
+    }
+
+    /**
+     * @param mixed $value
+     * 
+     * @return bool 
+     */
+    public function getCanSendWhatsappAttribute($value)
+    {
+        return boolval($value);
+    }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -46,5 +78,13 @@ class Guest extends Model
     public function template()
     {
         return $this->belongsTo(Template::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function sendHistorical()
+    {
+        return $this->hasOne(SendHistorical::class);
     }
 }

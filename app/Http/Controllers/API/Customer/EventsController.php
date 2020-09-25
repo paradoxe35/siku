@@ -162,10 +162,24 @@ class EventsController extends Controller
         $event->qrcode_logo = $path;
 
         $event->save();
-        
+
         $event->refresh();
 
         return ['logo_path' => ('/' . $event->qrcode_logo . '?' . Str::random())];
+    }
+
+
+    /**
+     * get status of event in queue processing
+     *
+     * @param  \App\Models\Event\Event  $event
+     * @return \Illuminate\Http\Response
+     */
+    public function inQueueProcess(Event $event)
+    {
+        return [
+            'status' => $event->InQueueProcessData()
+        ];
     }
 
     /**

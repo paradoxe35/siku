@@ -2,6 +2,7 @@
 
 namespace App\Models\Event;
 
+use App\Infrastructure\Cache\CacheJobEvent;
 use App\Infrastructure\ProductPrice;
 use App\Models\Balance\Balance;
 use App\Models\Balance\Consumed;
@@ -15,7 +16,7 @@ use Mtvs\EloquentHashids\HashidRouting;
 
 class Event extends Model
 {
-    use HasHashid, HashidRouting;
+    use HasHashid, HashidRouting, CacheJobEvent;
 
     /**
      * @var string
@@ -95,6 +96,22 @@ class Event extends Model
         $total = $this->totalBalance();;
         $consumed = $this->totalConsumeds();
         return round(($total - $consumed), 3);
+    }
+
+    /**
+     * @return bool
+     */
+    public function InQueueProcess()
+    {
+        return $this->getEventProcess($this->id);
+    }
+
+    /**
+     * @return array|null
+     */
+    public function InQueueProcessData()
+    {
+        return $this->getEventProcess($this->id);
     }
 
     /**

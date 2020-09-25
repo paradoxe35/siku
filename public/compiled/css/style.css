@@ -28241,6 +28241,12 @@ div.loading-ntf-abs .uil-ring-css-abs {
   }
 }
 
+@media (min-width: 768px) {
+  .custom-sidebar.g-sidenav-pinned .main-content-nav {
+    margin-left: 250px !important;
+  }
+}
+
 @media (max-width: 576px) {
   .custom-sidebar .sidenav.navbar.shadow-none {
     box-shadow: 0 0 2rem 0 rgba(136, 152, 170, 0.15) !important;

@@ -8,7 +8,8 @@
     data-Customer--Product-set-qrlogo="{{ route('api.customer.events.set-qr-code-logo') }}"
     data-Customer--Product-country-pricing="{{ route('api.country-pricing') }}"
     data-Customer--Product-event-guests="{{ route('api.customer.events.guests.index') }}"
-    data-Customer--Product-event-guests-store="{{ route('api.customer.events.guests.store') }}">
+    data-Customer--Product-event-guests-store="{{ route('api.customer.events.guests.store') }}"
+    data-Customer--Product-event-guests-sendall="{{ route('api.customer.events.guests.sendall') }}">
     <div class="row">
         <div class="col">
             <p><b><span>{{ __('Bienvenue à nouveau') }}, {{ Auth::user()->name }}</span></b></p>

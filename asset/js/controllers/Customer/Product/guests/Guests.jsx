@@ -1,19 +1,33 @@
 //@ts-check
-import React, { Fragment, useEffect, useRef, useCallback, useState, memo, useMemo, createContext, useContext } from 'react'
+import React, { Fragment, useEffect, useRef, useCallback, useState, useMemo } from 'react'
 import { useTranslation } from "react-i18next";
 import Help from './Help';
 import RowDivider from '@/js/react/components/RowDivider';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import { fetchEventTemplates } from '@/js/store/features/product/TemplatesSlice';
-import { URLS } from '@/js/react/vars';
+import { DispachEventOpenGuestSocketDetail, DispachEventProcessQueueDetail, DispachGuestsDetail, Event_Guest, Event_Guests_Name, URLS } from '@/js/react/vars';
 import { slim as slimSelect } from '@js/utils/SlimSelect'
 import { InputField } from '@/js/react/components/InputField';
 import { DefaultButton } from '@/js/react/components/Buttons';
 import PhoneInput from '@/js/react/components/PhoneInput';
 import { isValidPhoneNumber, parsePhoneNumber } from 'react-phone-number-input';
 import ModalConfirm from '@/js/react/components/ModalConfirm';
-import { caseSection, caseSectionValue, KeysRequiredInText, List, ListDescriptionText, SectionView, smsCount, TEMPLATE_SECTION, TextAreatEdit, useItemDeletion, useSectionText, validateTemplateSms, validateTemplateWhatsapp } from '../template/Sections';
+import {
+    caseSection,
+    caseSectionValue,
+    KeysRequiredInText,
+    List,
+    ListDescriptionText,
+    SectionView,
+    smsCount,
+    TEMPLATE_SECTION,
+    TextAreatEdit,
+    useItemDeletion,
+    useSectionText,
+    validateTemplateSms,
+    validateTemplateWhatsapp
+} from '../template/Sections';
 import { ApiRequest } from '@/js/api/api';
 import { Pagination } from 'react-laravel-paginex'
 import CustomCheckbox from '@/js/react/components/CustomCheckbox';
@@ -169,15 +183,6 @@ const EstimatePrice = ({ disabledTextField, services, textValues, phone }) => {
         )}
     </>
 }
-
-const Event_Guests_Name = 'event_guests_list'
-
-const DispachGuestDetail = (datas) => {
-    window.dispatchEvent(new CustomEvent(Event_Guests_Name, {
-        detail: datas
-    }))
-}
-
 
 const CreateNewGuest = () => {
     const { t } = useTranslation();
@@ -357,8 +362,12 @@ const CreateNewGuest = () => {
         ApiRequest('post', URLS.eventGuestsStore, form, true)
             .finally(() => { setOnSave(false) })
             .then(({ data }) => {
-                DispachGuestDetail(data)
+                DispachGuestsDetail(data)
                 Notifier.sussess(t('Créé avec succès !'))
+                // @ts-ignore
+                updateTextValue({ value: selectedTemplate })
+                setFields(e => ({ ...e, [NEW_GUEST_FORM.name]: '' }))
+                onPhoneValueChange('')
             })
     }
 
@@ -457,15 +466,86 @@ const CreateNewGuest = () => {
     </div>
 }
 
-const GuestList = ({ datas, setFullLoading }) => {
+
+const ShowList = ({ v, handleDelete }) => {
     const { t } = useTranslation()
 
-    const getData = useCallback(({ page }) => {
+    const [loading, setLoading] = useState(false)
+
+    const sms = (v.can_send_sms ? [TEMPLATE_SECTION.sms] : [])
+    const whatsapp = (v.can_send_whatsapp ? [TEMPLATE_SECTION.whatsapp] : [])
+
+    const send = (v) => {
+        setLoading(true)
+        ApiRequest('post', URLS.eventGuests + '/' + v.id + '/send', {}, true)
+            .finally(() => setLoading(false))
+            .then((_res) => {
+                Notifier.sussess(t('Envoi en cours...'))
+                DispachEventOpenGuestSocketDetail(null)
+            })
+    }
+
+    return <>
+        <div className="d-flex w-100 justify-content-between mb-1" >
+            <h4 className="mb-1">{v.name}</h4>
+            <div onClick={e => e.stopPropagation()}>
+                {
+                    ((!!sms.length && !v.sended_sms) || (!!whatsapp.length && !v.sended_whatsapp)) &&
+                    <DefaultButton
+                        textColor="text-default"
+                        onClick={() => send(v)}
+                        loading={loading}
+                        color="secondary"
+                        label={t('Envoyer')} />
+                }
+            </div>
+        </div>
+        <div className="mb-2">
+            {!!sms.length &&
+                <div className="text-sm">
+                    {t('SMS')}: {v.sended_sms ?
+                        <span className="text-success">{t('Envoyé')}</span> :
+                        t('Non Envoyé')}
+                </div>}
+            {!!whatsapp.length &&
+                <div className="text-sm mt-1">
+                    {t('WhatsApp')}: {v.sended_whatsapp ?
+                        <span className="text-success">{t('Envoyé')}</span> :
+                        t('Non Envoyé')}
+                </div>}
+        </div>
+        <ListDescriptionText
+            item={v}
+            onDelete={handleDelete}
+            canShown={[...sms, ...whatsapp]} />
+    </>
+}
+
+const GuestList = ({ datas, setFullLoading }) => {
+    const [listData, setListData] = useState([])
+
+    useEffect(() => {
+        setListData(datas.data || [])
+    }, [datas.data])
+
+    const onGuestUpdate = useCallback((e) => {
+        const { detail } = e
+        setListData(d => d.map(v => v.id == detail.id ? detail : v))
+    }, [setListData])
+
+    useEffect(() => {
+        window.addEventListener(Event_Guest, onGuestUpdate)
+        return () => {
+            window.removeEventListener(Event_Guest, onGuestUpdate)
+        }
+    }, [])
+
+    const getDataPaginator = useCallback(({ page }) => {
         if (!datas.meta || datas.meta.current_page == page) return
         setFullLoading(true)
         ApiRequest('get', URLS.eventGuests + '?page=' + page)
             .finally(() => setFullLoading(false))
-            .then(({ data }) => DispachGuestDetail(data))
+            .then(({ data }) => DispachGuestsDetail(data))
     }, [datas])
 
     const {
@@ -482,7 +562,7 @@ const GuestList = ({ datas, setFullLoading }) => {
         setDeletionLoading(true)
         ApiRequest('delete', URLS.eventGuests + '/' + deletionId, {}, true)
             .finally(() => closeModal())
-            .then(({ data }) => DispachGuestDetail(data))
+            .then(({ data }) => DispachGuestsDetail(data))
     }, [deletionId]);
 
     return <>
@@ -491,23 +571,16 @@ const GuestList = ({ datas, setFullLoading }) => {
                 buttonIcons={true}
                 prevButtonIcon='ni ni-bold-left'
                 nextButtonIcon='ni ni-bold-right'
-                changePage={getData}
+                changePage={getDataPaginator}
                 data={datas} />}
         <List.Ul>
-            <List.Li data={datas.data || []}>
-                {v => <>
-                    <div className="d-flex w-100 justify-content-between" >
-                        <h4 className="mb-1">{v.name}</h4>
-                        <small>{t('SMS')} {v.sms}</small>
-                    </div>
-                    <ListDescriptionText item={v} onDelete={handleDelete} />
-                </>}
+            <List.Li data={listData || []}>
+                {v => <ShowList v={v} handleDelete={handleDelete} />}
             </List.Li>
         </List.Ul>
         <ModalConfirm loading={deletionLoading} onConfirm={deleteItem} ref={modalConfirm} />
     </>
 }
-
 
 const GuestsListProvider = () => {
     const { t } = useTranslation()
@@ -542,12 +615,22 @@ const GuestsListProvider = () => {
             .then(({ data }) => setDatas(data))
     }, [])
 
+    const sendAll = useCallback(() => {
+        ApiRequest('post', URLS.eventGuestsSendall, {}, true)
+            .finally(() => setLoading(false))
+            .then(({ data }) => {
+                DispachEventProcessQueueDetail({
+                    status: data
+                })
+            })
+    }, [])
+
     return <div ref={parentElemt}>
         {fullLoading && <FullLoader parent={parentElemt.current} />}
 
         <div className="row">
             <div className="col">
-                <DefaultButton textColor="text-primary" color="secondary" label={t('Tout envoyer')} />
+                <DefaultButton textColor="text-primary" onClick={sendAll} color="secondary" label={t('Tout envoyer')} />
             </div>
             <div className="col-auto">
                 <CustomCheckbox
@@ -557,7 +640,9 @@ const GuestsListProvider = () => {
             </div>
         </div>
         <div className="my-3" />
-        <GuestList datas={datas} setFullLoading={setFullLoading} />
+        <div style={{ maxHeight: "600px", overflowY: "auto" }}>
+            <GuestList datas={datas} setFullLoading={setFullLoading} />
+        </div>
         {/* @ts-ignore */}
         {loading ? <skeleton-box height="50" lines="3" /> : ''}
         {/*  @ts-ignore */}
@@ -570,8 +655,6 @@ const GuestsListProvider = () => {
 }
 
 const Guests = () => {
-    const { t } = useTranslation();
-
     return <div className="mb-9">
         <div className="row">
             <div className="col">

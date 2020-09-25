@@ -1,16 +1,14 @@
 //@ts-check
-import React, { useCallback, useRef, useState, useMemo, useEffect, lazy, Suspense, Fragment } from 'react'
-import { render, unmountComponentAtNode } from 'react-dom'
+import React, { useCallback, useState, useMemo, useEffect, lazy, Suspense, Fragment } from 'react'
 import { useTranslation } from "react-i18next";
 import { Paginate } from '@/js/react/components/Paginate';
 import { FullLoader } from '@/js/react/components/FullLoader';
-import { I_EVENTS, EVENT_VALUE, I_NEW_EVENT, setURLS, URLS, setLang } from '@/js/react/vars';
+import { I_EVENTS, EVENT_VALUE, I_NEW_EVENT, URLS } from '@/js/react/vars';
 import { EventContext } from '@js/react/contexts';
 import { EventsList } from './EventsList';
-import ReduxProvider from '@/js/react/components/ReduxProvider';
 import { ApiRequest } from '@/js/api/api';
-import { i18nReactInit } from '@/js/react/i18n';
 import { useFullLoading } from '@/js/react/hooks';
+import { InitReact } from '@/js/react/init';
 
 const CreateEvent = lazy(() => import('./CreateEvent'))
 const ConfirmAndCustomerStatus = lazy(() => import('./ConfirmAndCustomerStatus'))
@@ -107,15 +105,7 @@ const Index = () => {
  * 
  * @param { HTMLElement|Element } element 
  * @param { string } locale 
- * @param { Object } urls 
+ * @param { {} } urls 
  */
-export const init = (element, locale, urls = {}) => {
-    i18nReactInit(locale)
-    setURLS(urls)
-    setLang(locale)
-    render((
-        <ReduxProvider>
-            <Index />
-        </ReduxProvider>), element)
-    return () => unmountComponentAtNode(element)
-}
+export const init = (element, locale, urls = {}) =>
+    InitReact(<Index />, element, locale, urls);
