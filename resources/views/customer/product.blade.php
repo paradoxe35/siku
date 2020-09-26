@@ -30,9 +30,7 @@
                             <h5 class="card-title text-xs text-uppercase text-muted mb-0">
                                 {{ __('Invités') }}
                             </h5>
-                            <span class="h2 font-weight-bold mb-0">
-                                {{ $event['guests'] }}
-                            </span>
+                            <span class="h2 font-weight-bold mb-0" data-target="Customer--Product.guests"></span>
                         </div>
                         <div class="col-auto">
                             <div class="icon icon-shape text-default rounded-circle shadow">
@@ -56,9 +54,7 @@
                             <h5 class="card-title text-xs text-uppercase text-muted mb-0">
                                 {{ __('invités enregistrés') }}
                             </h5>
-                            <span class="h2 font-weight-bold mb-0">
-                                {{ $customer_event->guests()->count() }}
-                            </span>
+                            <span class="h2 font-weight-bold mb-0" data-target="Customer--Product.saved_guests"></span>
                         </div>
                         <div class="col-auto">
                             <div class="icon icon-shape text-default rounded-circle shadow">
@@ -83,7 +79,7 @@
                                 {{ __('Utilisé') }}
                             </h5>
                             <span class="h2 font-weight-bold mb-0">
-                                ${{ $customer_event->totalConsumeds() }}
+                                $<span data-target="Customer--Product.used_amount"></span>
                             </span>
                         </div>
                         <div class="col-auto">
@@ -108,9 +104,7 @@
                             <h5 class="card-title text-xs text-uppercase text-muted mb-0">
                                 {{ __('Envoyées') }}
                             </h5>
-                            <span class="h2 font-weight-bold mb-0">
-                                {{ $customer_event->invitationSent() }}
-                            </span>
+                            <span class="h2 font-weight-bold mb-0" data-target="Customer--Product.sended"></span>
                         </div>
                         <div class="col-auto">
                             <div class="icon icon-shape text-default rounded-circle shadow">
@@ -134,4 +128,12 @@
         </div>
     </div>
 </div>
+<script>
+    window.EventStatus = {
+        'guests': {{ $event["guests"] }},
+        'used_amount' : {{ $customer_event->totalConsumeds()}},
+        'sended' : {{ $customer_event->processedGuests()->count() }},
+        'saved_guests': {{ $customer_event->guests()->count() }},
+    };
+</script>
 @endsection

@@ -83,7 +83,7 @@ class Guest extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
-    public function sendHistorical()
+    public function historical()
     {
         return $this->hasOne(SendHistorical::class);
     }

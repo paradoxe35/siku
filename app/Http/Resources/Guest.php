@@ -14,7 +14,7 @@ class Guest extends JsonResource
      */
     public function toArray($request)
     {
-        $h = $this->sendHistorical;
+        $h = $this->historical;
         return [
             'id' => $this->id,
             'name' => $this->name,

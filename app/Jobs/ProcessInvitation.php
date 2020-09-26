@@ -3,6 +3,7 @@
 namespace App\Jobs;
 
 use App\Events\ProcessedGuest;
+use App\Infrastructure\Send\Send;
 use App\Models\Event\Guest;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -36,6 +37,11 @@ class ProcessInvitation implements ShouldQueue
      */
     public function handle()
     {
-        event(new ProcessedGuest($this->guest));
+        /** @var Send */
+        $send = resolve(Send::class);
+
+        $guest = $send->proceed($this->guest);
+
+        event(new ProcessedGuest($guest));
     }
 }

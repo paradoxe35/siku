@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Infrastructure\Cache\CacheJobEvent;
 use App\Jobs\ProcessInvitations;
+use Illuminate\Queue\Events\JobFailed;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Queue\Events\JobProcessed;

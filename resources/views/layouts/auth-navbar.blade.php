@@ -27,8 +27,8 @@
                     </div>
                 </div>
                 <div class="progress mb-1" style="height: 3px">
-                    <div class="progress-bar bg-default" role="progressbar" aria-valuenow="60" aria-valuemin="0"
-                        aria-valuemax="100" style="width: 60%;"></div>
+                    <div data-target="Customer--App--Show-Sending.progress" class="progress-bar bg-default" role="progressbar" aria-valuenow="60" aria-valuemin="0"
+                        aria-valuemax="100" style="width: 0%;"></div>
                 </div>
             </div>
             @endif

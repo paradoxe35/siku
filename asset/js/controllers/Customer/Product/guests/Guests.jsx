@@ -35,6 +35,7 @@ import { Empty } from '@/js/react/components/Empty';
 import { Notifier } from '@/js/functions/notifier';
 import { useFullLoading } from '@/js/react/hooks';
 import { FullLoader } from '@/js/react/components/FullLoader';
+import { putEventStatus } from '@/js/store/features/product/EventStatusSlice';
 
 const SERVICES = {
     ...TEMPLATE_SECTION,
@@ -368,6 +369,7 @@ const CreateNewGuest = () => {
                 updateTextValue({ value: selectedTemplate })
                 setFields(e => ({ ...e, [NEW_GUEST_FORM.name]: '' }))
                 onPhoneValueChange('')
+                dispach(putEventStatus({ saved_guests: data.meta.total }))
             })
     }
 
@@ -523,6 +525,7 @@ const ShowList = ({ v, handleDelete }) => {
 
 const GuestList = ({ datas, setFullLoading }) => {
     const [listData, setListData] = useState([])
+    const dispach = useDispatch()
 
     useEffect(() => {
         setListData(datas.data || [])
@@ -562,7 +565,10 @@ const GuestList = ({ datas, setFullLoading }) => {
         setDeletionLoading(true)
         ApiRequest('delete', URLS.eventGuests + '/' + deletionId, {}, true)
             .finally(() => closeModal())
-            .then(({ data }) => DispachGuestsDetail(data))
+            .then(({ data }) => {
+                DispachGuestsDetail(data)
+                dispach(putEventStatus({ saved_guests: data.meta.total }))
+            })
     }, [deletionId]);
 
     return <>
@@ -589,10 +595,10 @@ const GuestsListProvider = () => {
 
     const [showAll, setShowAll] = useState(false)
 
-    const handleGuestList = (e) => {
+    const handleGuestList = useCallback((e) => {
         setShowAll(false)
         setDatas(e.detail)
-    }
+    }, [setShowAll, setDatas])
 
     const { fullLoading, parentElemt, setFullLoading } = useFullLoading()
 
@@ -615,9 +621,14 @@ const GuestsListProvider = () => {
             .then(({ data }) => setDatas(data))
     }, [])
 
+    const [sending, setSending] = useState(false)
+    const [sendLoading, setSendLoading] = useState(false)
+
     const sendAll = useCallback(() => {
+        setSending(true)
+        setSendLoading(true)
         ApiRequest('post', URLS.eventGuestsSendall, {}, true)
-            .finally(() => setLoading(false))
+            .finally(() => setSending(false))
             .then(({ data }) => {
                 DispachEventProcessQueueDetail({
                     status: data
@@ -630,7 +641,12 @@ const GuestsListProvider = () => {
 
         <div className="row">
             <div className="col">
-                <DefaultButton textColor="text-primary" onClick={sendAll} color="secondary" label={t('Tout envoyer')} />
+                <DefaultButton
+                    disabled={sendLoading}
+                    loading={sending}
+                    textColor="text-primary"
+                    onClick={sendAll} color="secondary"
+                    label={t('Tout envoyer')} />
             </div>
             <div className="col-auto">
                 <CustomCheckbox

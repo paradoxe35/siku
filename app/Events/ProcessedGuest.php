@@ -58,7 +58,9 @@ class ProcessedGuest implements ShouldBroadcast
      */
     public function broadcastWith()
     {
-        return (new ResourcesGuest($this->guest->load('sendHistorical')))
-            ->toArray(null);
+        return [
+            'status' => $this->guest->load('event')->event->status(),
+            'data' => (new ResourcesGuest($this->guest->load('historical')))->toArray(null)
+        ];
     }
 }

@@ -2,9 +2,11 @@
 
 namespace App\Jobs;
 
+use App\Events\ProcessedGuest;
 use App\Infrastructure\Cache\CacheJobEvent;
+use App\Infrastructure\Send\Send;
 use App\Models\Event\Event;
-use Error;
+use App\Models\Event\Guest;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -44,11 +46,25 @@ class ProcessInvitations implements ShouldQueue
      */
     public function handle()
     {
-        $guests = $this->event->guests->filter(function ($v, $k) {
-            $h = $v->sendHistorical;
-            $sended_sms = $h ? $h->sended_sms : false;
-            $sended_whatsapp = $h ? $h->sended_whatsapp : false;
-            return (!$sended_sms || !$sended_whatsapp);
+        $guests = $this->event->unprocessedGuests();
+
+        /** @var Send */
+        $send = resolve(Send::class);
+
+        $guests->each(function (Guest $item, int $key) use ($send) {
+            $guest = $send->proceed($item);
+            event(new ProcessedGuest($guest));
         });
+    }
+
+    /**
+     * Handle a job failure.
+     *
+     * @param  \Throwable  $exception
+     * @return void
+     */
+    public function failed(\Throwable $exception)
+    {
+        $this->deleteEventProcess($this->event_id);
     }
 }

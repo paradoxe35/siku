@@ -93,7 +93,7 @@ class EventGuestsController extends Controller
         ]);
 
         if (!!$request->can_send) {
-            // code
+            ProcessInvitation::dispatch($guest)->onQueue('invitation');
         }
 
         return new GuestCollection($guests->latest()->paginate());
@@ -135,26 +135,16 @@ class EventGuestsController extends Controller
     {
         $process = !$event->InQueueProcess();
 
-        if ($process) {
-            ProcessInvitations::dispatch($event, $event->id)
-                ->onQueue('invitation');
-        }
+        // if ($process) {
+        ProcessInvitations::dispatch($event, $event->id)
+            ->onQueue('invitation');
+        // }
 
-        $guests = $event->guests;
-
-        $processed = collect($guests)->filter(function ($v, $k) {
-            $h = $v->sendHistorical;
-
-            $sended_sms = $v->can_send_sms ? ($h ? $h->sended_sms : false) : true;
-
-            $sended_whatsapp = $v->can_send_whatsapp ? ($h ? $h->sended_whatsapp : false) : true;
-
-            return ($sended_sms && $sended_whatsapp);
-        })->count();
+        $processed = $event->processedGuests()->count();
 
         return [
             'processed' => $processed,
-            'total' => $guests->count()
+            'total' => $event->guests->count()
         ];
     }
 }

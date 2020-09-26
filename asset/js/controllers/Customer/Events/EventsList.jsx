@@ -34,7 +34,7 @@ export const EventsList = ({ events = [], started }) => {
     )
     const message = (
         <>
-            <span>{t('Salut')} {userAuth.name + "!, "}  {t("Vous avez aucun événement pour le moment")}.</span><br />
+            <span>{t('Salut')} {userAuth ? userAuth.name : '' + "!, "}  {t("Vous avez aucun événement pour le moment")}.</span><br />
             <span>{t("Cliquez sur le bouton ci dessus pour en créer")}.</span>
         </>
     )

@@ -114,6 +114,61 @@ class Event extends Model
         return $this->getEventProcess($this->id);
     }
 
+
+    /**
+     * @return \Illuminate\Support\Collection
+     */
+    public function processedGuests()
+    {
+        /**
+         * @var  \Illuminate\Support\Collection
+         */
+        $guests = $this->guests;
+
+        return $guests->filter(function (Guest $v) {
+            $h = $v->historical;
+
+            $sended_sms = $v->can_send_sms ? ($h ? $h->sended_sms : false) : true;
+
+            $sended_whatsapp = $v->can_send_whatsapp ? ($h ? $h->sended_whatsapp : false) : true;
+
+            return ($sended_sms && $sended_whatsapp);
+        });
+    }
+
+    /**
+     * @return \Illuminate\Support\Collection
+     */
+    public function unprocessedGuests()
+    {
+        /**
+         * @var  \Illuminate\Support\Collection
+         */
+        $guests = $this->guests;
+
+        return $guests->filter(function (Guest $v) {
+            $h = $v->historical;
+
+            $sended_sms = $v->can_send_sms && ($h ? !$h->sended_sms : true);
+
+            $sended_whatsapp = $v->can_send_whatsapp && ($h ? !$h->sended_whatsapp : true);
+
+            return ($sended_sms || $sended_whatsapp);
+        });
+    }
+
+    /**
+     * @param Event $event
+     */
+    public function status()
+    {
+        return [
+            'processed' => $this->processedGuests()->count(),
+            'total' => $this->guests()->count(),
+            'consumed' => $this->totalConsumeds()
+        ];
+    }
+
     /**
      * @return int
      */

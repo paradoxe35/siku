@@ -10,7 +10,6 @@ const Help = () => {
     const { t } = useTranslation();
     const message = `
         - ${t('Enregistrez vos invités, vous pouvez enregistrer et envoyer l\'invitation en même temps')}. <br>
-        - ${t('Il serait bon d\'enregistrer tous les invités, puis d\'envoyer toutes les invitations à la fois')}. <br>
         - ${t('Pour d\'autres informations, veuillez suivre les instructions ci-dessous ou contactez-nous')}. <br>
     `
     return <>

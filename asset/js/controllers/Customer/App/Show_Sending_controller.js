@@ -2,6 +2,8 @@
 import { Controller } from "stimulus"
 import { ApiRequest } from "@/js/api/api"
 import { DispachEventGuestDetail, Event_Open_Guest_Socket, Event_Process_Queue } from "@/js/react/vars"
+import { ReduxDispatch } from "@/js/store"
+import { putEventStatus } from "@/js/store/features/product/EventStatusSlice"
 
 let EchoSocket = null
 
@@ -16,16 +18,16 @@ export default class extends Controller {
     }
 
     connect() {
-        window.addEventListener(Event_Process_Queue, this.fromEvent)
+        window.addEventListener(Event_Process_Queue, this.fromProcessQueueEvent)
         window.addEventListener(Event_Open_Guest_Socket, this.initSocket)
     }
 
     disconnect() {
-        window.removeEventListener(Event_Process_Queue, this.fromEvent)
+        window.removeEventListener(Event_Process_Queue, this.fromProcessQueueEvent)
         window.removeEventListener(Event_Open_Guest_Socket, this.initSocket)
     }
 
-    fromEvent = (e) => {
+    fromProcessQueueEvent = (e) => {
         const { detail: { status } } = e
         this.queueProcess(status)
     }
@@ -42,7 +44,14 @@ export default class extends Controller {
         const p = status.processed || 0
         const t = status.total || 0
         this.show()
-        this.setPourcentage((t > 0 ? (p * 100 / t) : 0))
+        const prt = (t > 0 ? (p * 100 / t) : 0);
+        this.setPourcentage(Math.floor(prt))
+        if (prt >= 100) {
+            this.successProgress()
+            window.setTimeout(() => {
+                this.hide()
+            }, 7000)
+        }
     }
 
 
@@ -55,25 +64,37 @@ export default class extends Controller {
             .listen('.processed.guest', this.onSocketData.bind(this, e))
     }
 
-    onSocketData = ({ detail }, { status, data }) => {
-        detail && this.showStatus(status)
-        DispachEventGuestDetail(data)
+    dispatchToAppState({ processed, consumed }) {
+        ReduxDispatch(putEventStatus({
+            used_amount: consumed,
+            sended: processed
+        }))
+    }
+
+    onSocketData = (e, { status, data }) => {
+        !e && this.showStatus(status)
+        status && this.dispatchToAppState(status)
+        data && DispachEventGuestDetail(data)
     }
 
     setPourcentage(pourcent) {
-        const progress = this.element.querySelector('[role="progressbar"]')
+        const progress = this.progress
         progress.setAttribute('aria-valuenow', pourcent)
         this.targets.find('pourcentage').textContent = pourcent
         // @ts-ignore
-        progress.style.width = pourcent + 'px'
+        progress.style.width = pourcent + '%'
+    }
+
+    successProgress() {
+        this.progress.classList.replace('bg-default', 'bg-success')
     }
 
     show() {
+        this.progress.classList.replace('bg-success', 'bg-default')
         const l = this.data.get('showClass')
         if (!this.element.classList.contains(l)) {
             this.element.classList.add(l)
         }
-
     }
 
     hide() {
@@ -81,6 +102,10 @@ export default class extends Controller {
         if (this.element.classList.contains(l)) {
             this.element.classList.remove(l)
         }
+    }
+
+    get progress() {
+        return this.targets.find('progress')
     }
 
 }
