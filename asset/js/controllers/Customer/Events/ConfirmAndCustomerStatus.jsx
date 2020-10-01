@@ -5,9 +5,9 @@ import { useTranslation } from "react-i18next";
 import { EventContext } from '@js/react/contexts';
 import { DefaultButton } from '@/js/react/components/Buttons';
 import { TurbolinksApp } from '@/js/modules/turbolinks';
-import { ApiRequest } from '@/js/api/api';
 import { URLS } from '@/js/react/vars';
 import { setBalanceAmount } from '@/js/store/features/BalanceSlice';
+import { useFetch } from '@/js/react/hooks';
 
 const EProfil = ({ }) => {
     const { t } = useTranslation();
@@ -51,19 +51,18 @@ const EProfil = ({ }) => {
 
 const ValidateCustomPayment = () => {
     const { t } = useTranslation();
-    const [loading, setLoading] = useState(false)
     const event = useContext(EventContext)
     const inputField = useRef(null)
     //redux store dispacher
     const dispache = useDispatch()
 
+    const { fetchAPi, fetchLoading: loading } = useFetch()
+
     const handleValidation =/** @param { React.FormEvent<HTMLFormElement> } e */  (e) => {
         e.preventDefault()
-        setLoading(true)
         // @ts-ignore
         const form = new FormData(e.target)
-        ApiRequest('post', `${URLS.customPaymentValidate}?event_id=${event.hash}`, form, true)
-            .finally(() => (setLoading(false)))
+        fetchAPi('post', `${URLS.customPaymentValidate}?event_id=${event.hash}`, form, true)
             .then(({ data }) => {
                 // dispache new redux balance 
                 data.confirmed && dispache(setBalanceAmount(data.new_balance))
@@ -93,6 +92,8 @@ const EStatus = ({ handleLoading }) => {
     const { t } = useTranslation();
     const [phones, setPhones] = useState([])
     const event = useContext(EventContext)
+    const { ApiRequest } = useFetch()
+
     const goToHome = function () {
         TurbolinksApp.isc.visit(event.route)
     }

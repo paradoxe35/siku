@@ -10,12 +10,12 @@ import RowDivider from '@/js/react/components/RowDivider';
 import { debounce } from '@/js/functions/functions';
 import { URLS } from '@/js/react/vars';
 import { DefaultButton } from '@/js/react/components/Buttons';
-import { ApiRequest } from '@/js/api/api';
 import { Notifier } from '@/js/functions/notifier';
 import { Localize } from '@/js/functions/localize';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import { setQrcodeLogoUrl } from '@/js/store/features/product/QrcodeLogoSlice';
+import { useFetch } from '@/js/react/hooks';
 
 
 
@@ -83,7 +83,6 @@ const Qrcode = () => {
     const { t } = useTranslation();
     const canvas = useRef(null)
     const [src, setSrc] = useState('')
-    const [loading, setLoading] = useState(false)
     const dispatch = useDispatch()
 
     const cleaner = useRef(null)
@@ -122,19 +121,17 @@ const Qrcode = () => {
             cleaner.current = true
         }
     }, [src])
+    
+    const { fetchLoading: loading, fetchAPi } = useFetch()
 
     const saveQrImage = () => {
-        setLoading(true)
-        ApiRequest('put', URLS.setQrlogo, { data_url: src }, true)
+        fetchAPi('put', URLS.setQrlogo, { data_url: src }, true)
             .then(({ data: { logo_path } }) => {
                 Notifier.sussess(Localize({
                     fr: 'Enregisté',
                     en: 'saved'
                 }))
                 dispatch(setQrcodeLogoUrl(logo_path))
-            })
-            .finally(() => {
-                setLoading(false)
             })
     }
 

@@ -49,12 +49,15 @@ Route::prefix('customer')
             ->group(function () {
                 Route::name('event')
                     ->group(function () {
-                        Route::get('/product', 'ProductController@index')->name('.product');
-                        Route::get('/utilization', 'UtilizationController@index')->name('.utilization');
-                        Route::get('/report', 'ReportController@index')->name('.report');
-                        Route::get('/settings', 'SettingsController@index')->name('.settings');
+                        Route::namespace('Event')
+                            ->group(function () {
+                                Route::get('/product', 'ProductController@index')->name('.product');
+                                Route::get('/utilization', 'UtilizationController@index')->name('.utilization');
+                                Route::get('/report', 'ReportController@index')->name('.report');
+                                Route::get('/settings', 'SettingsController@index')->name('.settings');
+                            });
                         Route::get('/account', 'AccountController@index')->name('.account');
-                        Route::get('', fn() => redirect(route('customer.event.product')));
+                        Route::get('', fn () => redirect(route('customer.event.product')));
                         //payment routes
                         Route::namespace('Payments')
                             ->prefix('payments')

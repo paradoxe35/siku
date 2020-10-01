@@ -9,16 +9,26 @@
     data-Customer--Product-country-pricing="{{ route('api.country-pricing') }}"
     data-Customer--Product-event-guests="{{ route('api.customer.events.guests.index') }}"
     data-Customer--Product-event-guests-store="{{ route('api.customer.events.guests.store') }}"
-    data-Customer--Product-event-guests-sendall="{{ route('api.customer.events.guests.sendall') }}">
+    data-Customer--Product-event-guests-sendall="{{ route('api.customer.events.guests.sendall') }}"
+    data-Customer--Product-event-menu-profile="{{ route('api.customer.events.event.profile') }}"
+    >
     <div class="row">
         <div class="col">
-            <p><b><span>{{ __('Bienvenue à nouveau') }}, {{ Auth::user()->name }}</span></b></p>
-            <h1 class="display-4">{{ $event['name'] }}</h1>
+            <p>
+                <b>
+                    <span>{{ __('Bienvenue à nouveau') }}, {{ Auth::user()->name }}</span>
+                </b>
+            </p>
         </div>
         <div class="col-auto text-xs">
             <i class="ni ni-calendar-grid-58 text-primary"></i>
             {{ __('Date d\'événement') }} <br>
             <span class="ml-3">({{ $event['event_date'] }})</span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <h1 class="display-4">{{ $event['name'] }}</h1>
         </div>
     </div>
     <div class="row mb-0">

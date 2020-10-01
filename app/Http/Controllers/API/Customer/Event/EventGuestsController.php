@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\API\Customer;
+namespace App\Http\Controllers\API\Customer\Event;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\GuestCollection;
@@ -30,14 +30,15 @@ class EventGuestsController extends Controller
      * @param string $text
      * @param int $radom
      * @param string $hash
+     * @param bool $qr
      * @return string
      */
-    public function parseText($text, $radom, $hash)
+    public function parseText($text, $radom, $hash, $qr)
     {
         $string = str_replace('{code}', $radom, $text);
-        $string = str_replace('{url}', route('qrcode', [
+        $string = str_replace('{url}', $qr ? route('qrcode', [
             'code' => $radom, 'event' => $hash
-        ]), $string);
+        ]) : '', $string);
 
         return $string;
     }
@@ -69,11 +70,12 @@ class EventGuestsController extends Controller
             'country_call' => ['required', 'string']
         ]);
 
+        $qr = !!$request->can_include_qrcode;
         $guests = $event->guests();
 
         $radom = random_int(1000, 99999);
-        $sms = $this->parseText($request->text_sms, $radom, $event->hashid());
-        $whatsapp = $this->parseText($request->text_whatsapp, $radom, $event->hashid());
+        $sms = $this->parseText($request->text_sms, $radom, $event->hashid(), $qr);
+        $whatsapp = $this->parseText($request->text_whatsapp, $radom, $event->hashid(), $qr);
 
         $guest = $guests->create([
             'user_id' => $user->id,
@@ -84,7 +86,7 @@ class EventGuestsController extends Controller
             'autorized' => $request->autorized,
             'text_sms' => $sms,
             'text_whatsapp' => $whatsapp,
-            'can_include_qrcode' => !!$request->can_include_qrcode,
+            'can_include_qrcode' => $qr,
             'can_send_sms' => !!$request->can_send_sms,
             'can_send_whatsapp' => !!$request->can_send_whatsapp,
             'sms_total' => $request->sms_total,
@@ -135,10 +137,10 @@ class EventGuestsController extends Controller
     {
         $process = !$event->InQueueProcess();
 
-        // if ($process) {
-        ProcessInvitations::dispatch($event, $event->id)
-            ->onQueue('invitation');
-        // }
+        if ($process) {
+            ProcessInvitations::dispatch($event, $event->id)
+                ->onQueue('invitation');
+        }
 
         $processed = $event->processedGuests()->count();
 

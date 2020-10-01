@@ -3,17 +3,19 @@ import React, { useCallback, useState, useContext } from 'react'
 import { useTranslation } from "react-i18next";
 import { DefaultButton } from '@/js/react/components/Buttons';
 import { I_PROFILE_STATUS, URLS, LANG } from '@/js/react/vars';
-import { ApiRequest } from '@js/api/api';
 import { EventContext } from '@js/react/contexts';
 import Datetime from '@/js/react/components/Datetime';
 import { Notifier } from '@/js/functions/notifier';
 import { Localize } from '@/js/functions/localize';
+import { useFetch } from '@/js/react/hooks';
 
 
 const CreateEvent = ({ updateComponentIndex, addEvent }) => {
     const { t } = useTranslation();
-    const [loading, setloading] = useState(false)
     const { updateEvent } = useContext(EventContext)
+
+    const { fetchAPi, fetchLoading: loading } = useFetch()
+
     const newState = event => {
         addEvent(event)
         updateEvent(event)
@@ -21,11 +23,9 @@ const CreateEvent = ({ updateComponentIndex, addEvent }) => {
     }
     const handleSubmit = useCallback(/** @param { React.FormEvent<HTMLFormElement> } e */(e) => {
         e.preventDefault()
-        setloading(true)
         // @ts-ignore
         const form = new FormData(e.target)
-        ApiRequest('post', URLS.eventStore, form, true)
-            .finally(() => (setloading(false)))
+        fetchAPi('post', URLS.eventStore, form, true)
             .then(({ data }) => {
                 if (data.data) {
                     Notifier.sussess(Localize({

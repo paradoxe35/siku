@@ -9,7 +9,7 @@ import { InitReact } from '@/js/react/init';
 
 const Guests = lazy(() => import('./guests/Guests'))
 const Templates = lazy(() => import('./template/Templates'))
-const Historical = lazy(() => import('./historical/Historical'))
+const Profile = lazy(() => import('./historical/Profile'))
 const Qrcode = lazy(() => import('./qrcode/Qrcode'))
 
 const CustomerProduct = () => {
@@ -30,8 +30,8 @@ const CustomerProduct = () => {
                 name: t('Invités et envoi')
             },
             {
-                to: '/historical',
-                name: t('Historique')
+                to: '/profile',
+                name: t('Profile')
             },
         ]}
             routes={[
@@ -44,8 +44,8 @@ const CustomerProduct = () => {
                     path: '/templates'
                 },
                 {
-                    component: <Historical />,
-                    path: '/historical'
+                    component: <Profile />,
+                    path: '/profile'
                 },
                 {
                     component: <Qrcode />,

@@ -28,14 +28,14 @@ import {
     validateTemplateSms,
     validateTemplateWhatsapp
 } from '../template/Sections';
-import { ApiRequest } from '@/js/api/api';
 import { Pagination } from 'react-laravel-paginex'
 import CustomCheckbox from '@/js/react/components/CustomCheckbox';
 import { Empty } from '@/js/react/components/Empty';
 import { Notifier } from '@/js/functions/notifier';
-import { useFullLoading } from '@/js/react/hooks';
+import { useFetch, useFullLoading } from '@/js/react/hooks';
 import { FullLoader } from '@/js/react/components/FullLoader';
 import { putEventStatus } from '@/js/store/features/product/EventStatusSlice';
+import { SkeletonBox } from '@/js/react/components/SkeletonBox';
 
 const SERVICES = {
     ...TEMPLATE_SECTION,
@@ -137,16 +137,16 @@ const ModalEditText = ({ setTextValues, textValues }) => {
  */
 const EstimatePrice = ({ disabledTextField, services, textValues, phone }) => {
     const { t } = useTranslation()
-    const [loading, setLoading] = useState(false)
     const [prices, setPrices] = useState(null)
+    const { fetchLoading: loading, fetchAPi } = useFetch()
+
 
     const onClick = useCallback(() => {
         if (disabledTextField) return
         const dataPhone = parsePhoneNumber(phone)
         // @ts-ignore
         const sms = smsCount(textValues[SERVICES.sms])
-        setLoading(true)
-        ApiRequest('get', `${URLS.countryPricing}?country_code=${dataPhone.country}`, {}, true)
+        fetchAPi('get', `${URLS.countryPricing}?country_code=${dataPhone.country}`, {}, true)
             .then(({ data: { prices: { sms: smsPrice, whatsapp } } }) => {
                 const p = ((+smsPrice) * +(sms.messages))
                 setPrices({
@@ -154,9 +154,6 @@ const EstimatePrice = ({ disabledTextField, services, textValues, phone }) => {
                     sms: !isNaN(p) ? p.nround(3) : null,
                     whatsapp
                 })
-            })
-            .finally(() => {
-                setLoading(false)
             })
     }, [services, textValues, phone, disabledTextField])
 
@@ -322,8 +319,7 @@ const CreateNewGuest = () => {
         }
     }, [setTextValues, textValues, fields[NEW_GUEST_FORM.name]])
 
-    const [onSave, setOnSave] = useState(false)
-
+    const { fetchLoading: onSave, fetchAPi } = useFetch()
     /**
      * @param { React.FormEvent<HTMLFormElement> } e 
      */
@@ -359,9 +355,7 @@ const CreateNewGuest = () => {
         form.append(NEW_GUEST_FORM.country_code, dataPhone.country);
         form.append(NEW_GUEST_FORM.country_call, dataPhone.countryCallingCode);
 
-        setOnSave(true)
-        ApiRequest('post', URLS.eventGuestsStore, form, true)
-            .finally(() => { setOnSave(false) })
+        fetchAPi('post', URLS.eventGuestsStore, form, true)
             .then(({ data }) => {
                 DispachGuestsDetail(data)
                 Notifier.sussess(t('Créé avec succès !'))
@@ -472,15 +466,13 @@ const CreateNewGuest = () => {
 const ShowList = ({ v, handleDelete }) => {
     const { t } = useTranslation()
 
-    const [loading, setLoading] = useState(false)
+    const { fetchLoading: loading, fetchAPi } = useFetch()
 
     const sms = (v.can_send_sms ? [TEMPLATE_SECTION.sms] : [])
     const whatsapp = (v.can_send_whatsapp ? [TEMPLATE_SECTION.whatsapp] : [])
 
     const send = (v) => {
-        setLoading(true)
-        ApiRequest('post', URLS.eventGuests + '/' + v.id + '/send', {}, true)
-            .finally(() => setLoading(false))
+        fetchAPi('post', URLS.eventGuests + '/' + v.id + '/send', {}, true)
             .then((_res) => {
                 Notifier.sussess(t('Envoi en cours...'))
                 DispachEventOpenGuestSocketDetail(null)
@@ -523,7 +515,7 @@ const ShowList = ({ v, handleDelete }) => {
     </>
 }
 
-const GuestList = ({ datas, setFullLoading }) => {
+export const GuestList = ({ datas, setFullLoading }) => {
     const [listData, setListData] = useState([])
     const dispach = useDispatch()
 
@@ -542,6 +534,8 @@ const GuestList = ({ datas, setFullLoading }) => {
             window.removeEventListener(Event_Guest, onGuestUpdate)
         }
     }, [])
+
+    const { ApiRequest } = useFetch()
 
     const getDataPaginator = useCallback(({ page }) => {
         if (!datas.meta || datas.meta.current_page == page) return
@@ -590,7 +584,6 @@ const GuestList = ({ datas, setFullLoading }) => {
 
 const GuestsListProvider = () => {
     const { t } = useTranslation()
-    const [loading, setLoading] = useState(false)
     const [datas, setDatas] = useState({})
 
     const [showAll, setShowAll] = useState(false)
@@ -602,10 +595,10 @@ const GuestsListProvider = () => {
 
     const { fullLoading, parentElemt, setFullLoading } = useFullLoading()
 
+    const { fetchLoading: loading, fetchAPi, ApiRequest } = useFetch()
+
     useEffect(() => {
-        setLoading(true)
-        ApiRequest('get', URLS.eventGuests)
-            .finally(() => setLoading(false))
+        fetchAPi('get', URLS.eventGuests)
             .then(({ data }) => setDatas(data))
         window.addEventListener(Event_Guests_Name, handleGuestList)
         return () => {
@@ -659,8 +652,7 @@ const GuestsListProvider = () => {
         <div style={{ maxHeight: "600px", overflowY: "auto" }}>
             <GuestList datas={datas} setFullLoading={setFullLoading} />
         </div>
-        {/* @ts-ignore */}
-        {loading ? <skeleton-box height="50" lines="3" /> : ''}
+        {loading ? <SkeletonBox height="50" lines="3" /> : ''}
         {/*  @ts-ignore */}
         {!loading && datas.meta && !datas.meta.total ? (
             <div className="mt-5">

@@ -9,11 +9,11 @@ import { useDispatch } from 'react-redux';
 import { setTemplateTextAreaValue, setTemplateNameValue, fetchEventTemplates, eventTemplateAdded, eventTemplateRemoved } from '@/js/store/features/product/TemplatesSlice';
 import { URLS, ASYNC } from '@/js/react/vars';
 import { Empty } from '@/js/react/components/Empty';
-import { Notifier } from '@/js/functions/notifier';
-import { ApiRequest } from '@/js/api/api';
 import RowDivider from '@/js/react/components/RowDivider';
 import ModalConfirm from '@/js/react/components/ModalConfirm';
 import { caseSection, KeysRequiredInText, List, ListDescriptionText, SectionView, smsCount, TEMPLATE_SECTION, TextAreatEdit, useItemDeletion, useSectionText, validateTemplate } from './Sections';
+import { SkeletonBox } from '@/js/react/components/SkeletonBox';
+import { useFetch } from '@/js/react/hooks';
 
 
 const defaultTemplate = {
@@ -107,9 +107,10 @@ const TemplateNameField = () => {
 const NewTemplate = () => {
     const requiredKeys = KeysRequiredInText
     const { t } = useTranslation();
-    const [loading, setLoading] = useState(false)
     const dispatch = useDispatch()
     const formElement = useRef(null)
+    const { fetchAPi, fetchLoading: loading } = useFetch()
+
 
     /**
     * @type { { sms: string, whatsapp: string }} 
@@ -123,7 +124,6 @@ const NewTemplate = () => {
     const handleSubmittion = async (e) => {
         e.preventDefault()
         if (!validateTemplate(templateTextarea, requiredKeys)) return
-        setLoading(true)
 
         const smsMeta = smsCount(templateTextarea.sms)
         // @ts-ignore
@@ -133,12 +133,11 @@ const NewTemplate = () => {
         form.append(NEW_TEMPLATE_FORM.text_sms, templateTextarea.sms)
         form.append(NEW_TEMPLATE_FORM.text_whatsapp, templateTextarea.whatsapp)
 
-        ApiRequest('post', URLS.eventTemplatesStore, form, true)
+        fetchAPi('post', URLS.eventTemplatesStore, form, true)
             .then(({ data: { data } }) => dispatch(eventTemplateAdded(data)))
             .finally(() => {
                 formElement.current.querySelector(`[name=${NEW_TEMPLATE_FORM.name}]`)
                     .value = ''
-                setLoading(false)
             })
     }
 
@@ -172,7 +171,7 @@ const TemplatesList = () => {
         deletionLoading
     } = useItemDeletion()
 
-
+    const { ApiRequest } = useFetch()
 
     const deleteItem = useCallback(() => {
         if (!deletionId) return
@@ -202,8 +201,7 @@ const TemplatesList = () => {
                 <ModalConfirm loading={deletionLoading} onConfirm={deleteItem} ref={modalConfirm} />
             </>
         ) : ''}
-        {/* @ts-ignore */}
-        {loading == ASYNC.pending ? <skeleton-box height="50" lines="3" /> : ''}
+        {loading == ASYNC.pending ? <SkeletonBox height="50" lines="3" /> : ''}
         {loading == ASYNC.idle && !ids.length ? (
             <div className="mt-5">
                 <Empty message={t('Aucun modèle enregistré!')} />

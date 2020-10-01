@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Customer;
+namespace App\Http\Controllers\Customer\Event;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class UtilizationController extends Controller
+class ReportController extends Controller
 {
     public function __construct()
     {
@@ -18,6 +18,6 @@ class UtilizationController extends Controller
      */
     public function index()
     {
-        return view('customer.utilization');
+        return view('customer.report');
     }
 }

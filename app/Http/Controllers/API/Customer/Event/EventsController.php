@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\API\Customer;
+namespace App\Http\Controllers\API\Customer\Event;
 
 use App\Files\Images\ImageCompression;
 use App\Http\Controllers\Controller;

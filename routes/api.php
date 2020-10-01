@@ -15,10 +15,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
 Route::namespace('API')
     ->name('api.')
     ->group(function () {
@@ -28,25 +24,30 @@ Route::namespace('API')
                     ->prefix('customer')
                     ->name('customer.')
                     ->group(function () {
-                        Route::put('events/{event}/set-qr-code-logo', 'EventsController@setQcodeLogo')
-                            ->name('events.set-qr-code-logo');
-                        
-                        Route::get('events/{event}/in-queue-process', "EventsController@inQueueProcess")
-                            ->name('events.in-queue-process');
+                        Route::namespace('Event')
+                            ->group(function () {
+                                Route::put('events/{event}/set-qr-code-logo', 'EventsController@setQcodeLogo')
+                                    ->name('events.set-qr-code-logo');
 
-                        Route::apiResource('events', 'EventsController');
-                        Route::apiResource('events.templates', "EventTemplatesController")
-                            ->except(['update', 'show']);
+                                Route::get('events/{event}/in-queue-process', "EventsController@inQueueProcess")
+                                    ->name('events.in-queue-process');
 
-                        Route::apiResource('events.guests', "EventGuestsController")
-                            ->except(['update', 'show']);
+                                Route::apiResource('events', 'EventsController');
+                                Route::apiResource('events.templates', "EventTemplatesController")
+                                    ->except(['update', 'show']);
 
-                        Route::post('events/{event}/guests/{guest}/send', "EventGuestsController@send")
-                            ->name('events.guests.send');
-                        
-                        Route::post('events/{event}/guests/sendall', "EventGuestsController@sendall")
-                            ->name('events.guests.sendall');
+                                Route::apiResource('events.guests', "EventGuestsController")
+                                    ->except(['update', 'show']);
 
+                                Route::post('events/{event}/guests/{guest}/send', "EventGuestsController@send")
+                                    ->name('events.guests.send');
+
+                                Route::post('events/{event}/guests/sendall', "EventGuestsController@sendall")
+                                    ->name('events.guests.sendall');
+
+                                Route::get('events/{event}/profile', "EventProfileController@profile")
+                                    ->name('events.event.profile');
+                            });
                         Route::namespace('Payments')
                             ->name('payments.')
                             ->group(function () {

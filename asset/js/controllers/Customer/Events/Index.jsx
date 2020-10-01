@@ -6,8 +6,7 @@ import { FullLoader } from '@/js/react/components/FullLoader';
 import { I_EVENTS, EVENT_VALUE, I_NEW_EVENT, URLS } from '@/js/react/vars';
 import { EventContext } from '@js/react/contexts';
 import { EventsList } from './EventsList';
-import { ApiRequest } from '@/js/api/api';
-import { useFullLoading } from '@/js/react/hooks';
+import { useFetch, useFullLoading } from '@/js/react/hooks';
 import { InitReact } from '@/js/react/init';
 
 const CreateEvent = lazy(() => import('./CreateEvent'))
@@ -23,6 +22,8 @@ const CustomerEvents = ({ setLoading = null, handleLoading }) => {
     //fetch events
     const [events, setEvents] = useState([])
     const [fetchEventsUrl, setFetchEventsUrl] = useState(URLS.events)
+    const { ApiRequest } = useFetch()
+
 
     // fetch all events
     useEffect(() => {

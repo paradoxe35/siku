@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux'
 import { Empty } from '@/js/react/components/Empty';
 import { useTranslation } from "react-i18next";
 import { TurbolinksApp } from '@/js/modules/turbolinks';
+import { SkeletonBox } from '@/js/react/components/SkeletonBox';
 
 
 export const EventsList = ({ events = [], started }) => {
@@ -42,7 +43,7 @@ export const EventsList = ({ events = [], started }) => {
         <>
             {(!started && !events.length) && <Empty message={message} />}
             {/* @ts-ignore */}
-            {started ? <skeleton-box height="40" lines="3" /> : content}
+            {started ? <SkeletonBox height="40" lines="3" /> : content}
         </>
     )
 }

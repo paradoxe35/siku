@@ -1,28 +1,26 @@
 //@ts-check
-
-import { useState, useEffect, useRef } from "react"
+import { useState, useRef } from "react"
 import { ApiRequest } from "../api/api"
 
-/**
- * @param { number } mustRefreshValue
- */
-export const useFetch = (mustRefreshValue = 0) => {
-    const [loading, setLoading] = useState(false)
+export const useFetch = (_loading = false) => {
+    const [loading, setLoading] = useState(_loading)
     const [error, setError] = useState(null)
     const [datas, setDatas] = useState(null)
-    const [request, setRequest] = useState({
-        url: null,
-        method: 'get',
-        datas: null
-    })
-    useEffect(() => {
-        if (!request.url || !request.method || !request.datas) return;
+    /**
+     * @param {string} method 
+     * @param {string} url 
+     * @param { any? } datas 
+     * @param { any ?} mustNotifierErrors 
+     * @returns { Promise<import('axios').AxiosResponse<any>> }
+     */
+    const fetchAPi = (method, url, datas = {}, mustNotifierErrors = false) => {
         setError(null)
         setLoading(true)
-        const { method, url, datas } = request
-        ApiRequest(method, url, datas)
-            .then(res => {
+        //@ts-ignore
+        return ApiRequest(method, url, datas, mustNotifierErrors)
+            .then((res) => {
                 setDatas(res.data)
+                return res
             })
             .catch((err) => {
                 setError(err)
@@ -30,9 +28,10 @@ export const useFetch = (mustRefreshValue = 0) => {
             .finally(() => {
                 setLoading(false)
             })
-    }, [mustRefreshValue]);
 
-    return { fetchLoading: loading, error, setRequest, datas }
+    }
+
+    return { fetchLoading: loading, error, datas, fetchAPi, ApiRequest }
 }
 
 
