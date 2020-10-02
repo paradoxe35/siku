@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-use App\Http\Resources\Event;
+use App\Http\Resources\Event\Event;
 use App\Http\View\Composers\SidebarComposer;
 use App\View\Components\SpinningDots;
 use Illuminate\Support\Facades\View;

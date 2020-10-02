@@ -15,6 +15,7 @@ export default class extends Controller {
         eventGuestsStore: this.data.get('eventGuestsStore'),
         eventGuestsSendall: this.data.get('eventGuestsSendall'),
         eventMenuProfile: this.data.get('eventMenuProfile'),
+        eventProfileItems: this.data.get('eventProfileItems'),
     }
 
     initialize() {

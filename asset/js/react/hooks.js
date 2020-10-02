@@ -1,5 +1,5 @@
 //@ts-check
-import { useState, useRef } from "react"
+import { useState, useRef, useCallback } from "react"
 import { ApiRequest } from "../api/api"
 
 export const useFetch = (_loading = false) => {
@@ -43,5 +43,20 @@ export const useFullLoading = () => {
         parentElemt,
         fullLoading: loading,
         setFullLoading: setLoading
+    }
+}
+
+
+
+export const usePhoneInput = () => {
+    const [phone, setPhone] = useState('')
+    const onPhoneValueChange = useCallback((v) => {
+        setPhone(v)
+    }, [setPhone])
+
+    return {
+        phone,
+        setPhone,
+        onPhoneValueChange
     }
 }

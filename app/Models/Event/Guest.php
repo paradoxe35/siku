@@ -46,6 +46,25 @@ class Guest extends Model
         return boolval($value);
     }
 
+
+    /**
+     * @return bool
+     */
+    public function sendedSms()
+    {
+        $h = $this->historical;
+        return $h && !$h->error && $h->sended_sms;
+    }
+
+    /**
+     * @return bool
+     */
+    public function sendedWhatsapp()
+    {
+        $h = $this->historical;
+        return $h && !$h->error && $h->sended_whatsapp;
+    }
+
     /**
      * @param mixed $value
      * 

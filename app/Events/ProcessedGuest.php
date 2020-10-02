@@ -2,7 +2,7 @@
 
 namespace App\Events;
 
-use App\Http\Resources\Guest as ResourcesGuest;
+use App\Http\Resources\Guest\Guest as ResourcesGuest;
 use App\Models\Event\Guest;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;

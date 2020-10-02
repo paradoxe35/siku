@@ -39,6 +39,9 @@ Route::namespace('API')
                                 Route::apiResource('events.guests', "EventGuestsController")
                                     ->except(['update', 'show']);
 
+                                Route::apiResource('events.validators', "EventValidatorController")
+                                    ->except(['update', 'show']);
+
                                 Route::post('events/{event}/guests/{guest}/send', "EventGuestsController@send")
                                     ->name('events.guests.send');
 
@@ -47,6 +50,9 @@ Route::namespace('API')
 
                                 Route::get('events/{event}/profile', "EventProfileController@profile")
                                     ->name('events.event.profile');
+
+                                Route::get('events/{event}/profile/items', "EventProfileController@profileItems")
+                                    ->name('events.event.profile.items');
                             });
                         Route::namespace('Payments')
                             ->name('payments.')

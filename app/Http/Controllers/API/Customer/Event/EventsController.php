@@ -4,8 +4,8 @@ namespace App\Http\Controllers\API\Customer\Event;
 
 use App\Files\Images\ImageCompression;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\Event as ResourcesEvent;
-use App\Http\Resources\EventCollection;
+use App\Http\Resources\Event\Event as ResourcesEvent;
+use App\Http\Resources\Event\EventCollection;
 use App\Models\DefaultBalance;
 use App\Models\Event\Event;
 use App\Repositories\EventRepository;

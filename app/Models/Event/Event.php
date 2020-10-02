@@ -125,36 +125,50 @@ class Event extends Model
          */
         $guests = $this->guests;
 
-        return $guests->filter(function (Guest $v) {
-            $h = $v->historical;
+        return $guests->filter(function (Guest $guest) {
+            $h = $guest->historical;
 
-            $sended_sms = $v->can_send_sms ? ($h ? $h->sended_sms : false) : true;
+            $sended_sms = $guest->can_send_sms ? ($h ? $h->sended_sms : false) : true;
 
-            $sended_whatsapp = $v->can_send_whatsapp ? ($h ? $h->sended_whatsapp : false) : true;
+            $sended_whatsapp = $guest->can_send_whatsapp ? ($h ? $h->sended_whatsapp : false) : true;
 
-            return ($sended_sms && $sended_whatsapp);
+            return ($sended_sms && $sended_whatsapp && ($h && !$h->error));
         });
     }
 
     /**
      * @return \Illuminate\Support\Collection
      */
-    public function unprocessedGuests()
+    public function unprocessedGuests($group = false)
     {
         /**
          * @var  \Illuminate\Support\Collection
          */
         $guests = $this->guests;
 
-        return $guests->filter(function (Guest $v) {
-            $h = $v->historical;
+        $unprocessed = $guests->filter(function (Guest $guest) {
+            $h = $guest->historical;
 
-            $sended_sms = $v->can_send_sms && ($h ? !$h->sended_sms : true);
+            $sended_sms = $guest->can_send_sms && ($h ? !$h->sended_sms : true);
 
-            $sended_whatsapp = $v->can_send_whatsapp && ($h ? !$h->sended_whatsapp : true);
+            $sended_whatsapp = $guest->can_send_whatsapp && ($h ? !$h->sended_whatsapp : true);
 
-            return ($sended_sms || $sended_whatsapp);
+            return (($h && $h->error) || $sended_sms || $sended_whatsapp);
         });
+
+        $grouped = [];
+        if ($group) {
+            $grouped['wait'] = $unprocessed->filter(function (Guest $guest) {
+                return !$guest->historical;
+            });
+
+            $grouped['fail'] =  $unprocessed->filter(function (Guest $guest) {
+                $h = $guest->historical;
+                return $h && $h->error;
+            });
+        }
+
+        return !$group ? $unprocessed : (object) $grouped;
     }
 
     /**
@@ -248,5 +262,13 @@ class Event extends Model
     public function guests()
     {
         return $this->hasMany(Guest::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function validators()
+    {
+        return $this->hasMany(Validator::class);
     }
 }

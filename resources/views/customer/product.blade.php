@@ -11,7 +11,7 @@
     data-Customer--Product-event-guests-store="{{ route('api.customer.events.guests.store') }}"
     data-Customer--Product-event-guests-sendall="{{ route('api.customer.events.guests.sendall') }}"
     data-Customer--Product-event-menu-profile="{{ route('api.customer.events.event.profile') }}"
-    >
+    data-Customer--Product-event-profile-items="{{ route('api.customer.events.event.profile.items') }}">
     <div class="row">
         <div class="col">
             <p>

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\API\Customer\Event;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\GuestCollection;
+use App\Http\Resources\Guest\GuestCollection;
 use App\Jobs\ProcessInvitations;
 use App\Jobs\ProcessInvitation;
 use App\Models\Event\Event;

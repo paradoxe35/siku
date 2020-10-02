@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\API\Customer\Event;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\Template as ResourcesTemplate;
-use App\Http\Resources\TemplateCollection;
+use App\Http\Resources\Template\Template as ResourcesTemplate;
+use App\Http\Resources\Template\TemplateCollection;
 use App\Models\Event\Event;
 use App\Models\Template\Template;
 use Illuminate\Http\Request;
@@ -49,7 +49,11 @@ class EventTemplatesController extends Controller
             'text_whatsapp' => ['required', 'string']
         ]);
 
-        abort_if($event->templates->count() >= 5, 400, trans('Vous pouvez pas enregistrer plus 4 modèles'));
+        abort_if(
+            $event->templates->count() >= 5,
+            400,
+            trans('Vous pouvez pas enregistrer plus :count modèles', ['count' => 5])
+        );
 
         // store event tamplate
         $template = $event->templates()->create([

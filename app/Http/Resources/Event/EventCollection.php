@@ -1,11 +1,19 @@
 <?php
 
-namespace App\Http\Resources;
+namespace App\Http\Resources\Event;
 
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
-class TemplateCollection extends ResourceCollection
+class EventCollection extends ResourceCollection
 {
+
+    /**
+     * The "data" wrapper that should be applied.
+     *
+     * @var string
+     */
+    public static $wrap = 'events';
+
     /**
      * Transform the resource collection into an array.
      *
