@@ -1,5 +1,5 @@
 //@ts-check
-import React, { Fragment, lazy, Suspense, useRef, useState } from 'react'
+import React, { Fragment, lazy, Suspense, useMemo, useRef, useState } from 'react'
 import { useTranslation } from "react-i18next";
 import { InitReact } from '@/js/react/init';
 import { FullLoader } from '@/js/react/components/FullLoader';
@@ -14,8 +14,16 @@ const CustomerReport = () => {
     const { t } = useTranslation()
     const [tab, setTab] = useState('Overview')
     const parentElemt = useRef(null)
+    const [loading, setLoading] = useState(false)
 
-    const Tabs = { Absent: <Absent />, Attended: <Attended />, Overview: <Overview /> }
+    const Tabs = useMemo(() => ({
+        // @ts-ignore
+        Absent: <Absent setLoading={setLoading} />,
+        // @ts-ignore
+        Attended: <Attended setLoading={setLoading} />,
+        // @ts-ignore
+        Overview: <Overview setLoading={setLoading} />
+    }), [setLoading])
 
     const download = () => {
         window.location = URLS.eventReportDownload
@@ -52,6 +60,7 @@ const CustomerReport = () => {
                 <Suspense fallback={<FullLoader parent={parentElemt.current} />}>
                     {Tabs[tab]}
                 </Suspense>
+                {loading && <FullLoader parent={parentElemt.current} />}
             </div>
         </div>
     </>

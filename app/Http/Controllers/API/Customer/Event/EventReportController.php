@@ -3,7 +3,10 @@
 namespace App\Http\Controllers\API\Customer\Event;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\Absent\AbsentCollection;
+use App\Http\Resources\Attend\AttendCollection;
 use App\Models\Event\Event;
+use App\View\Paginator\CustomPaginator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -50,15 +53,29 @@ class EventReportController extends Controller
      */
     public function attended(Event $event)
     {
-        return [];
+        $datas = $event->attends()->latest()->paginate();
+        return new AttendCollection($datas);
+    }
+
+    /**
+     * @param Event $event
+     * 
+     * @return \Illuminate\Support\Collection
+     */
+    private function absents(Event $event)
+    {
+        $attended = $event->attends->map(fn ($v) => $v->guest_id)->values()->toArray();
+        return $event->guests->filter(fn ($v) => !in_array($v->id, $attended));
     }
 
     /**
      * @return \Illuminate\Http\Response
      */
-    public function absent(Event $event)
+    public function absent(Event $event, CustomPaginator $p)
     {
-        return [];
+        $absents = $this->absents($event);
+        $paginate = $p->paginate($absents->values());
+        return new AbsentCollection($paginate);
     }
 
     /**

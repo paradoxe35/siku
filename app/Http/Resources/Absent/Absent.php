@@ -1,12 +1,11 @@
 <?php
 
-namespace App\Http\Resources\Attend;
+namespace App\Http\Resources\Absent;
 
 use App\Http\Resources\Guest\Guest;
-use App\Http\Resources\Validator\Validator;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class Attend extends JsonResource
+class Absent extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -18,9 +17,7 @@ class Attend extends JsonResource
     {
         return [
             'id' => $this->id,
-            'guest' => new Guest($this->guest),
-            'validator' => new Validator($this->validator),
-            'created_at' => $this->created_at->format('Y-m-d H:i')
+            'guest' => new Guest($this),
         ];
     }
 }

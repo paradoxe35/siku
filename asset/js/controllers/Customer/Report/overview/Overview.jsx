@@ -5,16 +5,18 @@ import { useTranslation } from 'react-i18next';
 import { useFetch } from '@/js/react/hooks';
 import { URLS } from '@/js/react/vars';
 
-export default () => {
+export default ({ setLoading }) => {
     const { t } = useTranslation()
     const [datas, setDatas] = useState({
         labels: [],
         data: []
     })
-    const { fetchAPi, fetchLoading: loading } = useFetch()
+    const { ApiRequest } = useFetch()
 
     useEffect(() => {
-        fetchAPi('get', URLS.eventReportOverview, {}, true)
+        setLoading(true)
+        ApiRequest('get', URLS.eventReportOverview, {}, true)
+            .finally(() => setLoading(false))
             .then(({ data }) => setDatas(data))
     }, [])
 

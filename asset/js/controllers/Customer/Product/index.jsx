@@ -9,7 +9,7 @@ import { InitReact } from '@/js/react/init';
 
 const Guests = lazy(() => import('./guests/Guests'))
 const Templates = lazy(() => import('./template/Templates'))
-const Profile = lazy(() => import('./historical/Profile'))
+const Profile = lazy(() => import('./profile/Profile'))
 const Qrcode = lazy(() => import('./qrcode/Qrcode'))
 
 const CustomerProduct = () => {

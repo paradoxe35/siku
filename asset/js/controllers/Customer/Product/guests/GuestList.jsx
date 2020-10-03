@@ -4,7 +4,7 @@ import Pagination from 'react-laravel-paginex/dist/Pagination'
 import { useDispatch } from 'react-redux'
 import { useItemDeletion, List, ListDescriptionText, TEMPLATE_SECTION } from '../template/Sections'
 import ModalConfirm from '@/js/react/components/ModalConfirm'
-import { useFetch } from '@/js/react/hooks'
+import { useFetch, useListDataPaginator } from '@/js/react/hooks'
 import { Event_Guest, URLS, DispachGuestsDetail, DispachEventOpenGuestSocketDetail } from '@/js/react/vars'
 import { putEventStatus } from '@/js/store/features/product/EventStatusSlice'
 import { Notifier } from '@/js/functions/notifier'
@@ -67,17 +67,18 @@ const ShowList = ({ v, handleDelete }) => {
     </>
 }
 
-export const GuestList = ({ datas, setFullLoading }) => {
-    const [listData, setListData] = useState([])
+/**
+ * 
+ * @param {{  datas: any, setFullLoading: any, filter?:any, url: string  }} param0 
+ */
+export const GuestList = ({ datas, setFullLoading, filter, url }) => {
     const dispach = useDispatch()
 
-    useEffect(() => {
-        setListData(datas.data || [])
-    }, [datas.data])
+    const [listData, setListData] = useListDataPaginator(datas)
 
     const onGuestUpdate = useCallback((e) => {
         const { detail } = e
-        setListData(d => d.map(v => v.id == detail.id ? detail : v))
+        setListData(d => d.data.map(v => v.id == detail.id ? detail : v))
     }, [setListData])
 
     useEffect(() => {
@@ -90,12 +91,15 @@ export const GuestList = ({ datas, setFullLoading }) => {
     const { ApiRequest } = useFetch()
 
     const getDataPaginator = useCallback(({ page }) => {
-        if (!datas.meta || datas.meta.current_page == page) return
+        if (!listData.meta || listData.meta.current_page == page) return
         setFullLoading(true)
-        ApiRequest('get', URLS.eventGuests + '?page=' + page)
+        ApiRequest('get', url + '?page=' + page + '&' + filter)
             .finally(() => setFullLoading(false))
-            .then(({ data }) => DispachGuestsDetail(data))
-    }, [datas])
+            .then(({ data }) => {
+                setListData(data)
+                DispachGuestsDetail(data)
+            })
+    }, [listData])
 
     const {
         deletionId,
@@ -118,15 +122,15 @@ export const GuestList = ({ datas, setFullLoading }) => {
     }, [deletionId]);
 
     return <>
-        {datas.meta && datas.meta.total >
-            datas.meta.per_page && <Pagination
+        {listData.meta && listData.meta.total >
+            listData.meta.per_page && <Pagination
                 buttonIcons={true}
                 prevButtonIcon='ni ni-bold-left'
                 nextButtonIcon='ni ni-bold-right'
                 changePage={getDataPaginator}
-                data={datas} />}
+                data={listData} />}
         <List.Ul>
-            <List.Li data={listData || []}>
+            <List.Li data={listData.data || []}>
                 {v => <ShowList v={v} handleDelete={handleDelete} />}
             </List.Li>
         </List.Ul>

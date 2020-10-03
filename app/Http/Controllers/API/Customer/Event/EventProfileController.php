@@ -5,8 +5,8 @@ namespace App\Http\Controllers\API\Customer\Event;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Guest\GuestCollection;
 use App\Models\Event\Event;
+use App\View\Paginator\CustomPaginator;
 use Illuminate\Http\Request;
-use Illuminate\Pagination\LengthAwarePaginator;
 
 class EventProfileController extends Controller
 {
@@ -36,7 +36,7 @@ class EventProfileController extends Controller
      * 
      * @return \Illuminate\Http\Response
      */
-    public function profileItems(Event $event)
+    public function profileItems(Event $event, CustomPaginator $p)
     {
         $filter = request('filter');
 
@@ -61,7 +61,7 @@ class EventProfileController extends Controller
                 break;
         }
         
-        $paginate = new LengthAwarePaginator($collection->values(), $collection->count(), 12);
+        $paginate = $p->paginate($collection->values());
 
         return new GuestCollection($paginate);
     }

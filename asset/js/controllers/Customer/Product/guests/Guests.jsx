@@ -524,7 +524,7 @@ const GuestsListProvider = () => {
         </div>
         <div className="my-3" />
         <div style={{ maxHeight: "800px", overflowY: "auto" }}>
-            <GuestList datas={datas} setFullLoading={setFullLoading} />
+            <GuestList url={URLS.eventGuests} datas={datas} setFullLoading={setFullLoading} />
         </div>
         {loading ? <SkeletonBox height="50" lines="3" /> : ''}
         {/*  @ts-ignore */}

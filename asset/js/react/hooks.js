@@ -1,5 +1,5 @@
 //@ts-check
-import { useState, useRef, useCallback } from "react"
+import { useState, useRef, useCallback, useEffect } from "react"
 import { ApiRequest } from "../api/api"
 
 export const useFetch = (_loading = false) => {
@@ -45,6 +45,16 @@ export const useFullLoading = () => {
         fullLoading: loading,
         setFullLoading: setLoading
     }
+}
+
+export const useListDataPaginator = (datas) => {
+    const [listData, setListData] = useState(datas)
+
+    useEffect(() => {
+        setListData(datas)
+    }, [datas])
+
+    return [listData, setListData]
 }
 
 
