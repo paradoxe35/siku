@@ -5,5 +5,6 @@
     "/css/style.css": "/css/style.css",
     "/css/module.css": "/css/module.css",
     "/js/qrcode.js": "/js/qrcode.js",
-    "/js/qrcode-app.js": "/js/qrcode-app.js"
+    "/js/qrcode-app.js": "/js/qrcode-app.js",
+    "/js/admin.js": "/js/admin.js"
 }

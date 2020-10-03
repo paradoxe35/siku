@@ -5,9 +5,9 @@ import store from '@js/store'
 import ErrorBoundary from './ErrorBoundary'
 
 const ReduxProvider = ({ children }) => <Provider store={store}>
-    {/* <ErrorBoundary> */}
+    <ErrorBoundary>
         {children}
-    {/* </ErrorBoundary> */}
+    </ErrorBoundary>
 </Provider>
 
 export default ReduxProvider

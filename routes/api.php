@@ -26,6 +26,8 @@ Route::namespace('API')
                     ->group(function () {
                         Route::namespace('Event')
                             ->group(function () {
+
+                                //events controller
                                 Route::put('events/{event}/set-qr-code-logo', 'EventsController@setQcodeLogo')
                                     ->name('events.set-qr-code-logo');
 
@@ -33,27 +35,49 @@ Route::namespace('API')
                                     ->name('events.in-queue-process');
 
                                 Route::apiResource('events', 'EventsController');
+
+                                //templates controller
                                 Route::apiResource('events.templates', "EventTemplatesController")
                                     ->except(['update', 'show']);
 
-                                Route::apiResource('events.guests', "EventGuestsController")
-                                    ->except(['update', 'show']);
-
+                                //validators controller
                                 Route::apiResource('events.validators', "EventValidatorController")
                                     ->except(['update', 'show']);
 
+                                //guest controller
                                 Route::post('events/{event}/guests/{guest}/send', "EventGuestsController@send")
                                     ->name('events.guests.send');
 
                                 Route::post('events/{event}/guests/sendall', "EventGuestsController@sendall")
                                     ->name('events.guests.sendall');
 
+                                Route::apiResource('events.guests', "EventGuestsController")
+                                    ->except(['update', 'show']);
+
+                                //profile controller
                                 Route::get('events/{event}/profile', "EventProfileController@profile")
                                     ->name('events.event.profile');
 
                                 Route::get('events/{event}/profile/items', "EventProfileController@profileItems")
                                     ->name('events.event.profile.items');
+
+                                //report controller
+                                Route::get('events/{event}/report/overview', "EventReportController@overview")
+                                    ->name('events.event.report.overview');
+
+                                Route::get('events/{event}/report/attended', "EventReportController@attended")
+                                    ->name('events.event.report.attended');
+
+                                Route::get('events/{event}/report/absent', "EventReportController@absent")
+                                    ->name('events.event.report.absent');
+
+                                Route::get('events/{event}/report/download', "EventReportController@download")
+                                    ->withoutMiddleware(['api', 'auth:api'])
+                                    ->middleware(['web', 'auth'])
+                                    ->name('events.event.report.download');
                             });
+
+
                         Route::namespace('Payments')
                             ->name('payments.')
                             ->group(function () {

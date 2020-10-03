@@ -9,7 +9,7 @@ import { URLS } from '@/js/react/vars';
 import { setBalanceAmount } from '@/js/store/features/BalanceSlice';
 import { useFetch } from '@/js/react/hooks';
 
-const EProfil = ({ }) => {
+const EProfil = () => {
     const { t } = useTranslation();
     const event = useContext(EventContext)
     // @ts-ignore

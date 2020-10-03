@@ -19,6 +19,9 @@
             "@js/*": [
                 "asset/js/*"
             ],
+            "@admin/*": [
+                "asset/js/admin/*"
+            ],
             "@sass/*": [
                 "asset/sass/*"
             ],

@@ -24,6 +24,7 @@ export const useFetch = (_loading = false) => {
             })
             .catch((err) => {
                 setError(err)
+                return Promise.reject(err)
             })
             .finally(() => {
                 setLoading(false)

@@ -1,6 +1,7 @@
 //@ts-check
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
+import en from "./translation/en";
 
 
 export const i18nReactInit = (locale) => {
@@ -9,7 +10,7 @@ export const i18nReactInit = (locale) => {
         .init({
             resources: {
                 en: {
-                    translation: {}
+                    translation: en
                 }
             },
             lng: locale,

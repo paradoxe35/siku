@@ -271,4 +271,12 @@ class Event extends Model
     {
         return $this->hasMany(Validator::class);
     }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function attends()
+    {
+        return $this->hasMany(Attend::class);
+    }
 }

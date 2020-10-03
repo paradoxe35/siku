@@ -21,6 +21,36 @@ class SendHistorical extends Model
         'user_id', 'event_id', 'guest_id', 'consumeds', 'sended_sms', 'sended_whatsapp', 'retry', 'error', 'error_message'
     ];
 
+
+    /**
+     * @param mixed $value
+     * 
+     * @return bool 
+     */
+    public function getSendedSmsAttribute($value)
+    {
+        return boolval($value);
+    }
+
+    /**
+     * @param mixed $value
+     * 
+     * @return bool 
+     */
+    public function getSendedWhatsappAttribute($value)
+    {
+        return boolval($value);
+    }
+
+    /**
+     * @param mixed $value
+     * 
+     * @return bool 
+     */
+    public function getErrorAttribute($value)
+    {
+        return boolval($value);
+    }
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
