@@ -66,6 +66,23 @@ class Guest extends Model
     }
 
     /**
+     * @return array
+     */
+    public function services()
+    {
+        $arr = [];
+        if ($this->can_send_sms) {
+            $arr[] = 'SMS';
+        }
+
+        if ($this->can_send_whatsapp) {
+            $arr[] = 'WhatsApp';
+        }
+
+        return $arr;
+    }
+
+    /**
      * @param mixed $value
      * 
      * @return bool 

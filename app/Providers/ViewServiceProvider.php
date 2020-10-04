@@ -30,7 +30,7 @@ class ViewServiceProvider extends ServiceProvider
     public function boot()
     {
         View::composer('*', function ($view) {
-            $view->with('app_name', 'Ndowa');
+            $view->with('app_name', 'Siku');
 
             $view->with('langs', [
                 ['name' => trans('Anglais'), 'value' => 'en'],

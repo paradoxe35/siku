@@ -9,9 +9,15 @@ use App\Models\Event\Event;
 use App\View\Paginator\CustomPaginator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Barryvdh\DomPDF\PDF;
+
 
 class EventReportController extends Controller
 {
+
+    // private function query(Event $event) {
+    //     return $event->query()->with(['attends', 'guests']);
+    // } 
 
     /**
      * @param \Illuminate\Database\Eloquent\Builder $model
@@ -48,17 +54,28 @@ class EventReportController extends Controller
         return $this->queryChart($attend);
     }
 
+
+    /**
+     * @param Event $event
+     * 
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function queryAttended(Event $event)
+    {
+        return $event->attends()->with(['validator', 'guest'])->latest();
+    }
+
     /**
      * @return \Illuminate\Http\Response
      */
     public function attended(Event $event)
     {
-        $datas = $event->attends()->latest()->paginate();
+        $datas = $this->queryAttended($event)->paginate();
         return new AttendCollection($datas);
     }
 
     /**
-     * @param Event $event
+     * @param Event|\Illuminate\Database\Eloquent\Builder $event
      * 
      * @return \Illuminate\Support\Collection
      */
@@ -81,8 +98,18 @@ class EventReportController extends Controller
     /**
      * @return \Illuminate\Http\Response
      */
-    public function download(Event $event)
+    public function download($event, Event $evt, PDF $pdf)
     {
-        return 'salut';
+        $event = $evt->findByHashid($event);
+        $attended = $this->queryAttended($event)->get();
+        $absents = $this->absents($event);
+
+        return $pdf->loadView('template.report.general', [
+            'event' => $event,
+            'attended' => $attended,
+            'absents' => $absents->values()
+        ])->setPaper('a4', 'landscape')
+            ->setWarnings(false)
+            ->download("report-{$event->hashid()}.pdf");
     }
 }

@@ -78,7 +78,11 @@ export const GuestList = ({ datas, setFullLoading, filter, url }) => {
 
     const onGuestUpdate = useCallback((e) => {
         const { detail } = e
-        setListData(d => d.data.map(v => v.id == detail.id ? detail : v))
+        setListData(d => {
+            const j = {...d}
+            j.data = d.data.map(v => v.id == detail.id ? detail : v)
+            return j
+        })
     }, [setListData])
 
     useEffect(() => {

@@ -130,7 +130,9 @@ class EventGuestsController extends Controller
      */
     public function send(Event $event, Guest $guest)
     {
-        ProcessInvitation::dispatch($guest)->onQueue('invitation');
+        ProcessInvitation::dispatch($guest)
+            ->delay(now()->addSecond())
+            ->onQueue('invitation');
         return [true];
     }
 
@@ -145,6 +147,7 @@ class EventGuestsController extends Controller
 
         if ($process) {
             ProcessInvitations::dispatch($event, $event->id)
+                ->delay(now()->addSecond())
                 ->onQueue('invitation');
         }
 
