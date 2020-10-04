@@ -5,6 +5,7 @@ namespace App\Infrastructure\Send;
 use App\Models\Event\Event;
 use App\Models\Event\Guest;
 use App\Models\Event\SendHistorical;
+use App\Models\Event\Validator;
 
 /**
  * [Description Send]
@@ -66,6 +67,14 @@ class Send
         $item->refresh();
 
         return $item;
+    }
+
+    /**
+     * @param Validator $item
+     */
+    public function proceedValidator(Validator $item)
+    {
+
     }
 
     protected function makeAhistorical()

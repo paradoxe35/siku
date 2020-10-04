@@ -14,11 +14,13 @@ import ModalConfirm from '@/js/react/components/ModalConfirm';
 import { caseSection, KeysRequiredInText, List, ListDescriptionText, SectionView, smsCount, TEMPLATE_SECTION, TextAreatEdit, useItemDeletion, useSectionText, validateTemplate } from './Sections';
 import { SkeletonBox } from '@/js/react/components/SkeletonBox';
 import { useFetch } from '@/js/react/hooks';
+import store from '@js/store'
 
+const { event_date } = store.getState().workingEvent
 
 const defaultTemplate = {
-    en: (`Dear brother/sister {name}, I want to express my wish to see you on my special wedding day, which will be on 2020-10-01 14:08 at the Les Victorieux room, and this is why I am sending you this message. I look forward to seeing you on the day I tie the knot because the ceremony will be a little less complete without you. I love you!\nYour invitation code is: {code}.\n {url} use this link, if you want your code in picture.`).trim(),
-    fr: (`Cher frère / sœur {name}, je veux vous exprimer mon souhait de vous voir le jour de mon mariage spécial, qui sera au date du 2020-10-01 14:08 à la salle Les Victorieux, et c'est pourquoi je vous envoie ce message. J'ai hâte de vous voir le jour où je me marierai car la cérémonie sera un peu moins complète sans vous. Je t'aime!\nVotre code d'invitation est: {code}.\n {url} utiliser ce lien, si vous voulez votre code en image.`).trim()
+    en: (`Dear brother/sister {name}, I want to express my wish to see you on my special wedding day, which will be on ${event_date} at the Les Victorieux room, and this is why I am sending you this message. I look forward to seeing you on the day I tie the knot because the ceremony will be a little less complete without you. I love you!\nYour invitation code is: {code}.\n {url} use this link, if you want your code in picture.`).trim(),
+    fr: (`Cher frère / sœur {name}, je veux vous exprimer mon souhait de vous voir le jour de mon mariage spécial, qui sera au date du ${event_date} à la salle Les Victorieux, et c'est pourquoi je vous envoie ce message. J'ai hâte de vous voir le jour où je me marierai car la cérémonie sera un peu moins complète sans vous. Je t'aime!\nVotre code d'invitation est: {code}.\n {url} utiliser ce lien, si vous voulez votre code en image.`).trim()
 }
 
 

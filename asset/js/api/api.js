@@ -71,15 +71,30 @@ export default class Api {
         }
     }
 
-    static async put(url, datas = {}, config = {}) {
+    static toObject(datas) {
         let $datas = {};
         if (datas instanceof FormData) {
             datas.forEach((value, key) => ($datas[key] = value))
         } else {
             $datas = { ...datas }
         }
+        return $datas;
+    }
+
+    static async put(url, datas = {}, config = {}) {
+        const $datas = this.toObject(datas)
         try {
             const res = this.Axs.put(url, $datas, config)
+            return res
+        } catch (error) {
+            throw new Error(error)
+        }
+    }
+
+    static async patch(url, datas = {}, config = {}) {
+        const $datas = this.toObject(datas)
+        try {
+            const res = this.Axs.patch(url, $datas, config)
             return res
         } catch (error) {
             throw new Error(error)

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API\Customer\Event;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Validator\Validator as ResourcesValidator;
 use App\Http\Resources\Validator\ValidatorCollection;
+use App\Jobs\ProcessValidatorNotification;
 use App\Models\Event\Event;
 use App\Models\Event\Validator;
 use Illuminate\Http\Request;
@@ -59,7 +60,7 @@ class EventValidatorController extends Controller
         ]);
 
         if (!!$request->can_notify) {
-            # code...
+            ProcessValidatorNotification::dispatch($validator);
         }
 
 

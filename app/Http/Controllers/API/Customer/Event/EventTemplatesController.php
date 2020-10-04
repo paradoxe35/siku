@@ -9,6 +9,8 @@ use App\Models\Event\Event;
 use App\Models\Template\Template;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use Instasent\SMSCounter\SMSCounter;
+
 
 class EventTemplatesController extends Controller
 {
@@ -29,7 +31,7 @@ class EventTemplatesController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, Event $event)
+    public function store(Request $request, Event $event, SMSCounter $smsCounter)
     {
         // get auth event 
         $user = $request->user();
@@ -55,11 +57,13 @@ class EventTemplatesController extends Controller
             trans('Vous pouvez pas enregistrer plus :count modèles', ['count' => 5])
         );
 
+        $smsParsed = $smsCounter->count($request->text_sms);
+
         // store event tamplate
         $template = $event->templates()->create([
             'name' => $request->name,
             'user_id' => $user->id,
-            'sms_total' => $request->sms_total,
+            'sms_total' => $smsParsed->messages,
             'per_sms' => $request->per_sms,
             'text_sms' => $request->text_sms,
             'text_whatsapp' => $request->text_whatsapp

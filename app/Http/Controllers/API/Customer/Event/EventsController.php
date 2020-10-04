@@ -193,6 +193,21 @@ class EventsController extends Controller
         return new ResourcesEvent($event);
     }
 
+
+    /**
+     * change the specified resource in storage.
+     * 
+     * @param  \App\Models\Event\Event  $event
+     * @return \Illuminate\Http\Response
+     */
+    private function change(Event $event)
+    {
+        $event->active = !$event->active;
+        $event->save();
+        $event->refresh();
+        return new ResourcesEvent($event);
+    }
+
     /**
      * Update the specified resource in storage.
      *
@@ -202,7 +217,35 @@ class EventsController extends Controller
      */
     public function update(Request $request, Event $event)
     {
-        //
+        if ($request->isMethod('PATCH')) {
+            return $this->change($event);
+        }
+
+        $user = $request->user();
+
+        $request->validate([
+            'event_name' => [
+                'required', 'string', 'min:2', 'max:50',
+                Rule::unique('events', 'name')->where(function ($query) use ($user) {
+                    return $query->where('user_id', $user->id);
+                })->ignore($event->id)
+            ],
+            'event_date' => ['required', 'date'],
+            'is_public' => ['nullable']
+        ]);
+
+        //create customer event
+        $event = $event->fill([
+            'name' => $request->event_name,
+            'event_date' => $request->event_date,
+            'is_public' => !!$request->is_public
+        ]);
+
+        $event->save();
+
+        $event->refresh();
+
+        return new ResourcesEvent($event);
     }
 
     /**
@@ -213,6 +256,7 @@ class EventsController extends Controller
      */
     public function destroy(Event $event)
     {
-        //
+        $event->delete();
+        return new ResourcesEvent($event);
     }
 }

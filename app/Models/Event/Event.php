@@ -13,10 +13,11 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 use Mtvs\EloquentHashids\HasHashid;
 use Mtvs\EloquentHashids\HashidRouting;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Event extends Model
 {
-    use HasHashid, HashidRouting, CacheJobEvent;
+    use HasHashid, HashidRouting, CacheJobEvent, SoftDeletes;
 
     /**
      * @var string
@@ -50,6 +51,29 @@ class Event extends Model
     public function getNameAttribute($value)
     {
         return ucwords(Str::lower($value));
+    }
+
+    /**
+     * Get the event status
+     *
+     * @param  int  $value
+     * @return bool
+     */
+    public function getIsPublicAttribute($value)
+    {
+        return boolval($value);
+    }
+
+
+    /**
+     * Get the event status
+     *
+     * @param  int  $value
+     * @return bool
+     */
+    public function getActiveAttribute($value)
+    {
+        return boolval($value);
     }
 
     /**

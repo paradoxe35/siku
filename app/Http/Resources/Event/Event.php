@@ -24,6 +24,7 @@ class Event extends JsonResource
             'active' => $this->active,
             'hash' => $this->hashid(),
             'guests' => $p['guests'],
+            'is_public' => $this->is_public,
             'event_date' => $this->event_date->format('Y-m-d H:i'),
             'created_at' => $this->created_at->format('Y-m-d H:i')
         ];

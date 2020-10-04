@@ -9,6 +9,8 @@ use App\Jobs\ProcessInvitation;
 use App\Models\Event\Event;
 use App\Models\Event\Guest;
 use Illuminate\Http\Request;
+use Instasent\SMSCounter\SMSCounter;
+
 
 class EventGuestsController extends Controller
 {
@@ -49,7 +51,7 @@ class EventGuestsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, Event $event)
+    public function store(Request $request, Event $event, SMSCounter $smsCounter)
     {
         // get auth event 
         $user = $request->user();
@@ -77,6 +79,10 @@ class EventGuestsController extends Controller
         $sms = $this->parseText($request->text_sms, $radom, $event->hashid(), $qr);
         $whatsapp = $this->parseText($request->text_whatsapp, $radom, $event->hashid(), $qr);
 
+
+        $smsParsed = $smsCounter->count($sms);
+
+
         $guest = $guests->create([
             'user_id' => $user->id,
             'template_id' => $request->template_id,
@@ -89,7 +95,7 @@ class EventGuestsController extends Controller
             'can_include_qrcode' => $qr,
             'can_send_sms' => !!$request->can_send_sms,
             'can_send_whatsapp' => !!$request->can_send_whatsapp,
-            'sms_total' => $request->sms_total,
+            'sms_total' => $smsParsed->messages,
             'country_code' => $request->country_code,
             'country_call' => $request->country_call
         ]);
