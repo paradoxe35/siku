@@ -36,7 +36,7 @@ class EventValidatorController extends Controller
         $request->validate([
             'username' => ['required', 'string', 'max:255', 'unique:validators'],
             'name' => ['required', 'string', 'max:255'],
-            'phone' => ['required', 'string', 'max:255'],
+            'phone' => ['required', 'string', 'max:255', 'regex:/^[0-9\-\(\)\/\+\s]*$/'],
             'can_notify' => ['nullable'],
             'country_code' => ['required', 'string'],
             'country_call' => ['required', 'string']

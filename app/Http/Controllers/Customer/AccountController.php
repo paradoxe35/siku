@@ -10,6 +10,8 @@ class AccountController extends Controller
     public function __construct()
     {
     }
+
+
     /**
      * Show the application home.
      *
@@ -18,5 +20,15 @@ class AccountController extends Controller
     public function index()
     {
         return view('customer.account');
+    }
+
+    /**
+     * Show the application home.
+     *
+     *  @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function password()
+    {
+        return view('customer.account.password');
     }
 }

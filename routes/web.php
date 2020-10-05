@@ -57,13 +57,15 @@ Route::prefix('customer')
                                 Route::get('/settings', 'SettingsController@index')->name('.settings');
                             });
                         Route::get('/account', 'AccountController@index')->name('.account');
+                        Route::get('/account/password', 'AccountController@password')->name('.account.password');
                         Route::get('', fn () => redirect(route('customer.event.product')));
                         //payment routes
+
                         Route::namespace('Payments')
                             ->prefix('payments')
-                            ->name('.payments')
                             ->group(function () {
-                                Route::get('/', "PaymentsController@index");
+                                Route::get('', "PaymentsController@index")->name('.payments');
+                                Route::get('/new', "PaymentsController@new")->name('.payments.new');
                             });
                     });
             });

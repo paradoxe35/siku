@@ -16,4 +16,14 @@ class PaymentsController extends Controller
     {
         return view('customer.payments');
     }
+
+    /**
+     * Show the application home.
+     *
+     *  @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function new()
+    {
+        return view('customer.payments.new');
+    }
 }

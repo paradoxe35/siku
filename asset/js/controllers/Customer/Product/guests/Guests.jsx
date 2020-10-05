@@ -6,7 +6,7 @@ import RowDivider from '@/js/react/components/RowDivider';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import { fetchEventTemplates } from '@/js/store/features/product/TemplatesSlice';
-import {  DispachEventProcessQueueDetail, DispachGuestsDetail, Event_Guests_Name, URLS } from '@/js/react/vars';
+import {  DispachEventProcessQueueDetail, DispachGuestsDetail, Event_Guests_Name, TEMPLATE_SECTION, URLS } from '@/js/react/vars';
 import { slim as slimSelect } from '@js/utils/SlimSelect'
 import { InputField } from '@/js/react/components/InputField';
 import { DefaultButton } from '@/js/react/components/Buttons';
@@ -19,7 +19,6 @@ import {
     KeysRequiredInText,
     SectionView,
     smsCount,
-    TEMPLATE_SECTION,
     TextAreatEdit,
     useSectionText,
     validateTemplateSms,
@@ -33,6 +32,7 @@ import { FullLoader } from '@/js/react/components/FullLoader';
 import { putEventStatus } from '@/js/store/features/product/EventStatusSlice';
 import { SkeletonBox } from '@/js/react/components/SkeletonBox';
 import { GuestList } from './GuestList';
+import { ServiceUse } from './ServiceUse';
 
 const SERVICES = {
     ...TEMPLATE_SECTION,
@@ -54,37 +54,6 @@ const NEW_GUEST_FORM = {
     sms_total: 'sms_total',
     country_code: 'country_code',
     country_call: 'country_call'
-}
-
-const ServiceUse = ({ onSelect }) => {
-    const { t } = useTranslation();
-    const [data, setData] = useState([SERVICES.sms])
-
-    useEffect(() => {
-        onSelect(data)
-    }, [data])
-
-    const onChange = useCallback(({ target }) => {
-        setData(e => {
-            const h = new Set([...e, target.value]);
-            !target.checked && h.delete(target.value)
-            return Array.from(h)
-        })
-    }, [setData])
-
-    return <div className="mt-4 d-md-flex">
-        <div className="mr-md-5">
-            <CustomCheckbox
-                onChange={onChange}
-                defaultChecked
-                value={SERVICES.sms}
-                label={t('SMS')} />
-        </div>
-        <CustomCheckbox
-            onChange={onChange}
-            value={SERVICES.whatsapp}
-            label={t('WhatsApp')} />
-    </div>
 }
 
 const QrcodeCase = () => {

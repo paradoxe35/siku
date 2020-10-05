@@ -30,6 +30,11 @@ export const EVENT_VALUE = {
     event_date: null
 }
 
+export const TEMPLATE_SECTION = {
+    sms: 'sms',
+    whatsapp: 'whatsapp'
+}
+
 export const Event_Guests_Name = 'event_guests_list'
 export const Event_Guest = 'Event_Guest'
 export const Event_Process_Queue = 'Event_Process_Queue'

@@ -8,6 +8,7 @@ import { TurbolinksApp } from '@/js/modules/turbolinks';
 import { URLS } from '@/js/react/vars';
 import { setBalanceAmount } from '@/js/store/features/BalanceSlice';
 import { useFetch } from '@/js/react/hooks';
+import Label from '@/js/react/components/Label';
 
 const EProfil = () => {
     const { t } = useTranslation();
@@ -72,16 +73,17 @@ const ValidateCustomPayment = () => {
     }
     return <form method="post" onSubmit={handleValidation} autoComplete="off">
         <div className="form-group my-2">
+            <Label>
+                {t('Apres avoir completer le paiement selon aux instructions qui vous seront données, Un code de validation de paiement vous sera envoyé')}
+            </Label>
             <div className="input-group input-group-merge">
-                <input className="form-control form-control-muted" ref={inputField} required name="payment_code" placeholder={t('Code paiement')} type="text" />
-                <div className="input-group-append">
-                    <span className="input-group-text btn-link"
-                        data-toggle="tooltip"
-                        data-placement="top"
-                        title={t("Un code de validation de paiement vous sera envoyé, si vous avez choisi le mode alternatif")}>
-                        <i className="ni ni-active-40"></i>
-                    </span>
-                </div>
+                <input
+                    className="form-control form-control-muted"
+                    ref={inputField}
+                    required
+                    name="payment_code"
+                    placeholder={t('Code paiement')}
+                    type="text" />
             </div>
         </div>
         <DefaultButton type="submit" label={t('Valider')} loading={loading} />

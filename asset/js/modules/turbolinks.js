@@ -12,4 +12,17 @@ export class TurbolinksApp {
     static start() {
         Turbolinks.start()
     }
+
+    static reload() {
+        this.isc.visit(
+            window.location.pathname + window.location.search,
+            { action: 'replace' }
+        )
+    }
+
+    static replace(url) {
+        this.isc.visit(url,
+            { action: 'replace' }
+        )
+    }
 }

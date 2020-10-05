@@ -3,13 +3,10 @@ import React, { Fragment, useCallback, useEffect, useRef, useState } from 'react
 import { useTranslation } from 'react-i18next';
 import { Localize } from '@/js/functions/localize';
 import { Notifier } from '@/js/functions/notifier';
+import { TEMPLATE_SECTION } from '@/js/react/vars';
 
 export const KeysRequiredInText = ['{name}', '{code}']
 
-export const TEMPLATE_SECTION = {
-    sms: 'sms',
-    whatsapp: 'whatsapp'
-}
 
 /**
  * @param {string} sms 

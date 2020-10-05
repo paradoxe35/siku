@@ -77,6 +77,13 @@ Route::namespace('API')
                                     ->name('events.event.report.download');
                             });
 
+                        Route::prefix('account')
+                            ->name('account.')
+                            ->group(function () {
+                                Route::put('/update', 'AccountController@update')->name('update');
+                                Route::patch('/update/phone', 'AccountController@updatePhone')->name('update.phone');
+                                Route::put('/update/password', 'AccountController@updatePassword')->name('update.password');
+                            });
 
                         Route::namespace('Payments')
                             ->name('payments.')

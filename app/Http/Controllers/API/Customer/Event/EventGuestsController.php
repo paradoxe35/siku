@@ -58,7 +58,7 @@ class EventGuestsController extends Controller
 
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'phone' => ['required', 'string', 'max:255'],
+            'phone' => ['required', 'string', 'max:255', 'regex:/^[0-9\-\(\)\/\+\s]*$/'],
             'template_id' => ['required', 'numeric'],
             'autorized' => ['required', 'numeric', 'min:1'],
             'text_sms' => ['nullable', 'string'],

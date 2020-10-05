@@ -31,10 +31,7 @@ export default class extends Controller {
         })
         ReduxDispatch({ type: DESTROY_SESSION })
         setI18nLanguage(value)
-        TurbolinksApp.isc.visit(
-            window.location.pathname + window.location.search,
-            { action: 'replace' }
-        )
+        TurbolinksApp.reload()
     }
 
     disconnect() {

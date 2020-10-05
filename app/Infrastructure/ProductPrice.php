@@ -68,7 +68,7 @@ class ProductPrice
         $smsUSD = $this->smsPrice($sms['Price (EUR) / message']);
         $smsUnitPrice = null == $smsUSD || null == $basePrice ? null  : ($smsUSD + $basePrice);
         return [
-            'sms' => !$smsUnitPrice ?: BasePrice::roundPrice($smsUnitPrice),
+            'sms' => !$smsUnitPrice ? null : BasePrice::roundPrice($smsUnitPrice),
             'whatsapp' => null
         ];
     }
