@@ -50,45 +50,6 @@ const EProfil = () => {
     </div>
 }
 
-const ValidateCustomPayment = () => {
-    const { t } = useTranslation();
-    const event = useContext(EventContext)
-    const inputField = useRef(null)
-    //redux store dispacher
-    const dispache = useDispatch()
-
-    const { fetchAPi, fetchLoading: loading } = useFetch()
-
-    const handleValidation =/** @param { React.FormEvent<HTMLFormElement> } e */  (e) => {
-        e.preventDefault()
-        // @ts-ignore
-        const form = new FormData(e.target)
-        fetchAPi('post', `${URLS.customPaymentValidate}?event_id=${event.hash}`, form, true)
-            .then(({ data }) => {
-                // dispache new redux balance 
-                data.confirmed && dispache(setBalanceAmount(data.new_balance))
-                // reset payment field
-                inputField.current && (inputField.current.value = '')
-            })
-    }
-    return <form method="post" onSubmit={handleValidation} autoComplete="off">
-        <div className="form-group my-2">
-            <Label>
-                {t('Apres avoir completer le paiement selon aux instructions qui vous seront données, Un code de validation de paiement vous sera envoyé')}
-            </Label>
-            <div className="input-group input-group-merge">
-                <input
-                    className="form-control form-control-muted"
-                    ref={inputField}
-                    required
-                    name="payment_code"
-                    placeholder={t('Code paiement')}
-                    type="text" />
-            </div>
-        </div>
-        <DefaultButton type="submit" label={t('Valider')} loading={loading} />
-    </form>
-}
 
 const EStatus = ({ handleLoading }) => {
     const { t } = useTranslation();
@@ -156,18 +117,9 @@ const EStatus = ({ handleLoading }) => {
                     </div>
                 </div>
             </div>
-            <div className="mb-2">
-                <div className="text-muted mt-2 text-sm">
-                    {t("Contactez nous pour un autre mode de paiement")}.
-                </div>
-                <div>
-                    <span className="text-success text-sm font-weight-600">{phones}</span>
-                </div>
-            </div>
-            <ValidateCustomPayment />
             <hr className="my-3" />
             <button className="btn btn-sm btn-block  mt-3" onClick={goToPaymentPage}>
-                {t('Payer Avec')} PayPal
+                {t('Ajouter Balance')}
             </button>
         </div>
     </div>

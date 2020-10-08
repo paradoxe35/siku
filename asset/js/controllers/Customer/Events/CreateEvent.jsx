@@ -42,7 +42,7 @@ const CreateEvent = ({ updateComponentIndex, addEvent }) => {
                 <div className="col">
                     <div className="form-group">
                         <div className="input-group input-group-merge">
-                            <input className="form-control form-control-muted" name="event_name" autoFocus={true}
+                            <input className="form-control form-control-muted" name="event_name"
                                 placeholder={t('Nom D\'événement')} type="text" required />
                         </div>
                     </div>

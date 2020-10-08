@@ -12,7 +12,7 @@
         @csrf
         <div class="form-group">
             <input id="email" type="email" placeholder="{{ __('E-Mail Adresse') }}" class="form-control d-block"
-                name="email" value="{{ old('email') }}" required autofocus>
+                name="email" value="{{ old('email') }}" required>
         </div>
 
         <div class="form-group">

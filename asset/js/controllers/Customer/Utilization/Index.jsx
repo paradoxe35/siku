@@ -80,7 +80,7 @@ const SaveValidator = ({ updateValidatorsList }) => {
             })
     }
 
-    return <form method="post" onSubmit={handleSubmit} autoComplete="off">
+    return <form method="post" className="mb-5" onSubmit={handleSubmit} autoComplete="off">
         <div className="row">
             <div className="col">
                 <div className="form-group">
@@ -90,7 +90,6 @@ const SaveValidator = ({ updateValidatorsList }) => {
                             value={name}
                             onChange={({ target: { value } }) => setName(value)}
                             name="name"
-                            autoFocus={true}
                             placeholder={t('Nom D\'utilisateur')} type="text" required />
                     </div>
                     <div className="text-xs mt-1 mb-2">

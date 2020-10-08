@@ -15,8 +15,7 @@
     @csrf
     <div class="form-group my-4">
         <input id="email" type="email" placeholder="{{ __('E-Mail Adresse') }}"
-            class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required
-            autofocus>
+            class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required>
         @error('email')
         <span class="invalid-feedback" role="alert">
             <strong>{{ $message }}</strong>

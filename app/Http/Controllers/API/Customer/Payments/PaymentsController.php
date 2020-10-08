@@ -3,10 +3,14 @@
 namespace App\Http\Controllers\API\Customer\Payments;
 
 use App\Http\Controllers\Controller;
+use App\Infrastructure\Cache\CacheUserDataPay;
+use App\Infrastructure\Payments\PayPal\CaptureIntent\CreateOrder;
+use App\Infrastructure\Payments\PayPal\Client\GetOrder;
 use Illuminate\Http\Request;
 
 class PaymentsController extends Controller
 {
+    use CacheUserDataPay;
 
     /**
      * @return \Illuminate\Http\Response
@@ -15,26 +19,26 @@ class PaymentsController extends Controller
     {
         $eventId = request()->query('event_id');
         return [
-            'link' => route('customer.event.payments', ['event' => $eventId], false)
+            'link' => route('customer.event.payments.new', ['event' => $eventId], false)
         ];
     }
 
     /**
+     * @param Request $request
+     * 
      * @return \Illuminate\Http\Response
      */
-    public function customPaymentValidate(Request $request)
+    public function customPaymentValidate(Request $request, $event)
     {
         $request->validate([
-            'payment_code' => ['required', 'string']
+            'payment_code' => ['required', 'string'],
+            'guests' => ['required', 'numeric',  'min:10', 'max:100000'],
+            'amount' => ['required', 'numeric',  'min:0.001']
         ]);
-        $eventId = $request->query('event_id');
 
         $code = $request->payment_code;
 
         $user = $request->user();
-        //get event instance
-
-        $event = $user->events()->findByHashidOrFail($eventId);
 
         //validate payment code
         $customPay = $user->customPayment()->firstWhere('payment_code', $code);
@@ -47,14 +51,16 @@ class PaymentsController extends Controller
 
         // exist code in customer event balance
         if ($inBalance) abort(400, trans("Le code utilisé n'est plus actif"));
-
+        exit;
         // store in balance in user related
         $user->AllBalance()->create([
             'event_id' => $event->id,
             'token' => $code,
             'confirmed' => true,
             'amount' => $customPay->amount,
-            'custom_payment_id' => $customPay->id
+            'custom_payment_id' => $customPay->id,
+            'guests' => $request->guests,
+            'presumed_amount' => $request->amount,
         ]);
 
         $user->refresh();
@@ -63,5 +69,89 @@ class PaymentsController extends Controller
             'new_balance' => $user->balance(),
             'confirmed' => true
         ];
+    }
+
+
+    /**
+     * @param Request $request
+     * 
+     * @return \Illuminate\Http\Response
+     */
+    public function payData(Request $request, $event)
+    {
+        $data = $request->validate([
+            'guests' => ['required', 'numeric',  'min:10', 'max:100000'],
+            'price' => ['required', 'numeric',  'min:0.001']
+        ]);
+        $data['price'] = round($data['price'], 2);
+
+        $request->session()->put('pay-data', $data);
+        $this->putUserDataPay($request->user()->id, $data);
+
+        return [
+            'redirect_url' => route('customer.event.payments.new.pay', ['event' => $event], false)
+        ];
+    }
+
+    /**
+     * @param Request $request
+     * 
+     * @return \Illuminate\Http\Response|\PayPalHttp\HttpResponse
+     */
+    public function createPaypalTransaction(Request $request)
+    {
+
+        $request->validate([
+            'amount' => ['required'],
+            'return_url' => ['required'],
+            'cancel_url' => ['required'],
+        ]);
+
+        $response = CreateOrder::createOrder(
+            $request->return_url,
+            $request->cancel_url,
+            $request->amount
+        );
+
+        return (array) $response->result;
+    }
+
+
+    /**
+     * @param array|string $result
+     * @return void
+     */
+    public function completedPayPalTransaction($result, $guests)
+    {
+        // 4. Save the transaction in your database. Implement logic to save transaction to your database for future reference.
+        // print "Gross Amount: 
+        // {$response->result->purchase_units[0]->amount->currency_code} {$response->result->purchase_units[0]->amount->value}\n";
+    }
+
+    /**
+     * @param Request $request
+     * 
+     * @return \Illuminate\Http\Response
+     */
+    public function getPaypalTransaction(Request $request)
+    {
+        $auth = $request->user();
+
+        $request->validate([
+            'orderID' => ['required'],
+            'guests' => ['required'],
+        ]);
+
+        $guests = $request->guests;
+
+        $response =  GetOrder::getOrder(
+            $request->orderID,
+            $guests,
+            function ($result) use ($guests) {
+                $this->completedPayPalTransaction($result, $guests);
+            }
+        );
+
+        return (array) $response->result;
     }
 }

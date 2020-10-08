@@ -8,10 +8,11 @@ import { DESTROY_SESSION } from "@/js/store/action/types"
 
 export default class extends Controller {
 
-    logout() {
+    logout(error = null) {
         const type = this.data.get('type')
         if (type !== 'logout') return
         ReduxDispatch({ type: DESTROY_SESSION })
+        error && window.location.reload()
     }
 
     /**
@@ -26,16 +27,28 @@ export default class extends Controller {
         const url = e.target.dataset.url
         // @ts-ignore
         ApiRequest('post', url ? url : e.target.action, !url ? new FormData(e.target) : {})
-            .then((res) => {
-                // @ts-ignore
-                res.status === 200 &&
-                    TurbolinksApp.isc.visit(res.data.redirect_url, { action: 'replace' })
+            .then(({ status, data }) => {
+                if (status === 200) {
+                    TurbolinksApp.isc.visit(this.getUrl(data.redirect_url), { action: 'replace' })
+                }
                 this.logout()
             })
             .catch(error => {
                 HtmlAlert.show(this.innerError, error)
                 Btn.hide()
+                this.logout('error')
             })
+    }
+
+    getUrl(url) {
+        let u = null
+        try {
+            const p = new URL(url)
+            u = p.pathname + p.search;
+        } catch (_) {
+            u = url
+        }
+        return u
     }
 
     /**

@@ -10,10 +10,11 @@ export const useFetch = (_loading = false) => {
      * @param {string} method 
      * @param {string} url 
      * @param { any? } datas 
-     * @param { any ?} mustNotifierErrors 
+     * @param { any?} mustNotifierErrors 
+     * @param { any? } maintainLoading 
      * @returns { Promise<import('axios').AxiosResponse<any>> }
      */
-    const fetchAPi = (method, url, datas = {}, mustNotifierErrors = false) => {
+    const fetchAPi = (method, url, datas = {}, mustNotifierErrors = false, maintainLoading = false) => {
         setError(null)
         setLoading(true)
         //@ts-ignore
@@ -24,10 +25,11 @@ export const useFetch = (_loading = false) => {
             })
             .catch((err) => {
                 setError(err)
+                maintainLoading && setLoading(false)
                 return Promise.reject(err)
             })
             .finally(() => {
-                setLoading(false)
+                !maintainLoading && setLoading(false)
             })
 
     }

@@ -37,12 +37,13 @@ export default ({ setLoading }) => {
 
     return <>
         <div className="card">
-            <div className="card-body px-6">
+            <div className="card-body px-lg-6">
                 <Bar
                     data={data}
                     height={500}
                     options={{
-                        maintainAspectRatio: false
+                        maintainAspectRatio: false,
+                        responsive: true
                     }}
                 />
             </div>

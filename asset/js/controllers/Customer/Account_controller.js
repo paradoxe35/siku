@@ -5,20 +5,66 @@ import { ApiRequest } from "@/js/api/api"
 import { connectUser } from "@/js/store/features/UserSlice"
 import { ReduxDispatch } from "@/js/store"
 import { TurbolinksApp } from "@/js/modules/turbolinks"
+import { clientCountry } from "@/js/functions/services.js"
+import { countriesFlagAndEmojis } from "@/js/api/services.js"
 
 export default class extends Controller {
     urls = {
         accountUpdatePhone: this.data.get('accountUpdatePhone')
     }
 
+    country = {
+        name: null,
+        code: null
+    }
+
     initialize() {
+        // @ts-ignore
+        const { country_code, country_name } = window.auth
+        this.country = {
+            name: country_code,
+            code: country_name
+        }
         this.edit = this.targets.find('editProfile')
         this.phoneNumber = this.targets.find('phoneNumber')
     }
 
     connect() {
+        this.initSelect2()
         this.edit.addEventListener('submit', this.editProfile)
         this.phoneNumber.addEventListener('click', this.connectReact)
+    }
+
+    connectedCountry(c) {
+        this.country = {
+            name: c.name,
+            code: c.code
+        }
+    }
+
+
+    async initSelect2() {
+        this.select = await clientCountry(this.targets.find('countrySelectField'), async (c) => {
+            const countries = await countriesFlagAndEmojis()
+            return countries.map(country => {
+                const sc = c.country_code == country.code;
+                sc && this.connectedCountry(country)
+                return {
+                    text: `${country.emoji} ${country.name}`,
+                    value: country.code,
+                    selected: sc
+                }
+            })
+            // @ts-ignore
+        }, window.auth)
+        this.select.onChange = (c) => {
+            const h = c.text.split(' ')
+            this.connectedCountry({
+                name: h.filter((_, i) => !!i).join(' '),
+                code: c.value
+            });
+        }
+
     }
 
     disconnect() {
@@ -45,7 +91,8 @@ export default class extends Controller {
         Btn.loading(FormBtn(e.target))
         // @ts-ignore
         const form = new FormData(e.target)
-
+        form.append('country_code', this.country.code)
+        form.append('country_name', this.country.name)
         // @ts-ignore
         ApiRequest('put', e.target.action, form)
             .then(({ data }) => {

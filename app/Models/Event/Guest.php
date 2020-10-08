@@ -22,7 +22,8 @@ class Guest extends Model
     protected $fillable = [
         'name', 'phone', 'code', 'autorized', 'template_id', 'sms_total',
         'text_sms', 'text_whatsapp', 'can_send_sms', 'can_send_whatsapp',
-        'can_include_qrcode', 'country_code', 'country_call', 'user_id'
+        'can_include_qrcode', 'country_code', 'country_call', 'user_id',
+        'text_sms_hidden_code', 'text_whatsapp_hidden_code'
     ];
 
     /**

@@ -18,8 +18,7 @@
                         data-Customer--Events-events="{{ route('api.customer.events.index') }}"
                         data-Customer--Events-event-store="{{ route('api.customer.events.store') }}"
                         data-Customer--Events-cmp-details="{{ route('api.cmp-details.index') }}"
-                        data-Customer--Events-payments-link-page="{{ route('api.customer.payments.link-page') }}"
-                        data-Customer--Events-custom-payment-validate="{{ route('api.customer.payments.custom-payment-validate') }}">
+                        data-Customer--Events-payments-link-page="{{ route('api.customer.payments.link-page') }}">
                         <div class="card bg-transparent shadow-none">
                             <div class="card-body text-center">
                                 <x-spinning-dots />

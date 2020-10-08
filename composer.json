@@ -22,6 +22,7 @@
         "laravel/ui": "^2.1",
         "mtvs/eloquent-hashids": "^2.0",
         "nexmo/laravel": "^2.3",
+        "paypal/paypal-checkout-sdk": "1.0.1",
         "predis/predis": "^1.1"
     },
     "require-dev": {

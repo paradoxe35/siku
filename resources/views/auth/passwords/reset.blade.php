@@ -9,7 +9,7 @@
 
     <div class="form-group">
         <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email"
-            value="{{ $email ?? old('email') }}" placeholder="{{ __('E-Mail Adresse') }}" required autofocus>
+            value="{{ $email ?? old('email') }}" placeholder="{{ __('E-Mail Adresse') }}" required>
         @error('email')
         <span class="invalid-feedback" role="alert">
             <strong>{{ $message }}</strong>

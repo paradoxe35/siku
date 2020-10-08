@@ -18,7 +18,7 @@
                         @csrf
                         <div class="form-group">
                             <input type="password" class="form-control" name="current_password"
-                                placeholder="{{ __('Mot de passe existant') }}" required autofocus>
+                                placeholder="{{ __('Mot de passe existant') }}" required>
                         </div>
 
                         <div class="form-group">

@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\Cache;
 
 trait CacheJobEvent
 {
+
+    private $redisKeyCache = 'event:process:';
     /**
      * @return \Illuminate\Contracts\Cache\Repository
      */
@@ -22,7 +24,7 @@ trait CacheJobEvent
      */
     protected function getEventProcess($eventId)
     {
-        return $this->cache()->has('event:process:' . $eventId);
+        return $this->cache()->has($this->redisKeyCache . $eventId);
     }
 
     /**
@@ -32,7 +34,7 @@ trait CacheJobEvent
      */
     protected function putEventProcess($eventId, $value = [])
     {
-        $this->cache()->put('event:process:' . $eventId, $value);
+        $this->cache()->put($this->redisKeyCache . $eventId, $value);
     }
 
     /**
@@ -42,6 +44,6 @@ trait CacheJobEvent
      */
     protected function deleteEventProcess($eventId)
     {
-        $this->cache()->delete('event:process:' . $eventId);
+        $this->cache()->delete($this->redisKeyCache . $eventId);
     }
 }

@@ -25,4 +25,8 @@ export class TurbolinksApp {
             { action: 'replace' }
         )
     }
+
+    static visit(url) {
+        this.isc.visit(url)
+    }
 }

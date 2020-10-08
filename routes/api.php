@@ -87,10 +87,26 @@ Route::namespace('API')
 
                         Route::namespace('Payments')
                             ->name('payments.')
+                            ->prefix('payments')
                             ->group(function () {
                                 Route::get('link-page', "PaymentsController@customerPaymentLinkPage")->name('link-page');
-                                Route::post('custom-payment-validate', "PaymentsController@customPaymentValidate")
-                                    ->name('custom-payment-validate');
+                                Route::prefix('{event}')
+                                    ->group(function () {
+                                        Route::post('custom-payment-validate', "PaymentsController@customPaymentValidate")
+                                            ->name('custom-payment-validate');
+
+                                        Route::post('pay-data', "PaymentsController@payData")
+                                            ->withoutMiddleware(['api', 'auth:api'])
+                                            ->middleware(['web', 'auth'])
+                                            ->name('pay-data');
+
+                                        // paypal transaction
+                                        Route::post('create-paypal-transaction', "PaymentsController@createPaypalTransaction")
+                                            ->name('create-paypal-transaction');
+
+                                        Route::post('get-paypal-transaction', "PaymentsController@getPaypalTransaction")
+                                            ->name('get-paypal-transaction');
+                                    });
                             });
                     });
             });

@@ -66,6 +66,7 @@ Route::prefix('customer')
                             ->group(function () {
                                 Route::get('', "PaymentsController@index")->name('.payments');
                                 Route::get('/new', "PaymentsController@new")->name('.payments.new');
+                                Route::get('/new/pay', "PaymentsController@pay")->name('.payments.new.pay');
                             });
                     });
             });

@@ -35,6 +35,8 @@ export const TEMPLATE_SECTION = {
     whatsapp: 'whatsapp'
 }
 
+export const isInvalideGuestFieldValue = g => (isNaN(g) || g < 10 || g > (10 ** 5))
+
 export const Event_Guests_Name = 'event_guests_list'
 export const Event_Guest = 'Event_Guest'
 export const Event_Process_Queue = 'Event_Process_Queue'

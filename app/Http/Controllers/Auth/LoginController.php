@@ -57,8 +57,13 @@ class LoginController extends Controller
      */
     protected function authenticated($request, $user)
     {
+        // $request->int
         return response()->json([
-            'redirect_url' => $user->is_admin ? route('admin.home', [], false) : route('customer.events', [], false)
+            'redirect_url' =>
+            $user->is_admin ?
+                route('admin.home', [], false) :
+                redirect()->intended(route('customer.events', [], false))
+                ->getTargetUrl()
         ]);
     }
 

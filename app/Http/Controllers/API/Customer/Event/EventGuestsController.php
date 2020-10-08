@@ -46,9 +46,12 @@ class EventGuestsController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
+     *  Store a newly created resource in storage.
+     * 
+     * @param Request $request
+     * @param Event $event
+     * @param SMSCounter $smsCounter
+     * 
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request, Event $event, SMSCounter $smsCounter)
@@ -79,6 +82,8 @@ class EventGuestsController extends Controller
         $sms = $this->parseText($request->text_sms, $radom, $event->hashid(), $qr);
         $whatsapp = $this->parseText($request->text_whatsapp, $radom, $event->hashid(), $qr);
 
+        $smsHidden = $this->parseText($request->text_sms, '******', $event->hashid(), $qr);
+        $whatsappHidden = $this->parseText($request->text_whatsapp, '******', $event->hashid(), $qr);
 
         $smsParsed = $smsCounter->count($sms);
 
@@ -92,19 +97,34 @@ class EventGuestsController extends Controller
             'autorized' => $request->autorized,
             'text_sms' => $sms,
             'text_whatsapp' => $whatsapp,
+            'text_sms_hidden_code' => $smsHidden,
+            'text_whatsapp_hidden_code' => $whatsappHidden,
             'can_include_qrcode' => $qr,
             'can_send_sms' => !!$request->can_send_sms,
             'can_send_whatsapp' => !!$request->can_send_whatsapp,
             'sms_total' => $smsParsed->messages,
             'country_code' => $request->country_code,
-            'country_call' => $request->country_call
+            'country_call' => $request->country_call,
         ]);
 
         if (!!$request->can_send) {
-            ProcessInvitation::dispatch($guest)->onQueue('invitation');
+            $this->dispatchGuestToQueue($guest);
         }
 
         return new GuestCollection($guests->latest()->paginate());
+    }
+
+
+    /**
+     * @param Guest $guest
+     * 
+     * @return void
+     */
+    private function dispatchGuestToQueue(Guest $guest)
+    {
+        ProcessInvitation::dispatch($guest)
+            ->delay(now()->addSeconds(2))
+            ->onQueue('invitation');
     }
 
     /**
@@ -130,9 +150,7 @@ class EventGuestsController extends Controller
      */
     public function send(Event $event, Guest $guest)
     {
-        ProcessInvitation::dispatch($guest)
-            ->delay(now()->addSecond())
-            ->onQueue('invitation');
+        $this->dispatchGuestToQueue($guest);
         return [true];
     }
 
@@ -141,13 +159,13 @@ class EventGuestsController extends Controller
      * @param  \App\Models\Event\Event  $event
      * @return \Illuminate\Http\Response
      */
-    public function sendall(Event $event, Request $request)
+    public function sendall(Event $event)
     {
         $process = !$event->InQueueProcess();
 
         if ($process) {
             ProcessInvitations::dispatch($event, $event->id)
-                ->delay(now()->addSecond())
+                ->delay(now()->addSeconds(2))
                 ->onQueue('invitation');
         }
 

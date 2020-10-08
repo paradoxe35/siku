@@ -24,11 +24,15 @@ class AccountController extends Controller
                 'required', 'string', 'email', 'max:255',
                 Rule::unique('users')->ignore($auth->id)
             ],
+            'country_code' => ['required', 'string', 'max:255'],
+            'country_name' => ['required', 'string', 'max:255'],
         ]);
 
         $user = $auth->fill([
             'name' => $request->name,
-            'email' => $request->email
+            'email' => $request->email,
+            'country_name' => $request->country_name,
+            'country_code' => $request->country_code
         ]);
 
         $user->save();
