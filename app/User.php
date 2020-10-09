@@ -4,7 +4,7 @@ namespace App;
 
 use App\Models\Balance\Balance;
 use App\Models\Balance\Consumed;
-use App\Models\CustomPayment;
+use App\Models\Payments\CustomPayment;
 use App\Models\Event\Event;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;

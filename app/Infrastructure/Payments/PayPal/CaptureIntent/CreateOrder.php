@@ -3,6 +3,8 @@
 namespace App\Infrastructure\Payments\PayPal\CaptureIntent;
 
 //1. Import the PayPal SDK client that was created in `Set up Server-Side SDK`.
+
+use App\Infrastructure\BasePrice;
 use App\Infrastructure\Payments\PayPal\Client\PayPalClient;
 use PayPalCheckoutSdk\Orders\OrdersCreateRequest;
 
@@ -65,7 +67,7 @@ class CreateOrder
             'purchase_units' => [
                 [
                     'amount' => [
-                        'currency_code' => 'USD',
+                        'currency_code' => BasePrice::$currency_code,
                         'value' => $amount
                     ]
                 ]

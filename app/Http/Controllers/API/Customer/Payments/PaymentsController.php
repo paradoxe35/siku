@@ -3,9 +3,12 @@
 namespace App\Http\Controllers\API\Customer\Payments;
 
 use App\Http\Controllers\Controller;
+use App\Infrastructure\BasePrice;
 use App\Infrastructure\Cache\CacheUserDataPay;
 use App\Infrastructure\Payments\PayPal\CaptureIntent\CreateOrder;
 use App\Infrastructure\Payments\PayPal\Client\GetOrder;
+use App\Infrastructure\Payments\Services;
+use App\Models\Event\Event;
 use Illuminate\Http\Request;
 
 class PaymentsController extends Controller
@@ -28,7 +31,7 @@ class PaymentsController extends Controller
      * 
      * @return \Illuminate\Http\Response
      */
-    public function customPaymentValidate(Request $request, $event)
+    public function customPaymentValidate(Request $request, Event $event)
     {
         $request->validate([
             'payment_code' => ['required', 'string'],
@@ -38,30 +41,49 @@ class PaymentsController extends Controller
 
         $code = $request->payment_code;
 
+        /**
+         * @var \App\User
+         */
         $user = $request->user();
 
         //validate payment code
         $customPay = $user->customPayment()->firstWhere('payment_code', $code);
 
         // raising if not match code
-        if (!$customPay || !$customPay->active) abort(404, trans('Votre code paiement est invalid'));
+        if (!$customPay || !$customPay->active) {
+            abort(404, trans('Votre code paiement est invalid'));
+            exit;
+        }
 
         // check it doen't already exist
         $inBalance = $user->AllBalance()->firstWhere('custom_payment_id', $customPay->id);
 
         // exist code in customer event balance
-        if ($inBalance) abort(400, trans("Le code utilisé n'est plus actif"));
-        exit;
-        // store in balance in user related
-        $user->AllBalance()->create([
+        if ($inBalance) {
+            abort(400, trans("Le code utilisé n'est plus actif"));
+            exit;
+        }
+
+        /**
+         * store in balance in user related
+         * @var \App\Models\Balance\Balance
+         */
+        $balance = $user->AllBalance()->create([
             'event_id' => $event->id,
             'token' => $code,
             'confirmed' => true,
             'amount' => $customPay->amount,
-            'custom_payment_id' => $customPay->id,
-            'guests' => $request->guests,
-            'presumed_amount' => $request->amount,
+            'custom_payment_id' => $customPay->id
         ]);
+
+        //store payment meta as reference
+        $this->storePaymentMeta(
+            $balance,
+            $request->guests,
+            $request->amount,
+            BasePrice::$currency_code,
+            Services::$customPayment
+        );
 
         $user->refresh();
 
@@ -69,6 +91,24 @@ class PaymentsController extends Controller
             'new_balance' => $user->balance(),
             'confirmed' => true
         ];
+    }
+
+    /**
+     * @param \App\Models\Balance\Balance $balance
+     * @param Request $request
+     * 
+     * @return mixed
+     */
+    private function storePaymentMeta($balance, $guests, $amount, $currency_code, $service, $datas = null)
+    {
+        //store payment meta as reference
+        return $balance->paymentMeta()->create([
+            'guests' => $guests,
+            'amount' => $amount,
+            'currency_code' => $currency_code,
+            'service' => $service,
+            'datas' => $datas
+        ]);
     }
 
 
@@ -118,14 +158,35 @@ class PaymentsController extends Controller
 
 
     /**
-     * @param array|string $result
+     * @param mixed $result
+     * @param \App\User $auth
+     * @param int $event_id
      * @return void
      */
-    public function completedPayPalTransaction($result, $guests)
+    public function completedPayPalTransaction($result, $auth, $event_id, $guests)
     {
-        // 4. Save the transaction in your database. Implement logic to save transaction to your database for future reference.
-        // print "Gross Amount: 
-        // {$response->result->purchase_units[0]->amount->currency_code} {$response->result->purchase_units[0]->amount->value}\n";
+        $amount = $result->purchase_units[0]->amount->value;
+        $currency_code = $result->purchase_units[0]->amount->currency_code;
+
+        /**
+         * store in balance in user related
+         * @var \App\Models\Balance\Balance
+         */
+        $balance = $auth->AllBalance()->create([
+            'event_id' => $event_id,
+            'confirmed' => true,
+            'amount' => $amount,
+        ]);
+
+        //store payment meta as reference
+        $this->storePaymentMeta(
+            $balance,
+            $guests,
+            $amount,
+            $currency_code,
+            Services::$paypal,
+            json_encode($result)
+        );
     }
 
     /**
@@ -133,9 +194,11 @@ class PaymentsController extends Controller
      * 
      * @return \Illuminate\Http\Response
      */
-    public function getPaypalTransaction(Request $request)
+    public function getPaypalTransaction(Request $request, Event $event)
     {
         $auth = $request->user();
+
+        $event_id = $event->id;
 
         $request->validate([
             'orderID' => ['required'],
@@ -147,8 +210,8 @@ class PaymentsController extends Controller
         $response =  GetOrder::getOrder(
             $request->orderID,
             $guests,
-            function ($result) use ($guests) {
-                $this->completedPayPalTransaction($result, $guests);
+            function ($result) use ($guests, $auth, $event_id) {
+                $this->completedPayPalTransaction($result, $auth, $event_id, $guests);
             }
         );
 

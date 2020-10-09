@@ -10,6 +10,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import Label from '@/js/react/components/Label';
 import { Card } from '@/js/react/components/Card';
 import { ApiRequest } from '@/js/api/api';
+import { Notifier } from '@/js/functions/notifier';
+import { TurbolinksApp } from '@/js/modules/turbolinks';
+import { SYMBOL } from '@/js/functions/functions';
+
+
+const isValidPayData = (amount, guests) => amount > 0 && !isInvalideGuestFieldValue(guests)
+
+const success = `Votre Paiement a bien été validé avec succès`
 
 const ValidateCustomPayment = ({ amount, guests }) => {
     const { t } = useTranslation();
@@ -35,6 +43,7 @@ const ValidateCustomPayment = ({ amount, guests }) => {
         form.append('guests', guests)
         fetchAPi('post', URLS.customPaymentValidate, form, true)
             .then(({ data }) => {
+                Notifier.sussess(t(success))
                 // dispache new redux balance 
                 data.confirmed && dispache(setBalanceAmount(data.new_balance))
                 // reset payment field
@@ -65,13 +74,13 @@ const ValidateCustomPayment = ({ amount, guests }) => {
                         type="text" />
                 </div>
             </div>
-            <DefaultButton type="submit" label={t('Valider')} loading={loading} />
+            <DefaultButton disabled={!isValidPayData(amount, guests)} type="submit" label={t('Valider')} loading={loading} />
         </form>
     </>
 }
 
 
-const payPalOptions = (amount, guests) => ({
+const payPalOptions = (amount, guests, successMsg) => ({
     createOrder: (data, actions) => {
         // This function sets up the details of the transaction, including the amount and line item details.
         return ApiRequest('post', URLS.paypalCreatePaypalTransaction, {
@@ -87,16 +96,18 @@ const payPalOptions = (amount, guests) => ({
             guests: guests
         }, true)
             .then(({ data: dataResponse }) => {
-                console.log(dataResponse);
+                Notifier.sussess(successMsg, 5000)
+                    .then(() => TurbolinksApp.visit(URLS.paypalReturnUrl))
             })
     }
 })
 
 const PayWithPayPal = ({ amount, guests }) => {
+    const { t } = useTranslation()
     const payPaylEl = useRef(null)
     const connectPayPal = () => {
         // @ts-ignore
-        window.paypal.Buttons(payPalOptions(amount, guests))
+        window.paypal.Buttons(payPalOptions(amount, guests, t(success)))
             .render(payPaylEl.current)
     }
 
@@ -122,7 +133,7 @@ const ValidateWithPayPal = ({ amount, guests }) => {
                 <i className="ni ni-bold-right p-0 m-0"></i> {t("Completez votre paiement avec PayPal")}.
             </div>
         </div>
-        {amount > 0 && !isInvalideGuestFieldValue(guests) && <PayWithPayPal amount={amount} guests={guests} />}
+        {isValidPayData(amount, guests) && <PayWithPayPal amount={amount} guests={guests} />}
     </>
 }
 
@@ -142,9 +153,9 @@ const CustomerPay = () => {
                 <ValidateWithPayPal guests={guests} amount={price} />
             </div>
             <div className="col-lg-3 offset-lg-1">
-                <Card header={<b>{t('Résumé')}</b>}>
-                    <p><span className="text-muted">{t('Invitations')}</span>: <b>{isNaN(guests) ? 0 : guests}</b> </p>
-                    <p><span className="text-muted">{t('Montant à payer')}</span>: <b>{isNaN(price) ? 0 : price.nround(3)}</b> </p>
+                <Card header={<h4><b>{t('Résumé')}</b></h4>}>
+                    <h4><span className="text-muted">{t('Invitations')}</span>: <b>{isNaN(guests) ? 0 : guests}</b> </h4>
+                    <h4><span className="text-muted">{t('Montant à payer')}</span>: <b>{SYMBOL}{isNaN(price) ? 0 : price.nround(3)}</b> </h4>
                 </Card>
             </div>
         </div>

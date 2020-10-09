@@ -60,6 +60,7 @@ class ProcessedGuest implements ShouldBroadcast
     {
         return [
             'status' => $this->guest->load('event')->event->status(),
+            'new_balance' => $this->guest->load('user')->user->balance(),
             'data' => (new ResourcesGuest($this->guest->load('historical')))->toArray(null)
         ];
     }

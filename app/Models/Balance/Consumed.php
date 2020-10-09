@@ -19,7 +19,7 @@ class Consumed extends Model
      *
      * @var array
      */
-    protected $fillable = ['amount', 'service', 'confirmed'];
+    protected $fillable = ['amount', 'service', 'confirmed', 'user_id', 'event_id'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

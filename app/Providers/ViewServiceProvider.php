@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Http\Resources\Event\Event;
 use App\Http\View\Composers\SidebarComposer;
+use App\Infrastructure\BasePrice;
 use App\View\Components\SpinningDots;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
@@ -31,6 +32,8 @@ class ViewServiceProvider extends ServiceProvider
     {
         View::composer('*', function ($view) {
             $view->with('app_name', 'Siku');
+
+            $view->with('symbol', BasePrice::$symbol);
 
             $view->with('langs', [
                 ['name' => trans('Anglais'), 'value' => 'en'],

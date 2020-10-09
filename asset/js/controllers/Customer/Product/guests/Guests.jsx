@@ -33,6 +33,7 @@ import { putEventStatus } from '@/js/store/features/product/EventStatusSlice';
 import { SkeletonBox } from '@/js/react/components/SkeletonBox';
 import { GuestList } from './GuestList';
 import { ServiceUse } from './ServiceUse';
+import { SYMBOL } from '@/js/functions/functions';
 
 const SERVICES = {
     ...TEMPLATE_SECTION,
@@ -123,7 +124,7 @@ const EstimatePrice = ({ disabledTextField, services, textValues, phone }) => {
             })
     }, [services, textValues, phone, disabledTextField])
 
-    const price = (v) => v !== null && !isNaN(v) ? `${v}$` : t('Indisponible')
+    const price = (v) => v !== null && !isNaN(v) ? `${v + SYMBOL}` : t('Indisponible')
 
     return <>
         <DefaultButton

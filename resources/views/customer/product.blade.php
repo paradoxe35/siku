@@ -89,7 +89,7 @@
                                 {{ __('Utilisé') }}
                             </h5>
                             <span class="h2 font-weight-bold mb-0">
-                                $<span data-target="Customer--Product.used_amount"></span>
+                                {{ $symbol }}<span data-target="Customer--Product.used_amount"></span>
                             </span>
                         </div>
                         <div class="col-auto">

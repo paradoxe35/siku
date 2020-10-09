@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import { InitReact } from '@/js/react/init';
 import { FullLoader } from '@/js/react/components/FullLoader';
 import { URLS } from '@/js/react/vars';
+import { BtnDownload } from '@/js/react/components/BtnDownload';
 
 
 const Absent = lazy(() => import('./absent/Absent'))
@@ -26,7 +27,7 @@ const CustomerReport = () => {
     }), [setLoading])
 
     const download = () => {
-        window.location = URLS.eventReportDownload
+        window.location.href = URLS.eventReportDownload
     }
 
     return <>
@@ -49,9 +50,7 @@ const CustomerReport = () => {
                 </li>
             </ul>
             <div>
-                <button type="button" onClick={download} className="btn btn-secondary btn-sm">
-                    <img style={{ width: "25px", height: "15px" }} src="/img/svg/down-arrow.svg" alt={t('Télécharger Rapport')} />
-                </button>
+                <BtnDownload onClick={download}  alt={t('Télécharger Rapport')}/>
             </div>
         </div>
 

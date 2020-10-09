@@ -106,6 +106,15 @@ Route::namespace('API')
 
                                         Route::post('get-paypal-transaction', "PaymentsController@getPaypalTransaction")
                                             ->name('get-paypal-transaction');
+
+                                        Route::prefix('history')
+                                            ->name('history.')
+                                            ->group(function () {
+                                                Route::get('index', 'PaymentsHistoryController@index')
+                                                    ->withoutMiddleware(['api', 'auth:api'])
+                                                    ->middleware(['web', 'auth', 'throttle:60,1'])
+                                                    ->name('index');
+                                            });
                                     });
                             });
                     });

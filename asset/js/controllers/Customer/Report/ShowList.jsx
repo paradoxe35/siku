@@ -3,7 +3,7 @@ import React, { Fragment, useCallback, useEffect, useState } from 'react'
 import { useFetch, useListDataPaginator } from "@/js/react/hooks"
 import { useTranslation } from "react-i18next"
 import { List } from "../Product/template/Sections"
-import Pagination from 'react-laravel-paginex/dist/Pagination'
+import { LaravelPagination } from '@/js/react/components/Pagination'
 
 
 const ShowList = ({ datas, url }) => {
@@ -15,16 +15,10 @@ const ShowList = ({ datas, url }) => {
         if (!listData.meta || listData.meta.current_page == page) return
         ApiRequest('get', url + '?page=' + page)
             .then(({ data }) => setListData(data))
-    }, [listData])
+    }, [listData, url, setListData])
 
     return <>
-        {listData.meta && listData.meta.total >
-            listData.meta.per_page && <Pagination
-                buttonIcons={true}
-                prevButtonIcon='ni ni-bold-left'
-                nextButtonIcon='ni ni-bold-right'
-                changePage={getDataPaginator}
-                data={listData} />}
+        <LaravelPagination listData={listData} getDataPaginator={getDataPaginator} />
         <List.Ul>
             <List.Li data={listData.data || []}>
                 {v => (

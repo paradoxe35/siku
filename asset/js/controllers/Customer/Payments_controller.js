@@ -2,7 +2,9 @@
 import { Controller } from "stimulus"
 
 export default class extends Controller {
-    urls = { }
+    urls = { 
+        historyIndex: this.data.get('historyIndex')
+    }
 
     async connect() {
         const { init } = await import('./Payments/index.jsx')

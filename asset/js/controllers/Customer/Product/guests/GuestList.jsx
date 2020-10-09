@@ -1,6 +1,5 @@
 //@ts-check
 import React, { useCallback, useEffect, useState } from 'react'
-import Pagination from 'react-laravel-paginex/dist/Pagination'
 import { useDispatch } from 'react-redux'
 import { useItemDeletion, List, ListDescriptionText } from '../template/Sections'
 import ModalConfirm from '@/js/react/components/ModalConfirm'
@@ -10,6 +9,7 @@ import { putEventStatus } from '@/js/store/features/product/EventStatusSlice'
 import { Notifier } from '@/js/functions/notifier'
 import { DefaultButton } from '@/js/react/components/Buttons'
 import { useTranslation } from 'react-i18next'
+import { LaravelPagination } from '@/js/react/components/Pagination'
 
 
 
@@ -79,7 +79,7 @@ export const GuestList = ({ datas, setFullLoading, filter, url }) => {
     const onGuestUpdate = useCallback((e) => {
         const { detail } = e
         setListData(d => {
-            const j = {...d}
+            const j = { ...d }
             j.data = d.data.map(v => v.id == detail.id ? detail : v)
             return j
         })
@@ -126,13 +126,7 @@ export const GuestList = ({ datas, setFullLoading, filter, url }) => {
     }, [deletionId]);
 
     return <>
-        {listData.meta && listData.meta.total >
-            listData.meta.per_page && <Pagination
-                buttonIcons={true}
-                prevButtonIcon='ni ni-bold-left'
-                nextButtonIcon='ni ni-bold-right'
-                changePage={getDataPaginator}
-                data={listData} />}
+        <LaravelPagination listData={listData} getDataPaginator={getDataPaginator} />
         <List.Ul>
             <List.Li data={listData.data || []}>
                 {v => <ShowList v={v} handleDelete={handleDelete} />}

@@ -2,6 +2,8 @@
 
 namespace App\Models\Event;
 
+use App\Infrastructure\ProductPrice;
+use App\Models\Balance\Consumed;
 use App\Models\Template\Template;
 use App\User;
 use Illuminate\Database\Eloquent\Model;
@@ -47,6 +49,99 @@ class Guest extends Model
         return boolval($value);
     }
 
+    /**
+     * @return int
+     */
+    public function price()
+    {
+        /** @var ProductPrice */
+        $productClass = resolve(ProductPrice::class);
+        list($sms, $whatsapp) = $productClass->getPrice($this->country_code);
+        $total = 0;
+
+        if ($this->can_send_sms) {
+            $total += !is_null($sms) ? ($sms * $this->sms_total) : 0;
+        }
+
+        if ($this->can_send_whatsapp) {
+            $total += !is_null($whatsapp) ? $whatsapp : 0;
+        }
+
+        return $total;
+    }
+
+    /**
+     * @return int
+     */
+    public function whatsappPrice()
+    {
+        /** @var ProductPrice */
+        $productClass = resolve(ProductPrice::class);
+        $whatsapp = $productClass->getPrice($this->country_code)['whatsapp'];
+        return !is_null($whatsapp) ? $whatsapp : 0;
+    }
+
+    /**
+     * @return int
+     */
+    public function smsPrice()
+    {
+        /** @var ProductPrice */
+        $productClass = resolve(ProductPrice::class);
+        $sms = $productClass->getPrice($this->country_code)['sms'];
+        return !is_null($sms) ? ($sms * $this->sms_total) : 0;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function validateWhatsappPrice()
+    {
+        /** @var \App\User */
+        $user = $this->user;
+        $balance = $user->balance();
+        $price = $this->whatsappPrice();
+
+        if ($balance < $price) {
+            return null;
+        }
+
+        return $price;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function validateSmsPrice()
+    {
+        /** @var \App\User */
+        $user = $this->user;
+        $balance = $user->balance();
+        $price = $this->smsPrice();
+
+        if ($balance < $price) {
+            return null;
+        }
+
+        return $price;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function validatePrice()
+    {
+        /** @var \App\User */
+        $user = $this->user;
+        $balance = $user->balance();
+        $price = $this->price();
+
+        if ($balance < $price) {
+            return null;
+        }
+
+        return $price;
+    }
 
     /**
      * @return bool
@@ -64,6 +159,52 @@ class Guest extends Model
     {
         $h = $this->historical;
         return $h && !$h->error && $h->sended_whatsapp;
+    }
+
+    /**
+     * @return bool
+     */
+    public function sended()
+    {
+        $h = $this->historical;
+
+        $sended_sms = $this->can_send_sms ? ($h ? $h->sended_sms : false) : true;
+
+        $sended_whatsapp = $this->can_send_whatsapp ? ($h ? $h->sended_whatsapp : false) : true;
+
+        return ($sended_sms && $sended_whatsapp && ($h && !$h->error));
+    }
+
+    /**
+     * @return bool
+     */
+    public function unsended()
+    {
+        $h = $this->historical;
+
+        $sended_sms = $this->can_send_sms && ($h ? !$h->sended_sms : true);
+
+        $sended_whatsapp = $this->can_send_whatsapp && ($h ? !$h->sended_whatsapp : true);
+
+        return (($h && $h->error) || $sended_sms || $sended_whatsapp);
+    }
+
+    /**
+     * @return bool
+     */
+    public function inWait()
+    {
+        return !$this->historical;
+    }
+
+
+    /**
+     * @return bool
+     */
+    public function failed()
+    {
+        $h = $this->historical;
+        return $h && $h->error;
     }
 
     /**
@@ -123,5 +264,13 @@ class Guest extends Model
     public function historical()
     {
         return $this->hasOne(SendHistorical::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function consumeds()
+    {
+        return $this->hasMany(Consumed::class);
     }
 }

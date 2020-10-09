@@ -19,6 +19,9 @@
 
 <body class="@yield('body-class')">
     <div id="app-main">
+        <script>
+            window.symbol = @json($symbol) 
+        </script>
         @yield('content')
     </div>
     @include('layouts.footer')

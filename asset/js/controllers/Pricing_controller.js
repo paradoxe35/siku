@@ -4,6 +4,7 @@ import { clientCountry } from "@js/functions/services"
 import { countriesFlagAndEmojis } from "@js/api/services"
 import { Localize } from "../functions/localize"
 import { ApiRequest } from "../api/api"
+import { SYMBOL } from "../functions/functions"
 
 export default class extends Controller {
     url = {
@@ -73,7 +74,7 @@ export default class extends Controller {
     /**
      * @param { number } p 
      */
-    textPrice = (p) => p == null ? Localize({ fr: 'indisponible', en: 'unavailable' }) : `$${p}`
+    textPrice = (p) => p == null ? Localize({ fr: 'indisponible', en: 'unavailable' }) : `${SYMBOL + p}`
 
     /**
      * @param { Object } data 

@@ -1,4 +1,5 @@
 @extends('template.report.layout.report-layout')
+@inject('basePice', 'App\Infrastructure\BasePrice')
 
 @section('report')
 <table width="100%" border="1"  cellpadding="5" cellspacing="0">
@@ -16,7 +17,7 @@
                         {{ __('Invités enregistrés') }}: {{ $event->guests->count() }}<br />
                         {{ __('Invités présents') }}: {{ $attended->count() }}<br />
                         {{ __('Invités absents') }}: {{ $absents->count() }}<br />
-                        {{ __('Fonds utilisé') }}: ${{ $event->totalConsumeds() }}<br />
+                        {{ __('Fonds utilisé') }}: {{ $basePice::$symbol  }} {{ $event->totalConsumeds() }}<br />
                     </td>
                 </tr>
             </table>
