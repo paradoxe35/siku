@@ -17,7 +17,7 @@
                                 <span class="optimizeLegibility">
                                     <span class="text-sm">{{ __('Balance') }} <small>({{ __('Crédit') }})</small></span><br>
                                     <b class="font-weight-bold balance">
-                                        $ <span data-target="Customer--App--Balance.showBalance"></span>
+                                        {{ $symbol }} <span data-target="Customer--App--Balance.showBalance"></span>
                                     </b>
                                     <a href="{{ route('customer.event.payments') }}">
                                         <span class="upgrade-action">

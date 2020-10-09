@@ -4,6 +4,7 @@ import { ApiRequest } from "@/js/api/api"
 import { DispachEventGuestDetail, Event_Open_Guest_Socket, Event_Process_Queue } from "@/js/react/vars"
 import { ReduxDispatch } from "@/js/store"
 import { putEventStatus } from "@/js/store/features/product/EventStatusSlice"
+import { setBalanceAmount } from "@/js/store/features/BalanceSlice"
 
 let EchoSocket = null
 
@@ -71,10 +72,11 @@ export default class extends Controller {
         }))
     }
 
-    onSocketData = (e, { status, data }) => {
+    onSocketData = (e, { status, data, new_balance }) => {
         !e && this.showStatus(status)
         status && this.dispatchToAppState(status)
         data && DispachEventGuestDetail(data)
+        data && ReduxDispatch(setBalanceAmount(new_balance))
     }
 
     setPourcentage(pourcent) {

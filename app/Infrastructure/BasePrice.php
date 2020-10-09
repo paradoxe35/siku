@@ -15,6 +15,18 @@ class BasePrice
      */
     private static $amount = 0.058;
 
+
+    /**
+     * @var string
+     */
+    public static $currency_code = "USD";
+
+    /**
+     * @var string
+     */
+    public static $symbol = '$';
+
+
     /**
      * @param BaseRepository $rs
      * 

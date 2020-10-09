@@ -6,7 +6,7 @@ use App\Infrastructure\Cache\CacheJobEvent;
 use App\Infrastructure\ProductPrice;
 use App\Models\Balance\Balance;
 use App\Models\Balance\Consumed;
-use App\Models\CustomPayment;
+use App\Models\Payments\CustomPayment;
 use App\Models\Template\Template;
 use App\User;
 use Illuminate\Database\Eloquent\Model;
@@ -101,6 +101,7 @@ class Event extends Model
     public function presumedPrice($country_code)
     {
         $guest = $this->eventGuests->sum('guest');
+        /** @var  ProductPrice */
         $productClass = resolve(ProductPrice::class);
         $prices = $productClass->getPrice($country_code);
         return [
@@ -149,15 +150,7 @@ class Event extends Model
          */
         $guests = $this->guests;
 
-        return $guests->filter(function (Guest $guest) {
-            $h = $guest->historical;
-
-            $sended_sms = $guest->can_send_sms ? ($h ? $h->sended_sms : false) : true;
-
-            $sended_whatsapp = $guest->can_send_whatsapp ? ($h ? $h->sended_whatsapp : false) : true;
-
-            return ($sended_sms && $sended_whatsapp && ($h && !$h->error));
-        });
+        return $guests->filter(fn (Guest $guest) => $guest->sended());
     }
 
     /**
@@ -170,26 +163,13 @@ class Event extends Model
          */
         $guests = $this->guests;
 
-        $unprocessed = $guests->filter(function (Guest $guest) {
-            $h = $guest->historical;
-
-            $sended_sms = $guest->can_send_sms && ($h ? !$h->sended_sms : true);
-
-            $sended_whatsapp = $guest->can_send_whatsapp && ($h ? !$h->sended_whatsapp : true);
-
-            return (($h && $h->error) || $sended_sms || $sended_whatsapp);
-        });
+        $unprocessed = $guests->filter(fn (Guest $guest) => $guest->unsended());
 
         $grouped = [];
         if ($group) {
-            $grouped['wait'] = $unprocessed->filter(function (Guest $guest) {
-                return !$guest->historical;
-            });
+            $grouped['wait'] = $unprocessed->filter(fn (Guest $guest) => $guest->inWait());
 
-            $grouped['fail'] =  $unprocessed->filter(function (Guest $guest) {
-                $h = $guest->historical;
-                return $h && $h->error;
-            });
+            $grouped['fail'] =  $unprocessed->filter(fn (Guest $guest) => $guest->failed());
         }
 
         return !$group ? $unprocessed : (object) $grouped;

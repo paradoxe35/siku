@@ -1,9 +1,11 @@
 @extends('customer')
+@inject('basePice', 'App\Infrastructure\BasePrice')
+
 
 @section('head-secondary')
 <meta name="turbolinks-visit-control" content="reload">
 <script defer id="paypay-script"
-    src="https://www.paypal.com/sdk/js?currency=USD&client-id=AQX_Lmvi9wRcFzBQGVj8xxN5znPZHVgMVYcbe5yQZ3Bm2tXQZ2PJB30vIfWQ1KPuc3c8s20jnklvCYs0">
+    src="https://www.paypal.com/sdk/js?currency={{ $basePice::$currency_code }}&client-id=AQX_Lmvi9wRcFzBQGVj8xxN5znPZHVgMVYcbe5yQZ3Bm2tXQZ2PJB30vIfWQ1KPuc3c8s20jnklvCYs0">
 </script>
 @endsection
 

@@ -3,8 +3,9 @@
 namespace App\Models\Balance;
 
 use App\Http\Resources\User;
-use App\Models\CustomPayment;
+use App\Models\Payments\CustomPayment;
 use App\Models\Event\Event;
+use App\Models\Payments\PaymentMeta;
 use Illuminate\Database\Eloquent\Model;
 
 class Balance extends Model
@@ -45,5 +46,13 @@ class Balance extends Model
     public function customPayment()
     {
         return $this->hasMany(CustomPayment::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function paymentMeta()
+    {
+        return $this->hasOne(PaymentMeta::class);
     }
 }

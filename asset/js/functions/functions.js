@@ -18,3 +18,6 @@ export function debounce(func, wait = 1000, immediate) {
         if (callNow) func.apply(context, args);
     };
 }
+
+// @ts-ignore
+export const SYMBOL = window.symbol

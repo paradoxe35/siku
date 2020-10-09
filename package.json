@@ -63,6 +63,7 @@
         "react-dom": "^16.13.1",
         "react-i18next": "^11.7.0",
         "react-laravel-paginex": "^2.0.8",
+        "react-month-picker": "^2.2.0",
         "react-phone-number-input": "^3.0.25",
         "react-redux": "^7.2.1",
         "react-router-dom": "^5.2.0",

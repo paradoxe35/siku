@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Payments;
 
 use App\Http\Resources\User;
 use App\Models\Event\Event;

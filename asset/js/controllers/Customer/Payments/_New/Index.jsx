@@ -9,6 +9,7 @@ import { useSelector } from 'react-redux';
 import { ServiceUse } from '../../Product/guests/ServiceUse';
 import Label from '@/js/react/components/Label';
 import { TurbolinksApp } from '@/js/modules/turbolinks';
+import { SYMBOL } from '@/js/functions/functions';
 
 const GuestsField = ({ guests, onGuestFieldChange, onGuestFieldBlur, selectedServices, country_name }) => {
     const { t } = useTranslation()
@@ -105,7 +106,7 @@ const CustomerPaymentsNew = () => {
                         <div className="mt-4">
                             <b className="text-lg">
                                 {/* @ts-ignore */}
-                                {t('Montant')}: ${(isNaN(showPrice) ? 0 : showPrice).nround(3)}
+                                {t('Montant')}: {SYMBOL}{(isNaN(showPrice) ? 0 : showPrice).nround(3)}
                             </b>
                         </div>
                     </div>
