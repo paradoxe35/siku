@@ -41,7 +41,7 @@ export const EventsList = ({ events = [], started }) => {
     return (
         <>
             {(!started && !events.length) && <Empty message={message} />}
-            {!started && content}
+            {!!events.length && content}
         </>
     )
 }
