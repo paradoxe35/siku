@@ -55,7 +55,7 @@ class ViewServiceProvider extends ServiceProvider
             if ($user && $eventId) {
                 $event = $user->events()->findByHashid($eventId);
                 $ressource = new Event($event);
-                $view->with('event', $ressource->toArray($request));
+                $view->with('event', $ressource->toArray(null));
                 $view->with('customer_event', $event);
             }
         });

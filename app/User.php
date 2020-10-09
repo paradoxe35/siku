@@ -87,7 +87,7 @@ class User extends Authenticatable implements MustVerifyEmail
          */
         $total = $this->AllBalance()->where('confirmed', true)->sum('amount');
         $consumed = $this->consumeds()->where('confirmed', true)->sum('amount');
-        return round(($total - $consumed), 3);
+        return round(($total - $consumed), 2);
     }
 
     /**

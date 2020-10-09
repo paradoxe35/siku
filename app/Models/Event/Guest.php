@@ -149,7 +149,7 @@ class Guest extends Model
     public function sendedSms()
     {
         $h = $this->historical;
-        return $h && !$h->error && $h->sended_sms;
+        return $h && $h->sended_sms;
     }
 
     /**
@@ -158,7 +158,7 @@ class Guest extends Model
     public function sendedWhatsapp()
     {
         $h = $this->historical;
-        return $h && !$h->error && $h->sended_whatsapp;
+        return $h && $h->sended_whatsapp;
     }
 
     /**

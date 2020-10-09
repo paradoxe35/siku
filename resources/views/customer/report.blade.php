@@ -2,7 +2,7 @@
 
 
 @section('customer-content')
-<div data-controller="Customer--Report"
+<div class="mb-5" data-controller="Customer--Report"
     data-Customer--Report-event-report-overview="{{ route('api.customer.events.event.report.overview') }}"
     data-Customer--Report-event-report-attended="{{ route('api.customer.events.event.report.attended') }}"
     data-Customer--Report-event-report-absent="{{ route('api.customer.events.event.report.absent') }}"

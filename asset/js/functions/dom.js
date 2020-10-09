@@ -13,7 +13,7 @@ export const HtmlAlert = {
     parents: [],
     /**
      * @param { HTMLElement| Element } parent 
-     * @param { ObjectConstructor | string } message
+     * @param { any } message
      * @param { boolean } showIcon 
      * @param { string } icon 
      * @param { string } type 

@@ -8,13 +8,6 @@ class EventCollection extends ResourceCollection
 {
 
     /**
-     * The "data" wrapper that should be applied.
-     *
-     * @var string
-     */
-    public static $wrap = 'events';
-
-    /**
      * Transform the resource collection into an array.
      *
      * @param  \Illuminate\Http\Request  $request

@@ -16,7 +16,7 @@ class Consumed extends JsonResource
     public function toArray($request)
     {
         return [
-            'amount' => $this->total_amount,
+            'amount' => round($this->total_amount, 2),
             'date' => $this->date,
             'currency_code' => BasePrice::$currency_code,
             'event' => $this->event->name,

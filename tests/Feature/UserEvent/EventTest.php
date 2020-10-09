@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Feature\UserEvent;
 
 use App\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;

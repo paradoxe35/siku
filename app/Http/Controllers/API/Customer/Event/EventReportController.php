@@ -14,11 +14,6 @@ use Barryvdh\DomPDF\PDF;
 
 class EventReportController extends Controller
 {
-
-    // private function query(Event $event) {
-    //     return $event->query()->with(['attends', 'guests']);
-    // } 
-
     /**
      * @param \Illuminate\Database\Eloquent\Builder $model
      * @return array
@@ -90,7 +85,7 @@ class EventReportController extends Controller
      */
     public function absent(Event $event, CustomPaginator $p)
     {
-        $absents = $this->absents($event);
+        $absents = $this->absents($event)->reverse();
         $paginate = $p->paginate($absents->values());
         return new AbsentCollection($paginate);
     }
@@ -102,7 +97,7 @@ class EventReportController extends Controller
     {
         $event = $evt->findByHashid($event);
         $attended = $this->queryAttended($event)->get();
-        $absents = $this->absents($event);
+        $absents = $this->absents($event)->reverse();
 
         return $pdf->loadView('template.report.general', [
             'event' => $event,

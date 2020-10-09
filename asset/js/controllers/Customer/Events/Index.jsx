@@ -1,52 +1,59 @@
 //@ts-check
-import React, { useCallback, useState, useMemo, useEffect, lazy, Suspense, Fragment } from 'react'
+import React, { useCallback, useState, useMemo, useEffect, lazy, Suspense, Fragment, useRef } from 'react'
 import { useTranslation } from "react-i18next";
-import { Paginate } from '@/js/react/components/Paginate';
 import { FullLoader } from '@/js/react/components/FullLoader';
 import { I_EVENTS, EVENT_VALUE, I_NEW_EVENT, URLS } from '@/js/react/vars';
 import { EventContext } from '@js/react/contexts';
 import { EventsList } from './EventsList';
-import { useFetch, useFullLoading } from '@/js/react/hooks';
+import { useFetch, useFullLoading, useListDataPaginator } from '@/js/react/hooks';
 import { InitReact } from '@/js/react/init';
+import { LaravelPagination } from '@/js/react/components/Pagination';
 
 const CreateEvent = lazy(() => import('./CreateEvent'))
 const ConfirmAndCustomerStatus = lazy(() => import('./ConfirmAndCustomerStatus'))
 
-const CustomerEvents = ({ setLoading = null, handleLoading }) => {
+const CustomerEvents = ({ setLoading }) => {
     const { t } = useTranslation();
     const [index, setIndex] = useState(I_EVENTS)
     const [currentEvent, setCurrentEvent] = useState(EVENT_VALUE)
-    const [started, setStarted] = useState(true)
-    const [paginate, setPaginate] = useState({})
 
     //fetch events
-    const [events, setEvents] = useState([])
-    const [fetchEventsUrl, setFetchEventsUrl] = useState(URLS.events)
-    const { ApiRequest } = useFetch()
+    const { fetchAPi, fetchLoading } = useFetch(true)
 
+    const defaultV = useRef({})
+    const [listData, setListData, getDataPaginator] = useListDataPaginator(defaultV.current, onPageChange)
+
+    useEffect(() => {
+        setLoading(fetchLoading)
+    }, [fetchLoading])
 
     // fetch all events
     useEffect(() => {
-        if (URLS.events !== fetchEventsUrl) setLoading(true);
-        ApiRequest('get', fetchEventsUrl, {}, true)
-            .then(res => {
-                setEvents((res.data.events ? res.data.events : []))
-                setPaginate(res.data.links)
-            })
-            .finally(() => {
-                setStarted(false)
-                setLoading(false)
-            })
-    }, [fetchEventsUrl])
-    const addEvent = useCallback((event) => setEvents(e => [event, ...e]), [])
+        fetchAPi('get', URLS.events, {}, true)
+            .then(({ data }) => setListData(data))
+    }, [])
+
+    function onPageChange(page) {
+        fetchAPi('get', URLS.events + '?page=' + page, {}, true)
+            .then(({ data }) => setListData(data))
+    }
+
+    const addEvent = useCallback((event) => {
+        setListData(k => {
+            const y = { ...k }
+            y.data.unshift(event)
+            return y
+        })
+    }, [])
+
     const updateComponentIndex = useCallback((index) => setIndex(index), [setIndex])
 
     const components = useMemo(() => [
         {
             title: t('Mes Événements'),
             component: <EventsList
-                events={events}
-                started={started} />
+                events={listData.data || []}
+                started={fetchLoading} />
         },
         {
             title: t("Nouveau Événement"),
@@ -57,9 +64,9 @@ const CustomerEvents = ({ setLoading = null, handleLoading }) => {
         {
             title: t("Profile"),
             component: <ConfirmAndCustomerStatus
-                handleLoading={handleLoading} />
+                handleLoading={setLoading} />
         }
-    ], [handleLoading, updateComponentIndex, events, started])
+    ], [setLoading, updateComponentIndex, listData, addEvent, fetchLoading])
 
     // handling Event session context
     const updateEvent = useCallback((value) => setCurrentEvent(value), [setCurrentEvent]);
@@ -68,13 +75,13 @@ const CustomerEvents = ({ setLoading = null, handleLoading }) => {
     return <>
         <div className="d-flex justify-content-between mb-2">
             <h4>{components[index].title}</h4>
-            {(index === 0 && !started) &&
+            {(index === 0 && !fetchLoading) &&
                 <button type="button" onClick={() => setIndex(I_NEW_EVENT)} className="btn btn-sm btn-primary">
                     {t('Créer')}
                 </button>
             }
 
-            {(index !== 0 && !started) &&
+            {(index !== 0 && !fetchLoading) &&
                 <button type="button" onClick={() => setIndex(I_EVENTS)} className="btn btn-sm btn-primary">
                     <i className="ni ni-bold-left"></i>
                 </button>
@@ -83,19 +90,17 @@ const CustomerEvents = ({ setLoading = null, handleLoading }) => {
         <EventContext.Provider value={eventValue}>
             {components[index].component}
         </EventContext.Provider>
-        {index === 0 && <Paginate pagination={paginate} onChange={(paginationUrl) => setFetchEventsUrl(paginationUrl)} />}
+        {index === 0 && <LaravelPagination listData={listData} getDataPaginator={getDataPaginator} />}
     </>
 }
 
 const Index = () => {
     const { parentElemt, fullLoading: loading, setFullLoading: setLoading } = useFullLoading()
 
-    const handleLoading = useCallback((status) => setLoading(status), [])
-
     return <div className="card" ref={parentElemt}>
         <Suspense fallback={<FullLoader parent={parentElemt.current} />}>
             <div className="card-body">
-                <CustomerEvents setLoading={setLoading} handleLoading={handleLoading} />
+                <CustomerEvents setLoading={setLoading} />
             </div>
         </Suspense>
         {loading && <FullLoader parent={parentElemt.current} />}

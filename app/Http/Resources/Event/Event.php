@@ -14,8 +14,12 @@ class Event extends JsonResource
      */
     public function toArray($request)
     {
-        $user = $request->user();
-        $p = $this->presumedPrice($user->country_code);
+        $user = null;
+        if (!is_null($request)) {
+            $user = $request->user();
+        }
+        $p = $this->presumedPrice($user ? $user->country_code : null, !!$user);
+
         return [
             'id' => $this->id,
             'name' => $this->name,

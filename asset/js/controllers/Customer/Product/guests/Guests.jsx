@@ -6,7 +6,7 @@ import RowDivider from '@/js/react/components/RowDivider';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import { fetchEventTemplates } from '@/js/store/features/product/TemplatesSlice';
-import {  DispachEventOpenGuestSocketDetail, DispachEventProcessQueueDetail, DispachGuestsDetail, Event_Guests_Name, TEMPLATE_SECTION, URLS } from '@/js/react/vars';
+import { DispachEventOpenGuestSocketDetail, DispachEventProcessQueueDetail, DispachGuestsDetail, Event_Guests_Name, TEMPLATE_SECTION, URLS } from '@/js/react/vars';
 import { slim as slimSelect } from '@js/utils/SlimSelect'
 import { InputField } from '@/js/react/components/InputField';
 import { DefaultButton } from '@/js/react/components/Buttons';
@@ -124,7 +124,7 @@ const EstimatePrice = ({ disabledTextField, services, textValues, phone }) => {
             })
     }, [services, textValues, phone, disabledTextField])
 
-    const price = (v) => v !== null && !isNaN(v) ? `${v + SYMBOL}` : t('Indisponible')
+    const price = (v) => v !== null && !isNaN(v) ? `${SYMBOL + v}` : t('Indisponible')
 
     return <>
         <DefaultButton
@@ -237,7 +237,7 @@ const CreateNewGuest = () => {
         ({ target: { name, value } }) => {
             setFields(f => ({ ...f, [name]: value }))
         }, [setFields])
-    
+
 
     const validField = useMemo(() => {
         return isValidPhoneNumber(phone) &&
@@ -317,7 +317,7 @@ const CreateNewGuest = () => {
         form.append(NEW_GUEST_FORM.phone, dataPhone.number);
         form.append(NEW_GUEST_FORM.country_code, dataPhone.country);
         form.append(NEW_GUEST_FORM.country_call, dataPhone.countryCallingCode);
-        
+
         form.has(NEW_GUEST_FORM.can_send) && DispachEventOpenGuestSocketDetail(null)
 
         fetchAPi('post', URLS.eventGuestsStore, form, true)
@@ -495,9 +495,7 @@ const GuestsListProvider = () => {
             </div>
         </div>
         <div className="my-3" />
-        <div style={{ maxHeight: "800px", overflowY: "auto" }}>
-            <GuestList url={URLS.eventGuests} datas={datas} setFullLoading={setFullLoading} />
-        </div>
+        <GuestList url={URLS.eventGuests} datas={datas} setFullLoading={setFullLoading} />
         {loading ? <SkeletonBox height="50" lines="3" /> : ''}
         {/*  @ts-ignore */}
         {!loading && datas.meta && !datas.meta.total ? (

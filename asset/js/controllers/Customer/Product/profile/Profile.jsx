@@ -72,9 +72,7 @@ const Profile = () => {
             <div className="mt-5" ref={parentElemt}>
                 {fullLoading && <FullLoader parent={parentElemt.current} />}
                 <div className="my-3" />
-                <div style={{ maxHeight: "600px", overflowY: "auto" }}>
-                    <GuestList url={URLS.eventProfileItems} filter={'filter=' + filter} datas={datas} setFullLoading={setFullLoading} />
-                </div>
+                <GuestList url={URLS.eventProfileItems} filter={'filter=' + filter} datas={datas} setFullLoading={setFullLoading} />
                 {/*  @ts-ignore */}
                 {datas.meta && !datas.meta.total ? (
                     <div className="mt-5"><Empty message="" /></div>

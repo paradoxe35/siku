@@ -127,11 +127,13 @@ export const GuestList = ({ datas, setFullLoading, filter, url }) => {
 
     return <>
         <LaravelPagination listData={listData} getDataPaginator={getDataPaginator} />
-        <List.Ul>
-            <List.Li data={listData.data || []}>
-                {v => <ShowList v={v} handleDelete={handleDelete} />}
-            </List.Li>
-        </List.Ul>
+        <div style={{ maxHeight: "800px", overflowY: "auto" }}>
+            <List.Ul>
+                <List.Li data={listData.data || []}>
+                    {v => <ShowList v={v} handleDelete={handleDelete} />}
+                </List.Li>
+            </List.Ul>
+        </div>
         <ModalConfirm loading={deletionLoading} onConfirm={deleteItem} ref={modalConfirm} />
     </>
 }

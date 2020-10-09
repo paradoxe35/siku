@@ -49,14 +49,19 @@ export const useFullLoading = () => {
     }
 }
 
-export const useListDataPaginator = (datas) => {
+export const useListDataPaginator = (datas, fn) => {
     const [listData, setListData] = useState(datas)
 
     useEffect(() => {
         setListData(datas)
     }, [datas])
 
-    return [listData, setListData]
+    const onPageChange = useCallback(({ page }) => {
+        if (!listData.meta || listData.meta.current_page == page) return
+        fn && fn(page)
+    }, [listData])
+
+    return [listData, setListData, onPageChange]
 }
 
 

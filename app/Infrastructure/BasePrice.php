@@ -42,6 +42,6 @@ class BasePrice
      * @return float
      */
     public static function roundPrice($amount) {
-        return round($amount, 3);
+        return round($amount, 2);
     }
 }

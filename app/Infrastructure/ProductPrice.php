@@ -65,7 +65,7 @@ class ProductPrice
     {
         $basePrice = BasePrice::getAmount($this->baseRp);
         $sms = $this->nexmo->parseSmsPrice($country_code);
-        $smsUSD = $this->smsPrice($sms['Price (EUR) / message']);
+        $smsUSD = $this->smsPrice(!is_null($sms) ? $sms['Price (EUR) / message'] : null);
         $smsUnitPrice = null == $smsUSD || null == $basePrice ? null  : ($smsUSD + $basePrice);
         return [
             'sms' => !$smsUnitPrice ? null : BasePrice::roundPrice($smsUnitPrice),

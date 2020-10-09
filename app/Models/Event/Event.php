@@ -98,14 +98,16 @@ class Event extends Model
     /**
      * @return array
      */
-    public function presumedPrice($country_code)
+    public function presumedPrice($country_code, $showPrice)
     {
         $guest = $this->eventGuests->sum('guest');
-        /** @var  ProductPrice */
-        $productClass = resolve(ProductPrice::class);
-        $prices = $productClass->getPrice($country_code);
+        if ($showPrice) {
+            /** @var  ProductPrice */
+            $productClass = resolve(ProductPrice::class);
+            $prices = $productClass->getPrice($country_code);
+        }
         return [
-            'prices' => $prices,
+            'prices' => $prices ?? 0,
             'guests' => $guest
         ];
     }
@@ -118,9 +120,9 @@ class Event extends Model
          * @var double $total
          * @var double $consumed
          */
-        $total = $this->totalBalance();;
+        $total = $this->totalBalance();
         $consumed = $this->totalConsumeds();
-        return round(($total - $consumed), 3);
+        return round(($total - $consumed), 2);
     }
 
     /**
@@ -183,7 +185,7 @@ class Event extends Model
         return [
             'processed' => $this->processedGuests()->count(),
             'total' => $this->guests()->count(),
-            'consumed' => $this->totalConsumeds()
+            'consumed' => round($this->totalConsumeds(), 2)
         ];
     }
 

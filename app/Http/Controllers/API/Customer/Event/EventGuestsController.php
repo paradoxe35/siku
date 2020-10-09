@@ -15,6 +15,15 @@ use Instasent\SMSCounter\SMSCounter;
 class EventGuestsController extends Controller
 {
     /**
+     * @param \Illuminate\Database\Eloquent\Builder $guests
+     * 
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
+     */
+    private function paginate($guests)
+    {
+        return $guests->paginate(5);
+    }
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
@@ -25,7 +34,7 @@ class EventGuestsController extends Controller
 
         $all = request('all');
 
-        return new GuestCollection($all ? $guests->get() :  $guests->paginate());
+        return new GuestCollection($all ? $guests->get() :  $this->paginate($guests));
     }
 
     /**
@@ -111,7 +120,7 @@ class EventGuestsController extends Controller
             $this->dispatchGuestToQueue($guest);
         }
 
-        return new GuestCollection($guests->latest()->paginate());
+        return new GuestCollection($this->paginate($guests->latest()));
     }
 
 

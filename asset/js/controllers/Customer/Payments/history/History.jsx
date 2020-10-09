@@ -9,7 +9,6 @@ import { FullLoader } from '@/js/react/components/FullLoader';
 import { URLS } from '@/js/react/vars';
 import { LaravelPagination } from '@/js/react/components/Pagination';
 import { SYMBOL } from '@/js/functions/functions';
-import { useLayoutEffect } from 'react';
 
 const SECTIONS = {
     payments: 'payments',
