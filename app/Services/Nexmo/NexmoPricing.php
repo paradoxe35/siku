@@ -20,11 +20,18 @@ class NexmoPricing
      */
     public string $key = 'SMS';
 
+
     /**
+     * @var string
      */
-    public function __construct()
-    {
-    }
+    public string $priceKey = 'Price (EUR) / message';
+
+
+    /**
+     * @var string
+     */
+    public string $filterByKey = 'Country Code';
+
 
     /**
      * @return mixed
@@ -43,7 +50,7 @@ class NexmoPricing
     public function parseSmsPrice($code)
     {
         return collect($this->prices())
-            ->firstWhere('Country Code', $code) ?: null;
+            ->firstWhere($this->filterByKey, $code) ?: null;
     }
 
     /**

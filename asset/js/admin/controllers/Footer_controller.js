@@ -1,9 +1,10 @@
 //@ts-check
-import { NavBarMixin } from "@/js/mixins/navbar_mixin";
+import { FooterMixin } from "@/js/mixins/footer_mixin";
 import { Controller } from "stimulus"
+
 
 const controller = class extends Controller { }
 
-Object.assign(controller.prototype, NavBarMixin);
+Object.assign(controller.prototype, FooterMixin);
 
 export default controller
