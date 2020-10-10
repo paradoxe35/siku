@@ -19,6 +19,7 @@
         "laravel-notification-channels/telegram": "^0.5.0",
         "laravel/framework": "^7.24",
         "laravel/passport": "^9.3",
+        "laravel/sanctum": "^2.6",
         "laravel/tinker": "^2.0",
         "laravel/ui": "^2.1",
         "mtvs/eloquent-hashids": "^2.0",

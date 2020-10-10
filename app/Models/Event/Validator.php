@@ -2,12 +2,17 @@
 
 namespace App\Models\Event;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
+use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class Validator extends Model
+
+
+class Validator extends Authenticatable
 {
-        /**
+    use HasApiTokens;
+
+    /**
      * @var string
      */
     protected $table = 'validators';

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Infrastructure\Payments\PayPal\Client;
+namespace App\Infrastructure\Payments\PayPal;
 
 use PayPalCheckoutSdk\Orders\OrdersGetRequest;
 use App\Infrastructure\Payments\PayPal\Client\PayPalClient;

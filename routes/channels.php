@@ -1,5 +1,7 @@
 <?php
 
+use App\Broadcasting\UserChannel;
+use App\Broadcasting\ValidatorChannel;
 use Illuminate\Support\Facades\Broadcast;
 
 /*
@@ -13,6 +15,6 @@ use Illuminate\Support\Facades\Broadcast;
 |
 */
 
-Broadcast::channel('App.User.{id}', function ($user, $id) {
-    return (int) $user->id === (int) $id;
-});
+Broadcast::channel('App.User.{id}', UserChannel::class);
+
+Broadcast::channel('App.Validator.{id}', ValidatorChannel::class);

@@ -1,7 +1,7 @@
 <?php
 
-use App\Http\Middleware\Customer\SetValueForCustomerEventUrls;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Broadcast;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::namespace('API')
     ->name('api.')
+    ->prefix('web')
     ->group(function () {
         Route::middleware('auth:api')
             ->group(function () {
@@ -129,4 +130,26 @@ Route::namespace('API')
             'index', 'store', 'destroy'
         ]);
         Route::apiResource('cmp-details', "CompanyDetailsController")->except(['show']);
+    });
+
+Route::namespace('Mobile')
+    ->name('api.mobile.')
+    ->prefix('mobile')
+    ->group(function () {
+        Broadcast::routes(['middleware' => ['auth:sanctum']]);
+
+        Route::namespace('Auth')
+            ->group(function () {
+                Route::post('token', 'AuthenticationController@token');
+                Route::post('destroy-token', 'AuthenticationController@destroyToken')
+                    ->middleware('auth:sanctum');
+            });
+
+        Route::middleware(['auth:sanctum', 'active-event'])
+            ->group(function () {
+                Route::get('event', "GetEventController");
+                Route::prefix('{event}')
+                    ->group(function () {
+                    });
+            });
     });
