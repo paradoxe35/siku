@@ -68,4 +68,4 @@ mix.browserSync({
     }
 });
 
-mix.copyDirectory('asset/img/svg', 'public/img/svg');
+mix.copyDirectory('asset/img', 'public/img');

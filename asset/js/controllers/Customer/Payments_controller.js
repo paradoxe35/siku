@@ -3,7 +3,8 @@ import { Controller } from "stimulus"
 
 export default class extends Controller {
     urls = { 
-        historyIndex: this.data.get('historyIndex')
+        historyIndex: this.data.get('historyIndex'),
+        historyLowBalance: this.data.get('historyLowBalance'),
     }
 
     async connect() {

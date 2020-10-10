@@ -4,6 +4,7 @@ namespace App\Http\Resources\Payments\Balance;
 
 use App\Infrastructure\BasePrice;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Vinkla\Hashids\Facades\Hashids;
 
 class Balance extends JsonResource
 {
@@ -15,8 +16,10 @@ class Balance extends JsonResource
      */
     public function toArray($request)
     {
+        /** @var  mixed */
+        $h = new Hashids;
         return [
-            'id' => $this->id,
+            'id' => $h::encode($this->id),
             'amount' => $this->amount,
             'created_at' => $this->created_at->format('Y-m-d H:i'),
             'meta' => $this->paymentMeta ?: [

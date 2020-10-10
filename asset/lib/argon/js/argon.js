@@ -76,8 +76,15 @@ const Dropzones = function () {
     }))
 }
 
+const FormControl = function () {
+    var e = $(".form-control");
+    e.length && e.on("focus blur", function (e) {
+        $(this).parents(".form-group").toggleClass("focused", "focus" === e.type)
+    }).trigger("blur")
+}
+
 export const connect = () => {
-    const o = { Layout, Tooltip, Dropzones }
+    const o = { Layout, Tooltip, Dropzones, FormControl }
     for (const key in o) {
         o[key]()
     }

@@ -114,6 +114,11 @@ Route::namespace('API')
                                                     ->withoutMiddleware(['api', 'auth:api'])
                                                     ->middleware(['web', 'auth', 'throttle:60,1'])
                                                     ->name('index');
+
+                                                Route::get('low-balance', 'PaymentsHistoryController@lowBalance')
+                                                    ->name('low-balance');
+                                                Route::post('low-balance', 'PaymentsHistoryController@setLowBalance');
+                                                Route::delete('low-balance', 'PaymentsHistoryController@destoryLowBalance');
                                             });
                                     });
                             });

@@ -4,6 +4,7 @@ namespace App;
 
 use App\Models\Balance\Balance;
 use App\Models\Balance\Consumed;
+use App\Models\Balance\LowBalance;
 use App\Models\Payments\CustomPayment;
 use App\Models\Event\Event;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -123,10 +124,18 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function customPayment()
     {
         return $this->hasMany(CustomPayment::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function lowBalance()
+    {
+        return $this->hasOne(LowBalance::class);
     }
 }

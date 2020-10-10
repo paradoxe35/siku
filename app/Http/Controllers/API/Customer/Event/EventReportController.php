@@ -105,6 +105,6 @@ class EventReportController extends Controller
             'absents' => $absents->values()
         ])->setPaper('a4', 'landscape')
             ->setWarnings(false)
-            ->download("report-{$event->hashid()}.pdf");
+            ->download("report-{$event->hashid()}-" . time() . ".pdf");
     }
 }

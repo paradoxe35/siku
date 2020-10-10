@@ -21,6 +21,7 @@ const PaymentsView = ({ listData }) => {
     return <table className="table table-responsive">
         <thead>
             <tr>
+                <th scope="col">{t('Id Paiement')} </th>
                 <th scope="col">{t('Date')} </th>
                 <th scope="col">{t('Moyen de paiement')} </th>
                 <th scope="col">{t('Montant')}</th>
@@ -30,6 +31,7 @@ const PaymentsView = ({ listData }) => {
         <tbody>
             {listData.data && listData.data.map((d, i) => (
                 <tr key={d.id || i}>
+                    <td>{d.id}</td>
                     <td>{d.created_at}</td>
                     <td>{d.meta.service}</td>
                     <td>{SYMBOL + d.amount}</td>

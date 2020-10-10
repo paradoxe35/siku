@@ -78,3 +78,33 @@ export const usePhoneInput = () => {
         onPhoneValueChange
     }
 }
+
+export const useItemDeletion = () => {
+    const modalConfirm = useRef(null)
+    const [deletionLoading, setDeletionLoading] = useState(false)
+    const [deletionId, setDeletionId] = useState(null)
+
+    // delete event template
+    const handleDelete = useCallback(async (id) => {
+        setDeletionId(id)
+        if (modalConfirm.current)
+            $(modalConfirm.current).modal('show');
+    }, [modalConfirm.current, setDeletionId])
+
+
+    const closeModal = () => {
+        $(modalConfirm.current).modal('hide')
+        setDeletionLoading(false)
+        setDeletionId(null)
+    }
+
+    return {
+        modalConfirm,
+        deletionLoading,
+        setDeletionLoading,
+        deletionId,
+        setDeletionId,
+        handleDelete,
+        closeModal
+    }
+}
