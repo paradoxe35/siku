@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Mobile\Auth;
 
 use App\Exceptions\NotActiveEventException;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\Event\Event;
+use App\Http\Resources\Validator\Validator as ValidatorResource;
 use App\Models\Event\Validator;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
@@ -32,12 +34,17 @@ class AuthenticationController extends Controller
         }
 
         $event = $validator->event;
+
         if (!$event->active) {
             throw new NotActiveEventException;
         }
 
+        $token = $validator->createToken($request->device_name)->plainTextToken;
 
-        return $validator->createToken($request->device_name)->plainTextToken;
+        return [
+            'token' => $token,
+            'auth' => new ValidatorResource($validator),
+        ];
     }
 
     /**

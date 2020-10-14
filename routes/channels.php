@@ -16,5 +16,3 @@ use Illuminate\Support\Facades\Broadcast;
 */
 
 Broadcast::channel('App.User.{id}', UserChannel::class);
-
-Broadcast::channel('App.Validator.{id}', ValidatorChannel::class);

@@ -136,8 +136,6 @@ Route::namespace('Mobile')
     ->name('api.mobile.')
     ->prefix('mobile')
     ->group(function () {
-        Broadcast::routes(['middleware' => ['auth:sanctum']]);
-
         Route::namespace('Auth')
             ->group(function () {
                 Route::post('token', 'AuthenticationController@token');
@@ -149,7 +147,13 @@ Route::namespace('Mobile')
             ->group(function () {
                 Route::get('event', "GetEventController");
                 Route::prefix('{event}')
+                    ->namespace('Event')
                     ->group(function () {
+                        Route::get('guests', 'GuestsController@index');
+                        Route::get('attends', 'GuestsController@attends');
+
+                        //validation
+                        Route::post('validation', 'ValidationController@validation');
                     });
             });
     });

@@ -24,8 +24,5 @@ class AuthServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->registerPolicies();
-        Gate::define('admin-views', function ($user) {
-            return $user->is_admin && null !== $user->admin_token;
-        });
     }
 }

@@ -55,7 +55,7 @@ class EventReportController extends Controller
      * 
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function queryAttended(Event $event)
+    public static function queryAttended(Event $event)
     {
         return $event->attends()->with(['validator', 'guest'])->latest();
     }

@@ -267,6 +267,14 @@ class Guest extends Model
     }
 
     /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function attend()
+    {
+        return $this->hasOne(Attend::class);
+    }
+
+    /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function consumeds()

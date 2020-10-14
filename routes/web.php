@@ -38,10 +38,10 @@ Route::group([], function () {
 
 Route::post('locale', 'LocalizeController@changeLang')->name('locale');
 
-Route::prefix('customer')
+Route::middleware(['auth'])
     ->namespace('Customer')
     ->name('customer.')
-    ->middleware(['auth'])
+    ->prefix('customer')
     ->group(function () {
         Route::get('events', 'EventsController@index')->name('events');
         Route::prefix('{event}')
@@ -72,10 +72,10 @@ Route::prefix('customer')
             });
     });
 
-Route::namespace('Admin')
+Route::middleware(['auth', 'admin'])
     ->prefix('dash')
     ->name('admin.')
-    // ->middleware(['auth', 'admin-views'])
+    ->namespace('Admin')
     ->group(function () {
         Route::redirect('', '/dash/home');
         Route::get('home', 'HomeDashController@index')->name('home');
