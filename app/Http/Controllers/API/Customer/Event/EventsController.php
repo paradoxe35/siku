@@ -256,7 +256,12 @@ class EventsController extends Controller
      */
     public function destroy(Event $event)
     {
-        $event->delete();
+        if ($event->totalConsumeds() > 0) {
+            $event->delete();
+        }else {
+            $event->forceDelete();
+        }
+        
         return new ResourcesEvent($event);
     }
 }

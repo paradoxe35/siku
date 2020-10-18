@@ -139,8 +139,12 @@ Route::namespace('Mobile')
         Route::namespace('Auth')
             ->group(function () {
                 Route::post('token', 'AuthenticationController@token');
-                Route::post('destroy-token', 'AuthenticationController@destroyToken')
-                    ->middleware('auth:sanctum');
+
+                Route::middleware(['auth:sanctum'])
+                    ->group(function () {
+                        Route::post('destroy-token', 'AuthenticationController@destroyToken');
+                        Route::get('user', 'AuthenticationController@user')->middleware('active-event');
+                    });
             });
 
         Route::middleware(['auth:sanctum', 'active-event'])

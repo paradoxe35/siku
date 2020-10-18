@@ -2,8 +2,9 @@
 
 namespace App\Events\Mobile;
 
-use App\Http\Resources\Guest\Guest as GuestResource;
-use App\Models\Event\Guest;
+use App\Models\Event\Attend;
+use App\Http\Resources\Attend\Attend as AttendResource;
+
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PresenceChannel;
@@ -17,18 +18,18 @@ class ValidatedGuest implements ShouldBroadcast
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     /**
-     * @var Guest
+     * @var Attend
      */
-    private Guest $guest;
+    private Attend $attend;
 
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct(Guest $guest)
+    public function __construct(Attend $attend)
     {
-        $this->guest = $guest;
+        $this->attend = $attend;
     }
 
     /**
@@ -38,7 +39,7 @@ class ValidatedGuest implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new Channel('App.Event.Validation.' . $this->guest->event_id);
+        return new Channel('App.Event.Validation.' . $this->attend->event_id);
     }
 
     /**
@@ -58,8 +59,6 @@ class ValidatedGuest implements ShouldBroadcast
      */
     public function broadcastWith()
     {
-        return [
-            'data' => new GuestResource($this->guest)
-        ];
+        return (new AttendResource($this->attend->load('guest')->load('validator')))->toArray(null);
     }
 }

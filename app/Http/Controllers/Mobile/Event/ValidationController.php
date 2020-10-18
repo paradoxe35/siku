@@ -6,6 +6,8 @@ use App\Events\Mobile\ValidatedGuest;
 use App\Exceptions\GuestNotFoundException;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Guest\Guest;
+use App\Http\Resources\Attend\Attend;
+
 use App\Models\Event\Event;
 use Illuminate\Http\Request;
 
@@ -47,21 +49,21 @@ class ValidationController extends Controller
         if ($attend) {
             return [
                 'message' => trans('Sujet déjà validé'),
-                'data' => new Guest($guest)
+                'data' => new Attend($attend)
             ];
         }
 
-        $guest->attend()->create([
+        $attend = $guest->attend()->create([
             'event_id' => $event->id,
             'user_id' => $guest->user_id,
             'validator_id' => $user->id
         ]);
 
-        event(new ValidatedGuest($guest));
+        event(new ValidatedGuest($attend));
 
         return response()->json([
             'message' => 'Sujet validé',
-            'data' => new Guest($guest)
+            'data' => new Attend($attend)
         ], 201);
     }
 }
