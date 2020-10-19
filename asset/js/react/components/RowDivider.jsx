@@ -1,3 +1,3 @@
 import React from 'react'
 
-export default () => <hr className="my-2" />
+export default () => <div className="my-3" />

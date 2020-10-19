@@ -29,7 +29,7 @@ class AuthenticationController extends Controller
 
         if (!$validator) {
             throw ValidationException::withMessages([
-                'username' => ["Les informations d'identification fournies sont incorrectes."],
+                'username' => [trans("Les informations d'identification fournies sont incorrectes.")],
             ]);
         }
 

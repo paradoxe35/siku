@@ -11,6 +11,7 @@ const Guests = lazy(() => import('./guests/Guests'))
 const Templates = lazy(() => import('./template/Templates'))
 const Profile = lazy(() => import('./profile/Profile'))
 const Qrcode = lazy(() => import('./qrcode/Qrcode'))
+const Common = lazy(() => import('./common/Common'))
 
 const CustomerProduct = () => {
     const { t } = useTranslation();
@@ -26,8 +27,12 @@ const CustomerProduct = () => {
                 name: t('Qr Code')
             },
             {
-                to: '/guests',
-                name: t('Invités et envoi')
+                to: '/personalized-shipment',
+                name: t('Envoi personnalisé')
+            },
+            {
+                to: '/common-sending',
+                name: t('Envoi commun')
             },
             {
                 to: '/profile',
@@ -37,7 +42,11 @@ const CustomerProduct = () => {
             routes={[
                 {
                     component: <Guests />,
-                    path: '/guests'
+                    path: '/personalized-shipment'
+                },
+                {
+                    component: <Common />,
+                    path: '/common-sending'
                 },
                 {
                     component: <Templates />,

@@ -49,7 +49,8 @@ class ValidationController extends Controller
         if ($attend) {
             return [
                 'message' => trans('Sujet déjà validé'),
-                'data' => new Attend($attend)
+                'data' => new Attend($attend),
+                'status' => 200
             ];
         }
 
@@ -63,7 +64,8 @@ class ValidationController extends Controller
 
         return response()->json([
             'message' => 'Sujet validé',
-            'data' => new Attend($attend)
+            'data' => new Attend($attend),
+            'status' => 201
         ], 201);
     }
 }

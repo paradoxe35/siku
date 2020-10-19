@@ -1,7 +1,10 @@
-import Axios from "axios";
+//@ts-check
+import axios from 'axios'
 
+const Axios = axios.create({ headers: {} })
+delete Axios.defaults.headers.common['CLIENT-LANG']
 /**
- * @returns { Object }
+ * @returns { Promise<Object> }
  */
 export async function customerCountryApi() {
     try {
@@ -13,7 +16,7 @@ export async function customerCountryApi() {
 }
 
 /**
- * @returns { Array }
+ * @returns { Promise<Array> }
  */
 export async function countriesFlagAndEmojis() {
     try {
@@ -31,7 +34,7 @@ export async function countriesFlagAndEmojis() {
 }
 
 /**
- * @param { Object } parameters 
+ * @param { Promise<Object> } parameters 
  */
 export async function customerRequestByEmailJs(parameters) {
     const emailjs = (await import('emailjs-com')).default

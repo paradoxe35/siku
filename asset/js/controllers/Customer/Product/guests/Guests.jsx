@@ -258,12 +258,14 @@ const CreateNewGuest = () => {
     const editText = () => {
         if (disabledTextField) return
         setIndexModalView(VIEWS_MODAL.edit)
+        // @ts-ignore
         $(modalRef.current).modal('show')
     }
 
     const viewText = () => {
         if (disabledTextField) return
         setIndexModalView(VIEWS_MODAL.view)
+        // @ts-ignore
         $(modalRef.current).modal('show')
     }
 

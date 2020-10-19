@@ -30,7 +30,7 @@ eval("!function(t,r){ true?module.exports=r():undefined}(window,(function(){retu
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! C:\Users\Paradox\Documents\Mines\ndowa\asset\modules\js\qrcode.js */"./asset/modules/js/qrcode.js");
+module.exports = __webpack_require__(/*! C:\Users\Paradox\Documents\Mines\Siku\web\siku\asset\modules\js\qrcode.js */"./asset/modules/js/qrcode.js");
 
 
 /***/ })

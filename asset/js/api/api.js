@@ -4,9 +4,11 @@ import { Notifier } from '@js/functions/notifier'
 import { HtmlAlert } from '@js/functions/dom'
 
 export const setI18nLanguage = (lang) => {
-    axios.defaults.headers.common['Accept-Language'] = lang
+    axios.defaults.headers.common['CLIENT-LANG'] = lang
     document.querySelector('html').setAttribute('lang', lang)
 }
+
+setI18nLanguage(document.querySelector('html').getAttribute('lang'))
 
 export const errorResponse = (error, mustNotifierErrors = false) => {
     if (error.response && mustNotifierErrors)

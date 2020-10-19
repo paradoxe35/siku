@@ -18,7 +18,12 @@ class GetEventController extends Controller
     {
         /** @var \App\Models\Event\Validator  */
         $user = $request->user();
-        
-        return (new Event($user->event))->toArray(null);
+        $event = $user->event;
+        $admin = $event->user;
+
+        return array_merge((new Event($event ))->toArray(null), ['admin' => [
+            'email' => $admin->email,
+            'phone' => $admin->phone
+        ]]);
     }
 }

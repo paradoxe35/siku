@@ -1,9 +1,6 @@
 //@ts-check
-import { TurbolinksApp } from "@js/modules/turbolinks"
 import { setI18nLanguage, ApiRequest } from "@js/api/api"
 import { INprogress } from "@js/functions/NProgress"
-import { ReduxDispatch } from "@js/store"
-import { DESTROY_SESSION } from "@js/store/action/types"
 
 
 export const FooterMixin = {
@@ -32,9 +29,8 @@ export const FooterMixin = {
         window.scrollTo({
             top: 0
         })
-        ReduxDispatch({ type: DESTROY_SESSION })
         setI18nLanguage(value)
-        TurbolinksApp.reload()
+        window.location.reload()
     },
 
     disconnect() {

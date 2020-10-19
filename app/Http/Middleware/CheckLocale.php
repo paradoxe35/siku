@@ -18,12 +18,17 @@ class CheckLocale
     {
         $user = $request->user();
 
-        if ($user && $user->locale) {
+        if ($request->expectsJson()) {
 
-            App::setLocale($user->locale);
+            App::setLocale($request->header('CLIENT-LANG', 'fr'));
         } else {
 
-            App::setLocale($request->cookies->get('locale', 'fr'));
+            if ($user && $user->locale) {
+                App::setLocale($user->locale);
+            } else {
+
+                App::setLocale($request->cookies->get('locale', 'fr'));
+            }
         }
         return $next($request);
     }
