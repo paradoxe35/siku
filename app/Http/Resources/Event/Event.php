@@ -15,9 +15,13 @@ class Event extends JsonResource
     public function toArray($request)
     {
         $user = null;
-        if (!is_null($request)) {
+
+        $h = $request->getPathInfo() == route('api.customer.events.index', [], false);
+        
+        if (!is_null($request) && !$h) {
             $user = $request->user();
         }
+
         $p = $this->presumedPrice($user ? $user->country_code : null, !!$user);
 
         return [
