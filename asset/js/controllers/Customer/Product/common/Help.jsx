@@ -9,7 +9,7 @@ import { ShowHelp } from '@/js/react/components/HelpShow';
 const Help = () => {
     const { t } = useTranslation();
     const message = `
-        - ${t('Enregistrez vos invités, vous pouvez enregistrer et envoyer l\'invitation en même temps')}. <br>
+        - ${t('Enregistrez les invités qui seront commun(global) pour tous vos événements')}. <br>
     `
     return <>
         <ShowHelp>

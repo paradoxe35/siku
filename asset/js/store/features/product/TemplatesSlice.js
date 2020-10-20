@@ -45,7 +45,7 @@ export const productTemplateReducer = productTemplateLastText.reducer
 
 //@ts-check
 
-export const fetchEventTemplates = Async.fetchAsync('events/fetchTemplates')
+export const fetchEventTemplates = Async.fetchAsync('events/fetchTemplates', 'eventTemplates')
 
 const eventTemplatesAdapter = createEntityAdapter({
     sortComparer: (a, b) => a.name.localeCompare(b.name)

@@ -35,6 +35,9 @@ export const TEMPLATE_SECTION = {
     whatsapp: 'whatsapp'
 }
 
+/** @type { any } */
+export const OverFlowStyle = { maxHeight: "800px", overflowY: "auto" };
+
 export const isInvalideGuestFieldValue = g => (isNaN(g) || g < 10 || g > (10 ** 5))
 
 export const Event_Guests_Name = 'event_guests_list'

@@ -7,6 +7,7 @@ import { productTemplateReducer, eventTemplatesReducer } from '../features/produ
 import { DESTROY_SESSION } from '../action/types'
 import { eventQrcodeLogoUrlReducer } from '../features/product/QrcodeLogoSlice'
 import { EventStatusReducer } from '../features/product/EventStatusSlice'
+import { commonGuestsReducer } from '../features/product/CommonGuestsSlice'
 
 const appReducer = combineReducers({
     userAuth: userAuthReducer,
@@ -16,6 +17,7 @@ const appReducer = combineReducers({
     eventTemplates: eventTemplatesReducer,
     eventQrcodeLogoUrl: eventQrcodeLogoUrlReducer,
     EventStatus: EventStatusReducer,
+    commonGuests: commonGuestsReducer
 })
 
 const rootReducer = (state, action) => {

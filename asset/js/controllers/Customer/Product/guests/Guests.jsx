@@ -4,13 +4,9 @@ import { useTranslation } from "react-i18next";
 import Help from './Help';
 import RowDivider from '@/js/react/components/RowDivider';
 import { useDispatch } from 'react-redux';
-import { useSelector } from 'react-redux';
-import { fetchEventTemplates } from '@/js/store/features/product/TemplatesSlice';
 import { DispachEventOpenGuestSocketDetail, DispachEventProcessQueueDetail, DispachGuestsDetail, Event_Guests_Name, TEMPLATE_SECTION, URLS } from '@/js/react/vars';
-import { slim as slimSelect } from '@js/utils/SlimSelect'
 import { InputField } from '@/js/react/components/InputField';
-import { DefaultButton } from '@/js/react/components/Buttons';
-import PhoneInput from '@/js/react/components/PhoneInput';
+import { ButtonWithLoader, DefaultButton } from '@/js/react/components/Buttons';
 import { isValidPhoneNumber, parsePhoneNumber } from 'react-phone-number-input';
 import ModalConfirm from '@/js/react/components/ModalConfirm';
 import {
@@ -27,13 +23,14 @@ import {
 import CustomCheckbox from '@/js/react/components/CustomCheckbox';
 import { Empty } from '@/js/react/components/Empty';
 import { Notifier } from '@/js/functions/notifier';
-import { useFetch, useFullLoading, usePhoneInput } from '@/js/react/hooks';
+import { useFetch, useFullLoading, usePhoneInput, useServices, useTemplateSelect } from '@/js/react/hooks';
 import { FullLoader } from '@/js/react/components/FullLoader';
 import { putEventStatus } from '@/js/store/features/product/EventStatusSlice';
 import { SkeletonBox } from '@/js/react/components/SkeletonBox';
 import { GuestList } from './GuestList';
-import { ServiceUse } from './ServiceUse';
 import { SYMBOL } from '@/js/functions/functions';
+import { GuestField, ServicesField } from './GuestField';
+import { IncludeCommonGuests } from './IncludeCommonGuests';
 
 const SERVICES = {
     ...TEMPLATE_SECTION,
@@ -54,18 +51,11 @@ const NEW_GUEST_FORM = {
     can_include_qrcode: 'can_include_qrcode',
     sms_total: 'sms_total',
     country_code: 'country_code',
-    country_call: 'country_call'
+    country_call: 'country_call',
+    email: 'email'
 }
 
-const QrcodeCase = () => {
-    const { t } = useTranslation();
-    return <div className="qr---case">
-        <div className="text-xs text-muted mt-3 mb-2">
-            {t('Cocher cette case si vous souhaitez que le code d\'invitation en image Qr code soit inclus dans le message')}.
-        </div>
-        <CustomCheckbox name={NEW_GUEST_FORM.can_include_qrcode} label={t('Qr code Image')} />
-    </div>
-}
+
 
 const ModalViewText = ({ textValues }) => {
     const { handleSection, section } = useSectionText()
@@ -151,10 +141,8 @@ const EstimatePrice = ({ disabledTextField, services, textValues, phone }) => {
 
 const CreateNewGuest = () => {
     const { t } = useTranslation();
-    const templatesEl = useRef(null)
-    const slimInstance = useRef(null);
+
     const [selectedTemplate, setSelectedTemplate] = useState(null)
-    const [services, setServices] = useState([])
     const { phone, onPhoneValueChange } = usePhoneInput()
 
     const [fields, setFields] = useState({
@@ -171,35 +159,9 @@ const CreateNewGuest = () => {
 
     const finalTextValue = useRef(INIT_V)
 
-    /**
-     * @type { { ids: Array, entities: Object<string, 
-     *      { id: string, sms: string, name: string, text: { sms: string, whatsapp: string } } 
-     *  >, loading: string, error: Object} }
-     */
-    // @ts-ignore
-    const { ids, entities } = useSelector(s => s.eventTemplates)
     const dispach = useDispatch()
 
-    /**
-     * @returns { import('slim-select').default }
-     */
-    const getSlim = () => {
-        if (slimInstance.current === null) {
-            // @ts-ignore
-            slimInstance.current = slimSelect(templatesEl.current, {
-                showSearch: false,
-            });
-        }
-        return slimInstance.current;
-    }
-
-    useEffect(() => {
-        // @ts-ignore
-        dispach(fetchEventTemplates(URLS.eventTemplates))
-        return () => {
-            getSlim().destroy()
-        }
-    }, [])
+    const { ids, getSlim, templatesEl, entities } = useTemplateSelect(URLS.eventTemplates)
 
     /**
      * @param { import('slim-select/dist/data').Option } info 
@@ -211,15 +173,6 @@ const CreateNewGuest = () => {
 
     useEffect(() => {
         const slim = getSlim()
-        const datas = ids.map((id) => {
-            const entity = entities[id]
-            return {
-                text: entity.name,
-                value: entity.id,
-                selected: false
-            }
-        })
-        slim.setData([{ text: t('Choissez un modèle'), value: '#', selected: true }, ...datas])
         slim.onChange = (info) => {
             const h = info.value && info.value != '#' && ids.includes(+info.value)
             !h && setSelectedTemplate(null)
@@ -227,10 +180,7 @@ const CreateNewGuest = () => {
         }
     }, [ids])
 
-
-    const onChangeServices = useCallback((v) => {
-        setServices(v)
-    }, [setServices])
+    const { services, onChangeServices } = useServices()
 
     const onChangeField = useCallback(
         /** @param {React.ChangeEvent<HTMLInputElement>} param0 */
@@ -335,34 +285,13 @@ const CreateNewGuest = () => {
     }
 
     return <div className="new-guest">
-        <div className="mb-4">
-            <b className="text-sm">
-                {t('Enregistrer invité')}.
-            </b>
-        </div>
         <form method="post" onSubmit={saveGuest} autoComplete="off">
-            <div className="row">
-                <div className="col-lg-6">
-                    <InputField
-                        type="text"
-                        onChange={onChangeField}
-                        value={fields[NEW_GUEST_FORM.name]}
-                        name={NEW_GUEST_FORM.name}
-                        placeholder={t("Nom de l'invité")} />
-                </div>
-                <div className="col-lg-6">
-                    <div className="form-group">
-                        <div className="input-group input-group-merge">
-                            <PhoneInput
-                                value={phone}
-                                className="form-control"
-                                placeholder={t("Numéro de téléphone de l'invité")}
-                                onChange={onPhoneValueChange}
-                            />
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <GuestField
+                onChangeField={onChangeField}
+                form={NEW_GUEST_FORM}
+                fields={fields}
+                phone={phone}
+                onPhoneValueChange={onPhoneValueChange} />
             <div className="text-xs text-muted mt-3 mb-2">
                 {t("Entrez le nombre d'invités qui seront autorisés utiliser cette invitation")}.
             </div>
@@ -374,7 +303,7 @@ const CreateNewGuest = () => {
                 name={NEW_GUEST_FORM.autorized}
                 placeholder={t("Autorisés")} />
             <div className="text-xs text-muted mt-3 mb-2">
-                {t("Choisissez l'un de vos modèles enregistrés comme message d'envoi, vous pouvez également le modifier à votre guise")}.
+                {t("Choisissez un de vos modèles enregistrés comme message d'envoi, vous pouvez également le modifier à votre guise")}.
             </div>
             <select ref={templatesEl} />
             {
@@ -395,11 +324,7 @@ const CreateNewGuest = () => {
                     </div>
                 )
             }
-            <div className="text-xs text-muted mt-3 mb-2">
-                {t('Selectonner les services qui seront utilisés à l\'envoi du message')}.
-            </div>
-            <ServiceUse onSelect={onChangeServices} />
-            <QrcodeCase />
+            <ServicesField form={NEW_GUEST_FORM} onChangeServices={onChangeServices} />
             <div className="send---case">
                 <div className="text-xs text-muted mt-3 mb-2">
                     {t("Cochez cette case si vous souhaitez enregistrer l'invité et envoyer le message en même temps")}.
@@ -477,17 +402,34 @@ const GuestsListProvider = () => {
             })
     }, [setSendLoading, setSending, DispachEventProcessQueueDetail])
 
+    const { fetchLoading: delLoading, fetchAPi: delFetchAPi } = useFetch()
+
+    const onAllDelete = useCallback(() => {
+        if (!confirm(t('Êtes-vous sûr ?'))) return
+        delFetchAPi('delete', URLS.eventGuestsDestroyAll, {}, true)
+            .then(({ data }) => DispachGuestsDetail(data))
+    }, [t])
+
     return <div ref={parentElemt}>
         {fullLoading && <FullLoader parent={parentElemt.current} />}
 
         <div className="row">
             <div className="col">
-                <DefaultButton
-                    disabled={sendLoading}
-                    loading={sending}
-                    textColor="text-primary"
-                    onClick={sendAll} color="secondary"
-                    label={t('Tout envoyer')} />
+                <div className="btn-group">
+                    <ButtonWithLoader type="button"
+                        className="btn btn-primary btn-sm dropdown-toggle"
+                        data-toggle="dropdown"
+                        // @ts-ignore
+                        loading={sending || delLoading}
+                        aria-haspopup="true"
+                        label={t('Options')}
+                        aria-expanded="false" />
+                    <div className="dropdown-menu shadow-lg">
+                        <a onClick={sendAll} className="dropdown-item clickable-a">{t('Tout envoyer')}</a>
+                        <div className="dropdown-divider"></div>
+                        <a onClick={onAllDelete} className="dropdown-item text-danger clickable-a">{t('Tout supprimer')}</a>
+                    </div>
+                </div>
             </div>
             <div className="col-auto">
                 <CustomCheckbox
@@ -509,23 +451,48 @@ const GuestsListProvider = () => {
 }
 
 const Guests = () => {
-    return <div className="mb-9">
-        <div className="row">
-            <div className="col">
-                <Help />
+    const { t } = useTranslation()
+    const ref = useRef()
+
+    const onOpenModal = useCallback(() => {
+        // @ts-ignore
+        $(ref.current).modal('show')
+    }, [ref.current])
+
+    return <>
+        <div className="mb-9">
+            <div className="row">
+                <div className="col">
+                    <Help />
+                </div>
+            </div>
+            <div className="row justify-content-start">
+                <div className="col-lg-7">
+                    <RowDivider />
+                    <div className="row mb-4">
+                        <div className="col-lg col-sm-12 mb-2">
+                            <b className="text-sm">
+                                {t('Enregistrer invité')}.
+                        </b>
+                        </div>
+                        <div className="col-lg-auto col-sm-12 mb-2">
+                            <DefaultButton
+                                textColor="text-primary"
+                                onClick={onOpenModal}
+                                color="secondary"
+                                label={t('Importer invités commun')} />
+                        </div>
+                    </div>
+                    <CreateNewGuest />
+                </div>
+                <div className="col-lg-5">
+                    <RowDivider />
+                    <GuestsListProvider />
+                </div>
             </div>
         </div>
-        <div className="row justify-content-start">
-            <div className="col-lg-7">
-                <RowDivider />
-                <CreateNewGuest />
-            </div>
-            <div className="col-lg-5">
-                <RowDivider />
-                <GuestsListProvider />
-            </div>
-        </div>
-    </div>
+        <IncludeCommonGuests element={ref} />
+    </>
 }
 
 export default Guests

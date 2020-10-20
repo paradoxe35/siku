@@ -28,11 +28,11 @@ const CustomerProduct = () => {
             },
             {
                 to: '/personalized-shipment',
-                name: t('Envoi personnalisé')
+                name: t('Envoi et Invités')
             },
             {
-                to: '/common-sending',
-                name: t('Envoi commun')
+                to: '/common-guests',
+                name: t('Invités commun')
             },
             {
                 to: '/profile',
@@ -46,7 +46,7 @@ const CustomerProduct = () => {
                 },
                 {
                     component: <Common />,
-                    path: '/common-sending'
+                    path: '/common-guests'
                 },
                 {
                     component: <Templates />,

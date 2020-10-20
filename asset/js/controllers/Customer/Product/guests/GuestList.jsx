@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux'
 import { useItemDeletion, List, ListDescriptionText } from '../template/Sections'
 import ModalConfirm from '@/js/react/components/ModalConfirm'
 import { useFetch, useListDataPaginator } from '@/js/react/hooks'
-import { Event_Guest, URLS, DispachGuestsDetail, DispachEventOpenGuestSocketDetail, TEMPLATE_SECTION } from '@/js/react/vars'
+import { Event_Guest, URLS, DispachGuestsDetail, DispachEventOpenGuestSocketDetail, TEMPLATE_SECTION, OverFlowStyle } from '@/js/react/vars'
 import { putEventStatus } from '@/js/store/features/product/EventStatusSlice'
 import { Notifier } from '@/js/functions/notifier'
 import { DefaultButton } from '@/js/react/components/Buttons'
@@ -127,7 +127,7 @@ export const GuestList = ({ datas, setFullLoading, filter, url }) => {
 
     return <>
         <LaravelPagination listData={listData} getDataPaginator={getDataPaginator} />
-        <div style={{ maxHeight: "800px", overflowY: "auto" }}>
+        <div style={OverFlowStyle}>
             <List.Ul>
                 <List.Li data={listData.data || []}>
                     {v => <ShowList v={v} handleDelete={handleDelete} />}

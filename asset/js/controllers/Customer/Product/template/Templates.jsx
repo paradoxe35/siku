@@ -11,7 +11,7 @@ import { URLS, ASYNC } from '@/js/react/vars';
 import { Empty } from '@/js/react/components/Empty';
 import RowDivider from '@/js/react/components/RowDivider';
 import ModalConfirm from '@/js/react/components/ModalConfirm';
-import { caseSection, KeysRequiredInText, List, ListDescriptionText, SectionView, smsCount, TEMPLATE_SECTION, TextAreatEdit, useItemDeletion, useSectionText, validateTemplate } from './Sections';
+import { caseSection, KeysRequiredInText, List, ListDescriptionText, smsCount, TextAreatEdit, useItemDeletion, useSectionText, validateTemplate } from './Sections';
 import { SkeletonBox } from '@/js/react/components/SkeletonBox';
 import { useFetch } from '@/js/react/hooks';
 import store from '@js/store'

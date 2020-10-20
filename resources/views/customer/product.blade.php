@@ -9,9 +9,13 @@
     data-Customer--Product-country-pricing="{{ route('api.country-pricing') }}"
     data-Customer--Product-event-guests="{{ route('api.customer.events.guests.index') }}"
     data-Customer--Product-event-guests-store="{{ route('api.customer.events.guests.store') }}"
+    data-Customer--Product-event-guests-destroy-all="{{ route('api.customer.events.guests.destroy.all') }}"
     data-Customer--Product-event-guests-sendall="{{ route('api.customer.events.guests.sendall') }}"
     data-Customer--Product-event-menu-profile="{{ route('api.customer.events.event.profile') }}"
-    data-Customer--Product-event-profile-items="{{ route('api.customer.events.event.profile.items') }}">
+    data-Customer--Product-event-profile-items="{{ route('api.customer.events.event.profile.items') }}"
+    data-Customer--Product-common-guests-store="{{ route('api.customer.common-guests.store') }}"
+    data-Customer--Product-common-guests="{{ route('api.customer.common-guests.index') }}"
+    data-Customer--Product-event-guests-import-from-common="{{ route('api.customer.events.guests.import-from-common') }}">
     <div class="row">
         <div class="col">
             <p>

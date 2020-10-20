@@ -5,6 +5,7 @@ namespace App;
 use App\Models\Balance\Balance;
 use App\Models\Balance\Consumed;
 use App\Models\Balance\LowBalance;
+use App\Models\CommonGuest;
 use App\Models\Payments\CustomPayment;
 use App\Models\Event\Event;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -13,9 +14,9 @@ use Laravel\Passport\HasApiTokens;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Support\Str;
 
-class User extends Authenticatable implements MustVerifyEmail
+class User extends Authenticatable /* implements MustVerifyEmail */
 {
-    use Notifiable, HasApiTokens;
+    use /* Notifiable, */ HasApiTokens;
 
     /**
      * @var string
@@ -137,5 +138,13 @@ class User extends Authenticatable implements MustVerifyEmail
     public function lowBalance()
     {
         return $this->hasOne(LowBalance::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function commonGuests()
+    {
+        return $this->hasMany(CommonGuest::class);
     }
 }

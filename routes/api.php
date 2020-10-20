@@ -48,9 +48,15 @@ Route::namespace('API')
                                 //guest controller
                                 Route::post('events/{event}/guests/{guest}/send', "EventGuestsController@send")
                                     ->name('events.guests.send');
+                                
+                                Route::post('events/{event}/guests/import-from-common', "EventGuestsController@importFromCommon")
+                                    ->name('events.guests.import-from-common');
 
                                 Route::post('events/{event}/guests/sendall', "EventGuestsController@sendall")
                                     ->name('events.guests.sendall');
+
+                                Route::delete('events/{event}/guests', "EventGuestsController@destroyAll")
+                                    ->name('events.guests.destroy.all');
 
                                 Route::apiResource('events.guests', "EventGuestsController")
                                     ->except(['update', 'show']);
@@ -85,6 +91,10 @@ Route::namespace('API')
                                 Route::patch('/update/phone', 'AccountController@updatePhone')->name('update.phone');
                                 Route::put('/update/password', 'AccountController@updatePassword')->name('update.password');
                             });
+
+                        //templates controller
+                        Route::apiResource('common-guests', "CommonGuestsController")
+                            ->except(['update', 'show']);
 
                         Route::namespace('Payments')
                             ->name('payments.')

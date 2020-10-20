@@ -1,6 +1,10 @@
 //@ts-check
 import { useState, useRef, useCallback, useEffect } from "react"
 import { ApiRequest } from "../api/api"
+import { slim as slimSelect } from '@js/utils/SlimSelect'
+import { useDispatch, useSelector } from "react-redux"
+import { useTranslation } from "react-i18next"
+import { fetchEventTemplates } from "../store/features/product/TemplatesSlice"
 
 export const useFetch = (_loading = false) => {
     const [loading, setLoading] = useState(_loading)
@@ -88,11 +92,13 @@ export const useItemDeletion = () => {
     const handleDelete = useCallback(async (id) => {
         setDeletionId(id)
         if (modalConfirm.current)
+            // @ts-ignore
             $(modalConfirm.current).modal('show');
     }, [modalConfirm.current, setDeletionId])
 
 
     const closeModal = () => {
+        // @ts-ignore
         $(modalConfirm.current).modal('hide')
         setDeletionLoading(false)
         setDeletionId(null)
@@ -106,5 +112,83 @@ export const useItemDeletion = () => {
         setDeletionId,
         handleDelete,
         closeModal
+    }
+}
+
+export const useSlimSelect = () => {
+    const templatesEl = useRef(null)
+    const slimInstance = useRef(null);
+
+    /**
+    * @returns { import('slim-select').default }
+    */
+    const getSlim = () => {
+        if (slimInstance.current === null) {
+            // @ts-ignore
+            slimInstance.current = slimSelect(templatesEl.current, {
+                showSearch: false,
+            });
+        }
+        return slimInstance.current;
+    }
+    return {
+        templatesEl,
+        slimInstance,
+        getSlim
+    }
+}
+
+export const useTemplateSelect = (url) => {
+    const { t } = useTranslation()
+    /**
+     * @type { { ids: Array, entities: Object<string, 
+        *      { id: string, sms: string, name: string, text: { sms: string, whatsapp: string } } 
+        *  >, loading: string, error: Object} }
+        */
+    // @ts-ignore
+    const { ids, entities } = useSelector(s => s.eventTemplates)
+    const { getSlim, templatesEl } = useSlimSelect()
+    const dispach = useDispatch()
+
+    useEffect(() => {
+        // @ts-ignore
+        dispach(fetchEventTemplates(url))
+        return () => {
+            getSlim().destroy()
+        }
+    }, [])
+
+    useEffect(() => {
+        const slim = getSlim()
+        const datas = ids.map((id) => {
+            const entity = entities[id]
+            return {
+                text: entity.name,
+                value: entity.id,
+                selected: false
+            }
+        })
+        slim.setData([{ text: t('Choissez un modèle'), value: '#', selected: true }, ...datas])
+    }, [ids])
+
+    return {
+        templatesEl,
+        ids,
+        entities,
+        getSlim
+    }
+}
+
+
+export const useServices = () => {
+    const [services, setServices] = useState([])
+
+    const onChangeServices = useCallback((v) => {
+        setServices(v)
+    }, [setServices])
+
+    return {
+        services,
+        onChangeServices
     }
 }

@@ -16,6 +16,10 @@ export default class extends Controller {
         eventGuestsSendall: this.data.get('eventGuestsSendall'),
         eventMenuProfile: this.data.get('eventMenuProfile'),
         eventProfileItems: this.data.get('eventProfileItems'),
+        commonGuestsStore: this.data.get('commonGuestsStore'),
+        commonGuests: this.data.get('commonGuests'),
+        eventGuestsImportFromCommon: this.data.get('eventGuestsImportFromCommon'),
+        eventGuestsDestroyAll: this.data.get('eventGuestsDestroyAll')
     }
 
     initialize() {

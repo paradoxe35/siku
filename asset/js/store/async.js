@@ -8,12 +8,12 @@ export const onePerEvent = (event_id, workingEvent) => {
 
 export const getDatas = (payload) => (typeof payload !== 'object' ? [] : payload)
 
-const fetchAsync = (prefix) => createAsyncThunk(
+const fetchAsync = (prefix, state, refresh = true) => createAsyncThunk(
     prefix,
     async (url, { getState, requestId }) => {
         // @ts-ignore
-        const { eventTemplates: { currentRequestId, loading, event_id, entities }, workingEvent } = getState()
-        if (loading !== 'pending' || requestId !== currentRequestId || onePerEvent(event_id, workingEvent)) {
+        const { [state]: { currentRequestId, loading, event_id, entities }, workingEvent } = getState()
+        if (loading !== 'pending' || requestId !== currentRequestId || (refresh ? onePerEvent(event_id, workingEvent) : event_id !== null)) {
             return { data: Object.keys(entities).map(k => entities[k]), event_id: workingEvent.id }
         }
         // @ts-ignore
