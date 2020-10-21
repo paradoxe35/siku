@@ -21,4 +21,11 @@
 
     RewriteCond %{HTTP:Authorization} ^(.+)$
     RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
+    RewriteCond %{REQUEST_URI}  ^/socket.io            [NC]
+    RewriteCond %{QUERY_STRING} transport=websocket    [NC]
+    RewriteRule /(.*)           ws://localhost:6001/$1 [P,L]
+
+    ProxyPass        /socket.io http://localhost:6001/socket.io
+    ProxyPassReverse /socket.io http://localhost:6001/socket.io
 </IfModule>
