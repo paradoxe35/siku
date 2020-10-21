@@ -21,9 +21,4 @@
 
     RewriteCond %{HTTP:Authorization} ^(.+)$
     RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
-
-    <Location "/socket.io">
-        Order allow,deny
-        Allow from all
-    </Location>
 </IfModule>
