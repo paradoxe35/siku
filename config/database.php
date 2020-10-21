@@ -2,13 +2,6 @@
 
 use Illuminate\Support\Str;
 
-// $url = getenv('JAWSDB_URL');
-// $dbparts = parse_url($url);
-// 'host' => $dbparts['host'],
-// 'port' =>  env('DB_PORT', '3306'),
-// 'database' => ltrim($dbparts['path'],'/'),
-// 'username' => $dbparts['user'],
-// 'password' => $dbparts['pass'],
 return [
 
     /*
