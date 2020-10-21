@@ -24,8 +24,8 @@
 
     RewriteCond %{REQUEST_URI}  ^/socket.io            [NC]
     RewriteCond %{QUERY_STRING} transport=websocket    [NC]
-    RewriteRule /(.*)           ws://siku-png.herokuapp.com:6001/$1 [P,L]
+    RewriteRule /(.*)           ws://127.0.0.1:6001/$1 [P,L]
 
-    ProxyPass        /socket.io http://siku-png.herokuapp.com:6001/socket.io
-    ProxyPassReverse /socket.io http://siku-png.herokuapp.com:6001/socket.io
+    ProxyPass        /socket.io http://127.0.0.1:6001/socket.io
+    ProxyPassReverse /socket.io http://127.0.0.1:6001/socket.io
 </IfModule>
