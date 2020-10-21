@@ -14,7 +14,7 @@
         <div class="col-lg-5">
             <div class="card shadow-sm border">
                 <div class="card-body">
-                    <h4>{{ 'Le solde de votre compte est' }} <b class="text-lg">{{ $symbol }}{{ Auth::user()->balance() }}</b></h4>
+                    <h4>{{ __('Le solde de votre compte est') }} <b class="text-lg">{{ $symbol }}{{ Auth::user()->balance() }}</b></h4>
                     <a href="{{ route('customer.event.payments.new') }}"
                         class="btn btn-primary text-white btn-sm d-inline-flex align-content-center">
                         <span>{{ __('Ajouter des fonds') }}</span>

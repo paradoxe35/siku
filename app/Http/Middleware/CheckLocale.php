@@ -17,7 +17,6 @@ class CheckLocale
     public function handle($request, Closure $next)
     {
         $user = $request->user();
-
         if ($request->expectsJson()) {
 
             App::setLocale($request->header('CLIENT-LANG', 'fr'));
@@ -27,7 +26,7 @@ class CheckLocale
                 App::setLocale($user->locale);
             } else {
 
-                App::setLocale($request->cookies->get('locale', 'fr'));
+                App::setLocale(isset($_COOKIE['locale']) && !empty($_COOKIE['locale']) ? $_COOKIE['locale'] : 'fr');
             }
         }
         return $next($request);

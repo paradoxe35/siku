@@ -15,7 +15,7 @@ const Help = () => {
         ${t("son code d'invitation pour l'événement,")} <b>{url}</b>
         ${t('un lien content son code au format qrcode mais celui-ci est optionnel')}.<br>
         - ${t("Cela dit, vous n'aurez pas à les modifier, ecrivez simplement vos modèles en y tenant compte")}. <br>
-        - ${t('Un modèle message vous est proposé par défaut, vous pouvez commencer sur cette base.')} <br>
+        - ${t('Un modèle message vous est proposé par défaut, vous pouvez commencer sur cette base')}. <br>
     `
     return <>
         <ShowHelp>

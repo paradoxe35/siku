@@ -63,7 +63,7 @@ class EventsController extends Controller
             ],
             'event_date' => ['required', 'date'],
             'event_guest' => ['required', 'numeric', 'min:1'],
-            'description' => ['required', 'string', 'min:2'],
+            'description' => ['nullable', 'string', 'min:2'],
             'is_public' => ['nullable']
         ]);
 
@@ -152,7 +152,7 @@ class EventsController extends Controller
 
         $path = "events/logos/$hash/$hash.png";
 
-        $this->storage()->put($path, $image);
+        $this->storage()->put($path, $image, 'public');
 
         $filesource  = storage_path('app/public/' . $path);
 
@@ -258,10 +258,10 @@ class EventsController extends Controller
     {
         if ($event->totalConsumeds() > 0) {
             $event->delete();
-        }else {
+        } else {
             $event->forceDelete();
         }
-        
+
         return new ResourcesEvent($event);
     }
 }

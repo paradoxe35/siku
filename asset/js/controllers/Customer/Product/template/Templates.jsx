@@ -146,7 +146,7 @@ const NewTemplate = () => {
     return <form ref={formElement} method="post" onSubmit={handleSubmittion} autoComplete="off">
         <TemplateNameField />
         <TextareaFieldAndDetail />
-        <DefaultButton loading={loading} type="submit" label={t('Enregister')} />
+        <DefaultButton loading={loading} type="submit" label={t('Enregistrer')} />
     </form>
 }
 

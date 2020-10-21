@@ -73,7 +73,7 @@ const CreateEvent = ({ updateComponentIndex, addEvent }) => {
                 <div className="col-md-6">
                     <div className="form-group">
                         <div className="input-group input-group-merge">
-                            <textarea required placeholder={t("Description")} name="description" className="form-control form-control-muted"
+                            <textarea placeholder={t("Description") + t('(Optionnel)')} name="description" className="form-control form-control-muted"
                                 rows={2}></textarea>
                         </div>
                     </div>

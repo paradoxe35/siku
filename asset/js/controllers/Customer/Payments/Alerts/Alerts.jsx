@@ -169,7 +169,7 @@ export default () => {
                     (
                         <>
                             <h3 className="mb-2">{t('Désactiver les alertes de solde faible?')} </h3>
-                            <p className="my-0">{t('Il est important de savoir quand votre solde est bas. Si vous êtes à court de fonds, votre service peut être interrompu')}.</p>
+                            <p className="my-0">{t("Il est important de savoir quand votre solde est bas")}. {t("Si vous êtes à court de fonds, votre service peut être interrompu")}.</p>
                         </>
                     )
                 }

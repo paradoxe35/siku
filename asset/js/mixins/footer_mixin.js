@@ -7,7 +7,7 @@ export const FooterMixin = {
     initialize() {
         this.changeLocalize = this.changeLocalize.bind(this)
     },
-    
+
     connect() {
         this.element.addEventListener('change', this.changeLocalize)
     },
@@ -16,8 +16,10 @@ export const FooterMixin = {
      */
     async request(lang) {
         INprogress.set()
-        ApiRequest('post', this.data.get('locale'), { locale: lang })
-            .finally(() => INprogress.unset())
+        try {
+            await ApiRequest('post', this.data.get('locale'), { locale: lang })
+        } catch (e) { }
+        INprogress.unset()
     },
     /**
      * @param { Event } param0 

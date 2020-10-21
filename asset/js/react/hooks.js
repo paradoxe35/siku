@@ -168,7 +168,7 @@ export const useTemplateSelect = (url) => {
                 selected: false
             }
         })
-        slim.setData([{ text: t('Choissez un modèle'), value: '#', selected: true }, ...datas])
+        slim.setData([{ text: t('Choisissez un modèle'), value: '#', selected: true }, ...datas])
     }, [ids])
 
     return {
