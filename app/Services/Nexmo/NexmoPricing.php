@@ -13,7 +13,7 @@ class NexmoPricing
     /**
      * @var string
      */
-    public string $filename = 'services\nexmo_sms_pricing.xlsx';
+    public string $filename = 'services/nexmo_sms_pricing.xlsx';
 
     /**
      * @var string

@@ -4,7 +4,8 @@
         "node": "12.x"
     },
     "scripts": {
-        "start": "concurrently \"npm:watch-poll\" \"npm:css-watch\"",
+        "start": "node server.js",
+        "start-dev": "concurrently \"npm:watch-poll\" \"npm:css-watch\"",
         "all-prod": "concurrently \"npm:prod\" \"npm:css-prod\"",
         "all-hot": "concurrently \"npm:hot\" \"npm:css-hot\"",
         "css-hot": "cross-env NODE_ENV=development node_modules/webpack-dev-server/bin/webpack-dev-server.js --inline --hot --disable-host-check --env.mixfile=webpack.css.mix.js --config=node_modules/laravel-mix/setup/webpack.config.js",
@@ -37,7 +38,6 @@
         "sass": "^1.15.2",
         "sass-loader": "^8.0.0",
         "vue-template-compiler": "^2.6.12",
-        
         "@grafikart/spinning-dots-element": "^1.1.0",
         "@reduxjs/toolkit": "^1.4.0",
         "@stimulus/polyfills": "^1.1.1",
@@ -75,5 +75,8 @@
         "stimulus": "^1.1.1",
         "turbolinks": "^5.2.0"
     },
-    "dependencies": {}
+    "dependencies": {
+        "dotenv": "^8.2.0",
+        "laravel-echo-server": "^1.6.2"
+    }
 }
