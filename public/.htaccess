@@ -27,6 +27,6 @@
     RewriteCond %{QUERY_STRING} transport=websocket    [NC]
     RewriteRule /(.*)           ws://127.0.0.1:6001/$1 [P,L]
 
-    ProxyPass        /socket.io http://127.0.0.1:6001/socket.io
-    ProxyPassReverse /socket.io http://127.0.0.1:6001/socket.io
+    # ProxyPass        /socket.io http://127.0.0.1:6001/socket.io
+    # ProxyPassReverse /socket.io http://127.0.0.1:6001/socket.io
 </IfModule>
