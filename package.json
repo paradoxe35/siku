@@ -1,8 +1,7 @@
 {
-    "private": true,
-    "engines": {
-        "node": "12.x"
-    },
+    "name": "siku",
+    "version": "0.0.1",
+    "description": "Siku dev dependecies",
     "scripts": {
         "start": "node server.js",
         "start-dev": "concurrently \"npm:watch-poll\" \"npm:css-watch\"",
