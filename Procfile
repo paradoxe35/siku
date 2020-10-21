@@ -1,2 +1,2 @@
-web: vendor/bin/heroku-php-nginx -C nginx_app.conf public/
+web: vendor/bin/heroku-php-apache2 public/
 worker: php artisan queue:work redis --sleep=3 --tries=3 --queue=high,default,invitation

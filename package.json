@@ -3,8 +3,8 @@
     "version": "0.0.1",
     "description": "Siku dev dependecies",
     "scripts": {
-        "start": "node server.js",
-        "start-dev": "concurrently \"npm:watch-poll\" \"npm:css-watch\"",
+        "echo": "node server.js",
+        "start": "concurrently \"npm:watch-poll\" \"npm:css-watch\"",
         "all-prod": "concurrently \"npm:prod\" \"npm:css-prod\"",
         "all-hot": "concurrently \"npm:hot\" \"npm:css-hot\"",
         "css-hot": "cross-env NODE_ENV=development node_modules/webpack-dev-server/bin/webpack-dev-server.js --inline --hot --disable-host-check --env.mixfile=webpack.css.mix.js --config=node_modules/laravel-mix/setup/webpack.config.js",
