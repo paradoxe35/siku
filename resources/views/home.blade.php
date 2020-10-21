@@ -106,8 +106,7 @@
             <div class="col-md-6 order-md-1 mt-md-6">
                 <div class="pr-md-5">
                     <h1>{{ __("Securité") }} & Validation</h1>
-                    <p>{{ $app_name }} {{ __("est livré avec une application mobile et autres équipements 
-                        destinés à vous aider dans le processus de validation d'invitations") }}.
+                    <p>{{ $app_name }} {{ __("est livré avec une application mobile et autres équipements destinés à vous aider dans le processus de validation d'invitations") }}.
                     </p>
                     <ul class="list-unstyled mt-5">
                         <li class="py-2">

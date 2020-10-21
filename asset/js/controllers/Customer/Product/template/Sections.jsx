@@ -36,11 +36,13 @@ export const useItemDeletion = () => {
     const handleDelete = useCallback(async (id) => {
         setDeletionId(id)
         if (modalConfirm.current)
+            // @ts-ignore
             $(modalConfirm.current).modal('show');
     }, [modalConfirm.current, setDeletionId])
 
 
     const closeModal = () => {
+        // @ts-ignore
         $(modalConfirm.current).modal('hide')
         setDeletionLoading(false)
         setDeletionId(null)

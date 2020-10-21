@@ -62,7 +62,7 @@ const Profile = () => {
                     </label>
                     <label className="btn btn-secondary" onClick={() => setFilter('wait')}>
                         <input type="radio" name="options" autoComplete="off" />
-                        {t('Dans l\'attente')} {menuDatas.wait}
+                        {t("Dans l'attente")} {menuDatas.wait}
                     </label>
                 </div>
             )

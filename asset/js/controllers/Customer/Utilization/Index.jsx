@@ -90,7 +90,7 @@ const SaveValidator = ({ updateValidatorsList }) => {
                             value={name}
                             onChange={({ target: { value } }) => setName(value)}
                             name="name"
-                            placeholder={t('Nom D\'utilisateur')} type="text" required />
+                            placeholder={t("Nom d'utilisateur")} type="text" required />
                     </div>
                     <div className="text-xs mt-1 mb-2">
                         <b>{username}</b>

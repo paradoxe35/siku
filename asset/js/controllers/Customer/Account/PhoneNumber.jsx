@@ -46,7 +46,7 @@ const Index = () => {
                 </div>
 
                 <DefaultButton
-                    label={t('Changer')}
+                    label={t('Enregistrer')}
                     disabled={!isValidPhoneNumber(phone)}
                     onClick={onChange}
                     loading={loading} type="submit" />

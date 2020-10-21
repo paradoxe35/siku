@@ -4,8 +4,7 @@
 <div class="signin-container" data-controller="Auth--SigninOrAuth">
     <h1 class="display-4">{{ __('Bienvenue encore') }}!</h1>
     <p class="text-lead">
-        {{ __("Vous n'avez pas encore de compte? ") }}
-        <a href="{{ route('sign-up') }}">{{ __("S'inscrire") }}</a>.
+        {{ __("Vous n'avez pas encore de compte") }}? <a href="{{ route('sign-up') }}">{{ __("S'inscrire") }}</a>.
     </p>
     <div data-target="Auth--SigninOrAuth.innerError"></div>
     <form data-action="Auth--SigninOrAuth#action" method="POST" action="{{ route('sign-in') }}">

@@ -1,14 +1,11 @@
 //@ts-check
-import React, { useContext, useState, useEffect, useRef } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
+import React, { useContext, useState, useEffect } from 'react'
+import { useSelector } from 'react-redux'
 import { useTranslation } from "react-i18next";
 import { EventContext } from '@js/react/contexts';
-import { DefaultButton } from '@/js/react/components/Buttons';
 import { TurbolinksApp } from '@/js/modules/turbolinks';
 import { URLS } from '@/js/react/vars';
-import { setBalanceAmount } from '@/js/store/features/BalanceSlice';
 import { useFetch } from '@/js/react/hooks';
-import Label from '@/js/react/components/Label';
 
 const EProfil = () => {
     const { t } = useTranslation();
@@ -119,7 +116,7 @@ const EStatus = ({ handleLoading }) => {
             </div>
             <hr className="my-3" />
             <button className="btn btn-sm btn-block  mt-3" onClick={goToPaymentPage}>
-                {t('Ajouter Balance')}
+                {t('Ajouter fonds')}
             </button>
         </div>
     </div>

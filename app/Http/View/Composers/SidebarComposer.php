@@ -45,11 +45,11 @@ class SidebarComposer
                 ],
                 [
                     'name' => __('Compte'),
-                    'icon' => 'single-02',
+                    'icon' => 'circle-08',
                     'route' => 'customer.event.account'
                 ],
                 [
-                    'name' => __('Mes événement'),
+                    'name' => __('Mes événements'),
                     'icon' => 'bullet-list-67',
                     'route' => 'customer.events'
                 ],

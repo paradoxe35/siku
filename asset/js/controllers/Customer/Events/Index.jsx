@@ -62,7 +62,7 @@ const CustomerEvents = ({ setLoading }) => {
                 updateComponentIndex={updateComponentIndex} />
         },
         {
-            title: t("Profile"),
+            title: t("Profil"),
             component: <ConfirmAndCustomerStatus
                 handleLoading={setLoading} />
         }

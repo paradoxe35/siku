@@ -21,7 +21,7 @@
             <th rowspan="2">{{ __('Date') }} </th>
             <th rowspan="2">{{ __('Moyen de paiement') }} </th>
             <th rowspan="2">{{ __('Montant') }}</th>
-            <th rowspan="2">{{ __('code de devise') }}</th>
+            <th rowspan="2">{{ __('Code de devise') }}</th>
         </tr>
         <tr></tr>
     </thead>

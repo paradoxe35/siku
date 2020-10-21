@@ -16,10 +16,12 @@ class Event extends JsonResource
     {
         $user = null;
 
-        $h = $request->getPathInfo() == route('api.customer.events.index', [], false);
-        
-        if (!is_null($request) && !$h) {
-            $user = $request->user();
+        if (!is_null($request)) {
+            $h = $request->getPathInfo() == route('api.customer.events.index', [], false);
+
+            if (!$h) {
+                $user = $request->user();
+            }
         }
 
         $p = $this->presumedPrice($user ? $user->country_code : null, !!$user);

@@ -9,9 +9,9 @@ import { ShowHelp } from '@/js/react/components/HelpShow';
 const Help = () => {
     const { t } = useTranslation();
     const message = `
-        - ${t('Enregistrez vos invités, vous pouvez enregistrer et envoyer l\'invitation en même temps')}. <br>
-        - ${t('Pour d\'autres informations, veuillez suivre les instructions ci-dessous ou contactez-nous')}. <br>
-        - ${t("Avant d'enregister, veuillez estimer le prix qui sera consommé pour votre invité, pour la bonne gestion de votre fonds")}. <br>
+        - ${t("Enregistrez vos invités, vous pouvez enregistrer et envoyer l'invitation en même temps")}. <br>
+        - ${t("Pour d'autres informations, veuillez suivre les instructions ci-dessous ou contactez-nous")}. <br>
+        - ${t("Avant d'enregistrer, veuillez estimer le prix qui sera consommé pour votre invité, pour la bonne gestion de votre fonds")}. <br>
     `
     return <>
         <ShowHelp>

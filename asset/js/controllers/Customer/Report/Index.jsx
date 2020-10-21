@@ -40,7 +40,7 @@ const CustomerReport = () => {
                 </li>
                 <li className="nav-item">
                     <a className="nav-link clickable-a py-1 px-2" onClick={() => setTab('Attended')} data-toggle="tab">
-                        <span>{t('Present')}</span>
+                        <span>{t('Présent')}</span>
                     </a>
                 </li>
                 <li className="nav-item">

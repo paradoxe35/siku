@@ -24,7 +24,7 @@ const CustomerProduct = () => {
             },
             {
                 to: '/qr-code',
-                name: t('Qr Code')
+                name: t('QR Code')
             },
             {
                 to: '/personalized-shipment',
@@ -32,11 +32,11 @@ const CustomerProduct = () => {
             },
             {
                 to: '/common-guests',
-                name: t('Invités commun')
+                name: t('Invités communs')
             },
             {
                 to: '/profile',
-                name: t('Profile')
+                name: t('Profil')
             },
         ]}
             routes={[

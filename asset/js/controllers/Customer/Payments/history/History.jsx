@@ -23,9 +23,9 @@ const PaymentsView = ({ listData }) => {
             <tr>
                 <th scope="col">{t('Id Paiement')} </th>
                 <th scope="col">{t('Date')} </th>
-                <th scope="col">{t('Moyen de paiement')} </th>
+                <th scope="col">{t('Méthode de paiement')} </th>
                 <th scope="col">{t('Montant')}</th>
-                <th scope="col">{t('code de devise')}</th>
+                <th scope="col">{t('Code de devise')}</th>
             </tr>
         </thead>
         <tbody>
@@ -50,7 +50,7 @@ const ConsumptionsView = ({ listData }) => {
             <tr>
                 <th scope="col">{t('Date')} </th>
                 <th scope="col">{t('Montant consommé')}</th>
-                <th scope="col">{t('code de devise')}</th>
+                <th scope="col">{t('Code de devise')}</th>
                 <th scope="col">{t('Événement')}</th>
             </tr>
         </thead>

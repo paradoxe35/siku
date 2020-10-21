@@ -142,7 +142,7 @@ const Qrcode = () => {
                 <RowDivider />
                 <div className="text-center">
                     <div className="text-xs text-muted mt-3 mb-2">
-                        {t('Les images de QR code auront la forme ci-dessus lors de l\'envoi de vos invitations')}.
+                        {t("Les images de QR code auront la forme ci-dessus lors de l'envoi de vos invitations")}.
                     </div>
                 </div>
                 <canvas ref={canvas} style={{ overflow: 'hidden' }} />

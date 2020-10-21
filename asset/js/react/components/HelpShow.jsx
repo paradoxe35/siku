@@ -9,7 +9,7 @@ export const ShowHelp = ({ children }) => {
     return <>
         <div>
             <div className="mb-3">
-                <b className="mr-3">{t('Besoin d\'aide ? ')}: </b>
+                <b className="mr-3">{t("Besoin d'aide ?")}: </b>
                 <button type="button" className="btn btn-secondary btn-sm" onClick={() => setShow(e => !e)}>
                     {show ? 'Cacher' : 'Afficher'}
                 </button>

@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Infrastructure\BasePrice;
 use App\Infrastructure\Cache\CacheUserDataPay;
 use App\Infrastructure\Payments\PayPal\CaptureIntent\CreateOrder;
-use App\Infrastructure\Payments\PayPal\Client\GetOrder;
+use App\Infrastructure\Payments\PayPal\GetOrder;
 use App\Infrastructure\Payments\Services;
 use App\Models\Event\Event;
 use Illuminate\Http\Request;

@@ -25,8 +25,8 @@ const GuestsField = ({ guests, onGuestFieldChange, onGuestFieldBlur, selectedSer
         </div>
         <ServiceUse onSelect={selectedServices} />
         <Label>
-            {t('Le montant est calculé par rapport à votre pay')} ({country_name}), {" "}
-            {t('qui est le pay enregistré par default à votre compte utilisateur')}.
+            {t('Le montant est calculé par rapport à votre pays')} ({country_name}), {" "}
+            {t('qui est le pays enregistré par défaut à votre compte utilisateur')}.
         </Label>
     </>
 }

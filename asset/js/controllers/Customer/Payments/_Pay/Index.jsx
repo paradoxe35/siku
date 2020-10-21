@@ -130,7 +130,7 @@ const ValidateWithPayPal = ({ amount, guests }) => {
     return <>
         <div className="mt-4 mb-2">
             <div className="text-muted mt-2 text-sm">
-                <i className="ni ni-bold-right p-0 m-0"></i> {t("Completez votre paiement avec PayPal")}.
+                <i className="ni ni-bold-right p-0 m-0"></i> {t("Complétez votre paiement avec PayPal")}.
             </div>
         </div>
         {isValidPayData(amount, guests) && <PayWithPayPal amount={amount} guests={guests} />}

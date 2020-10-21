@@ -13,7 +13,7 @@
         </div>
         <div class="col-auto text-xs">
             <i class="ni ni-calendar-grid-58 text-primary"></i>
-            {{ __('Date d\'événement') }} <br>
+            {{ __("Date d'événement") }} <br>
             <span class="ml-3">({{ $event['event_date'] }})</span>
         </div>
     </div>

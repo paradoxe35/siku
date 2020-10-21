@@ -126,7 +126,7 @@ export const IncludeCommonGuests = ({ element }) => {
             onConfirm={onSave}
             closeText={t('Fermer')}>
             <form method="post" ref={formRef}>
-                <div className="mb-1"><b>{t('Invités commun')} ({datas.length})</b></div>
+                <div className="mb-1"><b>{t('Invités communs')} ({datas.length})</b></div>
                 <div className="mb-2">
                     <CustomCheckbox
                         checked={selectedAll}

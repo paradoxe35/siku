@@ -48,9 +48,9 @@ const QrcodeCase = ({ form }) => {
 
     return <div className="qr---case">
         <div className="text-xs text-muted mt-3 mb-2">
-            {t('Cocher cette case si vous souhaitez que le code d\'invitation en image Qr code soit inclus dans le message')}.
+            {t("Cocher cette case si vous souhaitez que le code d'invitation en image Qr code soit inclus dans le message")}.
         </div>
-        <CustomCheckbox name={NEW_GUEST_FORM.can_include_qrcode} label={t('Qr code Image')} />
+        <CustomCheckbox name={NEW_GUEST_FORM.can_include_qrcode} label={t('QR code Image')} />
     </div>
 }
 
@@ -59,7 +59,7 @@ export const ServicesField = ({ onChangeServices, form }) => {
 
     return <>
         <div className="text-xs text-muted mt-3 mb-2">
-            {t('Selectonner les services qui seront utilisés à l\'envoi du message')}.
+            {t("Sélectionner les services qui seront utilisés à l'envoi du message")}.
         </div>
         <ServiceUse onSelect={onChangeServices} />
         <QrcodeCase form={form} />

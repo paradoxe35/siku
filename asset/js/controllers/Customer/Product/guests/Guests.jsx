@@ -480,7 +480,7 @@ const Guests = () => {
                                 textColor="text-primary"
                                 onClick={onOpenModal}
                                 color="secondary"
-                                label={t('Importer invités commun')} />
+                                label={t('Importer invités communs')} />
                         </div>
                     </div>
                     <CreateNewGuest />

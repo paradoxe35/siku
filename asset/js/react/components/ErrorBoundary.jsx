@@ -39,7 +39,7 @@ class ErrorBoundaryComponent extends React.Component {
 const ErrorBoundary = ({ children, message = null }) => {
     const { t } = useTranslation()
     return <ErrorBoundaryComponent message={
-        message || t("Une erreur s'est produite. Veuillez réessayer en réactualisant la page")
+        message || t("Une erreur s'est produite. Veuillez réessayer en actualisant la page")
     }>
         {children}
     </ErrorBoundaryComponent>

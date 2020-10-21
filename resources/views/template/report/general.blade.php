@@ -7,8 +7,8 @@
     <tr>
         <td width="50%">
             {{ __('ID') }} {{ __('Rapport') }} : {{ time() }}<br />
-            {{ __('Nom de l\'événement') }}: {{ $event->name }}<br />
-            {{ __('Date de l\'événement') }}: {{ $event->event_date }}<br />
+            {{ __("Nom de l'événement") }}: {{ $event->name }}<br />
+            {{ __("Date de l'événement") }}: {{ $event->event_date }}<br />
         </td>
         <td width="50%">
             {{ __('Invités enregistrés') }}: {{ $event->guests->count() }}<br />
