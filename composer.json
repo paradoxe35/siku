@@ -9,6 +9,7 @@
     "license": "MIT",
     "require": {
         "php": "^7.2.5",
+        "ext-gd": "*",
         "barryvdh/laravel-dompdf": "^0.8.7",
         "box/spout": "^3.1",
         "doctrine/dbal": "^2.11",

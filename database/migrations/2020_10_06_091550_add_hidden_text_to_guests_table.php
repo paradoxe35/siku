@@ -14,8 +14,8 @@ class AddHiddenTextToGuestsTable extends Migration
     public function up()
     {
         Schema::table('guests', function (Blueprint $table) {
-            $table->longText('text_sms_hidden_code')->nullable()->default('');
-            $table->longText('text_whatsapp_hidden_code')->nullable()->default('');
+            $table->longText('text_sms_hidden_code')->nullable();
+            $table->longText('text_whatsapp_hidden_code')->nullable();
         });
     }
 
