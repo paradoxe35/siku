@@ -1,5 +1,8 @@
 {
     "private": true,
+    "engines": {
+        "node": "12.x"
+    },
     "scripts": {
         "start": "concurrently \"npm:watch-poll\" \"npm:css-watch\"",
         "all-prod": "concurrently \"npm:prod\" \"npm:css-prod\"",
@@ -33,9 +36,8 @@
         "resolve-url-loader": "^3.1.0",
         "sass": "^1.15.2",
         "sass-loader": "^8.0.0",
-        "vue-template-compiler": "^2.6.12"
-    },
-    "dependencies": {
+        "vue-template-compiler": "^2.6.12",
+        
         "@grafikart/spinning-dots-element": "^1.1.0",
         "@reduxjs/toolkit": "^1.4.0",
         "@stimulus/polyfills": "^1.1.1",
@@ -72,5 +74,6 @@
         "socket.io-client": "^2.3.0",
         "stimulus": "^1.1.1",
         "turbolinks": "^5.2.0"
-    }
+    },
+    "dependencies": {}
 }
