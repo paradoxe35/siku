@@ -12,5 +12,7 @@ require('laravel-echo-server').run({
             port: env.REDIS_PORT,
             password: env.REDIS_PASSWORD
         }
-    }
+    },
+    "verifyAuthPath": true,
+    "verifyAuthServer": true
 });
