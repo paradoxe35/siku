@@ -15,6 +15,7 @@
     <script src="{{ mix('js/vendor.js', 'compiled') }}" defer ></script>
     <script src="{{ mix('js/'. ($app_file ?? 'application.js'), 'compiled') }}" data-turbolinks-track="reload" defer></script>
     <meta name="turbolinks-cache-control" content="no-cache">
+    <meta name="ws-host" content="{{ env('WS_HOST', request()->getHost()) }}">
 </head>
 
 <body class="@yield('body-class')">

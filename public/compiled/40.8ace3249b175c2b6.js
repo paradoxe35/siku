@@ -1,1 +1,0 @@
-(window.webpackJsonp=window.webpackJsonp||[]).push([[40],{221:function(n,o,t){"use strict";t.r(o),t.d(o,"Io",(function(){return i})),t.d(o,"Echo",(function(){return e}));var c=t(505),i=t(506),e=new c.a({broadcaster:"socket.io",host:window.location.hostname,client:i})},533:function(n,o){}}]);
