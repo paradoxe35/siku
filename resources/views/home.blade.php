@@ -35,11 +35,11 @@
             <div class="col-md-8">
                 <h2 class="display-3">{{ __('Comment ça marche') }}?</h2>
                 <p class="lead">
-                  {{ $app_name  }} 
-                  {{ __("est un tout nouveau produit basé sur une structure de distribution d'annonces intuitive qui vise à la rendre plus réactifs et bien sûr beaucoup plus faciles à gérer") }}.
-                  {{ __('Laissez') }}
-                  {{ $app_name  }} 
-                  {{ __('vous fournir ses fonctionnalités intéressantes et ses outils de validation, qui vous aménagera bien') }}.
+                    {{ $app_name  }}
+                    {{ __("est un tout nouveau produit basé sur une structure de distribution d'annonces intuitive qui vise à la rendre plus réactifs et bien sûr beaucoup plus faciles à gérer") }}.
+                    {{ __('Laissez') }}
+                    {{ $app_name  }}
+                    {{ __('vous fournir ses fonctionnalités intéressantes et ses outils de validation, qui vous aménagera bien') }}.
                 </p>
             </div>
         </div>
@@ -59,8 +59,11 @@
                                     </div>
                                     <h4 class="h3 text-default text-uppercase">{{ __("SMS") }}</h4>
                                 </div>
-                                <p class="description mt-3">Argon is built on top of the most popular open source
-                                    toolkit for developing with HTML, CSS, and JS.</p>
+                                <p class="description mt-3">
+                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Officia, doloremque, cum
+                                    maxime recusandae facere provident illo, quam veritatis repellendus ipsam minima
+                                    voluptatibus ullam. Eos assumenda, veniam ipsam minus explicabo est?
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -73,8 +76,11 @@
                                     </div>
                                     <h4 class="h3 text-default text-uppercase">{{ __("WhatsApp") }}</h4>
                                 </div>
-                                <p class="description mt-3">Use Argons's included npm and gulp scripts to compile source
-                                    code, run tests, and more with just a few simple commands.</p>
+                                <p class="description mt-3">
+                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Optio iusto eligendi
+                                    aperiam dicta nemo ipsa beatae dolorem quidem facere ut saepe minima corporis
+                                    aliquam est recusandae dignissimos vero, temporibus neque!
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -87,8 +93,11 @@
                                     </div>
                                     <h4 class="h3 text-default text-uppercase">{{ __("QR Code") }}</h4>
                                 </div>
-                                <p class="description mt-3">Argon makes customization easier than ever before. You get
-                                    all the tools to make your website building process a breeze.</p>
+                                <p class="description mt-3">
+                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo, officia adipisci,
+                                    molestiae porro quidem natus ut ab itaque optio commodi consectetur esse consequatur
+                                    obcaecati recusandae suscipit cumque, facere quod? Enim!
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -106,7 +115,8 @@
             <div class="col-md-6 order-md-1 mt-md-6">
                 <div class="pr-md-5">
                     <h1>{{ __("Securité") }} & Validation</h1>
-                    <p>{{ $app_name }} {{ __("est livré avec une application mobile et autres équipements destinés à vous aider dans le processus de validation d'invitations") }}.
+                    <p>{{ $app_name }}
+                        {{ __("est livré avec une application mobile et autres équipements destinés à vous aider dans le processus de validation d'invitations") }}.
                     </p>
                     <ul class="list-unstyled mt-5">
                         <li class="py-2">
@@ -145,9 +155,10 @@
         <div class="row row-grid justify-content-center">
             <div class="col-lg-8 text-center">
                 <h2 class="display-3">{{ __("C'est cool, n'est-ce pas") }}?</h2>
-                <p class="lead">Cause if you do, it can be yours now. Hit the button below to navigate to get the free
-                    version or purchase a license for your next project. Build a new web app or give an old Bootstrap
-                    project a new look!
+                <p class="lead">
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi, deserunt? Eius unde ipsum, quia
+                    ratione consequuntur iusto error amet cum repellat! Quidem quibusdam nemo repudiandae? Quidem odit
+                    earum ut accusantium.
                 </p>
             </div>
         </div>
