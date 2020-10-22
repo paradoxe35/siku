@@ -1,1 +1,0 @@
-(window.webpackJsonp=window.webpackJsonp||[]).push([[40],{221:function(t,n,o){"use strict";o.r(n),o.d(n,"Io",(function(){return c})),o.d(n,"Echo",(function(){return r}));var e=o(503),c=o(504),i=document.querySelector('meta[name="ws-host"]'),r=new e.a({broadcaster:"socket.io",host:i?i.getAttribute("content"):window.location.hostname,client:c})},525:function(t,n){}}]);
