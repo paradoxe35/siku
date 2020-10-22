@@ -38,7 +38,7 @@ class ProcessedGuest implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new PrivateChannel('App.User.' . $this->guest->user_id);
+        return new Channel('App.User.' . $this->guest->user_id);
     }
 
     /**

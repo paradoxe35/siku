@@ -61,7 +61,7 @@ export default class extends Controller {
         const { Echo } = await import('@js/modules/socket')
         EchoSocket = Echo
         // @ts-ignore
-        Echo.private("App.User." + window.auth.id)
+        Echo.channel("App.User." + window.auth.id)
             .listen('.processed.guest', this.onSocketData.bind(this, e))
     }
 

@@ -260,7 +260,7 @@ class EventGuestsController extends Controller
     private function dispatchGuestToQueue(Guest $guest)
     {
         ProcessInvitation::dispatch($guest)
-            ->delay(now()->addSeconds(2))
+            ->delay(now()->addSeconds())
             ->onQueue('invitation');
     }
 
@@ -319,7 +319,7 @@ class EventGuestsController extends Controller
 
         if ($process) {
             ProcessInvitations::dispatch($event, $event->id)
-                ->delay(now()->addSeconds(2))
+                ->delay(now()->addSeconds())
                 ->onQueue('invitation');
         }
 
