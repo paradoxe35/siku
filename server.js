@@ -3,7 +3,7 @@ require('dotenv').config();
 const env = process.env;
 
 require('laravel-echo-server').run({
-    authHost: env.APP_URL,
+    authHost: 'http://localhost',
     devMode: env.APP_DEBUG,
     authEndpoint: "/broadcasting/auth",
     database: "redis",
