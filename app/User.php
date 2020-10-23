@@ -14,9 +14,9 @@ use Laravel\Passport\HasApiTokens;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Support\Str;
 
-class User extends Authenticatable implements MustVerifyEmail
+class User extends Authenticatable /* implements MustVerifyEmail */
 {
-    use Notifiable, HasApiTokens;
+    use /* Notifiable, */ HasApiTokens;
 
     /**
      * @var string
@@ -39,7 +39,7 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     protected $hidden = [
         'password', 'remember_token', 'email_verified_at',
-        'updated_at', 'created_at', 'is_admin', 'admin_token', 'deleted_at'
+        'updated_at', 'created_at','is_admin', 'admin_token', 'deleted_at'
     ];
 
     /**
