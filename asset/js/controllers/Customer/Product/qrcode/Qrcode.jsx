@@ -26,9 +26,10 @@ const CropperImageView = ({ onDataImage, onSaveComponent }) => {
     const [image, setImage] = useState(url || URLS.qrcodeImage);
     const croppy = useRef(null)
 
-    const onCropper = debounce(() => {
+    const debounceCb = useCallback(() => {
         onDataImage(croppy.current.getCroppedCanvas().toDataURL())
-    }, 250, null)
+    }, [])
+    const onCropper = debounce(debounceCb, 250, null)
 
     const onChange = (e) => {
         e.preventDefault();
@@ -45,6 +46,12 @@ const CropperImageView = ({ onDataImage, onSaveComponent }) => {
         };
         reader.readAsDataURL(files[0]);
     };
+
+    const onInitialized = useCallback((v) => {
+        croppy.current = v
+    }, [])
+
+    const style = useMemo(() => ({ height: 400, width: '100%' }), [])
     return <>
         <div className="row">
             <div className="col">
@@ -69,13 +76,11 @@ const CropperImageView = ({ onDataImage, onSaveComponent }) => {
             responsive={true}
             autoCropArea={1}
             checkOrientation={false}
-            style={{ height: 400, width: '100%' }}
+            style={style}
             initialAspectRatio={1}
             checkCrossOrigin={false}
             crop={onCropper}
-            onInitialized={(v) => {
-                croppy.current = v
-            }}
+            onInitialized={onInitialized}
         />
     </>
 }
