@@ -14,7 +14,7 @@
                                 {{ __("Le meilleur et plus sûr moyen d'inviter vos membres et connaissances à vos événements") }}.
                             </h4>
                             <a href="{{ route('get-started') }}" class="btn btn-icon btn-primary mt-3">
-                                <span class="nav-link-inner--text">{{ __('Commencer') }}</span>
+                                <span class="nav-link-inner--text">{{ __('Créer un compte gratuit') }}</span>
                             </a>
                         </div>
                     </div>

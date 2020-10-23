@@ -84,7 +84,7 @@
 	"Nom de l'événement": "Name of the event",
 	"Nombre d'invité présumé": "Number of supposed guests",
 	"Not Found": "Not Found",
-	"Nous contacter": "Contact us",
+	"Nous contacter": "Get in touch",
 	"Nouveau Compte": "New account",
 	"Numéro de téléphone": "Phone Number",
 	"Page Expired": "Page Expired",
@@ -140,5 +140,6 @@
 	"téléphone": "Phone",
 	"vous fournir ses fonctionnalités intéressantes et ses outils de validation, qui vous aménagera bien": "provide you with its interesting features and validation tools, which will fit you well",
 	"Événement": "Event",
-	"Événements": "Events"
+	"Événements": "Events",
+	"Créer un compte gratuit": "Create a free account"
 }
