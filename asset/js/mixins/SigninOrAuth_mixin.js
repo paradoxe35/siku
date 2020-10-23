@@ -27,7 +27,7 @@ export const SigninOrAuthMixin = {
         // @ts-ignore
         const url = e.target.dataset.url
         // @ts-ignore
-        ApiRequest('post', url ? url : e.target.action, !url ? new FormData(e.target) : {})
+        ApiRequest('post', url ? url : e.target.action, !url ? new FormData(e.target) : {}, false, 419)
             .then(({ status, data }) => {
                 if (status === 200) {
                     TurbolinksApp.isc.visit(this.getUrl(data.redirect_url), { action: 'replace' })

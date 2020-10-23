@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import Help from './Help';
 import RowDivider from '@/js/react/components/RowDivider';
 import { useDispatch } from 'react-redux';
-import { DispachEventOpenGuestSocketDetail, DispachEventProcessQueueDetail, DispachGuestsDetail, Event_Guests_Name, TEMPLATE_SECTION, URLS } from '@/js/react/vars';
+import { DispachEventOpenGuestSocketDetail, DispachEventProcessQueueDetail, DispachGuestsDetail, Event_Guests_Name, onLoadedSocketLib, TEMPLATE_SECTION, URLS } from '@/js/react/vars';
 import { InputField } from '@/js/react/components/InputField';
 import { ButtonWithLoader, DefaultButton } from '@/js/react/components/Buttons';
 import { isValidPhoneNumber, parsePhoneNumber } from 'react-phone-number-input';
@@ -370,6 +370,8 @@ const GuestsListProvider = () => {
 
     const { fetchLoading: loading, fetchAPi, ApiRequest } = useFetch()
 
+    const dispach = useDispatch()
+
     useEffect(() => {
         fetchAPi('get', URLS.eventGuests)
             .then(({ data }) => setDatas(data))
@@ -388,11 +390,11 @@ const GuestsListProvider = () => {
     }, [setShowAll, setFullLoading, setDatas])
 
     const [sending, setSending] = useState(false)
-    const [sendLoading, setSendLoading] = useState(false)
 
-    const sendAll = useCallback(() => {
+    const sendAll = useCallback(async () => {
         setSending(true)
-        setSendLoading(true)
+        DispachEventOpenGuestSocketDetail(null)
+        await onLoadedSocketLib()
         ApiRequest('post', URLS.eventGuestsSendall, {}, true)
             .finally(() => setSending(false))
             .then(({ data }) => {
@@ -400,14 +402,17 @@ const GuestsListProvider = () => {
                     status: data
                 })
             })
-    }, [setSendLoading, setSending, DispachEventProcessQueueDetail])
+    }, [setSending, DispachEventProcessQueueDetail])
 
     const { fetchLoading: delLoading, fetchAPi: delFetchAPi } = useFetch()
 
     const onAllDelete = useCallback(() => {
         if (!confirm(t('Êtes-vous sûr ?'))) return
         delFetchAPi('delete', URLS.eventGuestsDestroyAll, {}, true)
-            .then(({ data }) => DispachGuestsDetail(data))
+            .then(({ data }) => {
+                DispachGuestsDetail(data)
+                dispach(putEventStatus({ saved_guests: data.meta.total }))
+            })
     }, [t])
 
     return <div ref={parentElemt}>

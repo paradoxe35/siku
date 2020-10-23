@@ -1,7 +1,7 @@
 @extends('customer')
 
 @section('customer-content')
-<div class="mb-7" data-controller="Customer--Account"
+<div data-controller="Customer--Account"
     data-Customer--Account-event-account-route="{{ route('customer.event.account') }}"
     data-Customer--Account-account-update-phone="{{ route('api.customer.account.update.phone') }}">
     <div class="row">

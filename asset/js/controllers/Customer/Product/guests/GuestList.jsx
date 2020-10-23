@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux'
 import { useItemDeletion, List, ListDescriptionText } from '../template/Sections'
 import ModalConfirm from '@/js/react/components/ModalConfirm'
 import { useFetch, useListDataPaginator } from '@/js/react/hooks'
-import { Event_Guest, URLS, DispachGuestsDetail, DispachEventOpenGuestSocketDetail, TEMPLATE_SECTION, OverFlowStyle } from '@/js/react/vars'
+import { Event_Guest, URLS, DispachGuestsDetail, DispachEventOpenGuestSocketDetail, TEMPLATE_SECTION, OverFlowStyle, onLoadedSocketLib } from '@/js/react/vars'
 import { putEventStatus } from '@/js/store/features/product/EventStatusSlice'
 import { Notifier } from '@/js/functions/notifier'
 import { DefaultButton } from '@/js/react/components/Buttons'
@@ -15,17 +15,20 @@ import { LaravelPagination } from '@/js/react/components/Pagination'
 
 const ShowList = ({ v, handleDelete }) => {
     const { t } = useTranslation()
-
-    const { fetchLoading: loading, fetchAPi } = useFetch()
+    const [loading, setLoading] = useState(false)
+    const { fetchAPi } = useFetch()
 
     const sms = (v.can_send_sms ? [TEMPLATE_SECTION.sms] : [])
     const whatsapp = (v.can_send_whatsapp ? [TEMPLATE_SECTION.whatsapp] : [])
 
-    const send = (v) => {
+    const send = async (v) => {
+        setLoading(true)
+        DispachEventOpenGuestSocketDetail(null)
+        await onLoadedSocketLib()
         fetchAPi('post', URLS.eventGuests + '/' + v.id + '/send', {}, true)
+            .finally(() => setLoading(false))
             .then((_res) => {
                 Notifier.sussess(t('Envoi en cours...'))
-                DispachEventOpenGuestSocketDetail(null)
             })
     }
 

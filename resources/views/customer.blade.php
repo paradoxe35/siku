@@ -6,7 +6,7 @@
 @include('layouts.auth-sidebar')
 <div class="main-content" data-controller="Admin-Customer" id="panel">
     @include('layouts.auth-navbar')
-    <div class="container-fluid mt-7">
+    <div class="container-fluid my-7">
         @yield('customer-content')
     </div>
 </div>

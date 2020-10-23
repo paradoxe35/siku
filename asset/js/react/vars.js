@@ -44,6 +44,7 @@ export const Event_Guests_Name = 'event_guests_list'
 export const Event_Guest = 'Event_Guest'
 export const Event_Process_Queue = 'Event_Process_Queue'
 export const Event_Open_Guest_Socket = 'Event_Open_Guest_Socket'
+export const Loaded_Socket_Lib = 'Loaded_Socket_Lib'
 
 export function dispatchEvent(event, datas) {
     window.dispatchEvent(new CustomEvent(event, {
@@ -65,4 +66,24 @@ export const DispachEventProcessQueueDetail = (datas) => {
 
 export const DispachEventOpenGuestSocketDetail = (datas) => {
     dispatchEvent(Event_Open_Guest_Socket, datas)
+}
+
+
+export const DispachLoadedSocketLibDetail = () => {
+    dispatchEvent(Loaded_Socket_Lib, {})
+}
+
+export const onLoadedSocketLib = () => {
+    return new Promise(resolve => {
+        let callResolved = false
+        const resolved = () => {
+            resolve(true)
+            if (!callResolved) {
+                window.removeEventListener(Loaded_Socket_Lib, resolved)
+                callResolved = true
+            }
+        }
+        window.addEventListener(Loaded_Socket_Lib, resolved)
+        window.setTimeout(() => !callResolved && resolve(true), 10000)
+    })
 }

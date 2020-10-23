@@ -10,9 +10,16 @@ export const setI18nLanguage = (lang) => {
 
 setI18nLanguage(document.querySelector('html').getAttribute('lang'))
 
-export const errorResponse = (error, mustNotifierErrors = false) => {
-    if (error.response && mustNotifierErrors)
-        Notifier.error(HtmlAlert.message(error.response.data));
+/**
+ * @param { { response?:import('axios').AxiosResponse } } error 
+ * @param { boolean } mustNotifierErrors 
+ * @param { number } reloadStatus 
+ */
+export const errorResponse = (error, mustNotifierErrors = false, reloadStatus = 0) => {
+    if (error.response) {
+        !!reloadStatus && error.response.status === reloadStatus && window.location.reload()
+        mustNotifierErrors && Notifier.error(HtmlAlert.message(error.response.data));
+    }
     return Promise.reject(error.response ? error.response.data : error)
 }
 
@@ -20,13 +27,15 @@ export const errorResponse = (error, mustNotifierErrors = false) => {
  * @param {string} method 
  * @param {string} url 
  * @param { FormData | Object } datas 
+ * @param { boolean } [mustNotifierErrors=false] 
+ * @param { number } [reloadStatus=0]
  * @returns { Promise<import('axios').AxiosResponse<any>> }
  */
-export const ApiRequest = async (method = 'get', url, datas = {}, mustNotifierErrors = false) => {
+export const ApiRequest = async (method = 'get', url, datas = {}, mustNotifierErrors = false, reloadStatus = 0) => {
     try {
         return await Api[method.toLowerCase()](url, datas)
     } catch (error) {
-        return errorResponse(error, mustNotifierErrors)
+        return errorResponse(error, mustNotifierErrors, reloadStatus)
     }
 }
 

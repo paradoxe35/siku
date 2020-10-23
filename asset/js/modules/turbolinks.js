@@ -11,6 +11,11 @@ export class TurbolinksApp {
 
     static start() {
         Turbolinks.start()
+        document.addEventListener('turbolinks:render', () => {
+            document.querySelector('html').lang =
+                document.querySelector('meta[name="lang"]')
+                    .getAttribute('content')
+        })
     }
 
     static reload() {

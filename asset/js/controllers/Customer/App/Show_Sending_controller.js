@@ -1,7 +1,7 @@
 //@ts-check
 import { Controller } from "stimulus"
 import { ApiRequest } from "@/js/api/api"
-import { DispachEventGuestDetail, Event_Open_Guest_Socket, Event_Process_Queue } from "@/js/react/vars"
+import { DispachEventGuestDetail, DispachLoadedSocketLibDetail, Event_Open_Guest_Socket, Event_Process_Queue } from "@/js/react/vars"
 import { ReduxDispatch } from "@/js/store"
 import { putEventStatus } from "@/js/store/features/product/EventStatusSlice"
 import { setBalanceAmount } from "@/js/store/features/BalanceSlice"
@@ -57,9 +57,13 @@ export default class extends Controller {
 
 
     initSocket = async (e) => {
-        if (EchoSocket) return
+        if (EchoSocket) {
+            DispachLoadedSocketLibDetail()
+            return
+        }
         const { Echo } = await import('@js/modules/socket')
         EchoSocket = Echo
+        DispachLoadedSocketLibDetail()
         // @ts-ignore
         Echo.channel("App.User." + window.auth.id)
             .listen('.processed.guest', this.onSocketData.bind(this, e))

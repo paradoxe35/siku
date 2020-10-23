@@ -1,17 +1,17 @@
+//@ts-check
 import LaraEcho from "laravel-echo"
 
 export const Io = require('socket.io-client');
 
-const host = document.querySelector('meta[name="ws-host"]')
-let url = null
+const wshost = document.querySelector('meta[name="ws-host"]')
+const wsport = document.querySelector('meta[name="ws-port"]')
+let url = wshost.getAttribute('content')
+let port = wsport ? wsport.getAttribute('content') : null
 
-try {
-    const p = new URL(host.getAttribute('content'))
-    url = p.hostname
-} catch (_) { }
+port = port !== null && port.trim().length > 0 ? ':' + port : ''
 
 export const Echo = new LaraEcho({
     broadcaster: 'socket.io',
-    host: url || window.location.hostname,
+    host: url !== null && url.trim().length > 0 ? url : window.location.hostname + port,
     client: Io
 });

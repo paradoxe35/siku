@@ -83,7 +83,7 @@ export default class extends Controller {
         form.set('country_name', this.country.name)
         form.set('country_code', this.country.code)
         // @ts-ignore
-        ApiRequest('post', e.target.action, form)
+        ApiRequest('post', e.target.action, form, false, 419)
             .then((res) => {
                 // @ts-ignore
                 res.status === 200 &&

@@ -2,7 +2,7 @@
 
 
 @section('customer-content')
-<div class="mb-7" data-controller="Customer--Payments"
+<div data-controller="Customer--Payments"
     data-Customer--Payments-history-index="{{ route('api.customer.payments.history.index') }}"
     data-Customer--Payments-history-low-balance="{{ route('api.customer.payments.history.low-balance') }}">
     <div class="row">

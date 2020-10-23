@@ -7,15 +7,18 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title'){{ $app_name }}</title>
     <meta name="site-name" content="{{ $app_name }}" />
+    <meta name="lang" content="{{ app()->getLocale() }}" />
     <link href="{{ mix('css/style.css', 'compiled') }}" rel="stylesheet">
     <link href="{{ mix('css/module.css', 'compiled') }}" rel="stylesheet">
     @yield('head-meta')
     @yield('head-secondary')
-    <script src="{{ mix('js/manifest.js', 'compiled') }}" defer></script>
-    <script src="{{ mix('js/vendor.js', 'compiled') }}" defer ></script>
-    <script src="{{ mix('js/'. ($app_file ?? 'application.js'), 'compiled') }}" data-turbolinks-track="reload" defer></script>
+    <meta name="ws-host" content="{{ env('WS_HOST') }}">
+    <meta name="ws-port" content="{{ env('WS_PORT') }}">
     <meta name="turbolinks-cache-control" content="no-cache">
-    <meta name="ws-host" content="{{ env('WS_HOST', request()->getHost()) }}">
+    <script src="{{ mix('js/manifest.js', 'compiled') }}" defer></script>
+    <script src="{{ mix('js/vendor.js', 'compiled') }}" defer></script>
+    <script src="{{ mix('js/'. ($app_file ?? 'application.js'), 'compiled') }}" data-turbolinks-track="reload" defer>
+    </script>
 </head>
 
 <body class="@yield('body-class')">

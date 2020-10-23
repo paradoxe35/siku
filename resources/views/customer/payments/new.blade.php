@@ -1,7 +1,7 @@
 @extends('customer')
 
 @section('customer-content')
-<div class="mb-9" data-controller="Customer--Payments--New"
+<div  data-controller="Customer--Payments--New"
     data-Customer--Payments--New-country-pricing="{{ route('api.country-pricing') }}"
     data-Customer--Payments--New-pay-data="{{ route('api.customer.payments.pay-data') }}">
     <div class="row">
