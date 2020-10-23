@@ -55,15 +55,20 @@ export default class extends Controller {
         }
     }
 
+    loadedSocketLib() {
+        window.setTimeout(() => {
+            DispachLoadedSocketLibDetail()
+        }, 500)
+    }
 
     initSocket = async (e) => {
         if (EchoSocket) {
-            DispachLoadedSocketLibDetail()
+            this.loadedSocketLib()
             return
         }
         const { Echo } = await import('@js/modules/socket')
         EchoSocket = Echo
-        DispachLoadedSocketLibDetail()
+        this.loadedSocketLib()
         // @ts-ignore
         Echo.channel("App.User." + window.auth.id)
             .listen('.processed.guest', this.onSocketData.bind(this, e))
