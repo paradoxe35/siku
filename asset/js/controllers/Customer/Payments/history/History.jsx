@@ -180,7 +180,8 @@ export default () => {
     const url = `${URLS.historyIndex}?filter=${section}&month=${state.month}&year=${state.year}`;
 
     const downLoad = useCallback(() => {
-        window.location.href = url + '&download=true'
+        const locale = document.querySelector('html').lang
+        window.location.href = url + '&download=true&locale=' + locale
     }, [url])
 
     return <>

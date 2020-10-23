@@ -48,7 +48,7 @@ Route::namespace('API')
                                 //guest controller
                                 Route::post('events/{event}/guests/{guest}/send', "EventGuestsController@send")
                                     ->name('events.guests.send');
-                                
+
                                 Route::post('events/{event}/guests/import-from-common', "EventGuestsController@importFromCommon")
                                     ->name('events.guests.import-from-common');
 

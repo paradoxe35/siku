@@ -61,6 +61,7 @@ const CropperImageView = ({ onDataImage, onSaveComponent }) => {
         <Cropper
             src={image}
             viewMode={1}
+            crossOrigin="anonymous"
             guides={true}
             minCropBoxHeight={10}
             minCropBoxWidth={10}
@@ -121,7 +122,7 @@ const Qrcode = () => {
             cleaner.current = true
         }
     }, [src])
-    
+
     const { fetchLoading: loading, fetchAPi } = useFetch()
 
     const saveQrImage = () => {

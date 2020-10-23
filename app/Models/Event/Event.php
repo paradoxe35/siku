@@ -77,17 +77,6 @@ class Event extends Model
     }
 
     /**
-     * Get the  event qrcode_logo
-     *
-     * @param  string  $value
-     * @return string
-     */
-    public function getQrcodeLogoAttribute($value)
-    {
-        return $value ? 'storage/' . $value : null;
-    }
-
-    /**
      * @return string
      */
     public function route()

@@ -11,7 +11,7 @@
                         <div class="main-content">
                             <h1>{{ __('Informer et distribuer vos invitations en un temps record') }}</h1>
                             <h4>
-                                {{ __("Le meilleur et plus sûr moyen d'inviter vos membres et connaissances à vos événements") }}.
+                                {{ $app_description }}.
                             </h4>
                             <a href="{{ route('get-started') }}" class="btn btn-icon btn-primary mt-3">
                                 <span class="nav-link-inner--text">{{ __('Créer un compte gratuit') }}</span>

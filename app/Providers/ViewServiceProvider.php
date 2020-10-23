@@ -35,6 +35,8 @@ class ViewServiceProvider extends ServiceProvider
 
             $view->with('symbol', BasePrice::$symbol);
 
+            $view->with('app_description', trans("Le meilleur et plus sûr moyen d'inviter vos membres et connaissances à vos événements"));
+
             $view->with('langs', [
                 ['name' => trans('Anglais'), 'value' => 'en'],
                 ['name' => trans('Français'), 'value' => 'fr']

@@ -27,7 +27,8 @@ const CustomerReport = () => {
     }), [setLoading])
 
     const download = () => {
-        window.location.href = URLS.eventReportDownload
+        const locale = document.querySelector('html').lang
+        window.location.href = URLS.eventReportDownload + '?locale=' + locale
     }
 
     return <>
@@ -50,7 +51,7 @@ const CustomerReport = () => {
                 </li>
             </ul>
             <div>
-                <BtnDownload onClick={download}  alt={t('Télécharger Rapport')}/>
+                <BtnDownload onClick={download} alt={t('Télécharger Rapport')} />
             </div>
         </div>
 

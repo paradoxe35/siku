@@ -68,5 +68,6 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'active-event' => \App\Http\Middleware\Mobile\ActiveEvent::class,
         'admin' =>  \App\Http\Middleware\Admin\AuthentificateAdmin::class,
+        'check-locale' => \App\Http\Middleware\CheckLocale::class,
     ];
 }

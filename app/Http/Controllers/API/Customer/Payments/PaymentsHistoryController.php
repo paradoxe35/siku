@@ -7,6 +7,7 @@ use App\Http\Resources\Payments\Balance\BalanceCollection;
 use App\Http\Resources\Payments\Consumed\ConsumedCollection;
 use Barryvdh\DomPDF\PDF;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
 
 class PaymentsHistoryController extends Controller
@@ -33,6 +34,8 @@ class PaymentsHistoryController extends Controller
      */
     private function reportPayments(array $datas, $month, $year)
     {
+        App::setLocale(request('locale'), 'fr');
+
         return $this->pdf->loadView('template.report._payments.history.payments', [
             'histories' => $datas,
             'year' => $year,
@@ -49,6 +52,8 @@ class PaymentsHistoryController extends Controller
      */
     private function reportConsumptions(array $datas, $month, $year)
     {
+        App::setLocale(request('locale'), 'fr');
+
         return $this->pdf->loadView('template.report._payments.history.consumeds', [
             'histories' => $datas,
             'year' => $year,

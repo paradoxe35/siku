@@ -8,6 +8,15 @@
     <title>@yield('title'){{ $app_name }}</title>
     <meta name="site-name" content="{{ $app_name }}" />
     <meta name="lang" content="{{ app()->getLocale() }}" />
+    <!-- section:seometa -->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="{{ $app_name }}">
+    <meta property="og:title" content="{{ $app_name }}">
+    <meta property="og:description" content="{{ $app_description }}">
+    <meta property="og:image" content="">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="{{ '@'.$app_name }}">
+    <meta name="twitter:creator" content="{{ $app_name }}">
     <link href="{{ mix('css/style.css', 'compiled') }}" rel="stylesheet">
     <link href="{{ mix('css/module.css', 'compiled') }}" rel="stylesheet">
     @yield('head-meta')

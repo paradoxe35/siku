@@ -13,6 +13,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
+use Illuminate\Http\File;
+
 
 class EventsController extends Controller
 {
@@ -122,11 +124,11 @@ class EventsController extends Controller
     }
 
     /**
-     * @return mixed
+     * @return \Illuminate\Support\Facades\Storage
      */
     private function storage()
     {
-        return Storage::disk('public');
+        return Storage::disk();
     }
 
     /**
@@ -148,24 +150,28 @@ class EventsController extends Controller
 
         $image_array_2 = explode(",", $image_array_1[1]);
 
-        $image = base64_decode($image_array_2[1]);
+        $imageContent = base64_decode($image_array_2[1]);
 
-        $path = "events/logos/$hash/$hash.png";
+        $temp_pointer = tmpfile();
 
-        $this->storage()->put($path, $image, 'public');
+        fwrite($temp_pointer, $imageContent);
 
-        $filesource  = storage_path('app/public/' . $path);
+        $tmpPath = stream_get_meta_data($temp_pointer)['uri'];
 
         // image compression
-        $img->compress_image($filesource, null, 50, null);
+        $img->compress_image($tmpPath, null, 50, null);
 
-        $event->qrcode_logo = $path;
+        $resolved = $this->storage()->putFileAs("events/logos/$hash", new File($tmpPath), "$hash.png", 'public');
+
+        $url = $this->storage()->url($resolved);
+
+        $event->qrcode_logo = $url .  '?' . Str::random();
 
         $event->save();
 
         $event->refresh();
 
-        return ['logo_path' => ('/' . $event->qrcode_logo . '?' . Str::random())];
+        return ['logo_path' => $event->qrcode_logo];
     }
 
 

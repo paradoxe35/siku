@@ -3,9 +3,15 @@
     <div class="container-fluid {{ isset($top) ? 'mx-md-4 mx-lg-5 pl-lg-4' : '' }}">
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             @if (!isset($top))
-            <a class="navbar-brand d-sm-block d-md-none" href="{{ route('home') }}">
-                <h1>{{ $app_name }}</h1>
-            </a>
+                @if (!isset($customer_event))
+                    <a class="navbar-brand d-sm-block d-md-none" href="{{ route('home') }}">
+                        <h1>{{ $app_name }}</h1>
+                    </a>
+                @else
+                    <a class="navbar-brand d-sm-block d-md-none" href="{{ route('customer.events') }}">
+                        <h1>{{ $app_name }}</h1>
+                    </a>
+                @endif
             @else
             <a class="navbar-brand" href="{{ route('home') }}">
                 <h1>{{ $app_name }}</h1>

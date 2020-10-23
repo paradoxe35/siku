@@ -10,7 +10,7 @@ use App\View\Paginator\CustomPaginator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Barryvdh\DomPDF\PDF;
-
+use Illuminate\Support\Facades\App;
 
 class EventReportController extends Controller
 {
@@ -96,8 +96,12 @@ class EventReportController extends Controller
     public function download($event, Event $evt, PDF $pdf)
     {
         $event = $evt->findByHashid($event);
+
         $attended = $this->queryAttended($event)->get();
+
         $absents = $this->absents($event)->reverse();
+
+        App::setLocale(request('locale'), 'fr');
 
         return $pdf->loadView('template.report.general', [
             'event' => $event,
