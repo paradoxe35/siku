@@ -66,12 +66,10 @@ export default class extends Controller {
             this.loadedSocketLib()
             return
         }
-        const { Echo } = await import('@js/modules/socket')
-        EchoSocket = Echo
+        const { UserChannel } = await import('@js/modules/socket')
+        EchoSocket = UserChannel()
         this.loadedSocketLib()
-        // @ts-ignore
-        Echo.channel("App.User." + window.auth.id)
-            .listen('.processed.guest', this.onSocketData.bind(this, e))
+        EchoSocket.listen('.processed.guest', this.onSocketData.bind(this, e))
     }
 
     dispatchToAppState({ processed, consumed }) {

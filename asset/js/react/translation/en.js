@@ -147,5 +147,16 @@ export default {
     "Activer les alertes de solde faible": "Enable low balance alerts",
     "Il est important de savoir quand votre solde est bas": "It is important to know when your balance is low",
     "Si vous êtes à court de fonds, votre service peut être interrompu": "If you run out of funds, your service may be interrupted",
-    "Résumé": "Summary"
+    "Résumé": "Summary",
+    "Hey! Souhaitez-vous parler des Tarification, paiement, du support ou de n'importe quel autre": "Hey! Would you like to talk about Pricing, Payment, Support or any other",
+    "Paiement": "Payment",
+    "Tarification": "Pricing",
+    "Autre Chose": "Something else",
+    "Envoyer un message": "Send a message",
+    "Hey, voulez-vous que cette discussion soit une priorité": "Hey, do you want this discussion to be a priority",
+    "Oui": "Yes",
+    "En ligne": "Online",
+    "Une fois cette discussion terminée, elle sera supprimée dans deux heures": "Once this discussion is complete, it will be deleted in two hours",
+    "Comment puis-je vous aider ?": "How can I help you ?",
+    "Revenez à votre dernière discussion": "Go back to your last discussion"
 }

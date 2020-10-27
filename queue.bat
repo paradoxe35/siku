@@ -1,1 +1,1 @@
-php artisan queue:work --queue=high,default,invitation
+php artisan queue:work --queue=high,default,invitation,notifications

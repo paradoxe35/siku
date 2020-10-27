@@ -80,3 +80,9 @@ Route::middleware(['auth', 'admin'])
         Route::redirect('', '/dash/home');
         Route::get('home', 'HomeDashController@index')->name('home');
     });
+
+Route::namespace('Webhooks')
+    ->prefix('hooks')
+    ->group(function () {
+        Route::post('{token}/webhook', 'TelegramController');
+    });

@@ -133,6 +133,15 @@ Route::namespace('API')
                                             });
                                     });
                             });
+
+                        Route::prefix('chat')
+                            ->name('chat.')
+                            ->group(function () {
+                                Route::get('index', 'ChatController@index')->name('index');
+                                Route::post('priority', 'ChatController@priority')->name('priority');
+                                Route::post('store', 'ChatController@store')->name('store');
+                                Route::get('agent', 'ChatController@agent')->name('agent');
+                            });
                     });
             });
         Route::get('country-pricing', "PricingController@getByCountry")->name('country-pricing');

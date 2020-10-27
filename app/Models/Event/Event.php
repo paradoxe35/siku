@@ -119,7 +119,7 @@ class Event extends Model
      */
     public function InQueueProcess()
     {
-        return $this->getEventProcess($this->id);
+        return $this->hasEventProcess($this->id);
     }
 
     /**

@@ -7,6 +7,10 @@ export default class extends Controller {
         cmpDetails: this.data.get('cmpDetails'),
         paypalReturnUrl: this.data.get('paypalReturnUrl'),
         paypalCancelUrl: this.data.get('paypalCancelUrl'),
+        chatIndex: this.data.get('chatIndex'),
+        chatPriority: this.data.get('chatPriority'),
+        chatStore: this.data.get('chatStore'),
+        chatAgent: this.data.get('chatAgent'),
         paypalCreatePaypalTransaction: this.data.get('paypalCreatePaypalTransaction'),
         paypalGetPaypalTransaction: this.data.get('paypalGetPaypalTransaction'),
     }

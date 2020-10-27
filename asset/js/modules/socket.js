@@ -15,3 +15,6 @@ export const Echo = new LaraEcho({
     host: url !== null && url.trim().length > 0 ? url : window.location.hostname + port,
     client: Io
 });
+
+// @ts-ignore
+export const UserChannel = () => Echo.channel("App.User." + window.auth.id)

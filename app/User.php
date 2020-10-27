@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Infrastructure\Cache\CacheUserDataPay;
 use App\Models\Balance\Balance;
 use App\Models\Balance\Consumed;
 use App\Models\Balance\LowBalance;
@@ -17,10 +18,12 @@ use Illuminate\Support\Str;
 use App\Notifications\VerifyEmail;
 use Illuminate\Contracts\Auth\CanResetPassword;
 use Illuminate\Auth\Passwords\CanResetPassword as PasswordTrait;
+use Vinkla\Hashids\Facades\Hashids;
+
 
 class User extends Authenticatable implements MustVerifyEmail, CanResetPassword
 {
-    use Notifiable, HasApiTokens, PasswordTrait;
+    use Notifiable, HasApiTokens, PasswordTrait, CacheUserDataPay;
 
     /**
      * @var string
@@ -94,6 +97,16 @@ class User extends Authenticatable implements MustVerifyEmail, CanResetPassword
     }
 
     /**
+     * @return string
+     */
+    public function hashId()
+    {
+        /** @var  mixed */
+        $h = new Hashids;
+        return $h::encode($this->id);
+    }
+
+    /**
      * Get the user's first name.
      *
      * @param  string  $value
@@ -116,6 +129,15 @@ class User extends Authenticatable implements MustVerifyEmail, CanResetPassword
         $total = $this->AllBalance()->where('confirmed', true)->sum('amount');
         $consumed = $this->consumeds()->where('confirmed', true)->sum('amount');
         return round(($total - $consumed), 2);
+    }
+
+
+    /**
+     * @return mixed
+     */
+    public function payData()
+    {
+        return $this->getUserDataPay($this->id);
     }
 
     /**

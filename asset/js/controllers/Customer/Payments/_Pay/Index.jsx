@@ -6,13 +6,14 @@ import { isInvalideGuestFieldValue, URLS } from '@/js/react/vars';
 import { useFetch } from '@/js/react/hooks';
 import { DefaultButton } from '@/js/react/components/Buttons';
 import { setBalanceAmount } from '@/js/store/features/BalanceSlice';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import Label from '@/js/react/components/Label';
 import { Card } from '@/js/react/components/Card';
 import { ApiRequest } from '@/js/api/api';
 import { Notifier } from '@/js/functions/notifier';
 import { TurbolinksApp } from '@/js/modules/turbolinks';
 import { SYMBOL } from '@/js/functions/functions';
+import { Chat } from './chat/Chat';
 
 
 const isValidPayData = (amount, guests) => amount > 0 && !isInvalideGuestFieldValue(guests)
@@ -148,7 +149,7 @@ const CustomerPay = () => {
 
     return <>
         <div className="row">
-            <div className="col-lg-6">
+            <div className="col-lg-6 mb-4">
                 <ValidateCustomPayment guests={guests} amount={price} />
                 <ValidateWithPayPal guests={guests} amount={price} />
             </div>
@@ -159,6 +160,7 @@ const CustomerPay = () => {
                 </Card>
             </div>
         </div>
+        <Chat />
     </>
 }
 

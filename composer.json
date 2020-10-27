@@ -20,6 +20,7 @@
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^6.3",
         "instasent/sms-counter-php": "^0.5.2",
+        "irazasyed/telegram-bot-sdk": "^3.3",
         "laravel-notification-channels/telegram": "^0.5.0",
         "laravel/framework": "^7.24",
         "laravel/passport": "^9.3",
@@ -30,7 +31,8 @@
         "mtvs/eloquent-hashids": "^2.0",
         "nexmo/laravel": "^2.3",
         "paypal/paypal-checkout-sdk": "1.0.1",
-        "predis/predis": "^1.1"
+        "predis/predis": "^1.1",
+        "spatie/emoji": "^2.1"
     },
     "require-dev": {
         "facade/ignition": "^2.0",

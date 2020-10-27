@@ -6,17 +6,12 @@ use Illuminate\Support\Facades\Cache;
 
 trait CacheUserDataPay
 {
-
-    private $redisKeyCache = 'user:data-pay:';
+    use CacheApp;
 
     /**
-     * @return \Illuminate\Contracts\Cache\Repository
+     * @var string
      */
-    protected function cache()
-    {
-        return Cache::store('redis');
-    }
-
+    private $redisKeyCache = 'user:data-pay:';
 
     /**
      * @param int $userId
@@ -25,7 +20,7 @@ trait CacheUserDataPay
      */
     protected function getUserDataPay($userId)
     {
-        return $this->cache()->has($this->redisKeyCache . $userId);
+        return $this->cache()->get($this->redisKeyCache . $userId);
     }
 
     /**

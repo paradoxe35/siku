@@ -33,6 +33,8 @@ return [
     |
     */
 
+    'app_email' => env('APP_EMAIL_ADDRESS'),
+
     'mailers' => [
         'smtp' => [
             'transport' => 'smtp',

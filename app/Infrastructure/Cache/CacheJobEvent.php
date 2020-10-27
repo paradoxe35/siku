@@ -2,20 +2,14 @@
 
 namespace App\Infrastructure\Cache;
 
-use Illuminate\Support\Facades\Cache;
-
 trait CacheJobEvent
 {
+    use CacheApp;
 
-    private $redisKeyCache = 'event:process:';
     /**
-     * @return \Illuminate\Contracts\Cache\Repository
+     * @var string
      */
-    protected function cache()
-    {
-        return Cache::store('redis');
-    }
-
+    private $redisKeyCache = 'event:process:';
 
     /**
      * @param int $eventId
@@ -23,6 +17,16 @@ trait CacheJobEvent
      * @return mixed
      */
     protected function getEventProcess($eventId)
+    {
+        return $this->cache()->get($this->redisKeyCache . $eventId);
+    }
+
+    /**
+     * @param int $eventId
+     * 
+     * @return mixed
+     */
+    protected function hasEventProcess($eventId)
     {
         return $this->cache()->has($this->redisKeyCache . $eventId);
     }
