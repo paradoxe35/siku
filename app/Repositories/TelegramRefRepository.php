@@ -38,4 +38,26 @@ class TelegramRefRepository
     {
         return TelegramReference::create($datas);
     }
+
+    /**
+     * @param string $chatId
+     * 
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public static function deleteByChatId($chatId)
+    {
+        $model = self::getByChatId($chatId);
+        if ($model) $model->delete();
+    }
+
+    /**
+     * @param string $userId
+     * 
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public static function deleteByUserId($userId)
+    {
+        $model = self::getByUserId($userId);
+        if ($model) $model->delete();
+    }
 }

@@ -4,8 +4,13 @@ namespace App\Webhooks\Telegram\Commands\Chat;
 
 use App\Infrastructure\Object\PendingChatMessage;
 use App\Infrastructure\Vars\TelegramApp;
+use App\Notifications\Telegram\NotifyAdmin;
 use App\Repositories\TelegramRefRepository;
 use App\User;
+use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\Storage;
+use NotificationChannels\Telegram\TelegramFile;
+use Telegram\Bot\Laravel\Facades\Telegram;
 use Vinkla\Hashids\Facades\Hashids;
 
 class ChatCommand extends Chat
@@ -67,10 +72,28 @@ class ChatCommand extends Chat
         $pending = new PendingChatMessage($user->id);
 
         foreach ($pending->get() as $msg) {
-            $this->replyWithMessage(['text' => "{$user->email}\n{$msg['text']}"]);
+
+            if (isset($msg['file']) && !is_null($msg['file'])) {
+
+                $this->retrievePendingMessagesFile($msg, $user);
+            } else {
+                $this->replyWithMessage(['text' => "{$user->email}\n{$msg['message']}"]);
+            }
         }
 
         $pending->clear();
+    }
+
+
+    /**
+     * @param array $user
+     * 
+     * @return void
+     */
+    private function retrievePendingMessagesFile(array $message, User $user)
+    {
+        Notification::route('telegram', $this->chatId())
+            ->notify(new NotifyAdmin($message, $user));
     }
 
 
@@ -86,11 +109,11 @@ class ChatCommand extends Chat
 
         $chatId = $this->chatId();
 
-        $chat = TelegramRefRepository::getByChatId($chatId);
+        $chat = TelegramRefRepository::getByUserId($client_id);
 
         if ($chat) {
 
-            $chat->fill(['user_id' => $client_id])
+            $chat->fill(['chat_id' => $chatId])
                 ->save();
         } else {
 
@@ -102,9 +125,11 @@ class ChatCommand extends Chat
 
         $chat->refresh();
 
+        $dataChat = $this->getUpdate()->getChat();
+
         $this->telegram->sendMessage([
             'chat_id' => TelegramApp::getAppGroupChatId(),
-            'text' => "User @{$this->getUpdate()->getChat()->username} has started a chat with customer ID: {$hashId}, email: {$chat->user->email}"
+            'text' => "User " . ($dataChat->username ? '@' . $dataChat->username : $dataChat->first_name . ' ' . $dataChat->last_name) . "\nhas started a chat with customer ID: {$hashId}, email: {$chat->user->email}"
         ]);
     }
 }

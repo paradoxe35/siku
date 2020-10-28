@@ -25,9 +25,8 @@ class DisconnectCommand extends Check
 
         $this->deleteAutorizedChatId($this->chatId());
 
-        $model = TelegramRefRepository::getByChatId($this->chatId());
-        if ($model) $model->delete();
+        TelegramRefRepository::deleteByChatId($this->chatId());
 
-        $this->replyWithMessage(['text' => Emoji::CHARACTER_CHECK_MARK . ' Disconnected']);
+        $this->replyWithMessage(['text' => Emoji::CHARACTER_CHECK_MARK . ' Destroyed']);
     }
 }

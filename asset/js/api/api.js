@@ -40,7 +40,7 @@ export const ApiRequest = async (method = 'get', url, datas = {}, mustNotifierEr
 }
 
 const params = {
-    timeout: 30000,
+    timeout: 300 * 1000,
     headers: {
         'X-Requested-With': 'XMLHttpRequest'
     }
@@ -64,6 +64,12 @@ export default class Api {
         }
     }
 
+    /**
+     * 
+     * @param {*} url 
+     * @param {*} datas 
+     * @param {import('axios').AxiosRequestConfig} config 
+     */
     static async post(url, datas = {}, config = {}) {
         try {
             const res = this.Axs.post(url, datas, config)

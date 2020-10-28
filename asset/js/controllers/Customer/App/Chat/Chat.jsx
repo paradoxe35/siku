@@ -5,10 +5,11 @@ import './chat.scss';
 import { createPortal } from 'react-dom';
 import Label from '@/js/react/components/Label';
 import { UserChannel } from '@js/modules/socket'
-import { URLS } from '@/js/react/vars';
 import { useFetch } from '@/js/react/hooks';
 import { useSelector } from 'react-redux';
 import { useRef } from 'react';
+import { Notifier } from '@/js/functions/notifier';
+import Api from '@/js/api/api';
 
 const AGENT_CONTEXT_DEFAULT_VALUE = {
     name: '',
@@ -17,6 +18,9 @@ const AGENT_CONTEXT_DEFAULT_VALUE = {
     status: '',
     id: 1
 }
+
+// @ts-ignore
+const URLS = window.chatUrls
 
 const ChatAdminProfilContext = createContext(AGENT_CONTEXT_DEFAULT_VALUE)
 
@@ -109,9 +113,13 @@ const ChatHeader = ({ chatBox, setChatBox }) => {
     </div>
 }
 
-const ChatField = ({ onSend }) => {
+/**
+ * @param {{ onSend?:any, onFileUpload?:any, progressUpload?:any }} param0 
+ */
+const ChatField = ({ onSend, onFileUpload, progressUpload }) => {
     const { t } = useTranslation()
     const [value, setValue] = useState('')
+    const { datas } = useContext(ChatDatasContext)
 
     const submit = () => {
         const trimed = value.trim()
@@ -121,9 +129,31 @@ const ChatField = ({ onSend }) => {
         }
     }
 
+    const onSelectFile = (e) => {
+        if (!datas) {
+            Notifier.error(t("Votre discussion de chat est vide, veuillez commencer par un texte"))
+            return
+        }
+        /**
+         * @type { File }
+         */
+        const file = e.target.files[0];
+        if (file.size > 5003556) {
+            Notifier.error(t("Votre fichier ne doit pas dépasser plus de 5MG"))
+            return
+        }
+        onFileUpload(file)
+    }
+
     return <div className="fab_field">
-        <a id="fab_camera" className="fab">
+        <a id="fab_camera" className="fab ifile">
             <IconCamera />
+            <input className="chat_ifile" type="file" onChange={onSelectFile} />
+            {progressUpload !== null && (
+                <div className="progress_ifile">
+                    <span>{progressUpload}</span>
+                </div>
+            )}
         </a>
         <form className="d-inline" method="post" onSubmit={(e) => {
             e.preventDefault()
@@ -162,7 +192,13 @@ const ChatMsgAdmin = ({ message, children, showImg = true }) => {
 const ChatMsgUser = ({ message, time }) => {
     return <>
         <span className="chat_msg_item chat_msg_item_user">
-            {message}
+            {message.file && (
+                <>
+                    <img src="/img/svg/file.svg" width="30" height="30" /><br />
+                    <span>{message.file.name}</span><br />
+                </>
+            )}
+            <span>{message.message}</span>
         </span>
         {/* <span className="status">{time}</span> */}
         {/* <span className="status2" hidden>Just now. Not seen yet</span> */}
@@ -216,7 +252,7 @@ const ChatConverse = forwardRef( /** @param {*} param0  */({ chatOption }, ref) 
             {!!datas && datas.chat_messages_datas.map((msg, i) => {
                 if (msg.user_id == authId) {
                     count = 0
-                    return <ChatMsgUser key={i} message={msg.message} time="" />
+                    return <ChatMsgUser key={i} message={msg} time="" />
                 } else {
                     const c = <ChatMsgAdmin key={i} message={msg.message} showImg={!count} />
                     count += 1
@@ -289,6 +325,8 @@ const ChatContent = () => {
 
     const chatOptionRef = useRef(null)
 
+    const [progressUpload, setProgressUpload] = useState(null)
+
     const pushMessage = (msg, _chatOption) => {
         setChatDatas(prev => {
             let dprev = (prev ? prev.chat_messages_datas : []);
@@ -329,7 +367,7 @@ const ChatContent = () => {
         const prime = document.querySelector('#prime')
         UserChannel()
             .listen('.user.chat', (msg) => {
-                if(!prime.classList.contains('is-visible')) {
+                if (!prime.classList.contains('is-visible')) {
                     setNotify(true)
                 }
                 pushMessage(msg, chatOptionRef.current)
@@ -374,7 +412,42 @@ const ChatContent = () => {
         fetchAPi('post', URLS.chatStore, { chat_option: _chatOption, text, ...time }, true)
 
         pushMessage({ ...time, message: text, user_id: authId }, _chatOption)
-    }, [chatDatas, authId, chatOptionRef.current, pushMessage, chatBox])
+    }, [authId, chatOptionRef.current, pushMessage, chatBox])
+
+    const onFileUpload = useCallback(
+        /**
+         * @param { File } file
+         */
+        (file) => {
+            if (chatBox !== CHAT_BOX.chat) {
+                setChatBox(CHAT_BOX.chat)
+            }
+
+            const _chatOption = chatOptionRef.current
+
+            const time = new Date().toLocaleDateString();
+
+            const form = new FormData()
+
+            form.append('file', file)
+            form.append('time', time)
+            form.append('user_id', authId)
+            form.append('message', '')
+            form.append('chat_option', _chatOption)
+
+            Api.post(URLS.chatStore, form, {
+                onUploadProgress(progressEvent) {
+                    const percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total)
+                    setProgressUpload(percentCompleted)
+                },
+            }).finally(() => {
+                window.setTimeout(() => {
+                    setProgressUpload(null)
+                }, 3000)
+            })
+
+            pushMessage({ time, message: null, user_id: authId, file: { name: file.name } }, _chatOption)
+        }, [authId, chatOptionRef.current, chatBox, pushMessage, setProgressUpload])
 
     return <>
         <div className="chat">
@@ -383,7 +456,7 @@ const ChatContent = () => {
                     <ChatHeader chatBox={chatBox} setChatBox={setChatBox} />
                     <Options onClickChangeBox={onClickChatBox} chatOption={handleChatOption} />
                     <ChatConverse chatOption={chatOption} ref={bodyRef} />
-                    <ChatField onSend={onSend} />
+                    <ChatField onSend={onSend} progressUpload={progressUpload} onFileUpload={onFileUpload} />
                 </ChatDatasContext.Provider>
             </ChatAdminProfilContext.Provider>
         </div>

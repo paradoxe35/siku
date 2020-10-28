@@ -13,7 +13,7 @@ import { ApiRequest } from '@/js/api/api';
 import { Notifier } from '@/js/functions/notifier';
 import { TurbolinksApp } from '@/js/modules/turbolinks';
 import { SYMBOL } from '@/js/functions/functions';
-import { Chat } from './chat/Chat';
+import { Chat } from '../../App/chat/Chat';
 
 
 const isValidPayData = (amount, guests) => amount > 0 && !isInvalideGuestFieldValue(guests)
@@ -137,9 +137,6 @@ const ValidateWithPayPal = ({ amount, guests }) => {
         {isValidPayData(amount, guests) && <PayWithPayPal amount={amount} guests={guests} />}
     </>
 }
-
-
-
 
 const CustomerPay = () => {
     const { t } = useTranslation()

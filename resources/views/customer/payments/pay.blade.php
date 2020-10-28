@@ -14,10 +14,6 @@
     data-Customer--Payments--Pay-custom-payment-validate="{{ route('api.customer.payments.custom-payment-validate') }}"
     data-Customer--Payments--Pay-paypal-return-url="{{ route('customer.event.payments') }}"
     data-Customer--Payments--Pay-paypal-cancel-url="{{ route('customer.event.payments.new.pay') }}"
-    data-Customer--Payments--Pay-chat-index="{{ route('api.customer.chat.index') }}"
-    data-Customer--Payments--Pay-chat-priority="{{ route('api.customer.chat.priority') }}"
-    data-Customer--Payments--Pay-chat-store="{{ route('api.customer.chat.store') }}"
-    data-Customer--Payments--Pay-chat-agent="{{ route('api.customer.chat.agent') }}"
     data-Customer--Payments--Pay-paypal-create-paypal-transaction="{{ route('api.customer.payments.create-paypal-transaction') }}"
     data-Customer--Payments--Pay-paypal-get-paypal-transaction="{{ route('api.customer.payments.get-paypal-transaction') }}">
     <div class="row mb-4">

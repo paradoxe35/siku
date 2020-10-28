@@ -31,10 +31,9 @@ class PendingChatMessage
 
     /**
      * @param string $message
-     * @param string $date
      * @return array
      */
-    public function put(string $message, string $date)
+    public function put(array $message)
     {
         $messages = $this->get() ?: [];
 
@@ -42,10 +41,7 @@ class PendingChatMessage
 
         $messages = array_slice($messages, $count - 50, $count);
 
-        array_push($messages, [
-            'text' => $message,
-            'date' => $date
-        ]);
+        array_push($messages, $message);
 
         $this->putPendingMessageChat($this->user_id, $messages);
     }

@@ -171,6 +171,8 @@ class EventsController extends Controller
 
         $event->refresh();
 
+        fclose($temp_pointer);
+
         return ['logo_path' => $event->qrcode_logo];
     }
 

@@ -5,11 +5,10 @@ namespace App\Notifications\Telegram;
 use App\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
-
-use NotificationChannels\Telegram\TelegramMessage;
+use Illuminate\Support\Facades\Storage;
 use NotificationChannels\Telegram\TelegramChannel;
+use NotificationChannels\Telegram\TelegramFile;
 
 class NotifyAdmin extends Notification implements ShouldQueue
 {
@@ -18,7 +17,7 @@ class NotifyAdmin extends Notification implements ShouldQueue
     /**
      * @var string
      */
-    private string $message;
+    private array $message;
 
     /**
      * @var User
@@ -30,7 +29,7 @@ class NotifyAdmin extends Notification implements ShouldQueue
      *
      * @return void
      */
-    public function __construct(string $message, User $user)
+    public function __construct(array $message, User $user)
     {
         $this->message = $message;
         $this->user = $user;
@@ -50,11 +49,51 @@ class NotifyAdmin extends Notification implements ShouldQueue
     /**
      * @param mixed $notifiable
      * 
-     * @return TelegramMessage 
+     * @return TelegramFile 
      */
     public function toTelegram($notifiable)
     {
-        return TelegramMessage::create()
-            ->content("{$this->user->email}\n$this->message");
+        $send = TelegramFile::create()
+            ->content("{$this->user->email}\n{$this->message['message']}");
+
+        if (!is_null($this->message['file'])) {
+            $send = $this->appendDocument($send);
+        }
+
+        return $send;
+    }
+
+
+    /**
+     * @param TelegramFile $send
+     * 
+     * @return TelegramFile
+     */
+    private function appendDocument($send)
+    {
+        $file = $this->message['file'];
+
+        $path = $file['path'];
+
+        $url = null;
+
+        $temp_pointer = tmpfile();
+
+        if ($file['cloud']) {
+            fwrite($temp_pointer, Storage::get($path));
+
+            $url = stream_get_meta_data($temp_pointer)['uri'];
+        } else {
+
+            $url = storage_path('app/' . $path);
+        }
+
+        $send = $send->document($url, $file['name']);
+
+        ($file['cloud'] ? Storage::delete($path) : Storage::disk('local')->delete($path));
+
+        fclose($temp_pointer);
+
+        return $send;
     }
 }

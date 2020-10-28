@@ -13,8 +13,11 @@ use App\Models\Agent;
 use App\Notifications\Telegram\NotifyAdmin;
 use App\Notifications\Telegram\UserChatPriority;
 use App\Repositories\TelegramRefRepository;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\Rule;
 
 class ChatController extends Controller
 {
@@ -55,6 +58,8 @@ class ChatController extends Controller
         $user = $request->user();
 
         $datas = $chat->getDatas($user->id);
+
+        // $chat->deletePaymentChat($user->id);
 
         return [
             'expire' => !$datas,
@@ -99,34 +104,70 @@ class ChatController extends Controller
 
     /**
      * @param Request $request
+     * @param \App\User $user
+     * 
+     * @return [type]
+     */
+    public function uploadFile(Request $request, $user)
+    {
+        $disk = config('filesystems.default');
+
+        if ($request->hasFile('file')) {
+
+            $file = $request->file('file');
+
+            $local = in_array($disk, ['public', 'local']);
+
+            $directory = 'tmp/chat/' . $user->id;
+
+            $upload = $file->storePublicly($directory, $local ? 'local' : []);
+
+            return [
+                'name' => $file->getClientOriginalName(),
+                'mine-type' => $file->getClientMimeType(),
+                'ext' => $file->getClientOriginalExtension(),
+                'path' => $upload,
+                'cloud' => !$local,
+                'directory' => $directory
+            ];
+        }
+
+        return null;
+    }
+
+    /**
+     * @param Request $request
      * 
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
         $request->validate([
-            'text' => ['required'],
+            'text' => [
+                Rule::requiredIf(!$request->hasFile('file'))
+            ],
             'chat_option' => ['required'],
-            'time' => ['required']
+            'time' => ['required'],
+            'file' => ['nullable', 'file', 'max:5120']
         ]);
 
         $user = $request->user();
 
         $chat = new ChatCustomer(strval($user->id), $request->chat_option);
 
+        $message = [
+            'time' => now()->toDateTimeLocalString(),
+            'message' => $request->text,
+            'user_id' => $user->id,
+        ];
+
         if (!$chat->getDatas($user->id)) {
 
             $this->notifyPriority($user, $request->text, $request->chat_option);
         } else {
 
-            $this->toTelegram($request->text, $user);
+            $message = $this->toTelegram($message, $request, $user);
         }
-
-        $message = [
-            'time' => now()->toDateTimeLocalString(),
-            'message' => $request->text,
-            'user_id' => $user->id
-        ];
 
         $chat->setMessage($message);
 
@@ -134,12 +175,16 @@ class ChatController extends Controller
     }
 
     /**
-     * @param string $message
-     * @param \App\User $message
-     * @return void
+     * @param array $message
+     * @param Request $message
+     * @param User $user
+     * 
+     * @return array
      */
-    public function toTelegram($message, $user)
+    public function toTelegram(array $message, Request $request, User $user)
     {
+        $message['file'] = $this->uploadFile($request, $user);
+
         $ref = TelegramRefRepository::getByUserId($user->id);
 
         if ($ref && $this->getAutorizedChatId($ref->chat_id)) {
@@ -150,17 +195,19 @@ class ChatController extends Controller
 
             $this->pendingMessage($message, $user);
         }
+
+        return $message;
     }
 
     /**
-     * @param string $message
-     * @param \App\User $message
+     * @param array $message
+     * @param User $message
      * @return void
      */
-    private function pendingMessage($message, $user)
+    private function pendingMessage(array $message, User $user)
     {
         $pending = new PendingChatMessage($user->id);
 
-        $pending->put($message, now()->toDateTimeLocalString());
+        $pending->put($message);
     }
 }

@@ -39,7 +39,7 @@ class SessionCommand extends Command
             /** @var \App\User */
             $user = $ref->user;
 
-            $this->replyWithMessage(['text' => "Your chat client is: \n Email: $user->email \n Name: $user->name \n ID: {$user->hashId()}"]);
+            $this->replyWithMessage(['text' => "Your chat client is:\nEmail: $user->email\nName: $user->name\nID: {$user->hashId()}"]);
         } else {
             $this->replyWithMessage(['text' => 'No chat currently in target']);
         }

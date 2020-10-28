@@ -2,6 +2,7 @@
 
 namespace App\Webhooks\Telegram\Commands\Check;
 
+use App\Repositories\TelegramRefRepository;
 use App\User;
 use Illuminate\Support\Facades\Hash;
 
@@ -38,6 +39,8 @@ class CheckCommand extends Check
         if (!$user || !Hash::check($password, $user->password)) {
             return $this->replyWithMessage(['text' => $this->warningText("The provided credentials are incorrect.")]);
         }
+
+        TelegramRefRepository::deleteByChatId($chatId);
 
         $this->putAutorizedChatId($chatId, ['chat_id' => $chatId, 'user_id' => $user->id]);
         // Reply with the commands list

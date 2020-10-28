@@ -158,5 +158,7 @@ export default {
     "En ligne": "Online",
     "Une fois cette discussion terminée, elle sera supprimée dans deux heures": "Once this discussion is complete, it will be deleted in two hours",
     "Comment puis-je vous aider ?": "How can I help you ?",
-    "Revenez à votre dernière discussion": "Go back to your last discussion"
+    "Revenez à votre dernière discussion": "Go back to your last discussion",
+    "Votre fichier ne doit pas dépasser plus de 5MG": "Votre fichier ne doit pas dépasser plus de 5MG",
+    "Votre discussion de chat est vide, veuillez commencer par un texte": "Your chat discussion is empty, please start with a text"
 }
