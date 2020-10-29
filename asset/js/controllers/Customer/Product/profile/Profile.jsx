@@ -5,8 +5,8 @@ import { SkeletonBox } from '@/js/react/components/SkeletonBox';
 import { useFetch, useFullLoading } from '@/js/react/hooks';
 import { URLS } from '@/js/react/vars';
 import { Empty } from '@/js/react/components/Empty';
-import { FullLoader } from '@/js/react/components/FullLoader';
 import { GuestList } from '../guests/GuestList';
+import { Loader } from '@/js/react/components/Loader';
 
 
 const Skeleton = ({ loading }) => {
@@ -30,7 +30,7 @@ const Profile = () => {
     })
 
     const [filter, setFilter] = useState(null)
-    const { fullLoading, parentElemt, setFullLoading } = useFullLoading()
+    const { fullLoading, setFullLoading } = useFullLoading()
     const [datas, setDatas] = useState({})
 
 
@@ -69,14 +69,15 @@ const Profile = () => {
         }
 
         {filter && (
-            <div className="mt-5" ref={parentElemt}>
-                {fullLoading && <FullLoader parent={parentElemt.current} />}
-                <div className="my-3" />
-                <GuestList url={URLS.eventProfileItems} filter={'filter=' + filter} datas={datas} setFullLoading={setFullLoading} />
-                {/*  @ts-ignore */}
-                {datas.meta && !datas.meta.total ? (
-                    <div className="mt-5"><Empty message="" /></div>
-                ) : ''}
+            <div className="mt-5">
+                <Loader loading={fullLoading}>
+                    <div className="my-3" />
+                    <GuestList url={URLS.eventProfileItems} filter={'filter=' + filter} datas={datas} setFullLoading={setFullLoading} />
+                    {/*  @ts-ignore */}
+                    {datas.meta && !datas.meta.total ? (
+                        <div className="mt-5"><Empty message="" /></div>
+                    ) : ''}
+                </Loader>
             </div>
         )}
     </>

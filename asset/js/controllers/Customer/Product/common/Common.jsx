@@ -2,10 +2,10 @@
 import { Notifier } from '@/js/functions/notifier';
 import { DefaultButton } from '@/js/react/components/Buttons';
 import { Empty } from '@/js/react/components/Empty';
-import { FullLoader } from '@/js/react/components/FullLoader';
+import { Loader } from '@/js/react/components/Loader';
 import ModalConfirm from '@/js/react/components/ModalConfirm';
 import RowDivider from '@/js/react/components/RowDivider';
-import { useFetch, useFullLoading, useItemDeletion, usePhoneInput } from '@/js/react/hooks';
+import { useFetch, useItemDeletion, usePhoneInput } from '@/js/react/hooks';
 import { ASYNC, OverFlowStyle, URLS } from '@/js/react/vars';
 import { commonGuestAdded, commonGuestRemoved, fetchCommonGuest } from '@/js/store/features/product/CommonGuestsSlice';
 import React, { Fragment, useCallback, useEffect, useMemo, useState } from 'react'
@@ -149,14 +149,11 @@ const Guests = () => {
             .then((_) => dispach(commonGuestRemoved(deletionId)))
     }, [deletionId]);
 
-    const { parentElemt } = useFullLoading()
-
-
     return <>
         <div className="text-xs text-muted mt-3 mb-2">
             <b>{ids.length}</b> {t("Déjà enregistrés")}.
         </div>
-        <div ref={parentElemt}>
+        <Loader loading={loading == ASYNC.pending}>
             <div style={OverFlowStyle}>
                 <List.Ul>
                     <List.Li data={datas}>
@@ -165,7 +162,6 @@ const Guests = () => {
                 </List.Ul>
             </div>
             <ModalConfirm loading={deletionLoading} onConfirm={deleteItem} ref={modalConfirm} />
-            {loading == ASYNC.pending && <FullLoader parent={parentElemt.current} />}
             {
                 loading == ASYNC.idle && !ids.length ? (
                     <div className="mt-5">
@@ -173,7 +169,7 @@ const Guests = () => {
                     </div>
                 ) : ''
             }
-        </div >
+        </Loader>
     </>
 }
 

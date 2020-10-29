@@ -64,6 +64,7 @@ class UserChatPriority extends Notification implements ShouldQueue
     public function toMail($notifiable)
     {
         return (new MailMessage)
+            ->from($this->user->email, $this->user->name)
             ->line($this->contentMessage());
     }
 

@@ -56,6 +56,7 @@ class EventsController extends Controller
     public function store(Request $request)
     {
         $user = $request->user();
+
         $request->validate([
             'event_name' => [
                 'required', 'string', 'min:2', 'max:50',
@@ -68,6 +69,12 @@ class EventsController extends Controller
             'description' => ['nullable', 'string', 'min:2'],
             'is_public' => ['nullable']
         ]);
+
+        abort_if(
+            $user->events->count() >= 10,
+            400,
+            trans('Vous pouvez pas enregistrer plus :count événements', ['count' => 10])
+        );
 
         //create customer event
         $event = $user->events()->create([

@@ -11,13 +11,13 @@ export const EventsList = ({ events = [], started }) => {
     // @ts-ignore
     const userAuth = useSelector(state => state.userAuth)
     const goToHome = function (event) {
-        TurbolinksApp.isc.visit(event.route)
+        TurbolinksApp.visit(event.route)
     }
     const content = (
         <ul className="list-group mt-4">
             {events.map(e => {
                 return (
-                    <li className="list-group-item my-2 border border-darken-1 clickable-list" onClick={() => goToHome(e)} key={e.id}>
+                    <li className="list-group-item my-1 border border-darken-1 clickable-list border-0 p-2" onClick={() => goToHome(e)} key={e.id}>
                         <div className="d-flex justify-content-between align-items-center">
                             {e.name}
                             <span className={`badge ${e.active ? 'badge-success' : 'badge-warning'} badge-pill`}>
@@ -27,6 +27,7 @@ export const EventsList = ({ events = [], started }) => {
                         <small className="text-muted">
                             {t('Créé')}, {e.created_at}
                         </small>
+                        <hr className="my-1" />
                     </li>
                 )
             })}

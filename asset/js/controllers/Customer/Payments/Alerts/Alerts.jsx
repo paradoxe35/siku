@@ -6,9 +6,9 @@ import { useSelector } from 'react-redux';
 import { DefaultButton } from '@/js/react/components/Buttons';
 import { FormControl } from '@/js/react/components/FormControl';
 import { SYMBOL } from '@/js/functions/functions';
-import { FullLoader } from '@/js/react/components/FullLoader';
 import { URLS } from '@/js/react/vars';
 import ModalConfirm from '@/js/react/components/ModalConfirm';
+import { Loader } from '@/js/react/components/Loader';
 
 const isInvalidNumber = (n) => isNaN(n) || !(+n > 0)
 
@@ -114,7 +114,6 @@ export default () => {
     const { fetchAPi, fetchLoading: loading, ApiRequest } = useFetch(true)
     const [checked, setChecked] = useState(false)
     const [datas, setDatas] = useState(null)
-    const { parentElemt } = useFullLoading()
 
     const {
         setDeletionLoading,
@@ -144,8 +143,7 @@ export default () => {
             })
     }, []);
 
-    return <div ref={parentElemt}>
-        {loading && <FullLoader parent={parentElemt.current} />}
+    return <Loader loading={loading}>
         <div className="d-flex">
             <h4>{t('Activer les alertes de solde faible')} </h4>
             <label className="custom-toggle ml-2">
@@ -179,5 +177,6 @@ export default () => {
                 onConfirm={deleteItem}
                 ref={modalConfirm} />
         )}
-    </div>
+    </Loader>
+
 }

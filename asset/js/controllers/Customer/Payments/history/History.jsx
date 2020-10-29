@@ -1,14 +1,14 @@
 //@ts-check
 import React, { Fragment, useState, Component, useRef, useEffect, useCallback } from 'react'
 import { useTranslation } from "react-i18next";
-import { useFetch, useFullLoading, useListDataPaginator } from '@/js/react/hooks';
+import { useFetch, useListDataPaginator } from '@/js/react/hooks';
 import Picker from 'react-month-picker'
 import 'react-month-picker/css/month-picker.css'
 import { BtnDownload } from '@/js/react/components/BtnDownload';
-import { FullLoader } from '@/js/react/components/FullLoader';
 import { URLS } from '@/js/react/vars';
 import { LaravelPagination } from '@/js/react/components/Pagination';
 import { SYMBOL } from '@/js/functions/functions';
+import { Loader } from '@/js/react/components/Loader';
 
 const SECTIONS = {
     payments: 'payments',
@@ -71,7 +71,6 @@ const BodyList = ({ section, state, url }) => {
     const { t } = useTranslation()
 
     const { fetchAPi, fetchLoading: loading } = useFetch(true)
-    const { parentElemt } = useFullLoading()
 
     const defaultData = useRef({})
 
@@ -88,14 +87,15 @@ const BodyList = ({ section, state, url }) => {
             .then(({ data }) => setListData(data))
     }, [listData, url, setListData])
 
-    return <div className="mt-5" ref={parentElemt}>
-        {loading && <FullLoader parent={parentElemt.current} />}
-        <LaravelPagination listData={listData} getDataPaginator={getDataPaginator} />
-        {section === SECTIONS.payments && <PaymentsView listData={listData} />}
-        {section === SECTIONS.consumptions && <ConsumptionsView listData={listData} />}
-        {listData.meta && !loading && listData.meta.total < 1 && (
-            <h4 className="text-center mt-5">{t('Historique vide')} !</h4>
-        )}
+    return <div className="mt-5">
+        <Loader loading={loading}>
+            <LaravelPagination listData={listData} getDataPaginator={getDataPaginator} />
+            {section === SECTIONS.payments && <PaymentsView listData={listData} />}
+            {section === SECTIONS.consumptions && <ConsumptionsView listData={listData} />}
+            {listData.meta && !loading && listData.meta.total < 1 && (
+                <h4 className="text-center mt-5">{t('Historique vide')} !</h4>
+            )}
+        </Loader>
     </div>
 }
 

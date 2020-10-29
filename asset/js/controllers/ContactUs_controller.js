@@ -3,7 +3,7 @@ import { Controller } from "stimulus"
 import { customerRequestByEmailJs, customerCountryApi } from "../api/services"
 import { Notifier } from "../functions/notifier"
 import { Localize } from "../functions/localize"
-import { FormBtn, resetFormFields } from "../functions/dom"
+import { Btn, FormBtn, resetFormFields } from "../functions/dom"
 import { ApiRequest } from "../api/api"
 
 
@@ -35,8 +35,8 @@ export default class extends Controller {
         // @ts-ignore
         const form = new FormData(e.target)
         if (!(await this.validateForm(form))) return
-        const btn = FormBtn(e.target)
-        btn.disabled = true
+        Btn.loading(FormBtn(e.target))
+
         customerRequestByEmailJs({
             app_name: form.get('app_name'),
             reply_to: form.get('email'),
@@ -62,7 +62,7 @@ export default class extends Controller {
             })
             .finally(() => {
                 this.storeRequest(form)
-                btn.disabled = false
+                Btn.hide()
             })
     }
 

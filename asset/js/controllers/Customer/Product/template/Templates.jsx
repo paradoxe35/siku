@@ -12,9 +12,9 @@ import { Empty } from '@/js/react/components/Empty';
 import RowDivider from '@/js/react/components/RowDivider';
 import ModalConfirm from '@/js/react/components/ModalConfirm';
 import { caseSection, KeysRequiredInText, List, ListDescriptionText, smsCount, TextAreatEdit, useItemDeletion, useSectionText, validateTemplate } from './Sections';
-import { SkeletonBox } from '@/js/react/components/SkeletonBox';
 import { useFetch } from '@/js/react/hooks';
 import store from '@js/store'
+import { Loader } from '@/js/react/components/Loader';
 
 const { event_date } = store.getState().workingEvent
 
@@ -187,29 +187,29 @@ const TemplatesList = () => {
     const datas = ids.map(k => entities[k])
 
     return <>
-        {loading == ASYNC.idle && ids.length ? (
-            <>
-                <List.Ul>
-                    <List.Li data={datas}>
-                        {v => <>
-                            <div className="d-flex w-100 justify-content-between" >
-                                <h4 className="mb-1">{v.name}</h4>
-                                <small>{t('SMS')} {v.sms}</small>
-                            </div>
-                            <ListDescriptionText item={v} onDelete={handleDelete} />
-                        </>}
-                    </List.Li>
-                </List.Ul>
-                <ModalConfirm loading={deletionLoading} onConfirm={deleteItem} ref={modalConfirm} />
-            </>
-        ) : ''}
-        {loading == ASYNC.pending ? <SkeletonBox height="50" lines="3" /> : ''}
-        {loading == ASYNC.idle && !ids.length ? (
-            <div className="mt-5">
-                <Empty message={t('Aucun modèle enregistré!')} />
-            </div>
-        ) : ''}
-
+        <Loader loading={loading == ASYNC.pending}>
+            {loading == ASYNC.idle && ids.length ? (
+                <>
+                    <List.Ul>
+                        <List.Li data={datas}>
+                            {v => <>
+                                <div className="d-flex w-100 justify-content-between" >
+                                    <h4 className="mb-1">{v.name}</h4>
+                                    <small>{t('SMS')} {v.sms}</small>
+                                </div>
+                                <ListDescriptionText item={v} onDelete={handleDelete} />
+                            </>}
+                        </List.Li>
+                    </List.Ul>
+                    <ModalConfirm loading={deletionLoading} onConfirm={deleteItem} ref={modalConfirm} />
+                </>
+            ) : ''}
+            {loading == ASYNC.idle && !ids.length ? (
+                <div className="mt-5">
+                    <Empty message={t('Aucun modèle enregistré!')} />
+                </div>
+            ) : ''}
+        </Loader>
     </>
 }
 

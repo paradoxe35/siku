@@ -12,7 +12,7 @@ import { URLS } from '@/js/react/vars';
 import { Empty } from '@/js/react/components/Empty';
 import { List, useItemDeletion } from '../Product/template/Sections';
 import ModalConfirm from '@/js/react/components/ModalConfirm';
-import { SkeletonBox } from '@/js/react/components/SkeletonBox';
+import { Loader } from '@/js/react/components/Loader';
 
 
 /**
@@ -138,7 +138,7 @@ const ShowList = ({ v, handleDelete }) => {
             <div className="col">
                 <h4 className="mb-1">{v.username}</h4>
                 <h4 className="mb-1">
-                    <small>{v.name}</small><br/>
+                    <small>{v.name}</small><br />
                     <small>{v.phone}</small>
                 </h4>
             </div>
@@ -210,15 +210,17 @@ const CustomerUtilization = () => {
             <SaveValidator updateValidatorsList={updateValidatorsList} />
         </div>
         <div className="col-lg-6">
-            <Validators datas={datas} onItemDeletion={onItemDeletion} />
-            {!loading && !datas.length && (
-                <div className="mt-5">
-                    <Empty message={t('Aucun utilisateur enregistré!')} />
-                </div>
-            )}
-            {loading && <SkeletonBox height="50" lines="3" />}
+            <Loader loading={loading}>
+                <Validators datas={datas} onItemDeletion={onItemDeletion} />
+                {!loading && !datas.length && (
+                    <div className="mt-5">
+                        <Empty message={t('Aucun utilisateur enregistré!')} />
+                    </div>
+                )}
+            </Loader>
         </div>
     </div>
+
 }
 
 /**

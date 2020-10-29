@@ -24,13 +24,12 @@ import CustomCheckbox from '@/js/react/components/CustomCheckbox';
 import { Empty } from '@/js/react/components/Empty';
 import { Notifier } from '@/js/functions/notifier';
 import { useFetch, useFullLoading, usePhoneInput, useServices, useTemplateSelect } from '@/js/react/hooks';
-import { FullLoader } from '@/js/react/components/FullLoader';
 import { putEventStatus } from '@/js/store/features/product/EventStatusSlice';
-import { SkeletonBox } from '@/js/react/components/SkeletonBox';
 import { GuestList } from './GuestList';
 import { SYMBOL } from '@/js/functions/functions';
 import { GuestField, ServicesField } from './GuestField';
 import { IncludeCommonGuests } from './IncludeCommonGuests';
+import { Loader } from '@/js/react/components/Loader';
 
 const SERVICES = {
     ...TEMPLATE_SECTION,
@@ -415,9 +414,7 @@ const GuestsListProvider = () => {
             })
     }, [t])
 
-    return <div ref={parentElemt}>
-        {fullLoading && <FullLoader parent={parentElemt.current} />}
-
+    return <Loader loading={loading || fullLoading}>
         <div className="row">
             <div className="col">
                 <div className="btn-group">
@@ -445,14 +442,14 @@ const GuestsListProvider = () => {
         </div>
         <div className="my-3" />
         <GuestList url={URLS.eventGuests} datas={datas} setFullLoading={setFullLoading} />
-        {loading ? <SkeletonBox height="50" lines="3" /> : ''}
         {/*  @ts-ignore */}
         {!loading && datas.meta && !datas.meta.total ? (
             <div className="mt-5">
                 <Empty message={t('Aucun Invité enregistré!')} />
             </div>
         ) : ''}
-    </div>
+    </Loader>
+
 }
 
 const Guests = () => {

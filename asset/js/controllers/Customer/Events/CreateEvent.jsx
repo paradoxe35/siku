@@ -79,7 +79,7 @@ const CreateEvent = ({ updateComponentIndex, addEvent }) => {
                     </div>
                 </div>
                 <div className="col-md-6">
-                    <div className="custom-control custom-checkbox">
+                    <div className="custom-control custom-checkbox mb-3">
                         <input type="checkbox" defaultChecked={false} name="is_public" className="custom-control-input" id="customCheck1" />
                         <label className="custom-control-label text-muted" htmlFor="customCheck1">
                             {t('Public')}
