@@ -1,5 +1,7 @@
 @extends('auth')
 
+@section('title', __("Vérifiez votre adresse e-mail").' | ')
+
 @section('first')
 <h1>{{ __('Vérifiez votre adresse e-mail') }}</h1>
 

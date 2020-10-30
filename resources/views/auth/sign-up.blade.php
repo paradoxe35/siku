@@ -1,5 +1,7 @@
 @extends('auth')
 
+@section('title', __("S'inscrire").' | ')
+
 @section('first')
 <div data-controller="Auth--Signup">
     <h1 class="display-4">{{ __("Nouveau Compte") }}</h1>

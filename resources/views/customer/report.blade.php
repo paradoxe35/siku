@@ -1,5 +1,6 @@
 @extends('customer')
 
+@section('title', __("Rapport").' | ')
 
 @section('customer-content')
 <div data-controller="Customer--Report"

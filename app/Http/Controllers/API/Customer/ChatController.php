@@ -59,8 +59,6 @@ class ChatController extends Controller
 
         $datas = $chat->getDatas($user->id);
 
-        // $chat->deletePaymentChat($user->id);
-
         return [
             'expire' => !$datas,
             'datas' => $datas ?: []
@@ -120,7 +118,7 @@ class ChatController extends Controller
 
             $directory = 'tmp/chat/' . $user->id;
 
-            $upload = $file->storePublicly($directory, $local ? 'local' : []);
+            $upload = $file->store($directory, $local ? 'local' : []);
 
             return [
                 'name' => $file->getClientOriginalName(),

@@ -1,5 +1,7 @@
 @extends('customer')
 
+@section('title', __("Product").' | ')
+
 @section('customer-content')
 <div data-controller="Customer--Product"
     data-Customer--Product-event-templates="{{ route('api.customer.events.templates.index') }}"

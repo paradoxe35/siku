@@ -1,5 +1,7 @@
 @extends('customer')
 
+@section('title', __("Mon Compte").' | ')
+
 @section('customer-content')
 <div data-controller="Customer--Account"
     data-Customer--Account-event-account-route="{{ route('customer.event.account') }}"

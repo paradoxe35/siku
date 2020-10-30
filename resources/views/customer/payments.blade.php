@@ -1,5 +1,6 @@
 @extends('customer')
 
+@section('title', __("Facturation et paiements").' | ')
 
 @section('customer-content')
 <div data-controller="Customer--Payments"

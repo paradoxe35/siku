@@ -16,7 +16,7 @@ class Agent extends JsonResource
     {
         return  [
             'name' => $this->name,
-            'imageUrl' => $this->image,
+            'imageUrl' => $this->image ?: "/img/default-agent-img.jpg",
             'role' => $this->role,
             'status' => $this->status,
             'id' => $this->id

@@ -1,5 +1,7 @@
 @extends('customer')
 
+@section('title', __("Paramètres").' | ')
+
 @section('customer-content')
 <div data-controller="Customer--Settings"
     data-Customer--Settings-event-update="{{ route('api.customer.events.update') }}"

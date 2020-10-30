@@ -1,5 +1,6 @@
 @extends('customer')
 
+@section('title', __("Utilisation").' | ')
 
 @section('customer-content')
 

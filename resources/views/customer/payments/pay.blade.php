@@ -1,6 +1,8 @@
 @extends('customer')
 @inject('basePice', 'App\Infrastructure\BasePrice')
 
+@section('title', __("Méthode de paiement").' | ')
+
 @section('head-secondary')
 <meta name="turbolinks-visit-control" content="reload">
 <script defer id="paypay-script"

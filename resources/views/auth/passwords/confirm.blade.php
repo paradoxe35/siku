@@ -1,5 +1,7 @@
 @extends('auth')
 
+@section('title', __("Confirmez le mot de passe").' | ')
+
 @section('first')
 <h1 class="display-4">{{ __('Confirmez le mot de passe') }}</h1>
 

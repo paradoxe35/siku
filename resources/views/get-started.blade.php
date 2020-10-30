@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', __("Bienvenu").' | ')
+
 @section('content')
 @include('layouts.nav-logo')
 <div class="container my-9">

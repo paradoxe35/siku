@@ -1,5 +1,7 @@
 @extends('customer')
 
+@section('title', __("Changer le mot de passe").' | ')
+
 @section('customer-content')
 <div data-controller="Customer--Account--Password"
     data-Customer--Account--Password-account-route="{{ route('customer.event.account') }}">

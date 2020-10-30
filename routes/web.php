@@ -72,17 +72,17 @@ Route::middleware(['auth'])
             });
     });
 
+Route::namespace('Webhooks')
+    ->prefix('hooks')
+    ->group(function () {
+        Route::post('{token}/webhook', 'TelegramController');
+    });
+
 Route::middleware(['auth', 'admin'])
     ->prefix('dash')
     ->name('admin.')
     ->namespace('Admin')
     ->group(function () {
         Route::redirect('', '/dash/home');
-        Route::get('home', 'HomeDashController@index')->name('home');
-    });
-
-Route::namespace('Webhooks')
-    ->prefix('hooks')
-    ->group(function () {
-        Route::post('{token}/webhook', 'TelegramController');
+        Route::get('home', 'HomeController@index')->name('home');
     });

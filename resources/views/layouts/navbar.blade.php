@@ -43,7 +43,7 @@
                     </li>
                     <li class="nav-item">
                         <a href="{{ route('posts') }}" class="nav-link">
-                            <span class="nav-link-inner--text">{{ __('Événements') }}</span>
+                            <span class="nav-link-inner--text">{{ __('Blog') }}</span>
                         </a>
                     </li>
                     <li class="nav-item d-xl-none d-lg-none d-md-none">

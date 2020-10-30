@@ -1,5 +1,8 @@
 @extends('customer')
 
+@section('title', __("Paiement").' | ')
+
+
 @section('customer-content')
 <div  data-controller="Customer--Payments--New"
     data-Customer--Payments--New-country-pricing="{{ route('api.country-pricing') }}"

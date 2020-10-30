@@ -2,6 +2,8 @@
 
 @section('body-class', 'no-footer')
 
+@section('title', __("Mes événements").' | ')
+
 @section('content')
 @include('layouts.auth-navbar', ['top' => true])
 <div class="main-content customer-settings" data-controller="Admin-Customer">

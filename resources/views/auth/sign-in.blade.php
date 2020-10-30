@@ -1,5 +1,7 @@
 @extends('auth')
 
+@section('title', __("Se connecter").' | ')
+
 @section('first')
 <div class="signin-container" data-controller="Auth--SigninOrAuth">
     <h1 class="display-4">{{ __('Bienvenue encore') }}!</h1>

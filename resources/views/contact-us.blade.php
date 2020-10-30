@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', __("Nous contacter").' | ')
+
 @section('content')
 @include('layouts.navbar')
 <div class="main-content" data-controller="ContactUs">
@@ -40,10 +42,14 @@
                                             </span>
                                             <a href="#">+250 786 284 513</a>
                                         </p>
-                                        <p class=" text-muted">
-                                            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Autem libero nulla
-                                            similique saepe, in voluptas incidunt delectus pariatur fugiat! Sed ipsa
-                                            possimus quos! Iusto perspiciatis suscipit repudiandae accusamus officia ab!
+                                        <p class="text-muted">
+                                            {{ __('Nous pouvons vous aider à trouver la bonne solution à vos préoccupations. Veuillez remplir le formulaire.') }}
+                                        </p>
+
+                                        <h4 class="font-weight-bold">{{ __('Signaler un abus ou tout problème') }}</h4>
+
+                                        <p class="text-muted">
+                                            {{ __('Si vous constatez un inconvénient dans nos services, nous vous serions reconnaissants de bien vouloir le signaler.') }}
                                         </p>
                                     </div>
                                 </div>
@@ -55,24 +61,27 @@
                                             <div class="col-lg-6">
                                                 <div class="md-form md-outline mt-3">
                                                     <label for="form-email">{{ __('E-mail') }}</label>
-                                                    <input type="email" name="email" required id="form-email" class="form-control">
+                                                    <input type="email" name="email" required id="form-email"
+                                                        class="form-control">
                                                 </div>
                                             </div>
                                             <div class="col-lg-6">
                                                 <div class="md-form md-outline mt-3">
                                                     <label for="form-tel">{{ __('Téléphone') }}</label>
-                                                    <input type="tel" name="phone" required id="form-tel" class="form-control">
+                                                    <input type="tel" name="phone" required id="form-tel"
+                                                        class="form-control">
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="md-form md-outline mt-3">
                                             <label for="form-subject">{{ __('Sujet') }}</label>
-                                            <input type="text" required id="form-subject" name="subject" class="form-control">
+                                            <input type="text" required id="form-subject" name="subject"
+                                                class="form-control">
                                         </div>
                                         <div class="md-form md-outline mb-3 mt-3">
                                             <label for="form-message">{{ __('Comment pouvons-nous aider') }}?</label>
-                                            <textarea id="form-message" required name="message" class="md-textarea form-control"
-                                                rows="3"></textarea>
+                                            <textarea id="form-message" required name="message"
+                                                class="md-textarea form-control" rows="3"></textarea>
                                         </div>
                                         <button type="submit" class="btn btn-default ml-0">
                                             {{ __('Envoyer') }}

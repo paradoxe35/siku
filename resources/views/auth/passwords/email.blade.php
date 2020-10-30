@@ -1,5 +1,7 @@
 @extends('auth')
 
+@section('title', __("Réinitialiser le mot de passe").' | ')
+
 @section('first')
 <h1 class="display-4">{{ __('Réinitialiser le mot de passe') }}</h1>
 <p class="text-lead">

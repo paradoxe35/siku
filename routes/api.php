@@ -149,6 +149,13 @@ Route::namespace('API')
             'index', 'store', 'destroy'
         ]);
         Route::apiResource('cmp-details', "CompanyDetailsController")->except(['show']);
+
+        Route::middleware(['auth:api', 'admin'])
+            ->prefix('dash')
+            ->name('admin.')
+            ->namespace('Admin')
+            ->group(function () {
+            });
     });
 
 Route::namespace('Mobile')

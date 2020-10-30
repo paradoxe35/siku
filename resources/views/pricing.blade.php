@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', __("Tarification").' | ')
+
 @section('content')
 @include('layouts.navbar')
 <div class="main-content" data-controller="Pricing" data-Pricing-country-pricing="{{ route('api.country-pricing') }}">
@@ -79,12 +81,12 @@
             <div class="d-flex justify-content-lg-center px-3 mt-5">
                 <div>
                     <div class="icon icon-shape bg-gradient-primary shadow rounded-circle text-primary">
-                        <i class="ni ni-building text-primary"></i>
                     </div>
                 </div>
                 <div class="col-lg-6">
-                    <p><strong>The Arctic Ocean</strong> freezes every winter and much of the sea-ice
-                        then thaws every summer, and that process will continue whatever.</p>
+                    <p>
+                        {{ __("Si nos tarifs ne vous conviennent pas, veuillez nous contacter pour plus d'informations") }}.
+                    </p>
                 </div>
             </div>
         </div>
