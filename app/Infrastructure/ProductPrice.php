@@ -10,11 +10,23 @@ use Illuminate\Support\Facades\Http;
 
 class PriceUSD
 {
+    /**
+     * @var null
+     */
     private static $price = null;
+
+    /**
+     * @return mixed
+     */
     public static function get()
     {
         return self::$price;
     }
+    /**
+     * @param mixed $v
+     * 
+     * @return void
+     */
     public static function set($v)
     {
         self::$price = $v;
@@ -34,17 +46,11 @@ class ProductPrice
     public static string $exchangeApi = 'https://api.exchangeratesapi.io/latest?base=EUR&symbols=USD';
 
     /**
-     * @var BasePriceRepository
-     */
-    private BasePriceRepository $baseRp;
-
-    /**
      * @param NexmoPricing $nexmo
      */
-    public function __construct(NexmoPricing $nexmo, BasePriceRepository $baseRp)
+    public function __construct(NexmoPricing $nexmo)
     {
         $this->nexmo = $nexmo;
-        $this->baseRp = $baseRp;
     }
 
     /**
@@ -54,6 +60,7 @@ class ProductPrice
     private function smsPrice($sms)
     {
         $eurToUsd = $this->USDbase();
+
         return null === $sms || null === $eurToUsd ? null : ($eurToUsd * $sms);
     }
 
@@ -63,10 +70,14 @@ class ProductPrice
      */
     public function getPrice($country_code)
     {
-        $basePrice = BasePrice::getAmount($this->baseRp);
+        $basePrice = BasePrice::getAmount();
+
         $sms = $this->nexmo->parseSmsPrice($country_code);
+
         $smsUSD = $this->smsPrice(!is_null($sms) ? $sms[$this->nexmo->priceKey] : null);
+
         $smsUnitPrice = null == $smsUSD || null == $basePrice ? null  : ($smsUSD + $basePrice);
+
         return [
             'sms' => !$smsUnitPrice ? null : BasePrice::roundPrice($smsUnitPrice),
             'whatsapp' => null
@@ -100,14 +111,15 @@ class ProductPrice
         }
 
         try {
-            $response = Http::timeout(5)->get(self::$exchangeApi);
+            $response = Http::timeout(15)->get(self::$exchangeApi);
 
             if (!$response->ok()) return null;
 
             $rates = (object) $response->json()['rates'];
+
             PriceUSD::set($rates->USD);
             // cache result
-            $this->cache()->put('PriceUSD', $rates->USD, (600 * 3));
+            $this->cache()->put('PriceUSD', $rates->USD, now()->addMinutes(30));
 
             return $rates->USD;
         } catch (\Throwable $th) {

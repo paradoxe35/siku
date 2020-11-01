@@ -7,6 +7,7 @@ use App\Models\Payments\CustomPayment;
 use App\Models\Event\Event;
 use App\Models\Payments\PaymentMeta;
 use Illuminate\Database\Eloquent\Model;
+use Vinkla\Hashids\Facades\Hashids;
 
 class Balance extends Model
 {
@@ -23,6 +24,16 @@ class Balance extends Model
     protected $fillable = [
         'token', 'confirmed', 'amount', 'custom_payment_id', 'event_id'
     ];
+
+    /**
+     * @return string
+     */
+    public function hashId()
+    {
+        /** @var  mixed */
+        $h = new Hashids;
+        return $h::encode($this->id);
+    }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

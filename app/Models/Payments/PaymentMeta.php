@@ -2,6 +2,7 @@
 
 namespace App\Models\Payments;
 
+use App\Models\Balance\Balance;
 use Illuminate\Database\Eloquent\Model;
 
 class PaymentMeta extends Model
@@ -23,4 +24,12 @@ class PaymentMeta extends Model
         'service',
         'datas'
     ];
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function balance()
+    {
+        return $this->belongsTo(Balance::class);
+    }
 }

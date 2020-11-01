@@ -18,7 +18,7 @@ import { Chat } from '../../App/chat/Chat';
 
 const isValidPayData = (amount, guests) => amount > 0 && !isInvalideGuestFieldValue(guests)
 
-const success = `Votre Paiement a bien été validé avec succès`
+const success = `Votre Paiement a bien été approuvé avec succès`
 
 const ValidateCustomPayment = ({ amount, guests }) => {
     const { t } = useTranslation();

@@ -149,7 +149,8 @@ return [
     'attributes' => [
         'price' => 'price',
         'authorized' => 'authorized',
-        'phone' => 'phone number'
+        'phone' => 'phone number',
+        'guest' => 'guest'
     ],
 
 ];

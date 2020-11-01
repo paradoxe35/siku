@@ -72,11 +72,13 @@ Route::middleware(['auth'])
             });
     });
 
+
 Route::namespace('Webhooks')
     ->prefix('hooks')
     ->group(function () {
         Route::post('{token}/webhook', 'TelegramController');
     });
+
 
 Route::middleware(['auth', 'admin'])
     ->prefix('dash')

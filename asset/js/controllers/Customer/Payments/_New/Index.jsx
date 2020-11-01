@@ -2,7 +2,7 @@
 import React, { Fragment, useCallback, useEffect, useRef, useState } from 'react'
 import { useTranslation } from "react-i18next";
 import { InitReact } from '@/js/react/init';
-import { isInvalideGuestFieldValue, URLS } from '@/js/react/vars';
+import { DEFAULT_GUESTS_VALUE, isInvalideGuestFieldValue, URLS } from '@/js/react/vars';
 import { useFetch } from '@/js/react/hooks';
 import { DefaultButton } from '@/js/react/components/Buttons';
 import { useSelector } from 'react-redux';
@@ -10,6 +10,7 @@ import { ServiceUse } from '../../Product/guests/ServiceUse';
 import Label from '@/js/react/components/Label';
 import { TurbolinksApp } from '@/js/modules/turbolinks';
 import { SYMBOL } from '@/js/functions/functions';
+
 
 const GuestsField = ({ guests, onGuestFieldChange, onGuestFieldBlur, selectedServices, country_name }) => {
     const { t } = useTranslation()
@@ -32,7 +33,7 @@ const GuestsField = ({ guests, onGuestFieldChange, onGuestFieldBlur, selectedSer
 }
 
 const CustomerPaymentsNew = () => {
-    const DEFAULT_VALUE = '10'
+
     const { t } = useTranslation()
 
     const [services, setServices] = useState([])
@@ -40,7 +41,7 @@ const CustomerPaymentsNew = () => {
     const { current } = useRef(window.payData)
     const { guests: guestsSaved } = current || {}
 
-    const [guests, setGuests] = useState(guestsSaved || DEFAULT_VALUE)
+    const [guests, setGuests] = useState(guestsSaved || DEFAULT_GUESTS_VALUE)
     const [prices, setPrices] = useState({
         sms: 0,
         whatsapp: 0
@@ -81,7 +82,7 @@ const CustomerPaymentsNew = () => {
     }
     const onGuestFieldBlur = ({ target: { value } }) => {
         const g = +value
-        setGuests(r => isInvalideGuestFieldValue(g) ? DEFAULT_VALUE : r)
+        setGuests(r => isInvalideGuestFieldValue(g) ? DEFAULT_GUESTS_VALUE : r)
     }
 
     const payDataHandle = useCallback(() => {

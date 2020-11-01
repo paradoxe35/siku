@@ -160,5 +160,6 @@ export default {
     "Comment puis-je vous aider ?": "How can I help you ?",
     "Revenez à votre dernière discussion": "Go back to your last discussion",
     "Votre fichier ne doit pas dépasser plus de 5MG": "Votre fichier ne doit pas dépasser plus de 5MG",
-    "Votre discussion de chat est vide, veuillez commencer par un texte": "Your chat discussion is empty, please start with a text"
+    "Votre discussion de chat est vide, veuillez commencer par un texte": "Your chat discussion is empty, please start with a text",
+    "Votre Paiement a bien été approuvé avec succès": "Your Payment has been successfully approved"
 }

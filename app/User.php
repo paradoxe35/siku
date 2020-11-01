@@ -18,6 +18,7 @@ use Illuminate\Support\Str;
 use App\Notifications\VerifyEmail;
 use Illuminate\Contracts\Auth\CanResetPassword;
 use Illuminate\Auth\Passwords\CanResetPassword as PasswordTrait;
+use Illuminate\Support\Facades\App;
 use Vinkla\Hashids\Facades\Hashids;
 
 
@@ -78,6 +79,17 @@ class User extends Authenticatable implements MustVerifyEmail, CanResetPassword
     public function sendPasswordResetNotification($token)
     {
         $this->notify(new ResetPassword($token));
+    }
+
+
+    /**
+     * Get the user's preferred locale.
+     *
+     * @return string
+     */
+    public function preferredLocale()
+    {
+        return $this->locale ?: App::getLocale();
     }
 
     /**

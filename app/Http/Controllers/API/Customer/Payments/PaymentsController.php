@@ -8,12 +8,28 @@ use App\Infrastructure\Cache\CacheUserDataPay;
 use App\Infrastructure\Payments\PayPal\CaptureIntent\CreateOrder;
 use App\Infrastructure\Payments\PayPal\GetOrder;
 use App\Infrastructure\Payments\Services;
+use App\Infrastructure\Vars\EmailApp;
+use App\Infrastructure\Vars\TelegramApp;
 use App\Models\Event\Event;
+use App\Notifications\Payment\InvoicePaid;
+use App\Notifications\Payment\UserPay;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Notification;
 
 class PaymentsController extends Controller
 {
     use CacheUserDataPay;
+
+    /**
+     * @var array
+     */
+    private $guestRule = ['required', 'numeric',  'min:60', 'max:100000'];
+
+
+    /**
+     * @var array
+     */
+    private $amountRule = ['required', 'numeric',  'min:0.001'];
 
     /**
      * @return \Illuminate\Http\Response
@@ -35,8 +51,8 @@ class PaymentsController extends Controller
     {
         $request->validate([
             'payment_code' => ['required', 'string'],
-            'guests' => ['required', 'numeric',  'min:10', 'max:100000'],
-            'amount' => ['required', 'numeric',  'min:0.001']
+            'guests' => $this->guestRule,
+            'amount' => $this->amountRule
         ]);
 
         $code = $request->payment_code;
@@ -94,21 +110,49 @@ class PaymentsController extends Controller
     }
 
     /**
-     * @param \App\Models\Balance\Balance $balance
-     * @param Request $request
+     * @param \App\Models\Payments\PaymentMeta $payMeta
      * 
-     * @return mixed
+     * @return static
+     */
+    private function notify($payMeta)
+    {
+        /** @var \App\User */
+        $user = request()->user();
+
+        Notification::route('telegram', TelegramApp::getAppGroupChatId())
+            ->route('mail', EmailApp::getAppEmailAddress())
+            ->notify(new UserPay($user, $payMeta));
+
+
+        if ($user->email_verified_at) {
+            $user->notify(new InvoicePaid($payMeta));
+        }
+    }
+
+    /**
+     * @param \App\Models\Balance $balance
+     * @param int $guests
+     * @param double $amount
+     * @param string $currency_code
+     * @param string $service
+     * @param json $datas
+     * @return static
      */
     private function storePaymentMeta($balance, $guests, $amount, $currency_code, $service, $datas = null)
     {
+
         //store payment meta as reference
-        return $balance->paymentMeta()->create([
+        $payMeta = $balance->paymentMeta()->create([
             'guests' => $guests,
             'amount' => $amount,
             'currency_code' => $currency_code,
             'service' => $service,
             'datas' => $datas
         ]);
+
+        $this->notify($payMeta);
+
+        return $payMeta;
     }
 
 
@@ -120,8 +164,8 @@ class PaymentsController extends Controller
     public function payData(Request $request, $event)
     {
         $data = $request->validate([
-            'guests' => ['required', 'numeric',  'min:10', 'max:100000'],
-            'price' => ['required', 'numeric',  'min:0.001']
+            'guests' => $this->guestRule,
+            'price' => $this->amountRule
         ]);
         $data['price'] = round($data['price'], 2);
 

@@ -32,7 +32,7 @@ class BasePrice
      * 
      * @return float
      */
-    public static function getAmount(BasePriceRepository $rs)
+    public static function getAmount()
     {
         return /* $rs->getAmount() ?: */ self::$amount;
     }
@@ -41,7 +41,8 @@ class BasePrice
      * @param float $amount
      * @return float
      */
-    public static function roundPrice($amount) {
+    public static function roundPrice($amount)
+    {
         return round($amount, 2);
     }
 }

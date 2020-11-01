@@ -15,14 +15,6 @@ class VerifyEmail extends Notification implements ShouldQueue
 {
     use Queueable;
 
-
-    /**
-     * The name of the queue the job should be sent to.
-     *
-     * @var string|null
-     */
-    public $queue = 'notifications';
-
     /**
      * The callback that should be used to build the mail message.
      *

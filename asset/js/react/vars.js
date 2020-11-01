@@ -5,11 +5,12 @@ export let LANG = null
 export const setURLS = (urls) => URLS = urls
 export const setLang = (lang) => LANG = lang
 
-// event controller
+// event page components indexs controller
 export const I_EVENTS = 0
 export const I_NEW_EVENT = 1;
 export const I_PROFILE_STATUS = 2;
 
+// redux state async
 export const ASYNC = {
     idle: 'idle',
     pending: 'pending'
@@ -38,8 +39,14 @@ export const TEMPLATE_SECTION = {
 /** @type { any } */
 export const OverFlowStyle = { maxHeight: "800px", overflowY: "auto" };
 
-export const isInvalideGuestFieldValue = g => (isNaN(g) || g < 10 || g > (10 ** 5))
+// pay data rules
+export const DEFAULT_GUESTS_VALUE = '60'
 
+const intVGuest = parseInt(DEFAULT_GUESTS_VALUE, 10)
+
+export const isInvalideGuestFieldValue = g => (isNaN(g) || g < intVGuest || g > (10 ** 5))
+
+// event despachers and listeners
 export const Event_Guests_Name = 'event_guests_list'
 export const Event_Guest = 'Event_Guest'
 export const Event_Process_Queue = 'Event_Process_Queue'

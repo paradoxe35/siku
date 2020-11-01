@@ -19,7 +19,7 @@
         <tr>
             <th rowspan="2">{{ __('Id Paiement') }} </th>
             <th rowspan="2">{{ __('Date') }} </th>
-            <th rowspan="2">{{ __('Moyen de paiement') }} </th>
+            <th rowspan="2">{{ __('Méthode de paiement') }} </th>
             <th rowspan="2">{{ __('Montant') }}</th>
             <th rowspan="2">{{ __('Code de devise') }}</th>
         </tr>

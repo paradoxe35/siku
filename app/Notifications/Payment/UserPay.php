@@ -1,7 +1,9 @@
 <?php
 
-namespace App\Notifications\Telegram;
+namespace App\Notifications\Payment;
 
+use App\Infrastructure\BasePrice;
+use App\Models\Payments\PaymentMeta;
 use App\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -12,7 +14,7 @@ use NotificationChannels\Telegram\TelegramMessage;
 use NotificationChannels\Telegram\TelegramChannel;
 use Spatie\Emoji\Emoji;
 
-class UserChatPriority extends Notification implements ShouldQueue
+class UserPay extends Notification implements ShouldQueue
 {
     use Queueable;
 
@@ -21,28 +23,26 @@ class UserChatPriority extends Notification implements ShouldQueue
      */
     private User $user;
 
+    /**
+     * @var PaymentMeta
+     */
+    private PaymentMeta $payMeta;
 
     /**
      * @var string
      */
-    private string $message;
-
-
-    /**
-     * @var string
-     */
-    private string $chat_option;
+    private $message;
 
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct(User $user, string $message, string $chat_option)
+    public function __construct(User $user, PaymentMeta $payMeta)
     {
         $this->user = $user;
-        $this->message = $message;
-        $this->chat_option = $chat_option;
+        $this->payMeta = $payMeta;
+        $this->message = null;
     }
 
     /**
@@ -70,24 +70,6 @@ class UserChatPriority extends Notification implements ShouldQueue
     }
 
 
-    /**
-     * @return string
-     */
-    private function contentMessage()
-    {
-        $user = $this->user;
-
-        $content = "Hello there! " . Emoji::CHARACTER_SPEECH_BALLOON . " \n";
-        $content .= "Customer with name: {$user->name} \n";
-        $content .= "Email: {$user->email} \n";
-        $content .= "ID: {$user->hashId()} \n";
-        $content .= ($user->locale ? "Locale: {$user->locale} \n" : '');
-        $content .= "He Would like to get contact with one of agents \n";
-        $content .= "Content Of his Message:  {$this->message} \n";
-        $content .= "Chat Option:  {$this->chat_option} \n";
-
-        return $content;
-    }
 
     /**
      * @param mixed $notifiable
@@ -98,5 +80,50 @@ class UserChatPriority extends Notification implements ShouldQueue
     {
         return TelegramMessage::create()
             ->content($this->contentMessage());
+    }
+
+    /**
+     * @return string
+     */
+    private function contentMessage()
+    {
+        if ($this->message) {
+            return $this->message;
+        }
+
+        $user = $this->user;
+        $symbol = BasePrice::$symbol;
+
+        $pay = $this->payMeta;
+
+        $revenue = doubleval($pay->amount) - (BasePrice::getAmount() * round($pay->guests));
+
+        $content = "Completed Order " . Emoji::CHARACTER_MONEY_BAG . Emoji::CHARACTER_CHECK_MARK_BUTTON . "\n";
+        $content .= "Customer name: {$user->name} \n";
+        $content .= "Email: {$user->email} \n";
+        $content .= "ID: {$user->hashId()} \n";
+        $content .= ($user->locale ? "Locale: {$user->locale} \n" : '');
+        $content .= "Amount: {$symbol}{$pay->amount}\n";
+        $content .= "Invités: {$pay->guests} \n";
+        $content .= "Method: {$pay->service} \n";
+        $content .= "Revenue: {$symbol}" . round($revenue, 2) . PHP_EOL;
+
+        $this->message = $content;
+
+        return $content;
+    }
+
+
+    /**
+     * Get the array representation of the notification.
+     *
+     * @param  mixed  $notifiable
+     * @return array
+     */
+    public function toArray($notifiable)
+    {
+        return [
+            //
+        ];
     }
 }
