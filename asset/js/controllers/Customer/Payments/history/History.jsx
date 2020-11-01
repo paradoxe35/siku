@@ -93,7 +93,7 @@ const BodyList = ({ section, state, url }) => {
             {section === SECTIONS.payments && <PaymentsView listData={listData} />}
             {section === SECTIONS.consumptions && <ConsumptionsView listData={listData} />}
             {listData.meta && !loading && listData.meta.total < 1 && (
-                <h4 className="text-center mt-5">{t('Historique vide')} !</h4>
+                <h4 className="text-center mt-5"></h4>
             )}
         </Loader>
     </div>
