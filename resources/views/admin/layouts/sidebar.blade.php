@@ -17,8 +17,8 @@
                     'route' => ''
                     ],
                     [
-                    'name' => 'Prix et balance',
-                    'icon' => 'spaceship',
+                    'name' => 'Sales',
+                    'icon' => 'credit-card',
                     'route' => ''
                     ],
                     [
@@ -27,8 +27,13 @@
                     'route' => ''
                     ],
                     [
-                    'name' => 'Achat',
+                    'name' => 'Événements',
                     'icon' => 'air-baloon',
+                    'route' => ''
+                    ],
+                    [
+                    'name' => 'Prix et balance',
+                    'icon' => 'spaceship',
                     'route' => ''
                     ],
                     [
@@ -37,7 +42,7 @@
                     'route' => ''
                     ],
                     [
-                    'name' => 'Articles',
+                    'name' => 'Blog',
                     'icon' => 'ruler-pencil',
                     'route' => ''
                     ],
@@ -48,7 +53,8 @@
                     ],
                     ] as $item)
                     <li class="nav-item">
-                        <a class="nav-link {{ Str::contains(request()->url(), $item['route']) ? 'active' : '' }}" href="{{ $item['route'] }}">
+                        <a class="nav-link {{ Str::contains(request()->url(), $item['route']) ? 'active' : '' }}"
+                            href="{{ $item['route'] }}">
                             <i class="ni ni-{{ $item['icon'] }} text-default"></i>
                             <span class="nav-link-text">{{ __($item['name']) }}</span>
                         </a>

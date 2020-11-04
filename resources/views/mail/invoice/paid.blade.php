@@ -4,7 +4,7 @@
 Votre paiement a été approuvé avec succès.
 
 @component('mail::table')
-| PAYMENT ID | DATE | METHOD OF PAYMENT | AMOUNT | CURRENCY CODE |
+| {{ __('ID DE PAIEMENT') }} | DATE | {{ __('METHODE DE PAIEMENT') }} | {{ __('MONTANT') }} | {{ __('CODE DE DEVISE') }} |
 | ------------- |:-------------:|:------------------:|:-------:| --------------:|
 |{{$payMeta->balance->hashId()}}| {{ $payMeta->created_at->format('Y-m-d H:i') }} |{{ $payMeta->service }} |{{ $symbol.$payMeta->amount }} |{{ $payMeta->currency_code }} |
 

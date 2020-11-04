@@ -9,6 +9,7 @@ use Illuminate\Notifications\Notification;
 use Illuminate\Support\Facades\Storage;
 use NotificationChannels\Telegram\TelegramChannel;
 use NotificationChannels\Telegram\TelegramFile;
+use NotificationChannels\Telegram\TelegramMessage;
 
 class NotifyAdmin extends Notification implements ShouldQueue
 {
@@ -53,10 +54,12 @@ class NotifyAdmin extends Notification implements ShouldQueue
      */
     public function toTelegram($notifiable)
     {
-        $send = TelegramFile::create()
+        $hasNotFile = is_null($this->message['file']);
+
+        $send = (!$hasNotFile ? TelegramFile::create() : TelegramMessage::create())
             ->content("{$this->user->email}\n{$this->message['message']}");
 
-        if (!is_null($this->message['file'])) {
+        if (!$hasNotFile) {
             $send = $this->appendDocument($send);
         }
 

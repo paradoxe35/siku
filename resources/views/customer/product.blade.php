@@ -1,6 +1,6 @@
 @extends('customer')
 
-@section('title', __("Product").' | ')
+@section('title', __("Produit").' | ')
 
 @section('customer-content')
 <div data-controller="Customer--Product"
