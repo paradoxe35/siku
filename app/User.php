@@ -9,6 +9,7 @@ use App\Models\Balance\LowBalance;
 use App\Models\CommonGuest;
 use App\Models\Payments\CustomPayment;
 use App\Models\Event\Event;
+use App\Models\Template\Template;
 use App\Notifications\ResetPassword;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -106,6 +107,14 @@ class User extends Authenticatable implements MustVerifyEmail, CanResetPassword
     public function events()
     {
         return $this->hasMany(Event::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function templates()
+    {
+        return $this->hasMany(Template::class);
     }
 
     /**

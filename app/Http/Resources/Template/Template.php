@@ -17,6 +17,7 @@ class Template extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
+            'global' => $this->global,
             'sms' => $this->sms_total,
             'text' => [
                 'sms' =>  $this->text_sms,

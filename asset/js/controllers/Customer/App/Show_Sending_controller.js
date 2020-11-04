@@ -12,6 +12,9 @@ export default class extends Controller {
 
     initialize() {
         EchoSocket = null
+        this.event = {
+            e: null
+        }
         ApiRequest('get', this.data.get('statusFetch'))
             .then(({ data: { status } }) => {
                 status && this.queueProcess(status)
@@ -19,19 +22,19 @@ export default class extends Controller {
     }
 
     connect() {
-        window.addEventListener(Event_Process_Queue, this.fromProcessQueueEvent)
+        window.addEventListener(Event_Process_Queue, this.showActualStatus)
         window.addEventListener(Event_Open_Guest_Socket, this.initSocket)
     }
 
     disconnect() {
-        window.removeEventListener(Event_Process_Queue, this.fromProcessQueueEvent)
+        window.removeEventListener(Event_Process_Queue, this.showActualStatus)
         window.removeEventListener(Event_Open_Guest_Socket, this.initSocket)
     }
 
-    fromProcessQueueEvent = (e) => {
-        const { detail: { status } } = e
-        this.queueProcess(status)
-    }
+    /**
+     * @param {*} param0 
+     */
+    showActualStatus = ({ detail: { status } }) => this.showStatus(status)
 
     async queueProcess(status) {
         await this.initSocket()
@@ -51,17 +54,18 @@ export default class extends Controller {
             this.successProgress()
             window.setTimeout(() => {
                 this.hide()
-            }, 7000)
+            }, 3000)
         }
     }
 
     loadedSocketLib() {
         window.setTimeout(() => {
             DispachLoadedSocketLibDetail()
-        }, 500)
+        }, 10)
     }
 
     initSocket = async (e) => {
+        this.event.e = e
         if (EchoSocket) {
             this.loadedSocketLib()
             return
@@ -69,7 +73,7 @@ export default class extends Controller {
         const { UserChannel } = await import('@js/modules/socket')
         EchoSocket = UserChannel()
         this.loadedSocketLib()
-        EchoSocket.listen('.processed.guest', this.onSocketData.bind(this, e))
+        EchoSocket.listen('.processed.guest', this.onSocketData.bind(this, this.event))
     }
 
     dispatchToAppState({ processed, consumed }) {
@@ -79,8 +83,8 @@ export default class extends Controller {
         }))
     }
 
-    onSocketData = (e, { status, data, new_balance }) => {
-        !e && this.showStatus(status)
+    onSocketData = ({ e }, { status, data, new_balance }) => {
+        (!e || e.detail !== true) && this.showStatus(status)
         status && this.dispatchToAppState(status)
         data && DispachEventGuestDetail(data)
         data && ReduxDispatch(setBalanceAmount(new_balance))

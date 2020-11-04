@@ -7,7 +7,7 @@ import { DefaultButton } from '@/js/react/components/Buttons';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import { setTemplateTextAreaValue, setTemplateNameValue, fetchEventTemplates, eventTemplateAdded, eventTemplateRemoved } from '@/js/store/features/product/TemplatesSlice';
-import { URLS, ASYNC } from '@/js/react/vars';
+import { URLS, ASYNC, OverFlowStyle } from '@/js/react/vars';
 import { Empty } from '@/js/react/components/Empty';
 import RowDivider from '@/js/react/components/RowDivider';
 import ModalConfirm from '@/js/react/components/ModalConfirm';
@@ -15,6 +15,7 @@ import { caseSection, KeysRequiredInText, List, ListDescriptionText, smsCount, T
 import { useFetch } from '@/js/react/hooks';
 import store from '@js/store'
 import { Loader } from '@/js/react/components/Loader';
+import CustomCheckbox from '@/js/react/components/CustomCheckbox';
 
 const { event_date } = store.getState().workingEvent
 
@@ -30,7 +31,8 @@ const NEW_TEMPLATE_FORM = {
     sms_total: 'sms_total',
     per_sms: 'per_sms',
     text_sms: 'text_sms',
-    text_whatsapp: 'text_whatsapp'
+    text_whatsapp: 'text_whatsapp',
+    global: 'global'
 }
 
 
@@ -146,6 +148,12 @@ const NewTemplate = () => {
     return <form ref={formElement} method="post" onSubmit={handleSubmittion} autoComplete="off">
         <TemplateNameField />
         <TextareaFieldAndDetail />
+        <div className="is-global mb-2">
+            <div className="text-xs text-muted mt-3 mb-2">
+                {t("Cochez cette case si vous souhaitez l'enregistrer en tant que modèle global pour vos événements")}.
+            </div>
+            <CustomCheckbox name={NEW_TEMPLATE_FORM.global} label={t('Global')} />
+        </div>
         <DefaultButton loading={loading} type="submit" label={t('Enregistrer')} />
     </form>
 }
@@ -190,17 +198,22 @@ const TemplatesList = () => {
         <Loader loading={loading == ASYNC.pending}>
             {loading == ASYNC.idle && ids.length ? (
                 <>
-                    <List.Ul>
-                        <List.Li data={datas}>
-                            {v => <>
-                                <div className="d-flex w-100 justify-content-between" >
-                                    <h4 className="mb-1">{v.name}</h4>
-                                    <small>{t('SMS')} {v.sms}</small>
-                                </div>
-                                <ListDescriptionText item={v} onDelete={handleDelete} />
-                            </>}
-                        </List.Li>
-                    </List.Ul>
+                    <div style={OverFlowStyle}>
+                        <List.Ul>
+                            <List.Li data={datas}>
+                                {v => <>
+                                    <div className="d-flex w-100 justify-content-between" >
+                                        <h4 className="mb-1">{v.name}</h4>
+                                        <small>
+                                            {v.global && <span>({t('Global')}) </span>}
+                                            {t('SMS')} {v.sms}
+                                        </small>
+                                    </div>
+                                    <ListDescriptionText item={v} onDelete={handleDelete} />
+                                </>}
+                            </List.Li>
+                        </List.Ul>
+                    </div>
                     <ModalConfirm loading={deletionLoading} onConfirm={deleteItem} ref={modalConfirm} />
                 </>
             ) : ''}

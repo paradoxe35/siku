@@ -19,10 +19,13 @@ class EventTemplatesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Event $event)
+    public function index(Event $event, Request $request)
     {
+        $gTemplate = $request->user()->templates()->where('global', true)->get();
 
-        return new TemplateCollection($event->templates);
+        $templates = $event->templates()->where('global', false)->get();
+
+        return new TemplateCollection($gTemplate->merge($templates));
     }
 
     /**
@@ -33,7 +36,8 @@ class EventTemplatesController extends Controller
      */
     public function store(Request $request, Event $event, SMSCounter $smsCounter)
     {
-        // get auth event 
+        // get auth event
+        /** @var \App\User */
         $user = $request->user();
 
         $request->validate([
@@ -48,14 +52,23 @@ class EventTemplatesController extends Controller
             'sms_total' => ['required', 'numeric', 'min:1'],
             'per_sms' => ['required', 'numeric', 'min:1'],
             'text_sms' => ['required', 'string'],
-            'text_whatsapp' => ['required', 'string']
+            'text_whatsapp' => ['required', 'string'],
+            'global' => ['nullable']
         ]);
 
-        abort_if(
-            $event->templates->count() >= 5,
-            400,
-            trans('Vous pouvez pas enregistrer plus :count modèles', ['count' => 5])
-        );
+        $em = 'Vous pouvez pas enregistrer plus :count modèles';
+
+        $isGlobal = !!$request->global;
+
+        if (!!$isGlobal) {
+            $globalTemplate = $user->templates()->where('global', true)->count();
+
+            abort_if($globalTemplate >= 5, 400, trans($em . ' globals', ['count' => $globalTemplate]));
+        } else {
+            $privateTemplate = $event->templates()->where('global', false)->count();
+
+            abort_if($privateTemplate >= 5, 400,  trans($em, ['count' => $privateTemplate]));
+        }
 
         $smsParsed = $smsCounter->count($request->text_sms);
 
@@ -66,7 +79,8 @@ class EventTemplatesController extends Controller
             'sms_total' => $smsParsed->messages,
             'per_sms' => $request->per_sms,
             'text_sms' => $request->text_sms,
-            'text_whatsapp' => $request->text_whatsapp
+            'text_whatsapp' => $request->text_whatsapp,
+            'global' => $isGlobal
         ]);
 
         return new ResourcesTemplate($template);

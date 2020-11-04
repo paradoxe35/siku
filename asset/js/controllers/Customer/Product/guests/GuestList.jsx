@@ -23,7 +23,7 @@ const ShowList = ({ v, handleDelete }) => {
 
     const send = async (v) => {
         setLoading(true)
-        DispachEventOpenGuestSocketDetail(null)
+        DispachEventOpenGuestSocketDetail(true)
         await onLoadedSocketLib()
         fetchAPi('post', URLS.eventGuests + '/' + v.id + '/send', {}, true)
             .finally(() => setLoading(false))
