@@ -51,7 +51,7 @@
             <div class="col-lg-12">
                 <div class="row">
                     <div class="col-lg-4">
-                        <div class="card card-lift--hover shadow border-0">
+                        <div class="card card-lift--hover shadow border-0" style="height: 350px">
                             <div class="card-body py-5">
                                 <div class="text-center text-md-left">
                                     <div class="icon icon-shape bg-gradient-default text-white rounded-circle mb-4">
@@ -60,15 +60,13 @@
                                     <h4 class="h3 text-default text-uppercase">{{ __("SMS") }}</h4>
                                 </div>
                                 <p class="description mt-3">
-                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Officia, doloremque, cum
-                                    maxime recusandae facere provident illo, quam veritatis repellendus ipsam minima
-                                    voluptatibus ullam. Eos assumenda, veniam ipsam minus explicabo est?
+                                    {{ __('Créer un monde connecté en envoyant des milliers de SMS en un seul clic. International, fluide et à bon prix.') }}
                                 </p>
                             </div>
                         </div>
                     </div>
                     <div class="col-lg-4">
-                        <div class="card card-lift--hover shadow border-0">
+                        <div class="card card-lift--hover shadow border-0" style="height: 350px">
                             <div class="card-body py-5">
                                 <div class="text-center text-md-left">
                                     <div class="icon icon-shape bg-gradient-default text-white rounded-circle mb-4">
@@ -77,15 +75,14 @@
                                     <h4 class="h3 text-default text-uppercase">{{ __("WhatsApp") }}</h4>
                                 </div>
                                 <p class="description mt-3">
-                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Optio iusto eligendi
-                                    aperiam dicta nemo ipsa beatae dolorem quidem facere ut saepe minima corporis
-                                    aliquam est recusandae dignissimos vero, temporibus neque!
+                                    {{ $app_name }}
+                                    {{ __("vous donne la possibilité d’un moyen d'envoi. Le partage des images, fichiers cadrant avec la validation d’un invité.") }}
                                 </p>
                             </div>
                         </div>
                     </div>
                     <div class="col-lg-4">
-                        <div class="card card-lift--hover shadow border-0">
+                        <div class="card card-lift--hover shadow border-0" style="height: 350px">
                             <div class="card-body py-5">
                                 <div class="text-center text-md-left">
                                     <div class="icon icon-shape bg-gradient-default text-white rounded-circle mb-4">
@@ -94,9 +91,9 @@
                                     <h4 class="h3 text-default text-uppercase">{{ __("QR Code") }}</h4>
                                 </div>
                                 <p class="description mt-3">
-                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo, officia adipisci,
-                                    molestiae porro quidem natus ut ab itaque optio commodi consectetur esse consequatur
-                                    obcaecati recusandae suscipit cumque, facere quod? Enim!
+                                    {{ __("La sécurité de vos événements reste primordiale avec un système d'encodage QR code.") }}
+                                    {{ $app_name }}
+                                    {{ __("vous offre un choix pour vérifier et valider vos invités via une application mobile.") }}
                                 </p>
                             </div>
                         </div>
@@ -153,13 +150,12 @@
 <section class="py-7">
     <div class="container">
         <div class="row row-grid justify-content-center">
-            <div class="col-lg-8 text-center">
-                <h2 class="display-3">{{ __("C'est cool, n'est-ce pas") }}?</h2>
-                <p class="lead">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi, deserunt? Eius unde ipsum, quia
-                    ratione consequuntur iusto error amet cum repellat! Quidem quibusdam nemo repudiandae? Quidem odit
-                    earum ut accusantium.
-                </p>
+            <div class="col-lg-6 text-center">
+                <h2 class="display-4 mb-4">{{ __("Abonnez-vous à notre newsletter") }}</h2>
+                <div class="form-group d-flex">
+                    <input type="email" class="form-control form-control-alternative mr-3 mb-3" placeholder="Email">
+                    <button class="btn btn-primary mb-3" type="button">{{ __('Souscrire') }}</button>
+                </div>
             </div>
         </div>
     </div>
