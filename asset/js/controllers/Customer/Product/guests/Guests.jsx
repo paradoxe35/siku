@@ -269,7 +269,7 @@ const CreateNewGuest = () => {
         form.append(NEW_GUEST_FORM.country_code, dataPhone.country);
         form.append(NEW_GUEST_FORM.country_call, dataPhone.countryCallingCode);
 
-        form.has(NEW_GUEST_FORM.can_send) && DispachEventOpenGuestSocketDetail(null)
+        form.has(NEW_GUEST_FORM.can_send) && DispachEventOpenGuestSocketDetail(true)
 
         fetchAPi('post', URLS.eventGuestsStore, form, true)
             .then(({ data }) => {
