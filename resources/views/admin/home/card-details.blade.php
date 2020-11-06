@@ -4,8 +4,8 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col">
-                        <h5 class="card-title text-uppercase text-muted mb-0">{{ __('Monthly Revenue') }}</h5>
-                        <span class="h2 font-weight-bold mb-0">350,897</span>
+                        <h5 class="card-title text-uppercase text-muted mb-0">{{ __('Revenu mensuel') }}</h5>
+                        <span class="h2 font-weight-bold mb-0">{{ $symbol.$revenue }}</span>
                     </div>
                     <div class="col-auto">
                         <div class="icon icon-shape bg-gradient-red text-white rounded-circle shadow">
@@ -13,10 +13,6 @@
                         </div>
                     </div>
                 </div>
-                <p class="mt-3 mb-0 text-sm">
-                    <span class="text-success mr-2"><i class="fa fa-arrow-up"></i> 3.48%</span>
-                    <span class="text-nowrap">Since last month</span>
-                </p>
             </div>
         </div>
     </div>
@@ -25,8 +21,8 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col">
-                        <h5 class="card-title text-uppercase text-muted mb-0">{{ __('New Events') }}</h5>
-                        <span class="h2 font-weight-bold mb-0">2,356</span>
+                        <h5 class="card-title text-uppercase text-muted mb-0">{{ __('Nouveaux événements') }}</h5>
+                        <span class="h2 font-weight-bold mb-0">{{ $newEvents }}</span>
                     </div>
                     <div class="col-auto">
                         <div class="icon icon-shape bg-gradient-orange text-white rounded-circle shadow">
@@ -34,10 +30,6 @@
                         </div>
                     </div>
                 </div>
-                <p class="mt-3 mb-0 text-sm">
-                    <span class="text-success mr-2"><i class="fa fa-arrow-up"></i> 3.48%</span>
-                    <span class="text-nowrap">Since last month</span>
-                </p>
             </div>
         </div>
     </div>
@@ -46,8 +38,8 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col">
-                        <h5 class="card-title text-uppercase text-muted mb-0">{{ __('New Customers') }}</h5>
-                        <span class="h2 font-weight-bold mb-0">924</span>
+                        <h5 class="card-title text-uppercase text-muted mb-0">{{ __('Nouveaux clients') }}</h5>
+                        <span class="h2 font-weight-bold mb-0">{{ $newClients }}</span>
                     </div>
                     <div class="col-auto">
                         <div class="icon icon-shape bg-gradient-green text-white rounded-circle shadow">
@@ -55,10 +47,6 @@
                         </div>
                     </div>
                 </div>
-                <p class="mt-3 mb-0 text-sm">
-                    <span class="text-success mr-2"><i class="fa fa-arrow-up"></i> 3.48%</span>
-                    <span class="text-nowrap">Since last month</span>
-                </p>
             </div>
         </div>
     </div>
@@ -67,8 +55,8 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col">
-                        <h5 class="card-title text-uppercase text-muted mb-0">Performance</h5>
-                        <span class="h2 font-weight-bold mb-0">49,65%</span>
+                        <h5 class="card-title text-uppercase text-muted mb-0">{{  __('Invitations envoyées')  }}</h5>
+                        <span class="h2 font-weight-bold mb-0">{{ $sendInvitations }}</span>
                     </div>
                     <div class="col-auto">
                         <div class="icon icon-shape bg-gradient-info text-white rounded-circle shadow">
@@ -76,10 +64,6 @@
                         </div>
                     </div>
                 </div>
-                <p class="mt-3 mb-0 text-sm">
-                    <span class="text-success mr-2"><i class="fa fa-arrow-up"></i> 3.48%</span>
-                    <span class="text-nowrap">Since last month</span>
-                </p>
             </div>
         </div>
     </div>

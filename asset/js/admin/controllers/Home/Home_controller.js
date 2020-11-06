@@ -89,7 +89,24 @@ const Charts = function (Chart) {
 
 export default class extends Controller {
 
+    /**
+     * @param { string } data 
+     * @returns { { labels: Array,  data: Array } }
+     */
+    datas(data) {
+        let r = { labels: [], data: [] }
+        try {
+            r = JSON.parse(data)
+        } catch (error) {
+            console.error(error)
+        }
+        return r
+    }
+
     initialize() {
+        this.chartDataEls = this.targets.findAll('chartData')
+        this.defaultDataSales = this.datas(this.chartDataEls[0].getAttribute('data-update'))
+        this.defaultDataSend = this.datas(this.chartDataEls[0].getAttribute('data-update-send'))
         this.chartjsInit()
     }
 
@@ -99,8 +116,32 @@ export default class extends Controller {
 
         const i = Charts(Chart)
 
-        const line = this.lineChart(Chart, i)
-        const bar = this.barChart(Chart, i)
+        this.line = this.lineChart(Chart, i)
+        this.bar = this.barChart(Chart, i)
+
+        this.chartDataEls.forEach(el => el.addEventListener('click', this.updateChartSales.bind(this, el)))
+    }
+
+    /**
+     * @param { * } el 
+     */
+    updateChartSales(el) {
+        if (el.querySelector('.active')) {
+            return
+        }
+        const d = this.datas(el.getAttribute('data-update'))
+        this.line.data.labels = d.labels
+        this.line.data.datasets = [{
+            data: d.data
+        }]
+        this.line.update({
+            duration: 500,
+            easing: 'linear'
+        })
+    }
+
+    disconnect() {
+        this.chartDataEls.forEach(el => el.removeEventListener('click', this.updateChartSales))
     }
 
     /**
@@ -110,9 +151,9 @@ export default class extends Controller {
         return new Chart(this.targets.find('sendChart'), {
             type: "bar",
             data: {
-                labels: ["Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+                labels: this.defaultDataSend.labels,
                 datasets: [{
-                    data: [25, 20, 30, 22, 17, 29]
+                    data: this.defaultDataSend.data
                 }]
             }
         })
@@ -136,9 +177,9 @@ export default class extends Controller {
                 }
             },
             data: {
-                labels: ["May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+                labels: this.defaultDataSales.labels,
                 datasets: [{
-                    data: [0, 20, 10, 30, 15, 40, 20, 60, 60]
+                    data: this.defaultDataSales.data
                 }]
             }
         })

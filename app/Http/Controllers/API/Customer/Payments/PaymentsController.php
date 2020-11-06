@@ -89,7 +89,8 @@ class PaymentsController extends Controller
             'token' => $code,
             'confirmed' => true,
             'amount' => $customPay->amount,
-            'custom_payment_id' => $customPay->id
+            'custom_payment_id' => $customPay->id,
+            'guests' => $customPay->guests
         ]);
 
         //store payment meta as reference
@@ -220,6 +221,7 @@ class PaymentsController extends Controller
             'event_id' => $event_id,
             'confirmed' => true,
             'amount' => $amount,
+            'guests' => $guests
         ]);
 
         //store payment meta as reference

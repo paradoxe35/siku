@@ -19,10 +19,10 @@ class CustomPayment extends Model
      * @var array
      */
     protected $fillable = [
-        'amount', 'payment_code', 'active'
+        'amount', 'payment_code', 'active', 'guests'
     ];
 
-        /**
+    /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function user()

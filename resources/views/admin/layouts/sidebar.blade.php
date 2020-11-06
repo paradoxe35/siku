@@ -10,55 +10,16 @@
         <div class="navbar-inner">
             <div class="collapse navbar-collapse" id="sidenav-collapse-main">
                 <ul class="navbar-nav">
-                    @foreach ([
-                    [
-                    'name' => 'Acceuil',
-                    'icon' => 'chart-pie-35',
-                    'route' => ''
-                    ],
-                    [
-                    'name' => 'Sales',
-                    'icon' => 'credit-card',
-                    'route' => ''
-                    ],
-                    [
-                    'name' => 'Clients',
-                    'icon' => 'collection',
-                    'route' => ''
-                    ],
-                    [
-                    'name' => 'Événements',
-                    'icon' => 'air-baloon',
-                    'route' => ''
-                    ],
-                    [
-                    'name' => 'Prix et balance',
-                    'icon' => 'spaceship',
-                    'route' => ''
-                    ],
-                    [
-                    'name' => 'Rapport',
-                    'icon' => 'books',
-                    'route' => ''
-                    ],
-                    [
-                    'name' => 'Blog',
-                    'icon' => 'ruler-pencil',
-                    'route' => ''
-                    ],
-                    [
-                    'name' => 'Compte',
-                    'icon' => 'circle-08',
-                    'route' => ''
-                    ],
-                    ] as $item)
+                    @foreach ($adminSidebarLinkList as $item)
+                    @if ($item['route'])
                     <li class="nav-item">
-                        <a class="nav-link {{ Str::contains(request()->url(), $item['route']) ? 'active' : '' }}"
-                            href="{{ $item['route'] }}">
+                        <a class="nav-link {{ Str::contains(request()->url(),  route($item['route'])) ? 'active' : '' }}"
+                            href="{{  route($item['route']) }}">
                             <i class="ni ni-{{ $item['icon'] }} text-default"></i>
                             <span class="nav-link-text">{{ __($item['name']) }}</span>
                         </a>
                     </li>
+                    @endif
                     @endforeach
                 </ul>
             </div>

@@ -87,4 +87,52 @@ Route::middleware(['auth', 'admin'])
     ->group(function () {
         Route::redirect('', '/dash/home');
         Route::get('home', 'HomeController@index')->name('home');
+
+        Route::namespace('Sales')
+            ->prefix('sales')
+            ->name('sales.')
+            ->group(function () {
+                Route::get('', "SalesController@index")->name('home');
+            });
+
+        Route::namespace('Customers')
+            ->prefix('customers')
+            ->name('customers.')
+            ->group(function () {
+                Route::get('', "CustomersController@index")->name('home');
+            });
+
+        Route::namespace('Events')
+            ->prefix('events')
+            ->name('events.')
+            ->group(function () {
+                Route::get('', "EventsController@index")->name('home');
+            });
+
+        Route::namespace('Reports')
+            ->prefix('reports')
+            ->name('reports.')
+            ->group(function () {
+                Route::get('', "ReportsController@index")->name('home');
+            });
+
+        Route::namespace('Blog')
+            ->prefix('blog')
+            ->name('blog.')
+            ->group(function () {
+                Route::get('', "BlogController@index")->name('home');
+            });
+
+        Route::namespace('Account')
+            ->prefix('account')
+            ->name('account.')
+            ->group(function () {
+                Route::get('', "AccountController@index")->name('home');
+            });
+
+        Route::name('price-balance.')
+            ->prefix('price-balance')
+            ->group(function () {
+                Route::get('', 'PriceBalanceController@index')->name('home');
+            });
     });

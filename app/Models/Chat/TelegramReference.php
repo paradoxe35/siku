@@ -17,7 +17,7 @@ class TelegramReference extends Model
      *
      * @var array
      */
-    protected $fillable = ['user_id', 'chat_id'];
+    protected $fillable = ['user_id', 'chat_id', 'chat_username'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

@@ -22,7 +22,7 @@ class Balance extends Model
      * @var array
      */
     protected $fillable = [
-        'token', 'confirmed', 'amount', 'custom_payment_id', 'event_id'
+        'token', 'confirmed', 'amount', 'custom_payment_id', 'event_id', 'guests'
     ];
 
     /**

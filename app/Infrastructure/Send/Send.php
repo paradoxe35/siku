@@ -94,34 +94,34 @@ class Send
 
 
     /**
-     * @param Guest $item
+     * @param Guest $guest
      */
-    public function proceed(Guest $item)
+    public function proceed(Guest $guest)
     {
         /**
          * @var \Illuminate\Database\Eloquent\Model
          */
-        $model = $item->historical;
+        $model = $guest->historical;
         if (!$model) {
-            $model = $item->historical()->create([
-                'user_id' => $item->user_id,
-                'event_id' => $item->event_id
+            $model = $guest->historical()->create([
+                'user_id' => $guest->user_id,
+                'event_id' => $guest->event_id
             ]);
         }
 
-        $item->refresh();
+        $guest->refresh();
 
-        if ($item->can_send_sms) {
-            $this->sms($item, $model);
+        if ($guest->can_send_sms) {
+            $this->sms($guest, $model);
         }
 
-        if ($item->can_send_whatsapp) {
-            $this->whatsapp($item, $model);
+        if ($guest->can_send_whatsapp) {
+            $this->whatsapp($guest, $model);
         }
 
-        $item->refresh();
+        $guest->refresh();
 
-        return $item;
+        return $guest;
     }
 
     /**

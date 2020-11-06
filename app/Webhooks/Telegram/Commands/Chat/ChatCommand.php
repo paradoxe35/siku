@@ -111,25 +111,28 @@ class ChatCommand extends Chat
 
         $chat = TelegramRefRepository::getByUserId($client_id);
 
+        $dataChat = $this->getUpdate()->getChat();
+
+        $name = $dataChat->first_name . ' ' . $dataChat->last_name;
+
         if ($chat) {
 
-            $chat->fill(['chat_id' => $chatId])
+            $chat->fill(['chat_id' => $chatId, 'chat_username' => $name])
                 ->save();
         } else {
 
             $chat = TelegramRefRepository::create([
                 'user_id' => $client_id,
-                'chat_id' => $chatId
+                'chat_id' => $chatId,
+                'chat_username' => $name
             ]);
         }
 
         $chat->refresh();
 
-        $dataChat = $this->getUpdate()->getChat();
-
         $this->telegram->sendMessage([
             'chat_id' => TelegramApp::getAppGroupChatId(),
-            'text' => "User " . ($dataChat->username ? '@' . $dataChat->username : $dataChat->first_name . ' ' . $dataChat->last_name) . "\nhas started a chat with customer ID: {$hashId}, email: {$chat->user->email}"
+            'text' => "User " . ($dataChat->username ? '@' . $dataChat->username : $name) . "\nhas started a chat with customer ID: {$hashId}, email: {$chat->user->email}"
         ]);
     }
 }

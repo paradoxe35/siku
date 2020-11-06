@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Http\Resources\Event\Event;
+use App\Http\View\Composers\AdminSidebarComposer;
 use App\Http\View\Composers\SidebarComposer;
 use App\Infrastructure\BasePrice;
 use App\View\Components\SpinningDots;
@@ -46,6 +47,8 @@ class ViewServiceProvider extends ServiceProvider
         Blade::component('spinning-dots', SpinningDots::class);
 
         View::composer('customer.*', SidebarComposer::class);
+
+        View::composer('admin.*', AdminSidebarComposer::class);
 
         View::composer('customer.*', function ($view) {
             $request = request();
