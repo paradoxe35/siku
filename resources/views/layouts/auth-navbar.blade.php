@@ -1,4 +1,5 @@
 <nav data-controller="Navbar"
+    style="transition: none"
     class="navbar {{ $top ?? 'navbar-top' }} navbar-expand navbar-expand-md navbar-light fixed-top main-content-nav">
     <div class="container-fluid {{ isset($top) ? 'mx-md-4 mx-lg-5 pl-lg-4' : '' }}">
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -17,6 +18,10 @@
                 <h1>{{ $app_name }}</h1>
             </a>
             @endif
+
+            <div class="d-none d-md-block">
+                @yield('navbar-title')
+            </div>
 
             @if (isset($customer_event))
             <div class="progress-wrapper pt-1 d-none" data-controller="Customer--App--Show-Sending"

@@ -58,7 +58,7 @@ Route::middleware(['auth'])
                             });
                         Route::get('/account', 'AccountController@index')->name('.account');
                         Route::get('/account/password', 'AccountController@password')->name('.account.password');
-                        Route::get('', fn () => redirect(route('customer.event.product')));
+                        Route::get('', "HomeController");
                         //payment routes
 
                         Route::namespace('Payments')
