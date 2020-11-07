@@ -39,7 +39,7 @@ class ChatCommand extends Chat
             return $this->replyWithMessage(['text' => $err]);
         }
 
-        $user = User::query()->findByHashid($client_id);
+        $user = User::findByHashid($client_id);
 
         $id = $user->id;
 
