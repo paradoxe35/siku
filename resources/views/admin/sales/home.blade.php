@@ -1,14 +1,43 @@
 @extends('admin.sales')
 
-@section('breadcrumb-items')
-{{-- <li class="breadcrumb-item active text-default" aria-current="page">Cards</li> --}}
-{{-- <li class="breadcrumb-item text-default">Items</li> --}}
-@endsection
-
 @section('sales-content')
-<div class="card shadow-sm">
-    <div class="card-body">
-
+<div class="row mb-3">
+    <div class="col-lg-5">
+        <div class="row">
+            <div class="col">
+                <x-rform>
+                    <input type="text" name="ym" value="{{ request('ym') }}"
+                        class="form-control form-control-sm form-control-alternative"
+                        placeholder="{{ __('Année').'-'.__('Mois') }}" />
+                </x-rform>
+            </div>
+            <div class="col">
+                <x-rform>
+                    <input type="text" name="email" value="{{ request('email') }}"
+                        class="form-control form-control-sm form-control-alternative"
+                        placeholder="{{ __('Client Email') }}" />
+                </x-rform>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg py-2"></div>
+    <div class="col-lg-auto">
+        @include('admin.layouts.selects.confirmed')
     </div>
 </div>
+
+<x-card-table :paginate="$sales" :sort="true" :ths="['ID', 'Client Email', 'créé à', 'Méthode', 'Confirmé', 'Montant']">
+    @foreach ($sales as $sale)
+    <tr class="clickable-a" onclick="tvisit('{{ route('admin.sales.show', ['id' => $sale->id]) }}')">
+        <td>{{ $sale->hashId() }}</td>
+        <td>{{ $sale->user->email }}</td>
+        <td>{{ $sale->created_at }}</td>
+        <td>{{ $sale->paymentMeta->service }}</td>
+        <td>
+            <x-status :value="$sale->confirmed" />
+        </td>
+        <td>{{ $symbol.$sale->amount }}</td>
+    </tr>
+    @endforeach
+</x-card-table>
 @endsection

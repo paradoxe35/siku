@@ -12,6 +12,6 @@ class BlogController extends Controller
      */
     public function index()
     {
-        return view('admin.blog');
+        return view('admin.blog.home');
     }
 }

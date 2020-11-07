@@ -20,13 +20,12 @@ use App\Notifications\VerifyEmail;
 use Illuminate\Contracts\Auth\CanResetPassword;
 use Illuminate\Auth\Passwords\CanResetPassword as PasswordTrait;
 use Illuminate\Support\Facades\App;
-use Vinkla\Hashids\Facades\Hashids;
 use Illuminate\Database\Eloquent\SoftDeletes;
-
+use Mtvs\EloquentHashids\HasHashid;
 
 class User extends Authenticatable implements MustVerifyEmail, CanResetPassword
 {
-    use Notifiable, HasApiTokens, PasswordTrait, CacheUserDataPay, SoftDeletes;
+    use Notifiable, HasApiTokens, PasswordTrait, CacheUserDataPay, SoftDeletes, HasHashid;
 
     /**
      * @var string
@@ -116,16 +115,6 @@ class User extends Authenticatable implements MustVerifyEmail, CanResetPassword
     public function templates()
     {
         return $this->hasMany(Template::class);
-    }
-
-    /**
-     * @return string
-     */
-    public function hashId()
-    {
-        /** @var  mixed */
-        $h = new Hashids;
-        return $h::encode($this->id);
     }
 
     /**

@@ -6,7 +6,10 @@ use App\Http\Resources\Event\Event;
 use App\Http\View\Composers\AdminSidebarComposer;
 use App\Http\View\Composers\SidebarComposer;
 use App\Infrastructure\BasePrice;
+use App\View\Components\CardTable;
+use App\View\Components\RForm;
 use App\View\Components\SpinningDots;
+use App\View\Components\Status;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Blade;
@@ -45,6 +48,12 @@ class ViewServiceProvider extends ServiceProvider
         });
 
         Blade::component('spinning-dots', SpinningDots::class);
+
+        Blade::component('card-table', CardTable::class);
+
+        Blade::component('status', Status::class);
+
+        Blade::component('rform', RForm::class);
 
         View::composer('customer.*', SidebarComposer::class);
 

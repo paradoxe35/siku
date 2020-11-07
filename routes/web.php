@@ -93,6 +93,7 @@ Route::middleware(['auth', 'admin'])
             ->name('sales.')
             ->group(function () {
                 Route::get('', "SalesController@index")->name('home');
+                Route::get('{id}/', "SalesController@show")->name('show');
             });
 
         Route::namespace('Customers')
