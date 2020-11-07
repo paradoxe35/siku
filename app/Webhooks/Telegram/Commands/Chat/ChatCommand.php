@@ -8,6 +8,9 @@ use App\Notifications\Telegram\NotifyAdmin;
 use App\Repositories\TelegramRefRepository;
 use App\User;
 use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\Storage;
+use NotificationChannels\Telegram\TelegramFile;
+use Telegram\Bot\Laravel\Facades\Telegram;
 use Vinkla\Hashids\Facades\Hashids;
 
 class ChatCommand extends Chat
@@ -34,14 +37,17 @@ class ChatCommand extends Chat
         $err = $this->warningText("You must provide a valid client ID");
 
         $client_id = $this->getParamCmd(0);
+        /** @var mixed */
+        $h = new Hashids;
+        $ids = $h::decode($client_id);
 
         if (!$client_id || empty($ids)) {
             return $this->replyWithMessage(['text' => $err]);
         }
 
-        $user = User::findByHashid($client_id);
+        $id = $ids[0];
 
-        $id = $user->id;
+        $user = User::query()->find($id);
 
         if (!$user) {
             return $this->replyWithMessage(['text' => $err]);
