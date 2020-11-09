@@ -2,6 +2,7 @@
 
 namespace App\Models\Balance;
 
+use App\Infrastructure\BasePrice;
 use App\Models\Payments\CustomPayment;
 use App\Models\Event\Event;
 use App\Models\Payments\PaymentMeta;
@@ -33,6 +34,16 @@ class Balance extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * @return double
+     */
+    public function revenue()
+    {
+        $base = BasePrice::getAmount();
+
+        return $this->amount - ($base * $this->guests);
     }
 
     /**

@@ -19,21 +19,22 @@ export const HtmlAlert = {
      * @param { string } type 
      */
     show(parent, message, showIcon = true, icon = 'fat-remove', type = 'danger') {
+        const text = this.message(message)
         const content = `
             <div class="callout alert alert-dismissible fade show border flex-column flex-md-row p-2 p-md-4 border-darken-1 border-${type}" role="alert">
                 ${showIcon ? `
                     <span class="alert-icon text-${type}"><i class="ni ni-${icon}"></i></span>
                 `: ''}
                 <div>
-                    <span class="alert-text">
-                        ${this.message(message)}
-                    </span>
+                    <span class="alert-text" id="innertext">${text}</span>
                 </div>
             </div>
         `
         if (parent) {
             this.parents.push(parent)
-            parent.innerHTML = content
+            let html = document.createRange().createContextualFragment(content)
+            html.getElementById('innertext').innerText = text
+            parent.appendChild(html)
         }
         return content
     },
@@ -46,7 +47,7 @@ export const HtmlAlert = {
             if (message.message && !message.errors)
                 return message.message;
             if (message.message && message.errors)
-                return this.fromObject(message.errors)
+                return this.fromObject(message.errors);
         } else {
             return Localize({
                 fr: 'Une erreur est survenue en interne, veuillez réessayer plus tard',
@@ -73,13 +74,13 @@ export const HtmlAlert = {
      * @returns { string }
      */
     fromObject(object) {
-        return Object.keys(object).map(key => object[key].join('.<br>') + '.').join('<br>')
+        return Object.keys(object).map(key => object[key].join(".\n")).join("\n")
     },
     /**
      * @param { Array<string> } arr 
      */
     fromArray(arr) {
-        return arr.join('.<br>')
+        return arr.join(".\n")
     }
 }
 
@@ -109,7 +110,7 @@ export const Btn = {
         `
     },
     hide() {
-        const h = [...this.btns]
+        const h = [...this.btns.reverse()]
         if (h.length) {
             const n = (h[h.length - 1])
             const el = this.get(n.element)

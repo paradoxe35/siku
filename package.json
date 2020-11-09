@@ -77,6 +77,7 @@
     "dependencies": {
         "dotenv": "^8.2.0",
         "favico.js-slevomat": "^0.3.11",
-        "laravel-echo-server": "^1.6.2"
+        "laravel-echo-server": "^1.6.2",
+        "notify-js-lib": "^1.0.0"
     }
 }

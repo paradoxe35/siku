@@ -26,7 +26,7 @@
     </div>
 </div>
 
-<x-card-table :paginate="$sales" :sort="true" :ths="['ID', 'Client Email', 'créé à', 'Méthode', 'Confirmé', 'Montant']">
+<x-card-table :paginate="$sales" :sort="true" :ths="['ID', 'Client Email', 'Créé à', 'Méthode', 'Confirmé', 'Montant']">
     @foreach ($sales as $sale)
     <tr class="clickable-a" onclick="tvisit('{{ route('admin.sales.show', ['id' => $sale->id]) }}')">
         <td>{{ $sale->hashId() }}</td>

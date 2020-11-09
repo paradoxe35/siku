@@ -18,7 +18,7 @@ require('laravel-mix-clean');
 mix.react('asset/js/app.js', 'js/application.js')
     .react('asset/js/admin/admin.js', 'js/admin.js')
     .js("asset/modules/js/qrcode.js", "js/qrcode-app.js")
-    .extract(['jquery', 'bootstrap', 'stimulus', '@grafikart/spinning-dots-element', 'dropify', 'codex-notifier'])
+    .extract(['jquery', 'bootstrap', 'stimulus', '@grafikart/spinning-dots-element', 'dropify', 'notify-js-lib'])
     .mergeManifest()
 
 mix.setPublicPath('public/compiled/')

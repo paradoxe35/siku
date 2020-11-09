@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin\Sales;
 use App\Http\Controllers\Controller;
 use App\Models\Balance\Balance;
 use App\User;
+use App\View\Components\RForm;
 use Illuminate\Http\Request;
 
 class SalesController extends Controller
@@ -109,5 +110,35 @@ class SalesController extends Controller
         $sale = $this->query()->findOrFail($id);
 
         return view('admin.sales.show', compact('sale'));
+    }
+
+    /**
+     * @return \Illuminate\Http\Response
+     */
+    public function update($id, Request $request)
+    {
+        $request->validate([
+            'confirmed' => ['nullable']
+        ]);
+
+        $sale = $this->query()->findOrFail($id);
+
+        $sale->fill(['confirmed' => !!$request->confirmed])->save();
+
+        return ['redirect_url' => route('admin.sales.home', [], false)];
+    }
+
+    /**
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
+    {
+        $this->authorize('delete-sale');
+
+        $sale = $this->query()->findOrFail($id);
+
+        $sale->delete();
+
+        return ['redirect_url' => route('admin.sales.home', [], false)];
     }
 }

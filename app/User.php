@@ -9,6 +9,7 @@ use App\Models\Balance\LowBalance;
 use App\Models\CommonGuest;
 use App\Models\Payments\CustomPayment;
 use App\Models\Event\Event;
+use App\Models\Event\Guest;
 use App\Models\Template\Template;
 use App\Notifications\ResetPassword;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -48,7 +49,8 @@ class User extends Authenticatable implements MustVerifyEmail, CanResetPassword
      */
     protected $hidden = [
         'password', 'remember_token', 'email_verified_at',
-        'updated_at', 'created_at', 'is_admin', 'admin_token', 'deleted_at'
+        'updated_at', 'created_at', 'is_admin', 'admin_token', 'deleted_at',
+        'super_admin'
     ];
 
     /**
@@ -60,6 +62,24 @@ class User extends Authenticatable implements MustVerifyEmail, CanResetPassword
         'email_verified_at' => 'datetime',
         'is_admin' => 'boolean',
     ];
+
+    /**
+     * @param  int  $value
+     * @return bool
+     */
+    public function getSuperAdminAttribute($value)
+    {
+        return boolval($value);
+    }
+
+    /**
+     * @param  int  $value
+     * @return bool
+     */
+    public function getIsAdminAttribute($value)
+    {
+        return boolval($value);
+    }
 
     /**
      * Send the email verification notification.
@@ -102,6 +122,17 @@ class User extends Authenticatable implements MustVerifyEmail, CanResetPassword
     }
 
     /**
+     * Get the user's first name.
+     *
+     * @param  string  $value
+     * @return string
+     */
+    public function getNameAttribute($value)
+    {
+        return ucwords(Str::lower($value));
+    }
+
+    /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function events()
@@ -117,16 +148,7 @@ class User extends Authenticatable implements MustVerifyEmail, CanResetPassword
         return $this->hasMany(Template::class);
     }
 
-    /**
-     * Get the user's first name.
-     *
-     * @param  string  $value
-     * @return string
-     */
-    public function getNameAttribute($value)
-    {
-        return ucwords(Str::lower($value));
-    }
+
 
     /**
      * @return double
@@ -173,6 +195,14 @@ class User extends Authenticatable implements MustVerifyEmail, CanResetPassword
     public function AllBalance()
     {
         return $this->hasMany(Balance::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function guests()
+    {
+        return $this->hasMany(Guest::class);
     }
 
     /**

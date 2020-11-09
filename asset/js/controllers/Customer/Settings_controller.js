@@ -6,6 +6,7 @@ import { setCurrentEvent } from "@/js/store/features/EventSlice.js"
 import { ReduxDispatch } from "@/js/store/index.js"
 import { DESTROY_SESSION } from "@/js/store/action/types.js"
 import { TurbolinksApp } from "@/js/modules/turbolinks.js"
+import { confirmed } from "@/js/functions/functions.js"
 
 export default class extends Controller {
     urls = {
@@ -68,10 +69,7 @@ export default class extends Controller {
      * @param {Event} param0 
      */
     deleteEvent = ({ }) => {
-        if (!confirm(Localize({
-            fr: 'Êtes-vous sûr ?',
-            en: 'Are you sure ?',
-        }))) return;
+        if (!confirmed()) return;
 
         const el = this.el(this.delete)
         ApiRequest('delete', el.getAttribute('data-url'), {}, true)

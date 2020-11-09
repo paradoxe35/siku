@@ -6,6 +6,7 @@ use App\Http\Resources\Event\Event;
 use App\Http\View\Composers\AdminSidebarComposer;
 use App\Http\View\Composers\SidebarComposer;
 use App\Infrastructure\BasePrice;
+use App\View\Components\Card;
 use App\View\Components\CardTable;
 use App\View\Components\RForm;
 use App\View\Components\SpinningDots;
@@ -34,6 +35,31 @@ class ViewServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        $this->components();
+
+        $this->composers();
+    }
+    
+
+    /**
+     * @return void
+     */
+    private function components() {
+        Blade::component('spinning-dots', SpinningDots::class);
+
+        Blade::component('card-table', CardTable::class);
+
+        Blade::component('status', Status::class);
+
+        Blade::component('rform', RForm::class);
+
+        Blade::component('card', Card::class);
+    }
+
+    /**
+     * @return void
+     */
+    private function composers() {
         View::composer('*', function ($view) {
             $view->with('app_name', 'SiKu');
 
@@ -46,14 +72,6 @@ class ViewServiceProvider extends ServiceProvider
                 ['name' => trans('Français'), 'value' => 'fr']
             ]);
         });
-
-        Blade::component('spinning-dots', SpinningDots::class);
-
-        Blade::component('card-table', CardTable::class);
-
-        Blade::component('status', Status::class);
-
-        Blade::component('rform', RForm::class);
 
         View::composer('customer.*', SidebarComposer::class);
 

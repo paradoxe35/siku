@@ -1,24 +1,24 @@
-//@ts-check
-import notifier from 'codex-notifier';
-import { ConfirmNotifierOptions, NotifierOptions, PromptNotifierOptions } from 'codex-notifier';
+import 'notify-js-lib'
 
-const asyncTimer = (time = 8000) => new Promise(resolve => {
+const bootstrap = { ...$.notify.getStyle('bootstrap') }
+$.notify.addStyle('bootstrap', {
+    ...bootstrap,
+    html: `<div style="white-space: normal;font-size: 13px; max-width: 250px">
+            <span data-notify-text></span>
+        </div>`,
+})
+
+const asyncTimer = (time = 5000) => new Promise(resolve => {
     window.setTimeout(() => resolve(true), time)
 })
 
 export const Notifier = {
-    sussess(message = '', time = 8000) {
-        notifier.show({ message, time, style: 'success' })
+    sussess(message = '', time = 5000) {
+        $.notify(message, { position: "bottom left", className: 'success', autoHideDelay: time });
         return asyncTimer(time)
     },
-    error(message = '', time = 8000) {
-        notifier.show({ message, style: 'error', time })
+    error(message = '', time = 5000) {
+        $.notify(message, { position: "bottom left", className: 'error', autoHideDelay: time });
         return asyncTimer(time)
     },
-    /**
-     * @param { NotifierOptions | ConfirmNotifierOptions | PromptNotifierOptions } options 
-     */
-    customNotifier(options) {
-        notifier.show(options)
-    }
 }

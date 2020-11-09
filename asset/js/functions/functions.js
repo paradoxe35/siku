@@ -1,4 +1,7 @@
 //@ts-check
+
+import { Localize } from "./localize";
+
 /**
  * 
  * @param { Function } func 
@@ -17,6 +20,13 @@ export function debounce(func, wait = 1000, immediate) {
         timeout = setTimeout(later, wait);
         if (callNow) func.apply(context, args);
     };
+}
+
+export function confirmed() {
+    return confirm(Localize({
+        fr: 'Êtes-vous sûr ?',
+        en: 'Are you sure ?',
+    }))
 }
 
 // @ts-ignore

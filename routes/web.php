@@ -94,6 +94,8 @@ Route::middleware(['auth', 'admin'])
             ->group(function () {
                 Route::get('', "SalesController@index")->name('home');
                 Route::get('{id}/', "SalesController@show")->name('show');
+                Route::patch('{id}/', "SalesController@update");
+                Route::delete('{id}/', "SalesController@destroy");
             });
 
         Route::namespace('Customers')
@@ -101,6 +103,7 @@ Route::middleware(['auth', 'admin'])
             ->name('customers.')
             ->group(function () {
                 Route::get('', "CustomersController@index")->name('home');
+                Route::get('{id}/', "CustomersController@show")->name('show');
             });
 
         Route::namespace('Events')

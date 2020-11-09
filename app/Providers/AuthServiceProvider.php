@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Policies\SalePolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
 
@@ -24,5 +25,7 @@ class AuthServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->registerPolicies();
+
+        Gate::define('delete-sale', SalePolicy::class. '@delete');
     }
 }
