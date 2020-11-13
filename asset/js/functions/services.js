@@ -1,5 +1,5 @@
 //@ts-check
-import { customerCountryApi } from '../api/services'
+import { countriesFlagAndEmojis, customerCountryApi } from '../api/services'
 
 /**
  * @param { HTMLElement|Element } select 
@@ -15,7 +15,39 @@ export const clientCountry = async (select, callbackData, defaultValue = null) =
         SlimSelect.setData(await callbackData(defaultValue))
     } else {
         customerCountryApi()
-            .then(async (c) => c && SlimSelect.setData(await callbackData(c)))
+            .then(async (c) =>
+                c ? SlimSelect.setData(await callbackData(c)) :
+                    SlimSelect.setData(await callbackData({ code: null }))
+            )
     }
     return SlimSelect
+}
+
+/**
+ * @param { Element | HTMLElement } element 
+ * @param {Function } connectedCountry 
+ * @param { * } defaults
+ */
+export const initSelect2 = async (element, connectedCountry, defaults = null) => {
+    const select = await clientCountry(element, async (c) => {
+        const countries = await countriesFlagAndEmojis()
+        return countries.map(country => {
+            const sc = c.country_code == country.code;
+            sc && connectedCountry(country)
+            return {
+                text: `${country.emoji} ${country.name}`,
+                value: country.code,
+                selected: sc
+            }
+        })
+    }, defaults)
+    select.onChange = (c) => {
+        const h = c.text.split(' ')
+        connectedCountry({
+            name: h.filter((_, i) => !!i).join(' '),
+            code: c.value
+        });
+    }
+
+    return select
 }

@@ -120,10 +120,12 @@ export const ListDescriptionText = ({ item, onDelete, canShown = null }) => {
                     <SectionView onChange={handleSection} icon={false} name={'template_view-' + item.id} canShown={canShown} />
                 </div>
                 <div className="col-auto">
-                    <button type="button" onClick={(e) => {
-                        e.stopPropagation();
-                        onDelete(item.id);
-                    }} className="btn btn-secondary btn-sm text-danger">{t('Supprimer')}</button>
+                    {onDelete && (
+                        <button type="button" onClick={(e) => {
+                            e.stopPropagation();
+                            onDelete(item.id);
+                        }} className="btn btn-secondary btn-sm text-danger">{t('Supprimer')}</button>
+                    )}
                 </div>
             </div>
         ) : ''}

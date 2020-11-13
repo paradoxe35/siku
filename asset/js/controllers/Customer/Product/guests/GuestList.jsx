@@ -13,7 +13,7 @@ import { LaravelPagination } from '@/js/react/components/Pagination'
 
 
 
-const ShowList = ({ v, handleDelete }) => {
+export const ShowListGuest = ({ v, handleDelete, canSend = true }) => {
     const { t } = useTranslation()
     const [loading, setLoading] = useState(false)
     const { fetchAPi } = useFetch()
@@ -37,17 +37,19 @@ const ShowList = ({ v, handleDelete }) => {
             <h4 className="mb-1">
                 {v.name} <small>({v.phone})</small>
             </h4>
-            <div onClick={e => e.stopPropagation()}>
-                {
-                    ((!!sms.length && !v.sended_sms) || (!!whatsapp.length && !v.sended_whatsapp)) &&
-                    <DefaultButton
-                        textColor="text-default"
-                        onClick={() => send(v)}
-                        loading={loading}
-                        color="secondary"
-                        label={t('Envoyer')} />
-                }
-            </div>
+            {canSend && (
+                <div onClick={e => e.stopPropagation()}>
+                    {
+                        ((!!sms.length && !v.sended_sms) || (!!whatsapp.length && !v.sended_whatsapp)) &&
+                        <DefaultButton
+                            textColor="text-default"
+                            onClick={() => send(v)}
+                            loading={loading}
+                            color="secondary"
+                            label={t('Envoyer')} />
+                    }
+                </div>
+            )}
         </div>
         <div className="mb-2">
             {!!sms.length &&
@@ -72,9 +74,9 @@ const ShowList = ({ v, handleDelete }) => {
 
 /**
  * 
- * @param {{  datas: any, setFullLoading: any, filter?:any, url: string  }} param0 
+ * @param {{  datas: any, setFullLoading: any, filter?:any, url: string, canSend?: boolean,canDelete?: boolean  }} param0 
  */
-export const GuestList = ({ datas, setFullLoading, filter, url }) => {
+export const GuestList = ({ datas, setFullLoading, filter, url, canSend = true, canDelete = true }) => {
     const dispach = useDispatch()
 
     const [listData, setListData] = useListDataPaginator(datas)
@@ -133,7 +135,7 @@ export const GuestList = ({ datas, setFullLoading, filter, url }) => {
         <div style={OverFlowStyle}>
             <List.Ul>
                 <List.Li data={listData.data || []}>
-                    {v => <ShowList v={v} handleDelete={handleDelete} />}
+                    {v => <ShowListGuest v={v} canSend={canSend} handleDelete={canDelete ? handleDelete : null} />}
                 </List.Li>
             </List.Ul>
         </div>

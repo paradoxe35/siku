@@ -18,53 +18,57 @@ const SECTIONS = {
 const PaymentsView = ({ listData }) => {
     const { t } = useTranslation()
 
-    return <table className="table table-responsive">
-        <thead>
-            <tr>
-                <th scope="col">{t('Id Paiement')} </th>
-                <th scope="col">{t('Date')} </th>
-                <th scope="col">{t('Méthode de paiement')} </th>
-                <th scope="col">{t('Montant')}</th>
-                <th scope="col">{t('Code de devise')}</th>
-            </tr>
-        </thead>
-        <tbody>
-            {listData.data && listData.data.map((d, i) => (
-                <tr key={d.id || i}>
-                    <td>{d.id}</td>
-                    <td>{d.created_at}</td>
-                    <td>{d.meta.service}</td>
-                    <td>{SYMBOL + d.amount}</td>
-                    <td>{d.meta.currency_code}</td>
+    return <div className="table-responsive">
+        <table className="table">
+            <thead>
+                <tr>
+                    <th scope="col">{t('Id Paiement')} </th>
+                    <th scope="col">{t('Date')} </th>
+                    <th scope="col">{t('Méthode de paiement')} </th>
+                    <th scope="col">{t('Montant')}</th>
+                    <th scope="col">{t('Code de devise')}</th>
                 </tr>
-            ))}
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                {listData.data && listData.data.map((d, i) => (
+                    <tr key={d.id || i}>
+                        <td>{d.id}</td>
+                        <td>{d.created_at}</td>
+                        <td>{d.meta.service}</td>
+                        <td>{SYMBOL + d.amount}</td>
+                        <td>{d.meta.currency_code}</td>
+                    </tr>
+                ))}
+            </tbody>
+        </table>
+    </div>
 }
 
 const ConsumptionsView = ({ listData }) => {
     const { t } = useTranslation()
 
-    return <table className="table table-responsive">
-        <thead>
-            <tr>
-                <th scope="col">{t('Date')} </th>
-                <th scope="col">{t('Montant consommé')}</th>
-                <th scope="col">{t('Code de devise')}</th>
-                <th scope="col">{t('Événement')}</th>
-            </tr>
-        </thead>
-        <tbody>
-            {listData.data && listData.data.map((d, i) => (
-                <tr key={d.date || i}>
-                    <td>{d.date}</td>
-                    <td>{SYMBOL + d.amount}</td>
-                    <td>{d.currency_code}</td>
-                    <td>{d.event}</td>
+    return <div className="table-responsive">
+        <table className="table">
+            <thead>
+                <tr>
+                    <th scope="col">{t('Date')} </th>
+                    <th scope="col">{t('Montant consommé')}</th>
+                    <th scope="col">{t('Code de devise')}</th>
+                    <th scope="col">{t('Événement')}</th>
                 </tr>
-            ))}
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                {listData.data && listData.data.map((d, i) => (
+                    <tr key={d.date || i}>
+                        <td>{d.date}</td>
+                        <td>{SYMBOL + d.amount}</td>
+                        <td>{d.currency_code}</td>
+                        <td>{d.event}</td>
+                    </tr>
+                ))}
+            </tbody>
+        </table>
+    </div>
 }
 
 const BodyList = ({ section, state, url }) => {
@@ -72,9 +76,7 @@ const BodyList = ({ section, state, url }) => {
 
     const { fetchAPi, fetchLoading: loading } = useFetch(true)
 
-    const defaultData = useRef({})
-
-    const [listData, setListData] = useListDataPaginator(defaultData.current)
+    const [listData, setListData] = useListDataPaginator(null)
 
     useEffect(() => {
         fetchAPi('get', url, {}, true)

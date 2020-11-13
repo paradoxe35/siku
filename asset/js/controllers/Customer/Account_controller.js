@@ -5,7 +5,7 @@ import { ApiRequest } from "@/js/api/api"
 import { connectUser } from "@/js/store/features/UserSlice"
 import { ReduxDispatch } from "@/js/store"
 import { TurbolinksApp } from "@/js/modules/turbolinks"
-import { clientCountry } from "@/js/functions/services.js"
+import { clientCountry, initSelect2 } from "@/js/functions/services.js"
 import { countriesFlagAndEmojis } from "@/js/api/services.js"
 
 export default class extends Controller {
@@ -44,30 +44,16 @@ export default class extends Controller {
 
 
     async initSelect2() {
-        this.select = await clientCountry(this.targets.find('countrySelectField'), async (c) => {
-            const countries = await countriesFlagAndEmojis()
-            return countries.map(country => {
-                const sc = c.country_code == country.code;
-                sc && this.connectedCountry(country)
-                return {
-                    text: `${country.emoji} ${country.name}`,
-                    value: country.code,
-                    selected: sc
-                }
-            })
+        this.select = await initSelect2(
+            this.targets.find('countrySelectField'),
+            this.connectedCountry,
             // @ts-ignore
-        }, window.auth)
-        this.select.onChange = (c) => {
-            const h = c.text.split(' ')
-            this.connectedCountry({
-                name: h.filter((_, i) => !!i).join(' '),
-                code: c.value
-            });
-        }
-
+            window.auth
+        )
     }
 
     disconnect() {
+        this.select && this.select.destroy()
         this.edit && this.edit.removeEventListener('submit', this.editProfile)
         this.react && this.react()
     }

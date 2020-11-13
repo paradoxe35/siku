@@ -61,7 +61,7 @@
                         data-target="Sales--Sales.update"
                         class="btn btn-primary btn-sm">{{ __('Enregistrer') }}</button>
                     <button type="button" data-target="Sales--Sales.delete"
-                        class="btn btn-danger btn-sm">{{ __('Supprimer') }}</button>
+                        class="btn btn-secondary text-danger btn-sm">{{ __('Supprimer') }}</button>
                 </div>
             </x-slot>
         </x-card>

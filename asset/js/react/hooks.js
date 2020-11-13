@@ -54,10 +54,10 @@ export const useFullLoading = () => {
 }
 
 export const useListDataPaginator = (datas, fn) => {
-    const [listData, setListData] = useState(datas)
+    const [listData, setListData] = useState(datas || {})
 
     useEffect(() => {
-        setListData(datas)
+        setListData(datas || {})
     }, [datas])
 
     const onPageChange = useCallback(({ page }) => {

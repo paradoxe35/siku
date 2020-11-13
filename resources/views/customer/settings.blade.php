@@ -23,48 +23,50 @@
         </div>
         <div class="card mt-4 shadow-sm" data-target="Customer--Settings.cardContent">
             <div class="card-body">
-                <table class="text-sm table table-borderless">
-                    <tr>
-                        <th>
-                            {{ __("Evénement") }}:
-                        </th>
-                        <th>
-                            <span class="ml-3">
-                                {{ $event['name'] }}
-                            </span>
-                        </th>
-                    </tr>
-                    <tr>
-                        <th>
-                            {{ __("Date d'événement") }}:
-                        </th>
-                        <th>
-                            <span class="ml-3">
-                                {{ $event['event_date'] }}
-                            </span>
-                        </th>
-                    </tr>
-                    <tr>
-                        <th>
-                            {{ __("Créé") }}:
-                        </th>
-                        <th>
-                            <span class="ml-3">
-                                {{ $event['created_at'] }}
-                            </span>
-                        </th>
-                    </tr>
-                    <tr>
-                        <th>
-                            {{ __("Description") }}:
-                        </th>
-                        <th>
-                            <span class="ml-3">
-                                {{ $customer_event->desciption }}
-                            </span>
-                        </th>
-                    </tr>
-                </table>
+                <div class="table-responsive">
+                    <table class="text-sm table table-borderless">
+                        <tr>
+                            <th>
+                                {{ __("Evénement") }}:
+                            </th>
+                            <th>
+                                <span class="ml-3">
+                                    {{ $event['name'] }}
+                                </span>
+                            </th>
+                        </tr>
+                        <tr>
+                            <th>
+                                {{ __("Date d'événement") }}:
+                            </th>
+                            <th>
+                                <span class="ml-3">
+                                    {{ $event['event_date'] }}
+                                </span>
+                            </th>
+                        </tr>
+                        <tr>
+                            <th>
+                                {{ __("Créé") }}:
+                            </th>
+                            <th>
+                                <span class="ml-3">
+                                    {{ $event['created_at'] }}
+                                </span>
+                            </th>
+                        </tr>
+                        <tr>
+                            <th>
+                                {{ __("Description") }}:
+                            </th>
+                            <th>
+                                <span class="ml-3">
+                                    {{ $customer_event->desciption }}
+                                </span>
+                            </th>
+                        </tr>
+                    </table>
+                </div>
 
                 <div class="d-flex justify-content-end">
                     <button type="submit" data-target="Customer--Settings.deactivate"

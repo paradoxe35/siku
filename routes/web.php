@@ -104,6 +104,16 @@ Route::middleware(['auth', 'admin'])
             ->group(function () {
                 Route::get('', "CustomersController@index")->name('home');
                 Route::get('{id}/', "CustomersController@show")->name('show');
+                Route::put('{id}/', "CustomersController@update")->name('update');
+                Route::patch('{id}/', "CustomersController@trash")->name('trash');
+
+                Route::get('{id}/events', "CustomersController@events")->name('events');
+
+                Route::get('{id}/purchases', "CustomersController@purchases")->name('purchases');
+
+                Route::get('{id}/low-balance', 'CustomersController@lowBalance')->name('low-balance');
+                Route::post('{id}/low-balance', 'CustomersController@setLowBalance');
+                Route::delete('{id}/low-balance', 'CustomersController@destoryLowBalance');
             });
 
         Route::namespace('Events')
@@ -111,6 +121,11 @@ Route::middleware(['auth', 'admin'])
             ->name('events.')
             ->group(function () {
                 Route::get('', "EventsController@index")->name('home');
+                Route::get('{id}/', "EventsController@show")->name('show');
+                Route::patch('{id}/', "EventsController@trash")->name('trash');
+                Route::get('{id}/templates', "EventsController@templates")->name('templates');
+                Route::get('{id}/guests', "EventsController@guests")->name('guests');
+                Route::get('{id}/validators', "EventsController@validators")->name('validators');
             });
 
         Route::namespace('Reports')

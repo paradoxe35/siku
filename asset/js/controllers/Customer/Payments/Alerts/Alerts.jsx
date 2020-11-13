@@ -22,9 +22,9 @@ const ModifyBtn = ({ onClick }) => {
 }
 
 
-const SetLowBalance = ({ cancel, setDatas, datas }) => {
+const SetLowBalance = ({ cancel, setDatas, datas, userAuth }) => {
     // @ts-ignore
-    const { email } = useSelector(s => s.userAuth)
+    const { email } = userAuth
     const { t } = useTranslation()
     const [amount, setAmount] = useState('')
     const [_datas, _setDatas] = useState(datas)
@@ -109,7 +109,7 @@ const SetLowBalance = ({ cancel, setDatas, datas }) => {
     </div>
 }
 
-export default () => {
+export const AlertLowBalance = ({ user }) => {
     const { t } = useTranslation()
     const { fetchAPi, fetchLoading: loading, ApiRequest } = useFetch(true)
     const [checked, setChecked] = useState(false)
@@ -160,7 +160,7 @@ export default () => {
             </label>
         </div>
         <p className="text-muted text-sm">{t("Recevez un e-mail lorsque votre solde passe en dessous d'un seuil")}.</p>
-        {checked && <SetLowBalance datas={datas} setDatas={setDatas} cancel={() => setChecked(false)} />}
+        {checked && <SetLowBalance userAuth={user} datas={datas} setDatas={setDatas} cancel={() => setChecked(false)} />}
         {!!datas && checked && (
             <ModalConfirm
                 message={
@@ -178,5 +178,12 @@ export default () => {
                 ref={modalConfirm} />
         )}
     </Loader>
+}
 
+
+export default () => {
+    // @ts-ignore
+    const userAuth = useSelector(s => s.userAuth)
+
+    return <AlertLowBalance user={userAuth} />
 }

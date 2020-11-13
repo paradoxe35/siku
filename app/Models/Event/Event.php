@@ -139,7 +139,7 @@ class Event extends Model
         /**
          * @var  \Illuminate\Support\Collection
          */
-        $guests = $this->guests;
+        $guests = $this->guests()->get();
 
         return $guests->filter(fn (Guest $guest) => $guest->sended());
     }
@@ -152,7 +152,7 @@ class Event extends Model
         /**
          * @var  \Illuminate\Support\Collection
          */
-        $guests = $this->guests;
+        $guests = $this->guests()->get();
 
         $unprocessed = $guests->filter(fn (Guest $guest) => $guest->unsended());
 

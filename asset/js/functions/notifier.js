@@ -3,7 +3,7 @@ import 'notify-js-lib'
 const bootstrap = { ...$.notify.getStyle('bootstrap') }
 $.notify.addStyle('bootstrap', {
     ...bootstrap,
-    html: `<div style="white-space: normal;font-size: 13px; max-width: 250px">
+    html: `<div style="white-space: normal;word-wrap: break-word;font-size: 13px; max-width: 250px;min-width: 150px;">
             <span data-notify-text></span>
         </div>`,
 })

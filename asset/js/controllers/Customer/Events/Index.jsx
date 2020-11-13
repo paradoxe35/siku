@@ -20,8 +20,7 @@ const CustomerEvents = ({ setLoading }) => {
     //fetch events
     const { fetchAPi, fetchLoading } = useFetch(true)
 
-    const defaultV = useRef({})
-    const [listData, setListData, getDataPaginator] = useListDataPaginator(defaultV.current, onPageChange)
+    const [listData, setListData, getDataPaginator] = useListDataPaginator(null, onPageChange)
 
     useEffect(() => {
         setLoading(fetchLoading)

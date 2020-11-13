@@ -8,6 +8,7 @@ use App\Http\View\Composers\SidebarComposer;
 use App\Infrastructure\BasePrice;
 use App\View\Components\Card;
 use App\View\Components\CardTable;
+use App\View\Components\NavTab;
 use App\View\Components\RForm;
 use App\View\Components\SpinningDots;
 use App\View\Components\Status;
@@ -54,6 +55,8 @@ class ViewServiceProvider extends ServiceProvider
         Blade::component('rform', RForm::class);
 
         Blade::component('card', Card::class);
+
+        Blade::component('nav-tab', NavTab::class);
     }
 
     /**

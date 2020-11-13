@@ -20,7 +20,7 @@ const Skeleton = ({ loading }) => {
     </>
 }
 
-const Profile = () => {
+const Profile = ({ canSend = true, canDelete = true }) => {
     const { t } = useTranslation();
     const { fetchAPi, fetchLoading: loading, ApiRequest } = useFetch(true)
     const [menuDatas, setMenuDatas] = useState({
@@ -72,7 +72,13 @@ const Profile = () => {
             <div className="mt-5">
                 <Loader loading={fullLoading}>
                     <div className="my-3" />
-                    <GuestList url={URLS.eventProfileItems} filter={'filter=' + filter} datas={datas} setFullLoading={setFullLoading} />
+                    <GuestList
+                        canSend={canSend}
+                        canDelete={canDelete}
+                        url={URLS.eventProfileItems}
+                        filter={'filter=' + filter}
+                        datas={datas}
+                        setFullLoading={setFullLoading} />
                     {/*  @ts-ignore */}
                     {datas.meta && !datas.meta.total ? (
                         <div className="mt-5"><Empty message="" /></div>

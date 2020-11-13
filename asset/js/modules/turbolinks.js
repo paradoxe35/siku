@@ -1,4 +1,5 @@
 import Turbolinks from 'turbolinks'
+import { debounce } from '../functions/functions'
 // import { LozadObserver } from './Lozad';
 
 export class TurbolinksApp {
@@ -11,16 +12,36 @@ export class TurbolinksApp {
 
     static start() {
         Turbolinks.start()
+
         document.addEventListener('turbolinks:render', () => {
             document.querySelector('html').lang =
                 document.querySelector('meta[name="lang"]')
                     .getAttribute('content')
         })
+        // this.fixHashRendering()
+    }
+
+    static fixHashRendering() {
+        let mustReload = { lastLocation: document.location.pathname }
+
+        document.addEventListener('turbolinks:before-render', () => {
+            mustReload.lastLocation = document.location.pathname
+        })
+        const reload = () => {
+            const path = document.location.pathname
+            if (path !== mustReload.lastLocation) {
+                this.reload()
+            }
+            mustReload.lastLocation = path
+        }
+
+        window.onpopstate = debounce(reload, 5000);
     }
 
     static reload() {
+        const { pathname, hash, search } = window.location
         this.isc.visit(
-            window.location.pathname + window.location.search,
+            pathname + hash + search,
             { action: 'replace' }
         )
     }
