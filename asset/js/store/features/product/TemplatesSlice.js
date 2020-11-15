@@ -3,7 +3,7 @@ import Async from '@js/store/async'
 
 const INITIALSTATE = {
     sms: null,
-    whatsapp: null,
+    mail: null,
     templatename: null
 }
 

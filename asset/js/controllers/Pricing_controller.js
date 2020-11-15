@@ -12,7 +12,7 @@ export default class extends Controller {
     }
     prices = {
         sms: null,
-        whatsapp: null
+        mail: null
     }
 
     connect() {
@@ -60,11 +60,11 @@ export default class extends Controller {
         ApiRequest('get', `${this.url.countryPricing}?country_code=${countryCode}`, {})
             .then(({ data }) => {
                 this.prices.sms = data.prices.sms
-                this.prices.whatsapp = data.prices.whatsapp
+                this.prices.mail = data.prices.mail
                 this.showPricesText({
                     prices: {
                         sms: this.roundByGuestValue(this.prices.sms),
-                        whatsapp: this.roundByGuestValue(this.prices.whatsapp)
+                        mail: this.roundByGuestValue(this.prices.mail)
                     }
                 })
             })
@@ -81,7 +81,7 @@ export default class extends Controller {
      */
     showPricesText({ prices }) {
         this.smsPrice.textContent = this.textPrice(prices.sms)
-        this.wtspPrice.textContent = this.textPrice(prices.whatsapp)
+        this.wtspPrice.textContent = this.textPrice(prices.mail)
     }
 
     /**
@@ -90,16 +90,16 @@ export default class extends Controller {
     // @ts-ignore
     updatePrices = ({ target: { value } }) => {
         const typing = isNaN(value) || +value < 1 || +value > 1000000;
-        if (typing || (!this.prices.sms && !this.prices.whatsapp)) return
+        if (typing || (!this.prices.sms && !this.prices.mail)) return
         this.showPricesText({
             prices: {
                 sms: this.prices.sms !== null ?
                     // @ts-ignore
                     (this.prices.sms * (+value)).nround(3) :
                     null,
-                whatsapp: this.prices.whatsapp !== null ?
+                mail: this.prices.mail !== null ?
                     // @ts-ignore
-                    (this.prices.whatsapp * (+value)).nround(3) :
+                    (this.prices.mail * (+value)).nround(3) :
                     null
             }
         })

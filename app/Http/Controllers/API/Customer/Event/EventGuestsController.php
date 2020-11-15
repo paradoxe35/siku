@@ -62,21 +62,21 @@ class EventGuestsController extends Controller
     /**
      * @param bool $qr
      * @param string $text_sms
-     * @param string $text_whatsapp
+     * @param string $text_mail
      * @param string $hashid
      * 
      * @return array
      */
-    public function replaceToCode(bool $qr, string $text_sms, string  $text_whatsapp, string $hashid, string $name = '')
+    public function replaceToCode(bool $qr, string $text_sms, string  $text_mail, string $hashid, string $name = '')
     {
         $radom = random_int(1000, 99999);
         $sms = $this->parseText($text_sms, $radom, $hashid, $qr, $name);
-        $whatsapp = $this->parseText($text_whatsapp, $radom, $hashid, $qr, $name);
+        $mail = $this->parseText($text_mail, $radom, $hashid, $qr, $name);
 
         $smsHidden = $this->parseText($text_sms, '******', $hashid, $qr, $name);
-        $whatsappHidden = $this->parseText($text_whatsapp, '******', $hashid, $qr, $name);
+        $mailHidden = $this->parseText($text_mail, '******', $hashid, $qr, $name);
 
-        return compact('radom', 'sms', 'whatsapp', 'smsHidden', 'whatsappHidden');
+        return compact('radom', 'sms', 'mail', 'smsHidden', 'mailHidden');
     }
 
     /**
@@ -100,11 +100,11 @@ class EventGuestsController extends Controller
             'template_id' => ['required', 'numeric'],
             'autorized' => ['required', 'numeric', 'min:1'],
             'text_sms' => ['nullable', 'string'],
-            'text_whatsapp' => ['nullable', 'string'],
+            'text_mail' => ['nullable', 'string'],
             'can_include_qrcode' => ['nullable'],
             'can_send' => ['nullable'],
             'can_send_sms' => ['nullable'],
-            'can_send_whatsapp' => ['nullable'],
+            'can_send_mail' => ['nullable'],
             'sms_total' => ['required', 'numeric'],
             'country_code' => ['required', 'string'],
             'country_call' => ['required', 'string']
@@ -114,7 +114,7 @@ class EventGuestsController extends Controller
 
         $qr = !!$request->can_include_qrcode;
 
-        $datas = $this->replaceToCode($qr, $request->text_sms, $request->text_whatsapp, $event->hashid());
+        $datas = $this->replaceToCode($qr, $request->text_sms, $request->text_mail, $event->hashid());
 
         $smsParsed = $smsCounter->count($datas['sms']);
 
@@ -128,12 +128,12 @@ class EventGuestsController extends Controller
             'code' => $datas['radom'],
             'autorized' => $request->autorized,
             'text_sms' => $datas['sms'],
-            'text_whatsapp' => $datas['whatsapp'],
+            'text_mail' => $datas['mail'],
             'text_sms_hidden_code' => $datas['smsHidden'],
-            'text_whatsapp_hidden_code' => $datas['whatsappHidden'],
+            'text_mail_hidden_code' => $datas['mailHidden'],
             'can_include_qrcode' => $qr,
             'can_send_sms' => !!$request->can_send_sms,
-            'can_send_whatsapp' => !!$request->can_send_whatsapp,
+            'can_send_mail' => !!$request->can_send_mail,
             'sms_total' => $smsParsed->messages,
             'country_code' => $request->country_code,
             'country_call' => $request->country_call,
@@ -161,7 +161,7 @@ class EventGuestsController extends Controller
             'template_id' => ['required', 'numeric'],
             'can_include_qrcode' => ['nullable'],
             'can_send_sms' => ['nullable'],
-            'can_send_whatsapp' => ['nullable'],
+            'can_send_mail' => ['nullable'],
             'guests_ids' => ['required', 'string']
         ]);
 
@@ -221,7 +221,7 @@ class EventGuestsController extends Controller
         $datas = $this->replaceToCode(
             $qr,
             $template->text_sms,
-            $template->text_whatsapp,
+            $template->text_mail,
             $event->hashid(),
             $commonGuest->name
         );
@@ -237,12 +237,12 @@ class EventGuestsController extends Controller
             'phone' => $commonGuest->phone,
             'code' => $datas['radom'],
             'text_sms' => $datas['sms'],
-            'text_whatsapp' => $datas['whatsapp'],
+            'text_mail' => $datas['mail'],
             'text_sms_hidden_code' => $datas['smsHidden'],
-            'text_whatsapp_hidden_code' => $datas['whatsappHidden'],
+            'text_mail_hidden_code' => $datas['mailHidden'],
             'can_include_qrcode' => $qr,
             'can_send_sms' => !!$request->can_send_sms,
-            'can_send_whatsapp' => !!$request->can_send_whatsapp,
+            'can_send_mail' => !!$request->can_send_mail,
             'sms_total' => $smsParsed->messages,
             'country_code' => $commonGuest->country_code,
             'country_call' => $commonGuest->country_call,

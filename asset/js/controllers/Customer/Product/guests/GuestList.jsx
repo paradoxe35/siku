@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux'
 import { useItemDeletion, List, ListDescriptionText } from '../template/Sections'
 import ModalConfirm from '@/js/react/components/ModalConfirm'
 import { useFetch, useListDataPaginator } from '@/js/react/hooks'
-import { Event_Guest, URLS, DispachGuestsDetail, DispachEventOpenGuestSocketDetail, TEMPLATE_SECTION, OverFlowStyle, onLoadedSocketLib } from '@/js/react/vars'
+import { Event_Guest, URLS, DispachGuestsDetail, DispachEventOpenGuestSocketDetail, TEMPLATE_SECTION, OverFlowStyle, onLoadedSocketLib, Event_Guests_Name } from '@/js/react/vars'
 import { putEventStatus } from '@/js/store/features/product/EventStatusSlice'
 import { Notifier } from '@/js/functions/notifier'
 import { DefaultButton } from '@/js/react/components/Buttons'
@@ -19,7 +19,7 @@ export const ShowListGuest = ({ v, handleDelete, canSend = true }) => {
     const { fetchAPi } = useFetch()
 
     const sms = (v.can_send_sms ? [TEMPLATE_SECTION.sms] : [])
-    const whatsapp = (v.can_send_whatsapp ? [TEMPLATE_SECTION.whatsapp] : [])
+    const mail = (v.can_send_mail ? [TEMPLATE_SECTION.mail] : [])
 
     const send = async (v) => {
         setLoading(true)
@@ -40,7 +40,7 @@ export const ShowListGuest = ({ v, handleDelete, canSend = true }) => {
             {canSend && (
                 <div onClick={e => e.stopPropagation()}>
                     {
-                        ((!!sms.length && !v.sended_sms) || (!!whatsapp.length && !v.sended_whatsapp)) &&
+                        ((!!sms.length && !v.sended_sms) || (!!mail.length && !v.sended_mail)) &&
                         <DefaultButton
                             textColor="text-default"
                             onClick={() => send(v)}
@@ -58,9 +58,9 @@ export const ShowListGuest = ({ v, handleDelete, canSend = true }) => {
                         <span className="text-success">{t('Envoyé')}</span> :
                         t('Non Envoyé')}
                 </div>}
-            {!!whatsapp.length &&
+            {!!mail.length &&
                 <div className="text-sm mt-1">
-                    {t('WhatsApp')}: {v.sended_whatsapp ?
+                    {t('Mail')}: {v.sended_mail ?
                         <span className="text-success">{t('Envoyé')}</span> :
                         t('Non Envoyé')}
                 </div>}
@@ -68,15 +68,15 @@ export const ShowListGuest = ({ v, handleDelete, canSend = true }) => {
         <ListDescriptionText
             item={v}
             onDelete={handleDelete}
-            canShown={[...sms, ...whatsapp]} />
+            canShown={[...sms, ...mail]} />
     </>
 }
 
 /**
  * 
- * @param {{  datas: any, setFullLoading: any, filter?:any, url: string, canSend?: boolean,canDelete?: boolean  }} param0 
+ * @param {{  datas: any, setFullLoading: any, filter?:any, url: string, canSend?: boolean,canDelete?: boolean, datasFromParent?: boolean  }} param0 
  */
-export const GuestList = ({ datas, setFullLoading, filter, url, canSend = true, canDelete = true }) => {
+export const GuestList = ({ datas, setFullLoading, filter, url, canSend = true, canDelete = true, datasFromParent = false }) => {
     const dispach = useDispatch()
 
     const [listData, setListData] = useListDataPaginator(datas)
@@ -89,6 +89,18 @@ export const GuestList = ({ datas, setFullLoading, filter, url, canSend = true, 
             return j
         })
     }, [setListData])
+
+    const handleGuestList = useCallback((e) => {
+        setListData(e.detail)
+    }, [setListData])
+
+    useEffect(() => {
+        if (datasFromParent) return
+        window.addEventListener(Event_Guests_Name, handleGuestList)
+        return () => {
+            window.removeEventListener(Event_Guests_Name, handleGuestList)
+        }
+    }, [])
 
     useEffect(() => {
         window.addEventListener(Event_Guest, onGuestUpdate)

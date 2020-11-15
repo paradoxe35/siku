@@ -15,7 +15,7 @@ class Guest extends JsonResource
     public function toArray($request)
     {
         $smsSend = $this->sendedSms();
-        $whatsappSend = $this->sendedWhatsapp();
+        $mailSend = $this->sendedMail();
 
         return [
             'id' => $this->id,
@@ -23,13 +23,13 @@ class Guest extends JsonResource
             'phone' => $this->phone,
             'sms' => $this->sms_total,
             'sended_sms' => $smsSend,
-            'sended_whatsapp' => $whatsappSend,
+            'sended_mail' => $mailSend,
             'autorized' => $this->autorized,
             'can_send_sms' => $this->can_send_sms,
-            'can_send_whatsapp' => $this->can_send_whatsapp,
+            'can_send_mail' => $this->can_send_mail,
             'text' => [
                 'sms' => $smsSend ? $this->text_sms : $this->text_sms_hidden_code,
-                'whatsapp' => $whatsappSend ? $this->text_whatsapp : $this->text_whatsapp_hidden_code
+                'mail' => $mailSend ? $this->text_mail : $this->text_mail_hidden_code
             ]
         ];
     }

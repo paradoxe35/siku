@@ -52,7 +52,7 @@ class EventTemplatesController extends Controller
             'sms_total' => ['required', 'numeric', 'min:1'],
             'per_sms' => ['required', 'numeric', 'min:1'],
             'text_sms' => ['required', 'string'],
-            'text_whatsapp' => ['required', 'string'],
+            'text_mail' => ['required', 'string'],
             'global' => ['nullable']
         ]);
 
@@ -79,7 +79,7 @@ class EventTemplatesController extends Controller
             'sms_total' => $smsParsed->messages,
             'per_sms' => $request->per_sms,
             'text_sms' => $request->text_sms,
-            'text_whatsapp' => $request->text_whatsapp,
+            'text_mail' => $request->text_mail,
             'global' => $isGlobal
         ]);
 

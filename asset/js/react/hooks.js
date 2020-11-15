@@ -142,7 +142,7 @@ export const useTemplateSelect = (url) => {
     const { t } = useTranslation()
     /**
      * @type { { ids: Array, entities: Object<string, 
-        *      { id: string, sms: string, name: string, text: { sms: string, whatsapp: string } } 
+        *      { id: string, sms: string, name: string, text: { sms: string, mail: string } } 
         *  >, loading: string, error: Object} }
         */
     // @ts-ignore

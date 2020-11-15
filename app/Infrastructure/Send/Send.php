@@ -23,9 +23,9 @@ class Send
     /**
      * @param Guest $guest
      */
-    protected function sendWhatsapp(Guest $guest, $price)
+    protected function sendMail(Guest $guest, $price)
     {
-        $this->saveGuestConsumed($guest, $price, 'whatsapp');
+        $this->saveGuestConsumed($guest, $price, 'mail');
     }
 
     /**
@@ -64,19 +64,19 @@ class Send
      * @param Guest $guest
      * @param SendHistorical $historical
      */
-    protected function whatsapp(Guest $guest, SendHistorical $historical)
+    protected function mail(Guest $guest, SendHistorical $historical)
     {
-        if ($guest->sendedWhatsapp()) {
+        if ($guest->sendedMail()) {
             return true;
         }
 
         $error = false;
 
-        $price = $guest->validateWhatsappPrice();
+        $price = $guest->validateMailPrice();
 
         if (!is_null($price)) {
             try {
-                $this->sendWhatsapp($guest, $price);
+                $this->sendMail($guest, $price);
             } catch (\Throwable $th) {
                 $error = true;
             }
@@ -85,7 +85,7 @@ class Send
         }
 
         $filled = $historical->fill([
-            'sended_whatsapp' => !$error,
+            'sended_mail' => !$error,
             'error' => $error
         ]);
 
@@ -115,8 +115,8 @@ class Send
             $this->sms($guest, $model);
         }
 
-        if ($guest->can_send_whatsapp) {
-            $this->whatsapp($guest, $model);
+        if ($guest->can_send_mail) {
+            $this->mail($guest, $model);
         }
 
         $guest->refresh();

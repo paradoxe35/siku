@@ -20,7 +20,7 @@ const SERVICES = {
 const INCLUDE_FORM = {
     template_id: 'template_id',
     can_send_sms: 'can_send_sms',
-    can_send_whatsapp: 'can_send_whatsapp',
+    can_send_mail: 'can_send_mail',
     guests_ids: 'guests_ids',
     can_include_qrcode: 'can_include_qrcode'
 }
@@ -100,10 +100,10 @@ export const IncludeCommonGuests = ({ element }) => {
         const form = new FormData(formRef.current)
 
         const vsms = services.includes(SERVICES.sms)
-        const vwhatsapp = services.includes(SERVICES.whatsapp)
+        const vmail = services.includes(SERVICES.mail)
 
         vsms && form.append(INCLUDE_FORM.can_send_sms, 'on')
-        vwhatsapp && form.append(INCLUDE_FORM.can_send_whatsapp, 'on')
+        vmail && form.append(INCLUDE_FORM.can_send_mail, 'on')
         form.append(INCLUDE_FORM.template_id, selectedTemplate);
         form.append(INCLUDE_FORM.guests_ids, guestsIds);
 

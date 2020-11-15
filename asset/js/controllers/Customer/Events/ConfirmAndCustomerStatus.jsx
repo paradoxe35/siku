@@ -92,8 +92,8 @@ const EStatus = ({ handleLoading }) => {
                         </span>
                     </div>
                     <div className="mb-1">
-                        {t("Whatsapp")} <span className="text-sm font-weight-bold">
-                            ${price(event.price.whatsapp)}
+                        {t("Mail")} <span className="text-sm font-weight-bold">
+                            ${price(event.price.mail)}
                         </span>
                     </div>
                 </div>

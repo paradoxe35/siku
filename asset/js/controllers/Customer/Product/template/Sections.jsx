@@ -80,15 +80,15 @@ export const validateTemplateSms = (templateTextarea, requiredKeys) => {
  * @param { Object } templateTextarea 
  * @param { Array } requiredKeys 
  */
-export const validateTemplateWhatsapp = (templateTextarea, requiredKeys) => {
-    const whatsapp = requiredKeys.filter(k => templateTextarea.whatsapp.indexOf(k) < 0)
-    if (whatsapp.length) {
-        Notifier.error(whatsapp.join(', ') + Localize({
-            fr: ' est / sont requis dans vos modèles whatsapp text',
-            en: 'is / are required in your text whatsapp templates'
+export const validateTemplateMail = (templateTextarea, requiredKeys) => {
+    const mail = requiredKeys.filter(k => templateTextarea.mail.indexOf(k) < 0)
+    if (mail.length) {
+        Notifier.error(mail.join(', ') + Localize({
+            fr: ' est / sont requis dans vos modèles mail text',
+            en: 'is / are required in your text mail templates'
         }))
     }
-    return !!!whatsapp.length;
+    return !!!mail.length;
 }
 
 /**
@@ -97,15 +97,15 @@ export const validateTemplateWhatsapp = (templateTextarea, requiredKeys) => {
  * @param { Array } requiredKeys 
  */
 export const validateTemplate = (templateTextarea, requiredKeys) => {
-    const whatsapp = validateTemplateWhatsapp(templateTextarea, requiredKeys)
+    const mail = validateTemplateMail(templateTextarea, requiredKeys)
     const sms = validateTemplateSms(templateTextarea, requiredKeys)
-    return (sms && whatsapp)
+    return (sms && mail)
 }
 
 
 /**
  * @param {{ 
-    *      item: { id: number, name: string, sms: number, text: { sms: string, whatsapp: string }, show?: boolean },
+    *      item: { id: number, name: string, sms: number, text: { sms: string, mail: string }, show?: boolean },
     *      onDelete?: (id: number) => void, canShown?: Array
     *   }} param0 
     */
@@ -142,7 +142,7 @@ export const List = ({
     },
     /**
      * @param {{  
-     *  data: Array<{ id: number, name: string, sms: number, text: { sms: string, whatsapp: string }, show?: boolean }>,
+     *  data: Array<{ id: number, name: string, sms: number, text: { sms: string, mail: string }, show?: boolean }>,
      *  children?: any
      * }} param0
      */
@@ -172,15 +172,15 @@ export const List = ({
 
 /**
 * @param { string } section 
-* @param { { sms: string, whatsapp: string }} textValue 
+* @param { { sms: string, mail: string }} textValue 
 */
 export const caseSectionValue = (section, textValue) => {
     switch (section) {
         case TEMPLATE_SECTION.sms:
             return textValue.sms
             break;
-        case TEMPLATE_SECTION.whatsapp:
-            return textValue.whatsapp
+        case TEMPLATE_SECTION.mail:
+            return textValue.mail
             break;
         default:
             return ''
@@ -190,20 +190,20 @@ export const caseSectionValue = (section, textValue) => {
 
 /**
  * @param { string } section
- * @param { { sms: string, whatsapp: string }} lastState 
+ * @param { { sms: string, mail: string }} lastState 
  * @param { string } value 
  */
 export const caseSection = (section, lastState, value) => {
     let y = {
         sms: '',
-        whatsapp: ''
+        mail: ''
     }
     switch (section) {
         case TEMPLATE_SECTION.sms:
-            y = { sms: value, whatsapp: lastState.whatsapp }
+            y = { sms: value, mail: lastState.mail }
             break;
-        case TEMPLATE_SECTION.whatsapp:
-            y = { sms: lastState.sms, whatsapp: value }
+        case TEMPLATE_SECTION.mail:
+            y = { sms: lastState.sms, mail: value }
             break;
         default:
             break;
@@ -246,11 +246,11 @@ export const SectionView = ({ onChange, icon = true, name = "message_view", canS
             </div>
         }
         {
-            canShow(canShown, TEMPLATE_SECTION.whatsapp) &&
+            canShow(canShown, TEMPLATE_SECTION.mail) &&
             <div className="custom-control custom-radio custom-control-inline">
-                <input type="radio" id={name + '-whatsapp'} onChange={onChange} name={name} value={TEMPLATE_SECTION.whatsapp} className="custom-control-input" />
-                <label className="custom-control-label" htmlFor={name + '-whatsapp'}>
-                    {icon && <ImgIcon src="/img/svg/whatsapp.svg" alt="WhatsApp" />}  {t('WhatsApp')}
+                <input type="radio" id={name + '-mail'} onChange={onChange} name={name} value={TEMPLATE_SECTION.mail} className="custom-control-input" />
+                <label className="custom-control-label" htmlFor={name + '-mail'}>
+                    {icon && <ImgIcon src="/img/svg/mail.svg" alt="Mail" />}  {t('Mail')}
                 </label>
             </div>
         }

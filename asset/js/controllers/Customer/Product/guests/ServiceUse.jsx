@@ -34,7 +34,7 @@ export const ServiceUse = ({ onSelect }) => {
         </div>
         <CustomCheckbox
             onChange={onChange}
-            value={SERVICES.whatsapp}
-            label={t('WhatsApp')} />
+            value={SERVICES.mail}
+            label={t('Mail')} />
     </div>
 }

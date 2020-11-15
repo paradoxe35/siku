@@ -128,6 +128,12 @@ Route::middleware(['auth', 'admin'])
                 Route::get('{id}/validators', "EventsController@validators")->name('validators');
             });
 
+        Route::name('price-balance.')
+            ->prefix('price-balance')
+            ->group(function () {
+                Route::get('', 'PriceBalanceController@index')->name('home');
+            });
+
         Route::namespace('Reports')
             ->prefix('reports')
             ->name('reports.')
@@ -147,11 +153,5 @@ Route::middleware(['auth', 'admin'])
             ->name('account.')
             ->group(function () {
                 Route::get('', "AccountController@index")->name('home');
-            });
-
-        Route::name('price-balance.')
-            ->prefix('price-balance')
-            ->group(function () {
-                Route::get('', 'PriceBalanceController@index')->name('home');
             });
     });

@@ -33,7 +33,7 @@ class PricingTest extends TestCase
         $json = $response->json();
         $this->assertArrayHasKey('prices', $json);
         $this->assertArrayHasKey('sms', $json['prices']);
-        $this->assertArrayHasKey('whatsapp', $json['prices']);
+        $this->assertArrayHasKey('mail', $json['prices']);
         return $json['prices'];
     }
 

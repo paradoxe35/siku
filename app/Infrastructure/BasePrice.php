@@ -15,6 +15,10 @@ class BasePrice
      */
     private static $amount = 0.058;
 
+    /**
+     * @var float
+     */
+    private static $amountMail = 0.01;
 
     /**
      * @var string
@@ -28,13 +32,29 @@ class BasePrice
 
 
     /**
-     * @param BaseRepository $rs
-     * 
      * @return float
      */
     public static function getAmount()
     {
-        return /* $rs->getAmount() ?: */ self::$amount;
+        $amount = BasePriceRepository::getAmount();
+
+        return !is_null($amount)  ? $amount : self::$amount;
+    }
+
+    /**
+     * @return float
+     */
+    public static function average()
+    {
+        return self::getAmount() + self::getAmountMail();
+    }
+
+    /**
+     * @return float
+     */
+    public static function getAmountMail()
+    {
+        return  self::$amountMail;
     }
 
     /**

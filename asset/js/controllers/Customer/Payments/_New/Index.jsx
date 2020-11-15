@@ -44,7 +44,7 @@ const CustomerPaymentsNew = () => {
     const [guests, setGuests] = useState(guestsSaved || DEFAULT_GUESTS_VALUE)
     const [prices, setPrices] = useState({
         sms: 0,
-        whatsapp: 0
+        mail: 0
     })
     const [showPrice, setShowPrice] = useState(0)
 

@@ -23,9 +23,9 @@ class Guest extends Model
      */
     protected $fillable = [
         'name', 'phone', 'email', 'code', 'autorized', 'template_id', 'sms_total',
-        'text_sms', 'text_whatsapp', 'can_send_sms', 'can_send_whatsapp',
+        'text_sms', 'text_mail', 'can_send_sms', 'can_send_mail',
         'can_include_qrcode', 'country_code', 'country_call', 'user_id',
-        'text_sms_hidden_code', 'text_whatsapp_hidden_code', 'common_guest_id',
+        'text_sms_hidden_code', 'text_mail_hidden_code', 'common_guest_id',
     ];
 
     /**
@@ -65,15 +65,15 @@ class Guest extends Model
     {
         /** @var ProductPrice */
         $productClass = resolve(ProductPrice::class);
-        list($sms, $whatsapp) = $productClass->getPrice($this->country_code);
+        list($sms, $mail) = $productClass->getPrice($this->country_code);
         $total = 0;
 
         if ($this->can_send_sms) {
             $total += !is_null($sms) ? ($sms * $this->sms_total) : 0;
         }
 
-        if ($this->can_send_whatsapp) {
-            $total += !is_null($whatsapp) ? $whatsapp : 0;
+        if ($this->can_send_mail) {
+            $total += !is_null($mail) ? $mail : 0;
         }
 
         return $total;
@@ -82,12 +82,12 @@ class Guest extends Model
     /**
      * @return int
      */
-    public function whatsappPrice()
+    public function mailPrice()
     {
         /** @var ProductPrice */
         $productClass = resolve(ProductPrice::class);
-        $whatsapp = $productClass->getPrice($this->country_code)['whatsapp'];
-        return !is_null($whatsapp) ? $whatsapp : 0;
+        $mail = $productClass->getPrice($this->country_code)['mail'];
+        return !is_null($mail) ? $mail : 0;
     }
 
     /**
@@ -104,12 +104,12 @@ class Guest extends Model
     /**
      * @return int|null
      */
-    public function validateWhatsappPrice()
+    public function validateMailPrice()
     {
         /** @var \App\User */
         $user = $this->user;
         $balance = $user->balance();
-        $price = $this->whatsappPrice();
+        $price = $this->mailPrice();
 
         if ($balance < $price) {
             return null;
@@ -164,10 +164,10 @@ class Guest extends Model
     /**
      * @return bool
      */
-    public function sendedWhatsapp()
+    public function sendedMail()
     {
         $h = $this->historical;
-        return $h && $h->sended_whatsapp;
+        return $h && $h->sended_mail;
     }
 
     /**
@@ -179,9 +179,9 @@ class Guest extends Model
 
         $sended_sms = $this->can_send_sms ? ($h ? $h->sended_sms : false) : true;
 
-        $sended_whatsapp = $this->can_send_whatsapp ? ($h ? $h->sended_whatsapp : false) : true;
+        $sended_mail = $this->can_send_mail ? ($h ? $h->sended_mail : false) : true;
 
-        return ($sended_sms && $sended_whatsapp && ($h && !$h->error));
+        return ($sended_sms && $sended_mail && ($h && !$h->error));
     }
 
     /**
@@ -193,9 +193,9 @@ class Guest extends Model
 
         $sended_sms = $this->can_send_sms && ($h ? !$h->sended_sms : true);
 
-        $sended_whatsapp = $this->can_send_whatsapp && ($h ? !$h->sended_whatsapp : true);
+        $sended_mail = $this->can_send_mail && ($h ? !$h->sended_mail : true);
 
-        return (($h && $h->error) || $sended_sms || $sended_whatsapp);
+        return (($h && $h->error) || $sended_sms || $sended_mail);
     }
 
     /**
@@ -226,8 +226,8 @@ class Guest extends Model
             $arr[] = 'SMS';
         }
 
-        if ($this->can_send_whatsapp) {
-            $arr[] = 'WhatsApp';
+        if ($this->can_send_mail) {
+            $arr[] = 'Mail';
         }
 
         return $arr;
@@ -238,7 +238,7 @@ class Guest extends Model
      * 
      * @return bool 
      */
-    public function getCanSendWhatsappAttribute($value)
+    public function getCanSendMailAttribute($value)
     {
         return boolval($value);
     }

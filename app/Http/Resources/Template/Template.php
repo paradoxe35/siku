@@ -21,7 +21,7 @@ class Template extends JsonResource
             'sms' => $this->sms_total,
             'text' => [
                 'sms' =>  $this->text_sms,
-                'whatsapp' => $this->text_whatsapp
+                'mail' => $this->text_mail
             ]
         ];
     }

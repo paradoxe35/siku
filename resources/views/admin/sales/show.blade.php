@@ -29,7 +29,10 @@
                 <div class="col-lg-6">
                     <h4>{{ __('Client') }}</h4>
                     <p><span class="text-muted">{{ __('ID') }}</span>: {{ $sale->user->id }}</p>
-                    <p><span class="text-muted">{{ __('Email') }}</span>: {{ $sale->user->email }}</p>
+                    <p>
+                        <span class="text-muted">{{ __('Email') }}</span>: 
+                        <a href="{{ route('admin.customers.show', ['id' => $sale->user->id]) }}">{{ $sale->user->email }}</a>
+                    </p>
                     <p><span class="text-muted">{{ __('Téléphone') }}</span>: {{ $sale->user->phone }}</p>
                 </div>
             </div>

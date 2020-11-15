@@ -15,10 +15,7 @@ export const clientCountry = async (select, callbackData, defaultValue = null) =
         SlimSelect.setData(await callbackData(defaultValue))
     } else {
         customerCountryApi()
-            .then(async (c) =>
-                c ? SlimSelect.setData(await callbackData(c)) :
-                    SlimSelect.setData(await callbackData({ code: null }))
-            )
+            .then(async (c) => SlimSelect.setData(await callbackData(c || { code: "CA" })))
     }
     return SlimSelect
 }

@@ -18,7 +18,7 @@ import {
     TextAreatEdit,
     useSectionText,
     validateTemplateSms,
-    validateTemplateWhatsapp
+    validateTemplateMail
 } from '../template/Sections';
 import CustomCheckbox from '@/js/react/components/CustomCheckbox';
 import { Empty } from '@/js/react/components/Empty';
@@ -42,11 +42,11 @@ const NEW_GUEST_FORM = {
     template_id: 'template_id',
     autorized: 'autorized',
     text_sms: 'text_sms',
-    text_whatsapp: 'text_whatsapp',
+    text_mail: 'text_mail',
     qrcode: 'qrcode',
     can_send: 'can_send',
     can_send_sms: 'can_send_sms',
-    can_send_whatsapp: 'can_send_whatsapp',
+    can_send_mail: 'can_send_mail',
     can_include_qrcode: 'can_include_qrcode',
     sms_total: 'sms_total',
     country_code: 'country_code',
@@ -103,12 +103,12 @@ const EstimatePrice = ({ disabledTextField, services, textValues, phone }) => {
         // @ts-ignore
         const sms = smsCount(textValues[SERVICES.sms])
         fetchAPi('get', `${URLS.countryPricing}?country_code=${dataPhone.country}`, {}, true)
-            .then(({ data: { prices: { sms: smsPrice, whatsapp } } }) => {
+            .then(({ data: { prices: { sms: smsPrice, mail } } }) => {
                 const p = ((+smsPrice) * +(sms.messages))
                 setPrices({
                     // @ts-ignore
                     sms: !isNaN(p) ? p.nround(3) : null,
-                    whatsapp
+                    mail
                 })
             })
     }, [services, textValues, phone, disabledTextField])
@@ -130,8 +130,8 @@ const EstimatePrice = ({ disabledTextField, services, textValues, phone }) => {
                     <p>{t('SMS')}: {price(prices.sms)} </p>
                 }
                 {
-                    services.includes(SERVICES.whatsapp) &&
-                    <p>{t('WhatsApp')}: {price(prices.whatsapp)} </p>
+                    services.includes(SERVICES.mail) &&
+                    <p>{t('Mail')}: {price(prices.mail)} </p>
                 }
             </>
         )}
@@ -151,7 +151,7 @@ const CreateNewGuest = () => {
 
     const INIT_V = {
         sms: '',
-        whatsapp: ''
+        mail: ''
     }
 
     const [textValues, setTextValues] = useState(INIT_V)
@@ -244,13 +244,13 @@ const CreateNewGuest = () => {
         const { target } = e
         const keys = KeysRequiredInText
         const vsms = services.includes(SERVICES.sms)
-        const vwhatsapp = services.includes(SERVICES.whatsapp)
+        const vmail = services.includes(SERVICES.mail)
 
         if (vsms && !validateTemplateSms(finalTextValue.current, [keys[1]])) {
             return
         }
 
-        if (vwhatsapp && !validateTemplateWhatsapp(finalTextValue.current, [keys[1]])) {
+        if (vmail && !validateTemplateMail(finalTextValue.current, [keys[1]])) {
             return
         }
 
@@ -260,9 +260,9 @@ const CreateNewGuest = () => {
         // @ts-ignore
         const form = new FormData(target)
         form.append(NEW_GUEST_FORM.text_sms, text.sms)
-        form.append(NEW_GUEST_FORM.text_whatsapp, text.whatsapp)
+        form.append(NEW_GUEST_FORM.text_mail, text.mail)
         vsms && form.append(NEW_GUEST_FORM.can_send_sms, 'on')
-        vwhatsapp && form.append(NEW_GUEST_FORM.can_send_whatsapp, 'on')
+        vmail && form.append(NEW_GUEST_FORM.can_send_mail, 'on')
         form.append(NEW_GUEST_FORM.sms_total, countSms.messages.toString())
         form.append(NEW_GUEST_FORM.template_id, selectedTemplate);
         form.append(NEW_GUEST_FORM.phone, dataPhone.number);
@@ -365,7 +365,7 @@ const GuestsListProvider = () => {
         setDatas(e.detail)
     }, [setShowAll, setDatas])
 
-    const { fullLoading, parentElemt, setFullLoading } = useFullLoading()
+    const { fullLoading, setFullLoading } = useFullLoading()
 
     const { fetchLoading: loading, fetchAPi, ApiRequest } = useFetch()
 
@@ -441,7 +441,7 @@ const GuestsListProvider = () => {
             </div>
         </div>
         <div className="my-3" />
-        <GuestList url={URLS.eventGuests} datas={datas} setFullLoading={setFullLoading} />
+        <GuestList url={URLS.eventGuests} datas={datas} setFullLoading={setFullLoading} datasFromParent={true} />
         {/*  @ts-ignore */}
         {!loading && datas.meta && !datas.meta.total ? (
             <div className="mt-5">

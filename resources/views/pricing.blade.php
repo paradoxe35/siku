@@ -54,9 +54,9 @@
                                                 <div class="text-center">
                                                     <div
                                                         class="icon icon-shape bg-gradient-default text-white rounded-circle mb-4">
-                                                        @include('template.svg.whatsapp')
+                                                        @include('template.svg.mail')
                                                     </div>
-                                                    <h4 class="h4 text-default text-uppercase">{{ __("WhatsApp") }}</h4>
+                                                    <h4 class="h4 text-default text-uppercase">{{ __("Mail") }}</h4>
                                                 </div>
                                                 <h4 class=" display-4" data-target="Pricing.wtspPrice">$0</h4>
                                             </div>

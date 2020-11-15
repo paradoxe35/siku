@@ -18,6 +18,6 @@ class Price extends Model
      * @var array
      */
     protected $fillable = [
-        'sms', 'whatsapp', 'tax', 'active', 'country_code', 'country'
+        'sms', 'mail', 'tax', 'active', 'country_code', 'country'
     ];
 }

@@ -22,7 +22,7 @@ export const EVENT_VALUE = {
     route: null,
     price: {
         sms: 0,
-        whatsapp: null
+        mail: 0
     },
     created_at: null,
     active: null,
@@ -33,7 +33,7 @@ export const EVENT_VALUE = {
 
 export const TEMPLATE_SECTION = {
     sms: 'sms',
-    whatsapp: 'whatsapp'
+    mail: 'mail'
 }
 
 /** @type { any } */

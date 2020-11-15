@@ -70,9 +70,9 @@
                             <div class="card-body py-5">
                                 <div class="text-center text-md-left">
                                     <div class="icon icon-shape bg-gradient-default text-white rounded-circle mb-4">
-                                        @include('template.svg.whatsapp')
+                                        @include('template.svg.mail')
                                     </div>
-                                    <h4 class="h3 text-default text-uppercase">{{ __("WhatsApp") }}</h4>
+                                    <h4 class="h3 text-default text-uppercase">{{ __("Mail") }}</h4>
                                 </div>
                                 <p class="description mt-3">
                                     {{ $app_name }}

@@ -19,7 +19,7 @@ class Template extends Model
      *
      * @var array
      */
-    protected $fillable = ['user_id', 'name', 'sms_total', 'per_sms', 'text_sms', 'text_whatsapp', 'global'];
+    protected $fillable = ['user_id', 'name', 'sms_total', 'per_sms', 'text_sms', 'text_mail', 'global'];
 
 
     /**

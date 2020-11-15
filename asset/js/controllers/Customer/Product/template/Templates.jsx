@@ -31,14 +31,14 @@ const NEW_TEMPLATE_FORM = {
     sms_total: 'sms_total',
     per_sms: 'per_sms',
     text_sms: 'text_sms',
-    text_whatsapp: 'text_whatsapp',
+    text_mail: 'text_mail',
     global: 'global'
 }
 
 
 const TextareaFieldAndDetail = () => {
     /**
-    * @type { { sms: string, whatsapp: string }} 
+    * @type { { sms: string, mail: string }} 
     */
     // @ts-ignore
     const templateTextarea = useSelector(state => state.productTemplateEdit)
@@ -52,7 +52,7 @@ const TextareaFieldAndDetail = () => {
 
     const [textValue, setTextValue] = useState(!templateTextarea.sms ? {
         sms: defaultV,
-        whatsapp: defaultV
+        mail: defaultV
     } : templateTextarea)
 
     /**
@@ -117,7 +117,7 @@ const NewTemplate = () => {
 
 
     /**
-    * @type { { sms: string, whatsapp: string }} 
+    * @type { { sms: string, mail: string }} 
     */
     // @ts-ignore
     const templateTextarea = useSelector(state => state.productTemplateEdit)
@@ -135,7 +135,7 @@ const NewTemplate = () => {
         form.append(NEW_TEMPLATE_FORM.per_sms, smsMeta.per_message.toString())
         form.append(NEW_TEMPLATE_FORM.sms_total, smsMeta.messages.toString())
         form.append(NEW_TEMPLATE_FORM.text_sms, templateTextarea.sms)
-        form.append(NEW_TEMPLATE_FORM.text_whatsapp, templateTextarea.whatsapp)
+        form.append(NEW_TEMPLATE_FORM.text_mail, templateTextarea.mail)
 
         fetchAPi('post', URLS.eventTemplatesStore, form, true)
             .then(({ data: { data } }) => dispatch(eventTemplateAdded(data)))

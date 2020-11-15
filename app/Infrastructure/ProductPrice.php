@@ -3,42 +3,14 @@
 namespace App\Infrastructure;
 
 use App\Infrastructure\BasePrice;
-use App\Repositories\BasePriceRepository;
-use App\Services\Nexmo\NexmoPricing;
-use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Http;
-
-class PriceUSD
-{
-    /**
-     * @var null
-     */
-    private static $price = null;
-
-    /**
-     * @return mixed
-     */
-    public static function get()
-    {
-        return self::$price;
-    }
-    /**
-     * @param mixed $v
-     * 
-     * @return void
-     */
-    public static function set($v)
-    {
-        self::$price = $v;
-    }
-}
+use App\Services\Twilio\TwilioPricing;
 
 class ProductPrice
 {
     /**
-     * @var NexmoPricing
+     * @var TwilioPricing
      */
-    private NexmoPricing $nexmo;
+    private TwilioPricing $twilio;
 
     /**
      * @var string
@@ -46,11 +18,11 @@ class ProductPrice
     public static string $exchangeApi = 'https://api.exchangeratesapi.io/latest?base=EUR&symbols=USD';
 
     /**
-     * @param NexmoPricing $nexmo
+     * @param TwilioPricing $twilio
      */
-    public function __construct(NexmoPricing $nexmo)
+    public function __construct(TwilioPricing $twilio)
     {
-        $this->nexmo = $nexmo;
+        $this->twilio = $twilio;
     }
 
     /**
@@ -59,9 +31,7 @@ class ProductPrice
      */
     private function smsPrice($sms)
     {
-        $eurToUsd = $this->USDbase();
-
-        return null === $sms || null === $eurToUsd ? null : ($eurToUsd * $sms);
+        return null === $sms ? null : $sms;
     }
 
     /**
@@ -72,59 +42,15 @@ class ProductPrice
     {
         $basePrice = BasePrice::getAmount();
 
-        $sms = $this->nexmo->parseSmsPrice($country_code);
+        $sms = $this->twilio->parseSmsPrice($country_code);
 
-        $smsUSD = $this->smsPrice(!is_null($sms) ? $sms[$this->nexmo->priceKey] : null);
+        $smsUSD = $this->smsPrice(!is_null($sms) ? $sms[$this->twilio->priceKey] : null);
 
-        $smsUnitPrice = null == $smsUSD || null == $basePrice ? null  : ($smsUSD + $basePrice);
+        $smsUnitPrice = (null == $smsUSD || null == $basePrice) ? null  : ($smsUSD + $basePrice);
 
         return [
             'sms' => !$smsUnitPrice ? null : BasePrice::roundPrice($smsUnitPrice),
-            'whatsapp' => null
+            'mail' => BasePrice::getAmountMail()
         ];
-    }
-
-    /**
-     * @return \Illuminate\Contracts\Cache\Repository
-     */
-    public function cache()
-    {
-        return Cache::store('redis');
-    }
-
-    /**
-     * @param integer $amount
-     * @return integer|null
-     */
-    public function USDbase()
-    {
-        // get change from runtime
-        $get = PriceUSD::get();
-        if ($get) return $get;
-
-        // return cache result
-        $cache = $this->cache()->get('PriceUSD');
-
-        if ($cache) {
-            PriceUSD::set($cache);
-            return $cache;
-        }
-
-        try {
-            $response = Http::timeout(15)->get(self::$exchangeApi);
-
-            if (!$response->ok()) return null;
-
-            $rates = (object) $response->json()['rates'];
-
-            PriceUSD::set($rates->USD);
-            // cache result
-            $this->cache()->put('PriceUSD', $rates->USD, now()->addMinutes(30));
-
-            return $rates->USD;
-        } catch (\Throwable $th) {
-            //throw $th;
-        }
-        return null;
     }
 }
