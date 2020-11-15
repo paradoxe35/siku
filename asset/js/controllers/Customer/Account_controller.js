@@ -13,10 +13,6 @@ export default class extends Controller {
         accountUpdatePhone: this.data.get('accountUpdatePhone')
     }
 
-    country = {
-        name: null,
-        code: null
-    }
 
     initialize() {
         // @ts-ignore
@@ -35,7 +31,7 @@ export default class extends Controller {
         this.phoneNumber.addEventListener('click', this.connectReact)
     }
 
-    connectedCountry(c) {
+    connectedCountry = (c) => {
         this.country = {
             name: c.name,
             code: c.code

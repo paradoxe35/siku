@@ -39,10 +39,6 @@ const Layout = function () {
         }
     })
 }
-const Tooltip = function () {
-    const e = $('[data-toggle="tooltip"]');
-    e.length && e.tooltip()
-}
 
 const FormControl = function () {
     var e = $(".form-control");
@@ -52,7 +48,7 @@ const FormControl = function () {
 }
 
 export const connect = () => {
-    const o = { Layout, Tooltip, FormControl }
+    const o = { Layout, FormControl }
     for (const key in o) {
         o[key]()
     }

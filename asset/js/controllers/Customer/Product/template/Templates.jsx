@@ -20,8 +20,8 @@ import CustomCheckbox from '@/js/react/components/CustomCheckbox';
 const { event_date } = store.getState().workingEvent
 
 const defaultTemplate = {
-    en: (`Dear brother/sister {name}, I want to express my wish to see you on my special wedding day, which will be on ${event_date} at the Les Victorieux room, and this is why I am sending you this message. I look forward to seeing you on the day I tie the knot because the ceremony will be a little less complete without you. I love you!\nYour invitation code is: {code}.\n {url} use this link, if you want your code in picture.`).trim(),
-    fr: (`Cher frère / sœur {name}, je veux vous exprimer mon souhait de vous voir le jour de mon mariage spécial, qui sera au date du ${event_date} à la salle Les Victorieux, et c'est pourquoi je vous envoie ce message. J'ai hâte de vous voir le jour où je me marierai car la cérémonie sera un peu moins complète sans vous. Je t'aime!\nVotre code d'invitation est: {code}.\n {url} utiliser ce lien, si vous voulez votre code en image.`).trim()
+    en: (`Dear brother/sister {name},\nI want to express my wish to see you on my special wedding day, which will be on ${event_date} at the Les Victorieux room, and this is why I am sending you this message. I look forward to seeing you on the day I tie the knot because the ceremony will be a little less complete without you. I love you!\nYour invitation code is: {code}.\n{url} use this link, if you want your code in picture.`).trim(),
+    fr: (`Cher frère / sœur {name},\nje veux vous exprimer mon souhait de vous voir le jour de mon mariage spécial, qui sera au date du ${event_date} à la salle Les Victorieux, et c'est pourquoi je vous envoie ce message. J'ai hâte de vous voir le jour où je me marierai car la cérémonie sera un peu moins complète sans vous. Je t'aime!\nVotre code d'invitation est: {code}.\n{url} utiliser ce lien, si vous voulez votre code en image.`).trim()
 }
 
 
@@ -55,6 +55,12 @@ const TextareaFieldAndDetail = () => {
         mail: defaultV
     } : templateTextarea)
 
+    const values = useRef(textValue)
+
+    useEffect(() => {
+        values.current = textValue
+    }, [textValue])
+
     /**
      * @param {React.ChangeEvent<HTMLTextAreaElement>} param0 
      */
@@ -63,20 +69,22 @@ const TextareaFieldAndDetail = () => {
     }, [setTextValue, caseSection, section])
 
     const handleKeyUp = useCallback(() => {
-        dispche(setTemplateTextAreaValue(textValue))
+        dispche(setTemplateTextAreaValue(values.current))
     }, [textValue, dispche, setTemplateTextAreaValue])
 
     useEffect(() => {
         handleKeyUp()
     }, [])
 
-    return <TextAreatEdit
-        section={section}
-        handleTextChange={handleTextChange}
-        handleKeyUp={handleKeyUp}
-        textValue={textValue}
-        name={NEW_TEMPLATE_FORM.description}
-        handleSection={handleSection} />
+    return <>
+        <TextAreatEdit
+            section={section}
+            handleTextChange={handleTextChange}
+            handleKeyUp={handleKeyUp}
+            textValue={textValue}
+            name={NEW_TEMPLATE_FORM.description}
+            handleSection={handleSection} />
+    </>
 }
 
 
@@ -231,11 +239,11 @@ const Templates = () => {
     return <>
         <Help />
         <div className="row justify-content-start">
-            <div className="col-lg-6">
+            <div className="col-lg-7">
                 <RowDivider />
                 <NewTemplate />
             </div>
-            <div className="col-lg-6">
+            <div className="col-lg-5">
                 <RowDivider />
                 <TemplatesList />
             </div>

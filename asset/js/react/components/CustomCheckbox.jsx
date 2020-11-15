@@ -1,10 +1,10 @@
 //@ts-check
 import React, { memo, useEffect, useRef } from "react"
 
-const CustomCheckbox = memo(/**  @param { { value?:any, name?: any, label?:any, onChange?:any, defaultChecked?:any, checked?:boolean } } props */
+const CustomCheckbox = memo(/**  @param { { disabled?:boolean, value?:any, name?: any, label?:any, onChange?:any, defaultChecked?:any, checked?:boolean } } props */
     (props) => {
         // @ts-ignore
-        const { name = null, label = '', onChange = null, defaultChecked, checked } = props
+        const { name = null, label = '', onChange = null, defaultChecked, checked, disabled = null } = props
         const random = Math.random()
         const ref = useRef(null)
 
@@ -24,6 +24,7 @@ const CustomCheckbox = memo(/**  @param { { value?:any, name?: any, label?:any, 
                 {...props}
                 defaultChecked={defaultChecked}
                 ref={ref}
+                disabled={disabled}
                 className="custom-control-input"
                 name={name}
                 onChange={onChange}

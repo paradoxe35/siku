@@ -29,7 +29,7 @@ class PaymentsController extends Controller
     /**
      * @var array
      */
-    private $amountRule = ['required', 'numeric',  'min:0.001'];
+    private $amountRule = ['required', 'numeric',  'min:4'];
 
     /**
      * @return \Illuminate\Http\Response
@@ -166,9 +166,9 @@ class PaymentsController extends Controller
     {
         $data = $request->validate([
             'guests' => $this->guestRule,
-            'price' => $this->amountRule
+            'amount' => $this->amountRule
         ]);
-        $data['price'] = round($data['price'], 2);
+        $data['price'] = round($data['amount'], 2);
 
         $request->session()->put('pay-data', $data);
         $this->putUserDataPay($request->user()->id, $data);

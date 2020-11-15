@@ -13,12 +13,12 @@ class BasePrice
     /**
      * @var float
      */
-    private static $amount = 0.058;
+    private static $amountSms = 0.048;
 
     /**
      * @var float
      */
-    private static $amountMail = 0.01;
+    private static $amountMail = 0.02;
 
     /**
      * @var string
@@ -34,19 +34,19 @@ class BasePrice
     /**
      * @return float
      */
-    public static function getAmount()
+    public static function getAmountSms()
     {
         $amount = BasePriceRepository::getAmount();
 
-        return !is_null($amount)  ? $amount : self::$amount;
+        return !is_null($amount)  ? $amount['sms'] : self::$amountSms;
     }
 
     /**
      * @return float
      */
-    public static function average()
+    public static function getTotalAmount()
     {
-        return self::getAmount() + self::getAmountMail();
+        return self::getAmountSms() + (self::getAmountMail() / 2);
     }
 
     /**
@@ -54,7 +54,8 @@ class BasePrice
      */
     public static function getAmountMail()
     {
-        return  self::$amountMail;
+        $amount = BasePriceRepository::getAmount();
+        return !is_null($amount) ? $amount['mail'] : self::$amountMail;
     }
 
     /**

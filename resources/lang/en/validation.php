@@ -150,7 +150,8 @@ return [
         'price' => 'price',
         'authorized' => 'authorized',
         'phone' => 'phone number',
-        'guest' => 'guest'
+        'guest' => 'guest',
+        'amount' => 'amount'
     ],
 
 ];

@@ -121,14 +121,14 @@ class HomeController extends Controller
      */
     private function revenueDetail()
     {
-        $basePrice = BasePrice::getAmount();
+        $basePrice = BasePrice::getTotalAmount();
 
         $revenueQeury = $this->monthlyQuery($this->queryBal());
 
         $guests = $revenueQeury->sum('guests');
-        $amout = $revenueQeury->sum('amount');
+        // $amout = $revenueQeury->sum('amount');
 
-        return $amout - ($guests * $basePrice);
+        return ($guests * $basePrice);
     }
 
     /**

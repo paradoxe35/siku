@@ -96,7 +96,7 @@ class UserPay extends Notification implements ShouldQueue
 
         $pay = $this->payMeta;
 
-        $revenue = doubleval($pay->amount) - (BasePrice::getAmount() * round($pay->guests));
+        $revenue = (BasePrice::getTotalAmount() * $pay->guests);
 
         $content = "Completed Order " . Emoji::CHARACTER_MONEY_BAG . Emoji::CHARACTER_CHECK_MARK_BUTTON . "\n";
         $content .= "Customer name: {$user->name} \n";

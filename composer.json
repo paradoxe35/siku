@@ -22,6 +22,7 @@
         "instasent/sms-counter-php": "^0.5.2",
         "irazasyed/telegram-bot-sdk": "^3.3",
         "laravel-notification-channels/telegram": "^0.5.0",
+        "laravel-notification-channels/twilio": "^3.1",
         "laravel/framework": "^7.24",
         "laravel/passport": "^9.3",
         "laravel/sanctum": "^2.6",

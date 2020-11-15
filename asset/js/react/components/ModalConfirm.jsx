@@ -15,7 +15,7 @@ const ModalConfirm = forwardRef(
         const { t } = useTranslation()
         return createPortal((
             <div className="modal fade" ref={ref} tabIndex={-1} role="dialog" aria-hidden="true">
-                <div className={`modal-dialog modal-dialog-centered ${props.size || 'modal-sm'}`} role="document">
+                <div className={`modal-dialog modal-dialog-scrollable modal-dialog-centered ${props.size || 'modal-sm'}`} role="document">
                     <div className="modal-content">
                         <div className="modal-body">{props.children} {props.message || t('Êtes-vous sûr ?')}</div>
                         {

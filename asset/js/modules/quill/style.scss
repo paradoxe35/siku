@@ -1,0 +1,34 @@
+.default-style .ql-editor h1,
+.default-style .ql-editor h2,
+.default-style .ql-editor h3,
+.default-style .ql-editor h4,
+.default-style .ql-editor h5,
+.default-style .ql-editor h6,
+.default-style .ql-editor,
+.default-style .ql-toolbar {
+    font-family: "Sailec Light", sans-serif;
+}
+
+.default-style .ql-editor,
+.default-style .ql-toolbar {
+    color: var(--default);
+    b,
+    strong {
+        font-weight: bold;
+    }
+}
+
+.default-style {
+    .ql-snow .ql-tooltip[data-mode="link"]::before {
+        content: "";
+    }
+    .ql-snow .ql-tooltip.ql-editing a.ql-action::after {
+        content: "";
+    }
+    .ql-snow .ql-tooltip::before {
+        content: "";
+    }
+    .ql-tooltip.ql-editing {
+        z-index: 1051;
+    }
+}

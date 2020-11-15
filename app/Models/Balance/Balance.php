@@ -41,9 +41,9 @@ class Balance extends Model
      */
     public function revenue()
     {
-        $base = BasePrice::getAmount();
+        $base = BasePrice::getTotalAmount();
 
-        return $this->amount - ($base * $this->guests);
+        return ($base * $this->guests);
     }
 
     /**

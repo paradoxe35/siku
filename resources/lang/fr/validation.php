@@ -143,5 +143,6 @@ return [
         'phone' => 'numéro de téléphone',
         'guests' => 'invités',
         'guest' => 'invité',
+        'amount' => 'montant'
     ],
 ];

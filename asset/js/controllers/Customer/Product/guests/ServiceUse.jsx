@@ -8,9 +8,9 @@ const SERVICES = {
     ...TEMPLATE_SECTION,
 }
 
-export const ServiceUse = ({ onSelect }) => {
+export const ServiceUse = ({ onSelect, allService = false }) => {
     const { t } = useTranslation();
-    const [data, setData] = useState([SERVICES.sms])
+    const [data, setData] = useState(allService ? Object.values(SERVICES) : [SERVICES.sms])
 
     useEffect(() => {
         onSelect(data)
@@ -27,14 +27,17 @@ export const ServiceUse = ({ onSelect }) => {
     return <div className="mt-4 d-md-flex">
         <div className="mr-md-5">
             <CustomCheckbox
-                onChange={onChange}
+                onChange={allService ? null : onChange}
                 defaultChecked
+                disabled={allService}
                 value={SERVICES.sms}
                 label={t('SMS')} />
         </div>
         <CustomCheckbox
             onChange={onChange}
             value={SERVICES.mail}
+            disabled={allService}
+            defaultChecked={allService ? true : false}
             label={t('Mail')} />
     </div>
 }

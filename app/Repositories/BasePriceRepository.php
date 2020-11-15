@@ -7,12 +7,15 @@ use App\Models\BasePrice;
 class BasePriceRepository
 {
     /**
-     * @return int
+     * @return array
      */
     public static function getAmount()
     {
         $first = BasePrice::query()->first();
 
-        return $first ? $first->amount : null;
+        return $first ? [
+            'sms' => $first->amount_sms,
+            'mail' => $first->amount_mail
+        ] : null;
     }
 }

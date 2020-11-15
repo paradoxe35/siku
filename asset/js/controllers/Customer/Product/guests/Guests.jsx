@@ -26,7 +26,7 @@ import { Notifier } from '@/js/functions/notifier';
 import { useFetch, useFullLoading, usePhoneInput, useServices, useTemplateSelect } from '@/js/react/hooks';
 import { putEventStatus } from '@/js/store/features/product/EventStatusSlice';
 import { GuestList } from './GuestList';
-import { SYMBOL } from '@/js/functions/functions';
+import { stripHtml, SYMBOL } from '@/js/functions/functions';
 import { GuestField, ServicesField } from './GuestField';
 import { IncludeCommonGuests } from './IncludeCommonGuests';
 import { Loader } from '@/js/react/components/Loader';
@@ -65,7 +65,7 @@ const ModalViewText = ({ textValues }) => {
             </div>
         </div>
         <p className="text-sm mb-0">
-            {caseSectionValue(section, textValues)}
+            {stripHtml(caseSectionValue(section, textValues))}
         </p>
     </div>
 }
@@ -346,7 +346,7 @@ const CreateNewGuest = () => {
         {!disabledTextField && <ModalConfirm
             footer={true}
             closeText={t('Fermer')}
-            size="modal-md"
+            size={`modal-${indexModalView == VIEWS_MODAL.edit ? 'lg' : 'md'}`}
             confirmText={t('Enregister')}
             ref={modalRef}
             message={modalViews[indexModalView]} />}

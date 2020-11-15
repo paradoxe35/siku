@@ -40,17 +40,18 @@ class ProductPrice
      */
     public function getPrice($country_code)
     {
-        $basePrice = BasePrice::getAmount();
+        $smsPrice = BasePrice::getAmountSms();
+        $mailPrice = BasePrice::getAmountMail();
 
         $sms = $this->twilio->parseSmsPrice($country_code);
 
         $smsUSD = $this->smsPrice(!is_null($sms) ? $sms[$this->twilio->priceKey] : null);
 
-        $smsUnitPrice = (null == $smsUSD || null == $basePrice) ? null  : ($smsUSD + $basePrice);
+        $smsUnitPrice = (is_null($smsUSD) || is_null($smsPrice)) ? null  : ($smsUSD + $smsPrice);
 
         return [
-            'sms' => !$smsUnitPrice ? null : BasePrice::roundPrice($smsUnitPrice),
-            'mail' => BasePrice::getAmountMail()
+            'sms' => is_null($smsUnitPrice) ? null : BasePrice::roundPrice($smsUnitPrice),
+            'mail' => $mailPrice
         ];
     }
 }

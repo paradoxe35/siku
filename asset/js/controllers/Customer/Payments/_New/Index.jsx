@@ -24,7 +24,7 @@ const GuestsField = ({ guests, onGuestFieldChange, onGuestFieldBlur, selectedSer
                 className="form-control"
                 placeholder={t("Nombre d'Invitations")} />
         </div>
-        <ServiceUse onSelect={selectedServices} />
+        <ServiceUse allService={true} onSelect={selectedServices} />
         <Label>
             {t('Le montant est calculé par rapport à votre pays')} ({country_name}), {" "}
             {t('qui est le pays enregistré par défaut à votre compte utilisateur')}.
@@ -86,7 +86,7 @@ const CustomerPaymentsNew = () => {
     }
 
     const payDataHandle = useCallback(() => {
-        fetchAPi('post', URLS.payData, { guests: guests, price: showPrice }, true, true)
+        fetchAPi('post', URLS.payData, { guests: guests, amount: showPrice }, true, true)
             .then(({ data: { redirect_url } }) => {
                 TurbolinksApp.visit(redirect_url)
             })
