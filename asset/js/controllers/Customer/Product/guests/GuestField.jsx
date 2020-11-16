@@ -22,21 +22,24 @@ const SERVICES = { ...TEMPLATE_SECTION }
  */
 export const validServiceFields = (email, phone, services = [], optional = false) => {
     let errors = []
+    email = (email || '').trim();
+    phone = (phone || '').trim();
+
     const emailErr = Localize({
-        fr: "L'adresse email entrée est incorrecte",
-        en: "The email address entered is incorrect",
+        fr: `L'adresse email ${email.length < 1 ? 'est requis' : 'entrée est incorrect'}`,
+        en: `The email address ${email.length < 1 ? 'is required' : 'entered is incorrect'}`,
     })
     const phoneErr = Localize({
-        fr: "Le numéro de téléphone entrée est incorrect",
-        en: "The phone number entered is incorrect",
+        fr: `Le numéro de téléphone ${phone.length < 1 ? 'est requis' : 'entrée est incorrect'}`,
+        en: `The phone number ${phone.length < 1 ? 'is required' : 'entered is incorrect'}`,
     })
 
     if (!optional) {
         if (services.includes(SERVICES.mail) && !isValidEmail(email)) errors.push(emailErr)
         if (services.includes(SERVICES.sms) && !isValidPhoneNumber(phone)) errors.push(phoneErr)
     } else {
-        const notEmptyEmail = (email || '').trim().length > 0
-        const notEmptyPhone = (phone || '').trim().length > 0
+        const notEmptyEmail = email.length > 0
+        const notEmptyPhone = phone.length > 0
 
         if (notEmptyEmail && !isValidEmail(email)) errors.push(emailErr)
         if (notEmptyPhone && !isValidPhoneNumber(phone)) errors.push(phoneErr)
