@@ -1,7 +1,4 @@
 {
-    "name": "siku",
-    "version": "0.0.1",
-    "description": "Siku dev dependecies",
     "private": true,
     "scripts": {
         "start": "concurrently \"npm:watch-poll\" \"npm:css-watch\"",
