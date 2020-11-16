@@ -143,6 +143,8 @@ return [
         'phone' => 'numéro de téléphone',
         'guests' => 'invités',
         'guest' => 'invité',
-        'amount' => 'montant'
+        'amount' => 'montant',
+        'start_time' => 'date de début',
+        'end_time' => 'date de fin'
     ],
 ];

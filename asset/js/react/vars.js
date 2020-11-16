@@ -6,10 +6,11 @@ export const setURLS = (urls) => URLS = urls
 export const setLang = (lang) => LANG = lang
 
 // event page components indexs controller
-export const I_EVENTS = 0
-export const I_NEW_EVENT = 1;
-export const I_PROFILE_STATUS = 2;
-
+export const EVENTS_VIEW = {
+    I_EVENTS: 0,
+    I_NEW_EVENT: 1,
+    I_PROFILE_STATUS: 2
+}
 // redux state async
 export const ASYNC = {
     idle: 'idle',

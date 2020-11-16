@@ -1,4 +1,6 @@
 import 'notify-js-lib'
+import { TurbolinksApp } from '../modules/turbolinks'
+import { Localize } from './localize'
 
 const bootstrap = { ...$.notify.getStyle('bootstrap') }
 $.notify.addStyle('bootstrap', {
@@ -21,4 +23,12 @@ export const Notifier = {
         $.notify(message, { position: "bottom left", className: 'error', autoHideDelay: time });
         return asyncTimer(time)
     },
+}
+
+export const savedChanges = () => {
+    Notifier.sussess(Localize({
+        fr: 'Modifications enregistrées',
+        en: 'Saved changes'
+    }))
+    window.setTimeout(() => TurbolinksApp.reload(), 3000)
 }

@@ -5,7 +5,56 @@ import PhoneInput from "@/js/react/components/PhoneInput"
 import React from "react"
 import { useTranslation } from "react-i18next"
 import { ServiceUse } from "./ServiceUse"
+import { isValidPhoneNumber } from 'react-phone-number-input';
+import { TEMPLATE_SECTION } from "@/js/react/vars"
+import { isValidEmail } from "@/js/functions/email-validator"
+import { Localize } from "@/js/functions/localize"
+import { Notifier } from "@/js/functions/notifier"
+import { HtmlAlert } from "@/js/functions/dom"
 
+const SERVICES = { ...TEMPLATE_SECTION }
+
+/**
+ * @param {string} email 
+ * @param {string} phone 
+ * @param {?Array} services 
+ * @param {?boolean} optional 
+ */
+export const validServiceFields = (email, phone, services = [], optional = false) => {
+    let errors = []
+    const emailErr = Localize({
+        fr: "L'adresse email entrée est incorrecte",
+        en: "The email address entered is incorrect",
+    })
+    const phoneErr = Localize({
+        fr: "Le numéro de téléphone entrée est incorrect",
+        en: "The phone number entered is incorrect",
+    })
+
+    if (!optional) {
+        if (services.includes(SERVICES.mail) && !isValidEmail(email)) errors.push(emailErr)
+        if (services.includes(SERVICES.sms) && !isValidPhoneNumber(phone)) errors.push(phoneErr)
+    } else {
+        const notEmptyEmail = (email || '').trim().length > 0
+        const notEmptyPhone = (phone || '').trim().length > 0
+
+        if (notEmptyEmail && !isValidEmail(email)) errors.push(emailErr)
+        if (notEmptyPhone && !isValidPhoneNumber(phone)) errors.push(phoneErr)
+
+        if (!notEmptyPhone && !notEmptyEmail) errors.push(Localize({
+            fr: "Votre formulaire est incorrect",
+            en: "Your form is incorrect",
+        }))
+    }
+
+    if (errors.length < 1) {
+        return true
+    }
+
+    Notifier.error(HtmlAlert.message(errors), 7000)
+
+    return false
+}
 
 export const GuestField = ({ onChangeField, fields, phone, onPhoneValueChange, form }) => {
     const { t } = useTranslation()
@@ -22,6 +71,7 @@ export const GuestField = ({ onChangeField, fields, phone, onPhoneValueChange, f
             </div>
             <div className="col-lg-6">
                 <div className="form-group">
+                    <label className="form-control-label" />
                     <div className="input-group input-group-merge">
                         <PhoneInput
                             value={phone}
@@ -38,7 +88,7 @@ export const GuestField = ({ onChangeField, fields, phone, onPhoneValueChange, f
             className="form-control form-control-sm"
             value={fields[NEW_GUEST_FORM.email]}
             name={NEW_GUEST_FORM.email}
-            placeholder={t("Email de l'invité") + t("(Optionnel)")} />
+            placeholder={t("Email de l'invité")} />
     </>
 }
 
@@ -54,7 +104,19 @@ const QrcodeCase = ({ form }) => {
     </div>
 }
 
-export const ServicesField = ({ onChangeServices, form }) => {
+const ICalendar = ({ form }) => {
+    const { t } = useTranslation();
+    const NEW_GUEST_FORM = form
+
+    return <div className="qr---case">
+        <div className="text-xs text-muted mt-3 mb-2">
+            {t("Cocher cette case si vous souhaitez attacher un calendrier de rappel")}.
+        </div>
+        <CustomCheckbox name={NEW_GUEST_FORM.icalendar || 'icalendar'} label={t('ICalendar')} />
+    </div>
+}
+
+export const ServicesField = ({ onChangeServices, form = {} }) => {
     const { t } = useTranslation()
 
     return <>
@@ -62,6 +124,7 @@ export const ServicesField = ({ onChangeServices, form }) => {
             {t("Sélectionner les services qui seront utilisés à l'envoi du message")}.
         </div>
         <ServiceUse onSelect={onChangeServices} />
+        <ICalendar form={form} />
         <QrcodeCase form={form} />
     </>
 }

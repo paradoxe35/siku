@@ -3,12 +3,13 @@ import React, { Fragment, useCallback, useEffect, useRef, useState } from 'react
 import { useTranslation } from 'react-i18next';
 import { Localize } from '@/js/functions/localize';
 import { Notifier } from '@/js/functions/notifier';
-import { TEMPLATE_SECTION } from '@/js/react/vars';
+import { TEMPLATE_SECTION, URLS } from '@/js/react/vars';
 import { Loader } from '@/js/react/components/Loader';
 import { configureStore } from '@reduxjs/toolkit';
 import { debounce, stripHtml } from '@/js/functions/functions';
 import { DefaultButton } from '@/js/react/components/Buttons';
 import Label from '@/js/react/components/Label';
+import { useFetch } from '@/js/react/hooks';
 
 export const KeysRequiredInText = ['{name}', '{code}']
 
@@ -273,26 +274,10 @@ const toHtml = (v) => {
     return hasNot ? v : v.replace(/\n/g, '<br>')
 }
 
-const MailTemplates = ({ mailContent, setLoading, setMailTemplate, mailTemplate }) => {
-    return <>
-        <div style={{ maxHeight: "400px", overflowY: "auto" }}>
 
-        </div>
-    </>
-}
-
-const MAIL_TEMPLATE_DEFAULT = {
-    name: Localize({ fr: 'Par défaut', en: 'Default' }),
-    key: 'default'
-}
-
-const QuillEditorMail = ({ value, handleTextChange, handleKeyUp, defaultMailTemplate }) => {
-    const { t } = useTranslation();
+const QuillEditorMail = ({ value, handleTextChange, handleKeyUp }) => {
     const ref = useRef(null)
     const [loading, setLoading] = useState(false)
-    const [showTemplates, setShowTemplates] = useState(false)
-    const [mailTemplate, setMailTemplate] = useState(defaultMailTemplate || MAIL_TEMPLATE_DEFAULT)
-
     /** @type { { current: import('quill').default } } */
     const quill = useRef(null)
 
@@ -311,18 +296,19 @@ const QuillEditorMail = ({ value, handleTextChange, handleKeyUp, defaultMailTemp
     useEffect(() => {
         (async () => {
             setLoading(true)
-            const lib = (await import('@/js/modules/quill/QuillEditor'))
-            const Quill = lib.default
+            try {
+                const lib = (await import('@/js/modules/quill/QuillEditor'))
+                const Quill = lib.default
 
-            const qll = quill.current = new Quill(ref.current, lib.defaultOption);
-            qll.clipboard.dangerouslyPasteHTML(toHtml(value))
+                const qll = quill.current = new Quill(ref.current, lib.defaultOption);
+                qll.clipboard.dangerouslyPasteHTML(toHtml(value))
 
-            qll.on("editor-change", updateText)
-            qll.on("editor-change", debounce(updateTextInStore, 1000, false))
+                qll.on("editor-change", updateText)
+                qll.on("editor-change", debounce(updateTextInStore, 1000, false))
 
-            updateText()
-            window.setTimeout(() => updateTextInStore(), 1000)
-
+                updateText()
+                window.setTimeout(() => updateTextInStore(), 1000)
+            } catch (e) { }
             setLoading(false)
         })()
 
@@ -334,40 +320,16 @@ const QuillEditorMail = ({ value, handleTextChange, handleKeyUp, defaultMailTemp
         }
     }, [])
 
-    const handleShowTemplate = useCallback(() => {
-        setShowTemplates(r => !r)
-    }, [])
-
     return <Loader loading={loading}>
-        <div className="my-3">
-            <DefaultButton
-                color="secondary"
-                textColor="text-primary"
-                onClick={handleShowTemplate}
-                label={showTemplates ? <i className="ni ni-bold-left" /> : t('Mail Modèles')} />
-            {" - "}
-            <div className="d-inline-block">
-                <Label>{mailTemplate.name}</Label>
-            </div>
-        </div>
-        <div className="default-style" hidden={showTemplates}>
+        <div className="default-style">
             <div className={loading ? 'py-6' : ''}>
                 <div id="full-editor" style={{ maxHeight: "300px", overflowY: "auto" }} ref={ref}></div>
             </div>
         </div>
-        {showTemplates && (
-            <div className={loading ? 'py-6' : ''}>
-                <MailTemplates
-                    setLoading={setLoading}
-                    mailTemplate={mailTemplate}
-                    setMailTemplate={setMailTemplate}
-                    mailContent={quill.current.root.innerHTML} />
-            </div>
-        )}
     </Loader>
 }
 
-export const TextAreatEdit = ({ handleSection, section, handleTextChange, handleKeyUp, textValue, name, defaultMailTemplate = null }) => {
+export const TextAreatEdit = ({ handleSection, section, handleTextChange, handleKeyUp, textValue, name }) => {
     const { t } = useTranslation();
     useEffect(() => {
         const time = setTimeout(() => {
@@ -383,7 +345,6 @@ export const TextAreatEdit = ({ handleSection, section, handleTextChange, handle
         {section === TEMPLATE_SECTION.mail ? (
             <>
                 <QuillEditorMail
-                    defaultMailTemplate={defaultMailTemplate}
                     handleKeyUp={handleKeyUp}
                     handleTextChange={handleTextChange}
                     value={caseSectionValue(section, textValue)} />

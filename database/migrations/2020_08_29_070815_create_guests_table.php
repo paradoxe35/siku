@@ -20,7 +20,7 @@ class CreateGuestsTable extends Migration
             $table->string('name');
             $table->string('phone');
             $table->string('code');
-            $table->integer('autorized');
+            $table->integer('autorized')->default(1);
             $table->integer('sms_total')->nullable();
             $table->longText('text_sms')->nullable();
             $table->longText('text_whatsapp')->nullable();

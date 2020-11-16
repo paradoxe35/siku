@@ -35,8 +35,20 @@ class Event extends JsonResource
             'hash' => $this->hashid(),
             'guests' => $p['guests'],
             'is_public' => $this->is_public,
-            'event_date' => $this->event_date->format('Y-m-d H:i'),
-            'created_at' => $this->created_at->format('Y-m-d H:i')
+            'event_date' => $this->formate($this->event_date),
+            'start_time' => $this->formate($this->start_time),
+            'end_time' => $this->formate($this->end_time),
+            'created_at' => $this->formate($this->created_at),
         ];
+    }
+
+    /**
+     * @param \Datetime $date
+     * 
+     * @return \Datetime
+     */
+    private function formate($date)
+    {
+        return $date->format('Y-m-d H:i');
     }
 }

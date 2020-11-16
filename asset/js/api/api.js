@@ -18,7 +18,7 @@ setI18nLanguage(document.querySelector('html').getAttribute('lang'))
 export const errorResponse = (error, mustNotifierErrors = false, reloadStatus = 0) => {
     if (error.response) {
         !!reloadStatus && error.response.status === reloadStatus && window.location.reload()
-        mustNotifierErrors && Notifier.error(HtmlAlert.message(error.response.data));
+        mustNotifierErrors && Notifier.error(HtmlAlert.message(error.response.data), 7000);
     }
     return Promise.reject(error.response ? error.response.data : error)
 }

@@ -35,7 +35,7 @@ const CustomerPayments = () => {
             },
             {
                 to: '/send-status',
-                name: t("Status d'envoi")
+                name: t("Statut d'envoi")
             },
         ]}
             routes={[

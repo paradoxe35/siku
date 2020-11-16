@@ -151,7 +151,9 @@ return [
         'authorized' => 'authorized',
         'phone' => 'phone number',
         'guest' => 'guest',
-        'amount' => 'amount'
+        'amount' => 'amount',
+        'start_time' => 'start date',
+        'end_time' => 'end date'
     ],
 
 ];

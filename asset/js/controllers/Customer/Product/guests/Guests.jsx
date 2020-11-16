@@ -27,7 +27,7 @@ import { useFetch, useFullLoading, usePhoneInput, useServices, useTemplateSelect
 import { putEventStatus } from '@/js/store/features/product/EventStatusSlice';
 import { GuestList } from './GuestList';
 import { stripHtml, SYMBOL } from '@/js/functions/functions';
-import { GuestField, ServicesField } from './GuestField';
+import { GuestField, ServicesField, validServiceFields } from './GuestField';
 import { IncludeCommonGuests } from './IncludeCommonGuests';
 import { Loader } from '@/js/react/components/Loader';
 
@@ -36,7 +36,7 @@ const SERVICES = {
     qrcode: 'qrcode'
 }
 
-const NEW_GUEST_FORM = {
+const GUEST_FORM = {
     name: 'name',
     phone: 'phone',
     template_id: 'template_id',
@@ -51,7 +51,8 @@ const NEW_GUEST_FORM = {
     sms_total: 'sms_total',
     country_code: 'country_code',
     country_call: 'country_call',
-    email: 'email'
+    email: 'email',
+    icalendar: 'icalendar'
 }
 
 
@@ -145,8 +146,8 @@ const CreateNewGuest = () => {
     const { phone, onPhoneValueChange } = usePhoneInput()
 
     const [fields, setFields] = useState({
-        [NEW_GUEST_FORM.name]: '',
-        [NEW_GUEST_FORM.autorized]: '1',
+        [GUEST_FORM.name]: '',
+        [GUEST_FORM.autorized]: '1'
     })
 
     const INIT_V = {
@@ -189,8 +190,7 @@ const CreateNewGuest = () => {
 
 
     const validField = useMemo(() => {
-        return isValidPhoneNumber(phone) &&
-            fields[NEW_GUEST_FORM.name].trim().length > 1
+        return fields[GUEST_FORM.name].trim().length > 1
     }, [fields, phone])
 
     const disabledTextField = !selectedTemplate || !services.length || !validField
@@ -219,7 +219,7 @@ const CreateNewGuest = () => {
     }
 
     const modalViews = useMemo(() => {
-        const guestNmae = fields[NEW_GUEST_FORM.name];
+        const guestNmae = fields[GUEST_FORM.name];
         const values = { ...INIT_V }
         Object.keys(textValues)
             .forEach((k) => {
@@ -231,7 +231,7 @@ const CreateNewGuest = () => {
             [VIEWS_MODAL.edit]: <ModalEditText setTextValues={setTextValues} textValues={values} />,
             [VIEWS_MODAL.view]: <ModalViewText textValues={values} />
         }
-    }, [setTextValues, textValues, fields[NEW_GUEST_FORM.name]])
+    }, [setTextValues, textValues, fields[GUEST_FORM.name]])
 
     const { fetchLoading: onSave, fetchAPi } = useFetch()
     /**
@@ -245,6 +245,10 @@ const CreateNewGuest = () => {
         const keys = KeysRequiredInText
         const vsms = services.includes(SERVICES.sms)
         const vmail = services.includes(SERVICES.mail)
+        // @ts-ignore
+        const form = new FormData(target)
+
+        if (!validServiceFields(form.get(GUEST_FORM.email).toString(), phone, services)) return
 
         if (vsms && !validateTemplateSms(finalTextValue.current, [keys[1]])) {
             return
@@ -256,20 +260,23 @@ const CreateNewGuest = () => {
 
         const text = finalTextValue.current
         const countSms = smsCount(text.sms)
-        const dataPhone = parsePhoneNumber(phone)
-        // @ts-ignore
-        const form = new FormData(target)
-        form.append(NEW_GUEST_FORM.text_sms, text.sms)
-        form.append(NEW_GUEST_FORM.text_mail, text.mail)
-        vsms && form.append(NEW_GUEST_FORM.can_send_sms, 'on')
-        vmail && form.append(NEW_GUEST_FORM.can_send_mail, 'on')
-        form.append(NEW_GUEST_FORM.sms_total, countSms.messages.toString())
-        form.append(NEW_GUEST_FORM.template_id, selectedTemplate);
-        form.append(NEW_GUEST_FORM.phone, dataPhone.number);
-        form.append(NEW_GUEST_FORM.country_code, dataPhone.country);
-        form.append(NEW_GUEST_FORM.country_call, dataPhone.countryCallingCode);
 
-        form.has(NEW_GUEST_FORM.can_send) && DispachEventOpenGuestSocketDetail(true)
+        if (isValidPhoneNumber(phone)) {
+            const dataPhone = parsePhoneNumber(phone)
+
+            form.append(GUEST_FORM.phone, dataPhone.number);
+            form.append(GUEST_FORM.country_code, dataPhone.country);
+            form.append(GUEST_FORM.country_call, dataPhone.countryCallingCode);
+        }
+
+        form.append(GUEST_FORM.text_sms, text.sms)
+        form.append(GUEST_FORM.text_mail, text.mail)
+        vsms && form.append(GUEST_FORM.can_send_sms, 'on')
+        vmail && form.append(GUEST_FORM.can_send_mail, 'on')
+        form.append(GUEST_FORM.sms_total, countSms.messages.toString())
+        form.append(GUEST_FORM.template_id, selectedTemplate);
+
+        form.has(GUEST_FORM.can_send) && DispachEventOpenGuestSocketDetail(true)
 
         fetchAPi('post', URLS.eventGuestsStore, form, true)
             .then(({ data }) => {
@@ -277,8 +284,11 @@ const CreateNewGuest = () => {
                 Notifier.sussess(t('Créé avec succès !'))
                 // @ts-ignore
                 updateTextValue({ value: selectedTemplate })
-                setFields(e => ({ ...e, [NEW_GUEST_FORM.name]: '' }))
+                setFields(e => ({ ...e, [GUEST_FORM.name]: '' }))
                 onPhoneValueChange('')
+                // @ts-ignore
+                target.querySelector(`[name=${GUEST_FORM.email}]`).value = ''
+
                 dispach(putEventStatus({ saved_guests: data.meta.total }))
             })
     }
@@ -287,7 +297,7 @@ const CreateNewGuest = () => {
         <form method="post" onSubmit={saveGuest} autoComplete="off">
             <GuestField
                 onChangeField={onChangeField}
-                form={NEW_GUEST_FORM}
+                form={GUEST_FORM}
                 fields={fields}
                 phone={phone}
                 onPhoneValueChange={onPhoneValueChange} />
@@ -298,8 +308,8 @@ const CreateNewGuest = () => {
                 type="number"
                 className="form-control form-control-sm"
                 onChange={onChangeField}
-                value={fields[NEW_GUEST_FORM.autorized]}
-                name={NEW_GUEST_FORM.autorized}
+                value={fields[GUEST_FORM.autorized]}
+                name={GUEST_FORM.autorized}
                 placeholder={t("Autorisés")} />
             <div className="text-xs text-muted mt-3 mb-2">
                 {t("Choisissez un de vos modèles enregistrés comme message d'envoi, vous pouvez également le modifier à votre guise")}.
@@ -323,12 +333,12 @@ const CreateNewGuest = () => {
                     </div>
                 )
             }
-            <ServicesField form={NEW_GUEST_FORM} onChangeServices={onChangeServices} />
+            <ServicesField form={GUEST_FORM} onChangeServices={onChangeServices} />
             <div className="send---case">
                 <div className="text-xs text-muted mt-3 mb-2">
                     {t("Cochez cette case si vous souhaitez enregistrer l'invité et envoyer le message en même temps")}.
                 </div>
-                <CustomCheckbox name={NEW_GUEST_FORM.can_send} label={t('Enregister et envoyer')} />
+                <CustomCheckbox name={GUEST_FORM.can_send} label={t('Enregister et envoyer')} />
             </div>
             <div className="mt-4">
                 <DefaultButton

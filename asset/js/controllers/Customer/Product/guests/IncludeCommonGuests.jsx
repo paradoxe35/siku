@@ -22,7 +22,8 @@ const INCLUDE_FORM = {
     can_send_sms: 'can_send_sms',
     can_send_mail: 'can_send_mail',
     guests_ids: 'guests_ids',
-    can_include_qrcode: 'can_include_qrcode'
+    can_include_qrcode: 'can_include_qrcode',
+    icalendar: 'icalendar'
 }
 
 export const IncludeCommonGuests = ({ element }) => {

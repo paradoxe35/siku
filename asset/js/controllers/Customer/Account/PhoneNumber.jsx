@@ -4,13 +4,13 @@ import { useTranslation } from "react-i18next";
 import { InitReact } from '@/js/react/init';
 import { URLS } from '@/js/react/vars';
 import { useFetch, usePhoneInput } from '@/js/react/hooks';
-import { TurbolinksApp } from '@/js/modules/turbolinks';
 import PhoneInput from '@/js/react/components/PhoneInput';
 import { useSelector } from 'react-redux';
 import { DefaultButton } from '@/js/react/components/Buttons';
 import { isValidPhoneNumber, parsePhoneNumber } from 'react-phone-number-input';
 import { ReduxDispatch } from '@/js/store';
 import { connectUser } from '@/js/store/features/UserSlice';
+import { savedChanges } from '@/js/functions/notifier';
 
 
 const Index = () => {
@@ -25,7 +25,7 @@ const Index = () => {
         fetchAPi('patch', URLS.accountUpdatePhone, { phone: dataPhone.number }, true)
             .then(({ data }) => {
                 ReduxDispatch(connectUser(data));
-                TurbolinksApp.reload()
+                savedChanges()
             })
     }, [phone])
 

@@ -2,12 +2,14 @@
 import React, { useCallback, useState, useContext } from 'react'
 import { useTranslation } from "react-i18next";
 import { DefaultButton } from '@/js/react/components/Buttons';
-import { I_PROFILE_STATUS, URLS, LANG } from '@/js/react/vars';
+import { EVENTS_VIEW, URLS } from '@/js/react/vars';
 import { EventContext } from '@js/react/contexts';
 import Datetime from '@/js/react/components/Datetime';
 import { Notifier } from '@/js/functions/notifier';
 import { Localize } from '@/js/functions/localize';
 import { useFetch } from '@/js/react/hooks';
+import { InputField } from '@/js/react/components/InputField';
+import CustomCheckbox from '@/js/react/components/CustomCheckbox';
 
 
 const CreateEvent = ({ updateComponentIndex, addEvent }) => {
@@ -19,7 +21,7 @@ const CreateEvent = ({ updateComponentIndex, addEvent }) => {
     const newState = event => {
         addEvent(event)
         updateEvent(event)
-        updateComponentIndex(I_PROFILE_STATUS)
+        updateComponentIndex(EVENTS_VIEW.I_PROFILE_STATUS)
     }
     const handleSubmit = useCallback(/** @param { React.FormEvent<HTMLFormElement> } e */(e) => {
         e.preventDefault()
@@ -40,51 +42,69 @@ const CreateEvent = ({ updateComponentIndex, addEvent }) => {
         <form method="post" onSubmit={handleSubmit} autoComplete="off">
             <div className="row">
                 <div className="col">
-                    <div className="form-group">
-                        <div className="input-group input-group-merge">
-                            <input className="form-control form-control-muted" name="event_name"
-                                placeholder={t("Nom D'événement")} type="text" required />
-                        </div>
-                    </div>
+                    <InputField
+                        className="form-control form-control-muted"
+                        placeholder={t("Nom d'événement")} name="event_name" required>
+                        {t("Nom d'événement")}
+                    </InputField>
                 </div>
             </div>
             <div className="row">
                 <div className="col-md-6">
                     <div className="form-group">
+                        <label className="form-control-label">{t("Temps de début")}</label>
                         <Datetime locale='fr'
                             dateFormat="YYYY-MM-DD"
+                            defaultValue={new Date()}
                             inputProps={{
-                                placeholder: t("Date d'événement"),
-                                className: "form-control form-control-muted", name: "event_date", required: true
+                                placeholder: t("Temps de début"),
+                                className: "form-control form-control-muted",
+                                name: "start_time",
+                                required: true
                             }} />
                     </div>
                 </div>
                 <div className="col-md-6">
                     <div className="form-group">
-                        <div className="input-group input-group-merge">
-                            <input
-                                className="form-control form-control-muted" name="event_guest"
-                                placeholder={t("Nombre d'invité présumé")} type="number" required />
-                        </div>
+                        <label className="form-control-label">{t("Temps de fin")}</label>
+                        <Datetime locale='fr'
+                            dateFormat="YYYY-MM-DD"
+                            inputProps={{
+                                placeholder: t("Temps de fin"),
+                                className: "form-control form-control-muted",
+                                name: "end_time",
+                                required: true
+                            }} />
                     </div>
                 </div>
             </div>
             <div className="row">
                 <div className="col-md-6">
+                    <InputField
+                        type="number"
+                        className="form-control form-control-muted"
+                        placeholder={t("Nombre d'invité")}
+                        name="event_guest" required>
+                        {t("Nombre d'invité")}
+                    </InputField>
+                </div>
+                <div className="col-md-6">
                     <div className="form-group">
+                        {t("Description")}
                         <div className="input-group input-group-merge">
-                            <textarea placeholder={t("Description") + t('(Optionnel)')} name="description" className="form-control form-control-muted"
-                                rows={2}></textarea>
+                            <textarea
+                                placeholder={t('(Optionnel)')}
+                                name="description"
+                                className="form-control form-control-muted"
+                                rows={2} />
                         </div>
                     </div>
                 </div>
-                <div className="col-md-6">
-                    <div className="custom-control custom-checkbox mb-3">
-                        <input type="checkbox" defaultChecked={false} name="is_public" className="custom-control-input" id="customCheck1" />
-                        <label className="custom-control-label text-muted" htmlFor="customCheck1">
-                            {t('Public')}
-                        </label>
-                    </div>
+
+            </div>
+            <div className="row mb-3">
+                <div className="col">
+                    <CustomCheckbox name="is_public" label={t('Public')} />
                 </div>
             </div>
             <DefaultButton label={t('Enregistrer')} loading={loading} type="submit" />

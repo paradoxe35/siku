@@ -4,14 +4,14 @@ import { useTranslation } from "react-i18next";
 import { InitReact } from '@/js/react/init';
 import Datetime from '@/js/react/components/Datetime';
 import { DefaultButton } from '@/js/react/components/Buttons';
-import { Notifier } from '@/js/functions/notifier';
-import { Localize } from '@/js/functions/localize';
 import { URLS } from '@/js/react/vars';
 import { useFetch } from '@/js/react/hooks';
 import { useDispatch } from 'react-redux';
 import { setCurrentEvent } from '@/js/store/features/EventSlice';
 import { useSelector } from 'react-redux';
-import { TurbolinksApp } from '@/js/modules/turbolinks';
+import { InputField } from '@/js/react/components/InputField';
+import CustomCheckbox from '@/js/react/components/CustomCheckbox';
+import { savedChanges } from '@/js/functions/notifier';
 
 
 const CustomerSettings = () => {
@@ -19,10 +19,10 @@ const CustomerSettings = () => {
     const { fetchAPi, fetchLoading: loading } = useFetch()
     const dispatch = useDispatch()
     /**
-     * @type { { name:string, is_public: boolean, event_date:string } }
+     * @type { * }
      */
     // @ts-ignore
-    const { name, is_public, event_date } = useSelector(s => s.workingEvent)
+    const event = useSelector(s => s.workingEvent)
 
     const handleSubmit = useCallback((e) => {
         e.preventDefault()
@@ -31,11 +31,7 @@ const CustomerSettings = () => {
         fetchAPi('put', URLS.eventUpdate, form, true)
             .then(({ data }) => {
                 dispatch(setCurrentEvent(data))
-                Notifier.sussess(Localize({
-                    fr: 'Modifications enregistrées',
-                    en: 'Saved changes'
-                }))
-                TurbolinksApp.isc.visit(URLS.eventSettingsRoute, { action: 'replace' })
+                savedChanges()
             })
     }, [])
     return <>
@@ -45,35 +41,44 @@ const CustomerSettings = () => {
                 <form method="post" onSubmit={handleSubmit} autoComplete="off">
                     <div className="row">
                         <div className="col">
-                            <div className="form-group">
-                                <div className="input-group input-group-merge">
-                                    <input className="form-control" defaultValue={name} name="event_name"
-                                        placeholder={t("Nom d'événement")} type="text" required />
-                                </div>
-                            </div>
+                            <InputField defaultValue={event.name} name="event_name" required>
+                                {t("Nom d'événement")}
+                            </InputField>
                         </div>
                     </div>
                     <div className="row">
                         <div className="col-md-6">
                             <div className="form-group">
+                                <label className="form-control-label">{t("Temps de début")}</label>
                                 <Datetime locale='fr'
                                     dateFormat="YYYY-MM-DD"
-                                    defaultValue={event_date}
+                                    defaultValue={event.start_time}
                                     inputProps={{
-                                        placeholder: t("Date d'événement"),
-                                        className: "form-control", name: "event_date", required: true
+                                        placeholder: t("Temps de début"),
+                                        className: "form-control",
+                                        name: "start_time",
+                                        required: true
+                                    }} />
+                            </div>
+                        </div>
+                        <div className="col-md-6">
+                            <div className="form-group">
+                                <label className="form-control-label">{t("Temps de fin")}</label>
+                                <Datetime locale='fr'
+                                    dateFormat="YYYY-MM-DD"
+                                    defaultValue={event.end_time}
+                                    inputProps={{
+                                        placeholder: t("Temps de fin"),
+                                        className: "form-control",
+                                        name: "end_time",
+                                        required: true
                                     }} />
                             </div>
                         </div>
                     </div>
                     <div className="row mb-3">
                         <div className="col-md-6">
-                            <div className="custom-control custom-checkbox">
-                                <input type="checkbox" defaultChecked={is_public} name="is_public" className="custom-control-input" id="customCheck1" />
-                                <label className="custom-control-label text-muted" htmlFor="customCheck1">
-                                    {t('Public')}
-                                </label>
-                            </div>
+                            <CustomCheckbox name="is_public" defaultChecked={event.is_public} label={t('Public')} />
                         </div>
                     </div>
                     <DefaultButton label={t('Enregistrer les modifications')} loading={loading} type="submit" />

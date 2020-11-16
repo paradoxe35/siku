@@ -12,7 +12,7 @@ import React, { Fragment, useCallback, useEffect, useMemo, useState } from 'reac
 import { useTranslation } from "react-i18next";
 import { isValidPhoneNumber, parsePhoneNumber } from 'react-phone-number-input';
 import { useDispatch, useSelector } from 'react-redux';
-import { GuestField } from '../guests/GuestField';
+import { GuestField, validServiceFields } from '../guests/GuestField';
 import { List } from '../template/Sections';
 import Help from './Help';
 
@@ -42,8 +42,7 @@ const CreateGuest = () => {
         }, [setFields])
 
     const validField = useMemo(() => {
-        return isValidPhoneNumber(phone) &&
-            fields[GUEST_FORM.name].trim().length > 1
+        return fields[GUEST_FORM.name].trim().length > 1
     }, [fields, phone])
 
     /**
@@ -55,14 +54,18 @@ const CreateGuest = () => {
 
         const { target } = e
 
-        const dataPhone = parsePhoneNumber(phone)
         // @ts-ignore
         const form = new FormData(target)
 
-        form.append(GUEST_FORM.phone, dataPhone.number);
-        form.append(GUEST_FORM.country_code, dataPhone.country);
-        form.append(GUEST_FORM.country_call, dataPhone.countryCallingCode);
+        if (!validServiceFields(form.get(GUEST_FORM.email).toString(), phone, [], true)) return
 
+        if (isValidPhoneNumber(phone)) {
+            const dataPhone = parsePhoneNumber(phone)
+
+            form.append(GUEST_FORM.phone, dataPhone.number);
+            form.append(GUEST_FORM.country_code, dataPhone.country);
+            form.append(GUEST_FORM.country_call, dataPhone.countryCallingCode);
+        }
 
         fetchAPi('post', URLS.commonGuestsStore, form, true)
             .then(({ data: { data } }) => {
@@ -70,6 +73,8 @@ const CreateGuest = () => {
                 dispach(commonGuestAdded(data))
                 setFields(e => ({ ...e, [GUEST_FORM.name]: '' }))
                 onPhoneValueChange('')
+                // @ts-ignore
+                target.querySelector(`[name=${GUEST_FORM.email}]`).value = ''
             })
     }
 
@@ -101,7 +106,11 @@ const ShowList = ({ v, handleDelete }) => {
             <div className="col">
                 <h4 className="mb-1">{v.name}</h4>
                 <h4 className="mb-1">
-                    <small>{v.phone}</small><br />
+                    {v.phone && (
+                        <>
+                            <small>{v.phone}</small><br />
+                        </>
+                    )}
                     <small>{v.email}</small>
                 </h4>
             </div>

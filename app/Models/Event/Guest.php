@@ -25,7 +25,7 @@ class Guest extends Model
         'name', 'phone', 'email', 'code', 'autorized', 'template_id', 'sms_total',
         'text_sms', 'text_mail', 'can_send_sms', 'can_send_mail',
         'can_include_qrcode', 'country_code', 'country_call', 'user_id',
-        'text_sms_hidden_code', 'text_mail_hidden_code', 'common_guest_id',
+        'text_sms_hidden_code', 'text_mail_hidden_code', 'common_guest_id', 'can_include_icalendar'
     ];
 
     /**

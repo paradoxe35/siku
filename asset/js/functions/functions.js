@@ -1,5 +1,4 @@
 //@ts-check
-
 import { Localize } from "./localize";
 
 /**
@@ -34,6 +33,7 @@ export function stripHtml(html) {
     tmp.innerHTML = html;
     return tmp.textContent || tmp.innerText || "";
 }
+
 
 // @ts-ignore
 export const SYMBOL = window.symbol

@@ -87,8 +87,6 @@ const TextareaFieldAndDetail = () => {
     </>
 }
 
-
-
 const TemplateNameField = () => {
     const { t } = useTranslation();
     const nameField = useRef(null)
@@ -122,7 +120,6 @@ const NewTemplate = () => {
     const dispatch = useDispatch()
     const formElement = useRef(null)
     const { fetchAPi, fetchLoading: loading } = useFetch()
-
 
     /**
     * @type { { sms: string, mail: string }} 

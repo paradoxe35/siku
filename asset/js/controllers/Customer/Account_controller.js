@@ -4,15 +4,13 @@ import { Btn, FormBtn, HtmlAlert } from "@/js/functions/dom"
 import { ApiRequest } from "@/js/api/api"
 import { connectUser } from "@/js/store/features/UserSlice"
 import { ReduxDispatch } from "@/js/store"
-import { TurbolinksApp } from "@/js/modules/turbolinks"
-import { clientCountry, initSelect2 } from "@/js/functions/services.js"
-import { countriesFlagAndEmojis } from "@/js/api/services.js"
+import { initSelect2 } from "@/js/functions/services"
+import { savedChanges } from "@/js/functions/notifier.js"
 
 export default class extends Controller {
     urls = {
         accountUpdatePhone: this.data.get('accountUpdatePhone')
     }
-
 
     initialize() {
         // @ts-ignore
@@ -79,7 +77,7 @@ export default class extends Controller {
         ApiRequest('put', e.target.action, form)
             .then(({ data }) => {
                 ReduxDispatch(connectUser(data));
-                TurbolinksApp.reload()
+                savedChanges()
             })
             .catch(error => {
                 HtmlAlert.show(this.targets.find('innerError'), error)

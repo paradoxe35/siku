@@ -12,7 +12,6 @@ import { useTranslation } from 'react-i18next'
 import { LaravelPagination } from '@/js/react/components/Pagination'
 
 
-
 export const ShowListGuest = ({ v, handleDelete, canSend = true }) => {
     const { t } = useTranslation()
     const [loading, setLoading] = useState(false)
@@ -35,7 +34,13 @@ export const ShowListGuest = ({ v, handleDelete, canSend = true }) => {
     return <>
         <div className="d-flex w-100 justify-content-between mb-1" >
             <h4 className="mb-1">
-                {v.name} <small>({v.phone})</small>
+                {v.name} <small>({v.phone || v.email})</small>
+                {v.email && v.phone && (
+                    <>
+                        <br />
+                        <small>{t('Email')}: {v.email}</small>
+                    </>
+                )}
             </h4>
             {canSend && (
                 <div onClick={e => e.stopPropagation()}>

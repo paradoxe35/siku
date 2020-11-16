@@ -30,7 +30,14 @@ class Event extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'event_date', 'hashid', 'short_id', 'desciption', 'is_public', 'active', 'qrcode_logo'
+        'name', 'event_date', 'hashid',
+        'short_id',
+        'desciption',
+        'is_public',
+        'active',
+        'qrcode_logo',
+        'start_time',
+        'end_time'
     ];
 
     /**
@@ -40,6 +47,8 @@ class Event extends Model
      */
     protected $casts = [
         'event_date' => 'datetime',
+        'start_time' => 'datetime',
+        'end_time' => 'datetime',
     ];
 
     /**

@@ -16,5 +16,5 @@ class BasePrice extends Model
      *
      * @var array
      */
-    protected $fillable = ['amount'];
+    protected $fillable = ['amount_sms', 'amount_mail'];
 }

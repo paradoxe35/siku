@@ -107,8 +107,6 @@ Route::namespace('API')
                                             ->name('custom-payment-validate');
 
                                         Route::post('pay-data', "PaymentsController@payData")
-                                            ->withoutMiddleware(['api', 'auth:api'])
-                                            ->middleware(['web', 'auth'])
                                             ->name('pay-data');
 
                                         // paypal transaction

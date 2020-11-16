@@ -2,7 +2,7 @@
 import React, { useCallback, useState, useMemo, useEffect, lazy, Suspense, Fragment, useRef } from 'react'
 import { useTranslation } from "react-i18next";
 import { FullLoader } from '@/js/react/components/FullLoader';
-import { I_EVENTS, EVENT_VALUE, I_NEW_EVENT, URLS } from '@/js/react/vars';
+import { EVENTS_VIEW, EVENT_VALUE, URLS } from '@/js/react/vars';
 import { EventContext } from '@js/react/contexts';
 import { EventsList } from './EventsList';
 import { useFetch, useFullLoading, useListDataPaginator } from '@/js/react/hooks';
@@ -14,7 +14,7 @@ const ConfirmAndCustomerStatus = lazy(() => import('./ConfirmAndCustomerStatus')
 
 const CustomerEvents = ({ setLoading }) => {
     const { t } = useTranslation();
-    const [index, setIndex] = useState(I_EVENTS)
+    const [index, setIndex] = useState(EVENTS_VIEW.I_EVENTS)
     const [currentEvent, setCurrentEvent] = useState(EVENT_VALUE)
 
     //fetch events
@@ -75,13 +75,13 @@ const CustomerEvents = ({ setLoading }) => {
         <div className="d-flex justify-content-between mb-2">
             <h4>{components[index].title}</h4>
             {(index === 0 && !fetchLoading) &&
-                <button type="button" onClick={() => setIndex(I_NEW_EVENT)} className="btn btn-sm btn-primary">
+                <button type="button" onClick={() => setIndex(EVENTS_VIEW.I_NEW_EVENT)} className="btn btn-sm btn-primary">
                     {t('Créer')}
                 </button>
             }
 
             {(index !== 0 && !fetchLoading) &&
-                <button type="button" onClick={() => setIndex(I_EVENTS)} className="btn btn-sm btn-primary">
+                <button type="button" onClick={() => setIndex(EVENTS_VIEW.I_EVENTS)} className="btn btn-sm btn-primary">
                     <i className="ni ni-bold-left"></i>
                 </button>
             }

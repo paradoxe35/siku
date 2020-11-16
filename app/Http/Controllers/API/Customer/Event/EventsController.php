@@ -20,17 +20,18 @@ class EventsController extends Controller
 {
 
     /**
-     * @var EventRepository
+     * @var array
      */
-    private EventRepository $event;
-
+    private $start_time = ['required', 'date', 'before:end_time'];
     /**
-     * @param EventRepository $event
+     * @var array
      */
-    public function __construct(EventRepository $event)
+    private $end_time = ['required', 'date', 'after:start_date'];
+
+    public function __construct()
     {
-        $this->event = $event;
     }
+
     /**
      * Display a listing of the resource.
      *
@@ -64,7 +65,9 @@ class EventsController extends Controller
                     return $query->where('user_id', $user->id);
                 })
             ],
-            'event_date' => ['required', 'date'],
+            'start_time' => $this->start_time,
+            'end_time' => $this->end_time,
+
             'event_guest' => ['required', 'numeric', 'min:1'],
             'description' => ['nullable', 'string', 'min:2'],
             'is_public' => ['nullable']
@@ -79,7 +82,9 @@ class EventsController extends Controller
         //create customer event
         $event = $user->events()->create([
             'name' => $request->event_name,
-            'event_date' => $request->event_date,
+            'event_date' => $request->start_time,
+            'start_time' => $request->start_time,
+            'end_time' => $request->end_time,
             'desciption' => $request->description,
             'is_public' => !!$request->is_public
         ]);
@@ -245,14 +250,19 @@ class EventsController extends Controller
                     return $query->where('user_id', $user->id);
                 })->ignore($event->id)
             ],
-            'event_date' => ['required', 'date'],
+
+            'start_time' => $this->start_time,
+            'end_time' => $this->end_time,
+
             'is_public' => ['nullable']
         ]);
 
         //create customer event
         $event = $event->fill([
             'name' => $request->event_name,
-            'event_date' => $request->event_date,
+            'event_date' => $request->start_time,
+            'start_time' => $request->start_time,
+            'end_time' => $request->end_time,
             'is_public' => !!$request->is_public
         ]);
 

@@ -1,4 +1,3 @@
-
 import 'quill/dist/quill.snow.css'
 import './style.scss'
 import Quill from 'quill'
@@ -23,7 +22,7 @@ export const defaultOption = {
         },
         blotFormatter: {},
         imageCompress: {
-            quality: 0.7,
+            quality: 0.5,
             maxWidth: 1000,
             maxHeight: 1000,
             imageType: 'image/jpeg',

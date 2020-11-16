@@ -34,9 +34,9 @@ class CommonGuestsController extends Controller
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['nullable', 'email', 'max:255'],
-            'phone' => ['required', 'string', 'max:255', 'regex:/^[0-9\-\(\)\/\+\s]*$/'],
-            'country_code' => ['required', 'string'],
-            'country_call' => ['required', 'string']
+            'phone' => ['nullable', 'string', 'max:255', 'regex:/^[0-9\-\(\)\/\+\s]*$/'],
+            'country_code' => ['nullable', 'string'],
+            'country_call' => ['nullable', 'string']
         ]);
 
         /** @var \App\User */

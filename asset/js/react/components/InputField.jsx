@@ -7,11 +7,14 @@ export const InputField = forwardRef(
      * @param { React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement> } props
      */
     (props, ref) => {
+        const inputProps = { ...props }
+        delete inputProps.children
         return <div className="form-group">
+            <label className="form-control-label">{props.children}</label>
             <div className="input-group input-group-merge">
                 <input
                     ref={ref}
-                    {...props}
+                    {...inputProps}
                     type={props.type || 'text'}
                     className={props.className || "form-control"} />
             </div>

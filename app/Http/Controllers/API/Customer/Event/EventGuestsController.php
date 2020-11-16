@@ -18,6 +18,20 @@ use Instasent\SMSCounter\SMSCounter;
 class EventGuestsController extends Controller
 {
     /**
+     * @var SMSCounter
+     */
+    private SMSCounter $smsCounter;
+
+    /**
+     * @param SMSCounter $smsCounter
+     */
+    public function __construct(SMSCounter $smsCounter)
+    {
+        $this->smsCounter = $smsCounter;
+    }
+
+
+    /**
      * @param \Illuminate\Database\Eloquent\Builder $guests
      * 
      * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
@@ -84,30 +98,30 @@ class EventGuestsController extends Controller
      * 
      * @param Request $request
      * @param Event $event
-     * @param SMSCounter $smsCounter
      * 
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, Event $event, SMSCounter $smsCounter)
+    public function store(Request $request, Event $event)
     {
         // get auth event 
         $user = $request->user();
 
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['nullable', 'email', 'max:255'],
-            'phone' => ['required', 'string', 'max:255', 'regex:/^[0-9\-\(\)\/\+\s]*$/'],
             'template_id' => ['required', 'numeric'],
+            'sms_total' => ['required', 'numeric'],
             'autorized' => ['required', 'numeric', 'min:1'],
+            'email' => ['nullable', 'email', 'max:255'],
+            'phone' => ['nullable', 'string', 'max:255', 'regex:/^[0-9\-\(\)\/\+\s]*$/'],
+            'country_code' => ['nullable', 'string'],
+            'country_call' => ['nullable', 'string'],
             'text_sms' => ['nullable', 'string'],
             'text_mail' => ['nullable', 'string'],
             'can_include_qrcode' => ['nullable'],
             'can_send' => ['nullable'],
+            'icalendar' => ['nullable'],
             'can_send_sms' => ['nullable'],
             'can_send_mail' => ['nullable'],
-            'sms_total' => ['required', 'numeric'],
-            'country_code' => ['required', 'string'],
-            'country_call' => ['required', 'string']
         ]);
 
         $guests = $event->guests();
@@ -116,8 +130,7 @@ class EventGuestsController extends Controller
 
         $datas = $this->replaceToCode($qr, $request->text_sms, $request->text_mail, $event->hashid());
 
-        $smsParsed = $smsCounter->count($datas['sms']);
-
+        $smsParsed = $this->smsCounter->count($datas['sms']);
 
         $guest = $guests->create([
             'user_id' => $user->id,
@@ -137,6 +150,7 @@ class EventGuestsController extends Controller
             'sms_total' => $smsParsed->messages,
             'country_code' => $request->country_code,
             'country_call' => $request->country_call,
+            'can_include_icalendar' => !!$request->icalendar
         ]);
 
         if (!!$request->can_send) {
@@ -151,11 +165,10 @@ class EventGuestsController extends Controller
      * 
      * @param Request $request
      * @param Event $event
-     * @param SMSCounter $smsCounter
      * 
      * @return \Illuminate\Http\Response
      */
-    public function importFromCommon(Request $request, Event $event,  SMSCounter $smsCounter)
+    public function importFromCommon(Request $request, Event $event)
     {
         $request->validate([
             'template_id' => ['required', 'numeric'],
@@ -184,11 +197,11 @@ class EventGuestsController extends Controller
                 ->where('event_id', $event->id)
                 ->doesntExist())
 
-            ->each(function ($id) use ($request, $user, $template, $guests, $smsCounter, $event) {
+            ->each(function ($id) use ($request, $user, $template, $guests, $event) {
 
                 $commonGuest = CommonGuest::find($id);
 
-                $this->saveCommonToStorage($commonGuest, $request, $user, $template, $guests, $smsCounter, $event);
+                $this->saveCommonGuest($commonGuest, $request, $user, $template, $guests, $event);
             });
 
         $guests = $event->guests();
@@ -204,16 +217,14 @@ class EventGuestsController extends Controller
      * @param User $user
      * @param Template $template
      * @param Guest $guests
-     * @param SMSCounter $smsCounter
      * @return void
      */
-    private function saveCommonToStorage(
+    private function saveCommonGuest(
         CommonGuest $commonGuest,
         Request $request,
         User $user,
         Template $template,
         $guests,
-        SMSCounter $smsCounter,
         Event $event
     ) {
         $qr = !!$request->can_include_qrcode;
@@ -226,8 +237,7 @@ class EventGuestsController extends Controller
             $commonGuest->name
         );
 
-        $smsParsed = $smsCounter->count($datas['sms']);
-
+        $smsParsed = $this->smsCounter->count($datas['sms']);
 
         $guests->create([
             'user_id' => $user->id,
@@ -246,7 +256,8 @@ class EventGuestsController extends Controller
             'sms_total' => $smsParsed->messages,
             'country_code' => $commonGuest->country_code,
             'country_call' => $commonGuest->country_call,
-            'common_guest_id' => $commonGuest->id
+            'common_guest_id' => $commonGuest->id,
+            'can_include_icalendar' => !!$request->icalendar
         ]);
     }
 

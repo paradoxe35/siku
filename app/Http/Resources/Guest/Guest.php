@@ -20,6 +20,7 @@ class Guest extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
+            'email' => $this->email,
             'phone' => $this->phone,
             'sms' => $this->sms_total,
             'sended_sms' => $smsSend,
