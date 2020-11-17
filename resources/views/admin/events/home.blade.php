@@ -27,7 +27,7 @@
     </div>
 </div>
 
-<x-card-table :sort="true"
+<x-card-table :sort="true" :paginate="$events"
     :ths="['ID', 'Hash', 'Nom de l\'événement', 'Client Email', 'Invités', 'Créé à', 'Date d\'événement', 'actif']">
     @foreach ($events as $evnt)
     <tr class="clickable-a" onclick="tvisit('{{ route('admin.events.show', ['id' => $evnt->id]) }}')">

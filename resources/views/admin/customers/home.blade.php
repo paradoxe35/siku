@@ -15,7 +15,8 @@
     </div>
 </div>
 
-<x-card-table :sort="true" :ths="['ID', 'Email', 'Téléphone', 'Pays', 'Créé à', 'Événements', 'Balance', 'actif']">
+<x-card-table :paginate="$customers" :sort="true"
+    :ths="['ID', 'Email', 'Téléphone', 'Pays', 'Créé à', 'Événements', 'Balance', 'actif']">
     @foreach ($customers as $customer)
     <tr class="clickable-a" onclick="tvisit('{{ route('admin.customers.show', ['id' => $customer->id]) }}')">
         <td>{{ $customer->id }}</td>

@@ -195,5 +195,11 @@ export default {
     "Client Email": "Customer Email",
     "Invitations Envoyées": "Invitations Sent",
     "Actifs": "Actives",
-    "Statut d'envoi": "Send status"
+    "Statut d'envoi": "Send status",
+    "Paiements personnalisés": "Custom payments",
+    "Autorisé": "Authorized",
+    "Non Autorisé": "Unauthorized",
+    "Code Paiement": "Payment Code",
+    "Chargé": "Charged",
+    "Profile": 'Profil'
 }

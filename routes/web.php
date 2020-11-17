@@ -111,6 +111,8 @@ Route::middleware(['auth', 'admin'])
 
                 Route::get('{id}/purchases', "CustomersController@purchases")->name('purchases');
 
+                Route::get('{id}/custom-payments', "CustomersController@customPayments")->name('custom-payments');
+
                 Route::get('{id}/low-balance', 'CustomersController@lowBalance')->name('low-balance');
                 Route::post('{id}/low-balance', 'CustomersController@setLowBalance');
                 Route::delete('{id}/low-balance', 'CustomersController@destoryLowBalance');
@@ -130,7 +132,30 @@ Route::middleware(['auth', 'admin'])
 
         Route::name('price-balance.')
             ->prefix('price-balance')
+            ->namespace('PriceBalance')
             ->group(function () {
+
+                Route::prefix('custom-payment')
+                    ->group(function () {
+                        Route::get('', 'CustomPaymentController@index')->name('custom-payment');
+                        Route::patch('/{id}', 'CustomPaymentController@trash')->name('custom-payment.show');
+                    });
+
+                Route::prefix('default-payment')
+                    ->group(function () {
+                        Route::get('', 'DefaultBalanceController@index')->name('default-balance');
+                    });
+
+                Route::prefix('prices')
+                    ->group(function () {
+                        Route::get('', 'PricesController@index')->name('prices');
+                    });
+
+                Route::prefix('services')
+                    ->group(function () {
+                        Route::get('', 'ServicesController@index')->name('services');
+                    });
+
                 Route::get('', 'PriceBalanceController@index')->name('home');
             });
 

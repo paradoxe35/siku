@@ -30,8 +30,9 @@
                     <h4>{{ __('Client') }}</h4>
                     <p><span class="text-muted">{{ __('ID') }}</span>: {{ $sale->user->id }}</p>
                     <p>
-                        <span class="text-muted">{{ __('Email') }}</span>: 
-                        <a href="{{ route('admin.customers.show', ['id' => $sale->user->id]) }}">{{ $sale->user->email }}</a>
+                        <span class="text-muted">{{ __('Email') }}</span>:
+                        <a
+                            href="{{ route('admin.customers.show', ['id' => $sale->user->id]) }}">{{ $sale->user->email }}</a>
                     </p>
                     <p><span class="text-muted">{{ __('Téléphone') }}</span>: {{ $sale->user->phone }}</p>
                 </div>
@@ -45,6 +46,9 @@
                             <th scope="col">{{ __('Revenu') }}</th>
                             <th scope="col">{{ __('Invités') }}</th>
                             <th scope="col">{{ __('Méthode') }}</th>
+                            @if ($sale->token)
+                            <th scope="col">{{ __('Paiement personnalisé') }} (Token)</th>
+                            @endif
                         </tr>
                     </thead>
                     <tbody class="list">
@@ -53,6 +57,9 @@
                             <td>{{ $symbol.$sale->revenue() }}</td>
                             <td>{{ $sale->guests }}</td>
                             <td>{{ $sale->paymentMeta->service }}</td>
+                            @if ($sale->token)
+                            <td>{{ $sale->token }}</td>
+                            @endif
                         </tr>
                     </tbody>
                 </table>

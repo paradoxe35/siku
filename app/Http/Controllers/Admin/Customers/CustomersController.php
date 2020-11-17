@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin\Customers;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\Admin\Customer\CustomPayment\CustomPaymentCollection;
 use App\Http\Resources\Admin\Customer\Event\CustomerEventCollection;
 use App\Http\Resources\Admin\Customer\Purchase\CustomerPurchaseCollection;
 use App\User;
@@ -220,6 +221,24 @@ class CustomersController extends Controller
         }
 
         return new CustomerPurchaseCollection($purchases->paginate());
+    }
+
+    /**
+     * @param int $id
+     * 
+     * @return \Illuminate\Http\Response
+     */
+    public function customPayments($id)
+    {
+        $purchases = $this->queryWithTrashed($id)->customPayment()->with('balance')->latest();
+
+        if (request('filter') == 'unauthorized') {
+            $purchases = $purchases->where('active', false);
+        } else {
+            $purchases = $purchases->where('active', true);
+        }
+
+        return new CustomPaymentCollection($purchases->paginate());
     }
 
     /**

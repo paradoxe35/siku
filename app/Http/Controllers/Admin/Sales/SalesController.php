@@ -133,7 +133,7 @@ class SalesController extends Controller
      */
     public function destroy($id)
     {
-        $this->authorize('delete-sale');
+        $this->authorize('super-admin');
 
         $sale = $this->query()->findOrFail($id);
 

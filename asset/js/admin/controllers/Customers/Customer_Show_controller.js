@@ -6,6 +6,7 @@ export default class extends Controller {
         update: this.data.get('update'),
         events: this.data.get('events'),
         purchases: this.data.get('purchases'),
+        customPayments: this.data.get('customPayments'),
         historyLowBalance: this.data.get('lowBalance')
     }
 

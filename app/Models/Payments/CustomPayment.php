@@ -2,8 +2,9 @@
 
 namespace App\Models\Payments;
 
-use App\Http\Resources\User;
+use App\Models\Balance\Balance;
 use App\Models\Event\Event;
+use App\User;
 use Illuminate\Database\Eloquent\Model;
 
 class CustomPayment extends Model
@@ -28,6 +29,14 @@ class CustomPayment extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function balance()
+    {
+        return $this->hasOne(Balance::class);
     }
 
     /**

@@ -8,6 +8,7 @@ const Profile = lazy(() => import('./profile/Profile'))
 const Events = lazy(() => import('./events/Events'))
 const Purchases = lazy(() => import('./purchases/Purchases'))
 const Alerts = lazy(() => import('./alerts/Alerts'))
+const CustomPayments = lazy(() => import('./purchases/CustomPayments'))
 
 const CustomerPayments = () => {
     const { t } = useTranslation();
@@ -28,16 +29,23 @@ const CustomerPayments = () => {
                 to: '/purchases',
                 name: t('Achats')
             },
-           
+            {
+                to: 'custom-payments',
+                name: t('Paiements personnalisés'),
+            },
             {
                 to: "/alerts",
-                name: t("Alertes de solde faible") + ` (${customer.low_balance ? t('Activé'): t('Désactivé')})`
+                name: t("Alertes de solde faible") + ` (${customer.low_balance ? t('Activé') : t('Désactivé')})`
             }
         ]}
             routes={[
                 {
                     component: <Profile />,
                     path: '/profile'
+                },
+                {
+                    component: <CustomPayments />,
+                    path: '/custom-payments'
                 },
                 {
                     component: <Events />,

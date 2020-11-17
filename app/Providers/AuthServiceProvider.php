@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Policies\SalePolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Auth\Access\Response;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -26,6 +27,10 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        Gate::define('delete-sale', SalePolicy::class. '@delete');
+        Gate::define('super-admin', function ($user) {
+            return $user->super_admin
+                ? Response::allow()
+                : Response::deny(trans("Vous devez être un super administrateur."));
+        });
     }
 }

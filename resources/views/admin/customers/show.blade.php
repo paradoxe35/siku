@@ -12,6 +12,7 @@
         data-Customers--Customer-Show-update="{{ route('admin.customers.update') }}"
         data-Customers--Customer-Show-events="{{ route('admin.customers.events') }}"
         data-Customers--Customer-Show-purchases="{{ route('admin.customers.purchases') }}"
+        data-Customers--Customer-Show-custom-payments="{{ route('admin.customers.custom-payments') }}"
         data-Customers--Customer-Show-low-balance="{{ route('admin.customers.low-balance') }}">
         <div class="text-center mt-5">
             <x-spinning-dots />
