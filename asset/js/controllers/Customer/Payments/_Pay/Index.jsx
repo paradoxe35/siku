@@ -152,7 +152,6 @@ const CustomerPay = () => {
             </div>
             <div className="col-lg-3 offset-lg-1">
                 <Card header={<h4><b>{t('Résumé')}</b></h4>}>
-                    <h4><span className="text-muted">{t('Invitations')}</span>: <b>{isNaN(guests) ? 0 : guests}</b> </h4>
                     <h4><span className="text-muted">{t('Montant à payer')}</span>: <b>{SYMBOL}{isNaN(price) ? 0 : price.nround(3)}</b> </h4>
                 </Card>
             </div>

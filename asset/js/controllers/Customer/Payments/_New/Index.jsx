@@ -9,20 +9,26 @@ import { useSelector } from 'react-redux';
 import { ServiceUse } from '../../Product/guests/ServiceUse';
 import Label from '@/js/react/components/Label';
 import { TurbolinksApp } from '@/js/modules/turbolinks';
-import { SYMBOL } from '@/js/functions/functions';
+import { debounce, SYMBOL } from '@/js/functions/functions';
 
 
-const GuestsField = ({ guests, onGuestFieldChange, onGuestFieldBlur, selectedServices, country_name }) => {
+const AmountField = ({ amount, onAmountFieldBlur, selectedServices, country_name }) => {
     const { t } = useTranslation()
+    const [samount, setSAmount] = useState(amount)
+
+    useEffect(() => {
+        setSAmount(amount)
+    }, [amount])
+
     return <>
         <div className="form-group">
             <input
                 type="number"
-                value={guests}
-                onChange={onGuestFieldChange}
-                onBlur={onGuestFieldBlur}
+                value={samount}
+                onChange={({ target: { value } }) => setSAmount(value)}
+                onBlur={onAmountFieldBlur}
                 className="form-control"
-                placeholder={t("Nombre d'Invitations")} />
+                placeholder={t("Montant")} />
         </div>
         <ServiceUse allService={true} onSelect={selectedServices} />
         <Label>
@@ -47,11 +53,16 @@ const CustomerPaymentsNew = () => {
         mail: 0
     })
     const [showPrice, setShowPrice] = useState(0)
+    const priceTotal = useRef(0)
 
     // @ts-ignore
     const { country_name, country_code } = useSelector(r => r.userAuth)
 
     const { ApiRequest, fetchAPi, fetchLoading } = useFetch()
+
+    useEffect(() => {
+        priceTotal.current = Object.values(prices).reduce((a, b) => a + b, 0)
+    }, [prices])
 
     useEffect(() => {
         ApiRequest('get', URLS.countryPricing + '?country_code=' + country_code)
@@ -77,12 +88,10 @@ const CustomerPaymentsNew = () => {
 
     const selectedServices = useCallback((s) => setServices(s), [setServices])
 
-    const onGuestFieldChange = ({ target: { value } }) => {
-        setGuests(value)
-    }
-    const onGuestFieldBlur = ({ target: { value } }) => {
-        const g = +value
-        setGuests(r => isInvalideGuestFieldValue(g) ? DEFAULT_GUESTS_VALUE : r)
+    const onAmountFieldBlur = ({ target: { value } }) => {
+        const amount = +value
+        const guest = Math.round(amount / priceTotal.current)
+        setGuests(isInvalideGuestFieldValue(guest) ? DEFAULT_GUESTS_VALUE : guest)
     }
 
     const payDataHandle = useCallback(() => {
@@ -92,28 +101,29 @@ const CustomerPaymentsNew = () => {
             })
     }, [guests, showPrice])
 
+    // @ts-ignore
+    const showP = (isNaN(showPrice) ? 0 : showPrice).nround(3)
+
     return <>
         <div className="row justify-content-center">
             <div className="col-lg-6">
                 <div className="card border shadow-sm">
-                    <h3 className="card-header text-center">{t('Invitations')}</h3>
+                    <h3 className="card-header text-center">{t('Montant')}</h3>
                     <div className="card-body">
-                        <GuestsField
-                            guests={guests}
-                            onGuestFieldChange={onGuestFieldChange}
-                            onGuestFieldBlur={onGuestFieldBlur}
+                        <AmountField
+                            amount={showP}
+                            onAmountFieldBlur={onAmountFieldBlur}
                             selectedServices={selectedServices}
                             country_name={country_name} />
                         <div className="mt-4">
                             <b className="text-lg">
-                                {/* @ts-ignore */}
-                                {t('Montant')}: {SYMBOL}{(isNaN(showPrice) ? 0 : showPrice).nround(3)}
+                                {SYMBOL + showP}
                             </b>
                         </div>
                     </div>
                 </div>
                 <DefaultButton
-                    onClick={payDataHandle}
+                    onClick={debounce(payDataHandle, 100, false)}
                     textColor={'p-2'}
                     label={t('Payez maintenant')}
                     loading={fetchLoading} />
