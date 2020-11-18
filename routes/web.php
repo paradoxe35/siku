@@ -138,7 +138,9 @@ Route::middleware(['auth', 'admin'])
                 Route::prefix('custom-payment')
                     ->group(function () {
                         Route::get('', 'CustomPaymentController@index')->name('custom-payment');
-                        Route::patch('/{id}', 'CustomPaymentController@trash')->name('custom-payment.show');
+                        Route::patch('/{id}', 'CustomPaymentController@trash')->name('custom-payment.trash');
+                        Route::post('', 'CustomPaymentController@store')->name('custom-payment.store');
+                        Route::get('search-client', 'CustomPaymentController@searchClient')->name('custom-payment.search-client');
                     });
 
                 Route::prefix('default-payment')

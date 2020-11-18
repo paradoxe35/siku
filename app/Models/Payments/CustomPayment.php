@@ -20,7 +20,7 @@ class CustomPayment extends Model
      * @var array
      */
     protected $fillable = [
-        'amount', 'payment_code', 'active', 'guests'
+        'amount', 'payment_code', 'active', 'guests', 'user_id'
     ];
 
     /**

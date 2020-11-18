@@ -2,7 +2,7 @@
     "private": true,
     "scripts": {
         "start": "concurrently \"npm:watch-poll\" \"npm:css-watch\"",
-        "all-prod": "concurrently \"npm:prod\" \"npm:css-prod\"",
+        "all-prod": "npm run prod && npm run css-prod",
         "all-hot": "concurrently \"npm:hot\" \"npm:css-hot\"",
         "css-dev": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --progress --hide-modules --env.mixfile=webpack.css.mix.js --config=node_modules/laravel-mix/setup/webpack.config.js",
         "dev": "npm run development",

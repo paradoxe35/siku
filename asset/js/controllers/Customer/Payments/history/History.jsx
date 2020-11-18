@@ -34,7 +34,7 @@ const PaymentsView = ({ listData }) => {
                     <tr key={d.id || i}>
                         <td>{d.id}</td>
                         <td>{d.created_at}</td>
-                        <td>{d.meta.service}</td>
+                        <td>{t(d.meta.service)}</td>
                         <td>{SYMBOL + d.amount}</td>
                         <td>{d.meta.currency_code}</td>
                     </tr>

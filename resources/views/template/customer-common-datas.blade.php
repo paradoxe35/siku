@@ -1,5 +1,6 @@
 <script type="text/javascript">
     window.auth = @json(Auth::user());
+    window.auth.hash = "{{ Auth::user()->hashId() }}";
     window.chatUrls = {
         chatIndex: "{{ route('api.customer.chat.index') }}",
         chatPriority: "{{ route('api.customer.chat.priority') }}",

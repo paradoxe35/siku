@@ -45,10 +45,12 @@ const ValidateCustomPayment = ({ amount, guests }) => {
         fetchAPi('post', URLS.customPaymentValidate, form, true)
             .then(({ data }) => {
                 Notifier.sussess(t(success))
+                    .then(() => TurbolinksApp.visit(URLS.paypalReturnUrl))
                 // dispache new redux balance 
                 data.confirmed && dispache(setBalanceAmount(data.new_balance))
                 // reset payment field
                 inputField.current && (inputField.current.value = '')
+
             })
     }
     return <>

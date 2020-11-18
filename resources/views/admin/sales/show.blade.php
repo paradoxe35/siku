@@ -56,7 +56,7 @@
                             <td>{{ $symbol.$sale->amount }}</td>
                             <td>{{ $symbol.$sale->revenue() }}</td>
                             <td>{{ $sale->guests }}</td>
-                            <td>{{ $sale->paymentMeta->service }}</td>
+                            <td>{{ __($sale->paymentMeta->service) }}</td>
                             @if ($sale->token)
                             <td>{{ $sale->token }}</td>
                             @endif

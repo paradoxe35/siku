@@ -16,7 +16,7 @@ class CustomPayment extends JsonResource
     {
         return array_merge(parent::toArray($request), [
             'charged' => !!$this->balance,
-            'profile' => $this->balance ? route('admin.sales.show', ['id' => $this->balance->id], false) : null,
+            'route' => $this->balance ? route('admin.sales.show', ['id' => $this->balance->id], false) : null,
             'created_at' => $this->created_at->format('Y-m-d H:i'),
         ]);
     }

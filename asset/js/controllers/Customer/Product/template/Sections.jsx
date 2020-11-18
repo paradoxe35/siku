@@ -3,16 +3,13 @@ import React, { Fragment, useCallback, useEffect, useRef, useState } from 'react
 import { useTranslation } from 'react-i18next';
 import { Localize } from '@/js/functions/localize';
 import { Notifier } from '@/js/functions/notifier';
-import { TEMPLATE_SECTION, URLS } from '@/js/react/vars';
+import { TEMPLATE_SECTION } from '@/js/react/vars';
 import { Loader } from '@/js/react/components/Loader';
-import { configureStore } from '@reduxjs/toolkit';
 import { debounce, stripHtml } from '@/js/functions/functions';
-import { DefaultButton } from '@/js/react/components/Buttons';
-import Label from '@/js/react/components/Label';
-import { useFetch } from '@/js/react/hooks';
 
 export const KeysRequiredInText = ['{name}', '{code}']
 
+const canShow = (p, n) => (p === null || (typeof p === 'object' && p.includes(n)))
 
 /**
  * @param {string} sms 
@@ -23,13 +20,13 @@ export const smsCount = (sms) => {
     return window.SmsCounter.count(sms)
 }
 
-export const useSectionText = () => {
-    const [section, setSection] = useState(TEMPLATE_SECTION.sms)
+export const useSectionText = (defaults = null) => {
+    const [section, setSection] = useState((defaults ? defaults : TEMPLATE_SECTION.sms))
     const handleSection = useCallback(({ target: { value } }) => {
         setSection(value)
     }, [setSection])
 
-    return { handleSection, section }
+    return { handleSection, section, setSection }
 }
 
 
@@ -118,15 +115,27 @@ export const validateTemplate = (templateTextarea, requiredKeys) => {
     */
 export const ListDescriptionText = ({ item, onDelete, canShown = null }) => {
     const { t } = useTranslation()
-    const { handleSection, section } = useSectionText()
+    const defaultv = canShown && canShown.length ? canShown[0] : TEMPLATE_SECTION.sms
+
+    const { handleSection, section, setSection } = useSectionText(defaultv)
 
     const text = stripHtml(caseSectionValue(section, item.text))
+    
+    useEffect(() => {
+        if (!item.show) {
+            setSection(defaultv)
+        }
+    }, [item.show])
 
     return <>
         {item.show ? (
             <div className="row mt-3" onClick={e => e.stopPropagation()}>
                 <div className="col">
-                    <SectionView onChange={handleSection} icon={false} name={'template_view-' + item.id} canShown={canShown} />
+                    <SectionView
+                        onChange={handleSection}
+                        icon={false}
+                        name={'template_view-' + item.id}
+                        canShown={canShown} />
                 </div>
                 <div className="col-auto">
                     {onDelete && (
@@ -237,27 +246,46 @@ export const SmsDetail = ({ section }) => {
  */
 export const ImgIcon = ({ src, alt }) => <img src={src} className="checkbox-icon" alt={alt} width="20" height="20" />
 
-const canShow = (p, n) => (p === null || (typeof p === 'object' && p.includes(n)))
 
 /**
  * @param {{  onChange: any, icon?: boolean, name?: string, canShown?: Array }} param0 
  */
 export const SectionView = ({ onChange, icon = true, name = "message_view", canShown = null }) => {
     const { t } = useTranslation();
+    const tsms = TEMPLATE_SECTION.sms;
+    const tmail = TEMPLATE_SECTION.mail;
+
+    const sms = canShow(canShown, tsms);
+    const mail = canShow(canShown, tmail);
+
+    canShown = canShown && canShow.length ? canShown : [tsms, tmail]
+
     return <div className="mb-3">
         {
-            canShow(canShown, TEMPLATE_SECTION.sms) &&
+            sms &&
             <div className="custom-control custom-radio custom-control-inline">
-                <input type="radio" id={name + '-sms'} defaultChecked onChange={onChange} name={name} value={TEMPLATE_SECTION.sms} className="custom-control-input" />
+                <input type="radio"
+                    id={name + '-sms'}
+                    defaultChecked={canShown[0] == tsms}
+                    onChange={onChange}
+                    name={name}
+                    value={tsms} className="custom-control-input" />
                 <label className="custom-control-label" htmlFor={name + '-sms'}>
                     {icon && <ImgIcon src="/img/svg/sms.svg" alt="SMS" />} {t('SMS')}
                 </label>
             </div>
         }
         {
-            canShow(canShown, TEMPLATE_SECTION.mail) &&
+            mail &&
             <div className="custom-control custom-radio custom-control-inline">
-                <input type="radio" id={name + '-mail'} onChange={onChange} name={name} value={TEMPLATE_SECTION.mail} className="custom-control-input" />
+                <input
+                    type="radio"
+                    id={name + '-mail'}
+                    defaultChecked={canShown[0] == tmail}
+                    onChange={onChange}
+                    name={name}
+                    value={tmail}
+                    className="custom-control-input" />
                 <label className="custom-control-label" htmlFor={name + '-mail'}>
                     {icon && <ImgIcon src="/img/svg/mail.svg" alt="Mail" />}  {t('Mail')}
                 </label>

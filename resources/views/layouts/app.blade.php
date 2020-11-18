@@ -36,7 +36,7 @@
     </script>
 </head>
 
-<body class="@yield('body-class')">
+<body @yield('body-attr') class="@yield('body-class')">
     <div id="app-main">
         <script type="text/javascript">
             window.symbol = @json($symbol); 

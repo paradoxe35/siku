@@ -201,5 +201,6 @@ export default {
     "Non Autorisé": "Unauthorized",
     "Code Paiement": "Payment Code",
     "Chargé": "Charged",
-    "Profile": 'Profil'
+    "Profile": 'Profil',
+    'Méthode alternative': 'Alternative method'
 }
