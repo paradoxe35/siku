@@ -10,6 +10,7 @@ import { ServiceUse } from '../../Product/guests/ServiceUse';
 import Label from '@/js/react/components/Label';
 import { TurbolinksApp } from '@/js/modules/turbolinks';
 import { debounce, SYMBOL } from '@/js/functions/functions';
+import { Chat } from '../../App/chat/Chat';
 
 
 const AmountField = ({ amount, onAmountFieldBlur, selectedServices, country_name }) => {
@@ -129,6 +130,7 @@ const CustomerPaymentsNew = () => {
                     loading={fetchLoading} />
             </div>
         </div>
+        <Chat />
     </>
 }
 

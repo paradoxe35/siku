@@ -21,7 +21,7 @@
                         <div class="card card-pricing border-0 text-center mb-4">
                             <div class="card-header bg-transparent">
                                 <div class="row">
-                                    <div class="col-md-6">
+                                    <div class="col-md-6 mb-3">
                                         <select class="text-sm w-100" data-target="Pricing.countrySelectField"
                                             style="margin-top: 3px;" data-toggle="select">
                                         </select>
@@ -79,10 +79,6 @@
     <section>
         <div class="container">
             <div class="d-flex justify-content-lg-center px-3 mt-5">
-                <div>
-                    <div class="icon icon-shape bg-gradient-primary shadow rounded-circle text-primary">
-                    </div>
-                </div>
                 <div class="col-lg-6">
                     <p>
                         {{ __("Si nos tarifs ne vous conviennent pas, veuillez nous contacter pour plus d'informations") }}.

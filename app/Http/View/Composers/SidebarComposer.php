@@ -39,7 +39,7 @@ class SidebarComposer
             ],
             [
                 [
-                    'name' => __('Paramètres'),
+                    'name' => __('Paramètre'),
                     'icon' => 'settings-gear-65',
                     'route' => 'customer.event.settings'
                 ],

@@ -6,9 +6,7 @@ use App\Files\Images\ImageCompression;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Event\Event as ResourcesEvent;
 use App\Http\Resources\Event\EventCollection;
-use App\Models\DefaultBalance;
 use App\Models\Event\Event;
-use App\Repositories\EventRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -92,9 +90,6 @@ class EventsController extends Controller
         // create guest 
         $this->storeGuest($event, $request->event_guest);
 
-        //set default balance
-        $this->setDefaultBalance($event);
-
         $event->refresh();
 
         return new ResourcesEvent($event);
@@ -111,28 +106,6 @@ class EventsController extends Controller
         return $event->eventGuests()->create([
             'guest' => $event_guest
         ]);
-    }
-
-
-    /**
-     * @param mixed $event
-     * 
-     * @return mixed
-     */
-    private function setDefaultBalance($event)
-    {
-        // get default balance from db
-        $default = DefaultBalance::query()->firstWhere('active', true);
-        if ($default) {
-            // stpre default
-            return $event->allBalance()->create([
-                'confirmed' => true,
-                'token' => Str::random(),
-                'amount' => $default->balance
-            ]);
-        }
-
-        return null;
     }
 
     /**

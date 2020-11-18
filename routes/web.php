@@ -146,11 +146,14 @@ Route::middleware(['auth', 'admin'])
                 Route::prefix('default-payment')
                     ->group(function () {
                         Route::get('', 'DefaultBalanceController@index')->name('default-balance');
+                        Route::post('', 'DefaultBalanceController@setBalances');
+                        Route::delete('', 'DefaultBalanceController@clearBalances');
                     });
 
                 Route::prefix('prices')
                     ->group(function () {
                         Route::get('', 'PricesController@index')->name('prices');
+                        Route::post('', 'PricesController@setRevenue');
                     });
 
                 Route::prefix('services')

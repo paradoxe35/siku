@@ -59,7 +59,7 @@ class Event extends Model
      */
     public function getNameAttribute($value)
     {
-        return ucwords(Str::lower($value));
+        return ucfirst(Str::lower($value));
     }
 
     /**

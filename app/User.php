@@ -7,6 +7,7 @@ use App\Models\Balance\Balance;
 use App\Models\Balance\Consumed;
 use App\Models\Balance\LowBalance;
 use App\Models\CommonGuest;
+use App\Models\DefaultBalance\BalanceDefault;
 use App\Models\Payments\CustomPayment;
 use App\Models\Event\Event;
 use App\Models\Event\Guest;
@@ -136,8 +137,6 @@ class User extends Authenticatable implements MustVerifyEmail, CanResetPassword
         return $this->hasMany(Template::class);
     }
 
-
-
     /**
      * @return double
      */
@@ -150,6 +149,21 @@ class User extends Authenticatable implements MustVerifyEmail, CanResetPassword
         $total = $this->AllBalance()->where('confirmed', true)->sum('amount');
         $consumed = $this->consumeds()->where('confirmed', true)->sum('amount');
         return round(($total - $consumed), 2);
+    }
+
+    /**
+     * @return int
+     */
+    private function defaultBalanceTotal()
+    {
+        $default = $this->defaultBalance;
+
+        $total = 0;
+        if ($default) {
+            $total += ($default->mail + $default->sms);
+        }
+
+        return $total;
     }
 
 
@@ -223,5 +237,13 @@ class User extends Authenticatable implements MustVerifyEmail, CanResetPassword
     public function commonGuests()
     {
         return $this->hasMany(CommonGuest::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function defaultBalance()
+    {
+        return $this->hasOne(BalanceDefault::class);
     }
 }

@@ -56,8 +56,8 @@ class AdminSidebarComposer
                 'route' => 'admin.blog.home'
             ],
             [
-                'name' => 'Compte',
-                'icon' => 'circle-08',
+                'name' => __('Paramètre'),
+                'icon' => 'settings-gear-65',
                 'route' => 'admin.account.home'
             ],
         ];
