@@ -16,6 +16,7 @@
                 </div>
 
                 <div data-target="Customer--Account.cardContent">
+                    @include('layouts.unconfirmed-email')
                     <h4 class="display-4 text-sm">
                         {{ __('Editer le profil') }}
                     </h4>

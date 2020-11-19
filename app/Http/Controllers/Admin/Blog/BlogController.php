@@ -10,8 +10,24 @@ class BlogController extends Controller
     /**
      * @return \Illuminate\Http\Response
      */
+    public function home()
+    {
+        return redirect(route('admin.blog.index'));
+    }
+
+    /**
+     * @return \Illuminate\Http\Response
+     */
     public function index()
     {
-        return view('admin.blog.home');
+        return view('admin.blog.articles');
+    }
+
+    /**
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        return view('admin.blog.create-article');
     }
 }

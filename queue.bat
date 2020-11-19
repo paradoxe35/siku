@@ -1,1 +1,1 @@
-php artisan queue:listen --queue=high,default,invitation,notifications
+php artisan queue:listen --queue=high,default,invitation,notifications,checking

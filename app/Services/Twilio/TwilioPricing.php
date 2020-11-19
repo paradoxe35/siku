@@ -16,6 +16,11 @@ class TwilioPricing
     /**
      * @var string
      */
+    public string $file = 'twilio_sms_prices.csv';
+
+    /**
+     * @var string
+     */
     public string $key = 'SMS';
 
 
@@ -23,6 +28,16 @@ class TwilioPricing
      * @var string
      */
     public string $priceKey = 'Price / msg';
+
+    /**
+     * @var string
+     */
+    public string $countryKey = 'Country';
+
+    /**
+     * @var string
+     */
+    public string $descriptionKey = 'Description';
 
 
     /**
@@ -36,7 +51,7 @@ class TwilioPricing
      */
     public function prices($path = null)
     {
-        $csvFile = storage_path($this->filename);
+        $csvFile = $path ?: $this->getPath();
         return $this->readCSV($csvFile);
     }
 
@@ -48,6 +63,14 @@ class TwilioPricing
     {
         return collect($this->prices())
             ->firstWhere($this->filterByKey, $code) ?: null;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPath()
+    {
+        return storage_path($this->filename);
     }
 
     /**

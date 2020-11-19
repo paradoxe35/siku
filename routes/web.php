@@ -159,6 +159,8 @@ Route::middleware(['auth', 'admin'])
                 Route::prefix('services')
                     ->group(function () {
                         Route::get('', 'ServicesController@index')->name('services');
+                        Route::post('twilio/upload/csv', 'ServicesController@twilioUpload')
+                            ->name('services.twilio.upload');
                     });
 
                 Route::get('', 'PriceBalanceController@index')->name('home');
@@ -175,7 +177,10 @@ Route::middleware(['auth', 'admin'])
             ->prefix('blog')
             ->name('blog.')
             ->group(function () {
-                Route::get('', "BlogController@index")->name('home');
+                Route::get('', "BlogController@home")->name('home');
+
+                Route::get('articles', "BlogController@index")->name('index');
+                Route::get('create', "BlogController@create")->name('create');
             });
 
         Route::namespace('Account')

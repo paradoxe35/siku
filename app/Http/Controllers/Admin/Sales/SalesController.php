@@ -117,6 +117,8 @@ class SalesController extends Controller
      */
     public function update($id, Request $request)
     {
+        $this->authorize('super-admin');
+
         $request->validate([
             'confirmed' => ['nullable']
         ]);

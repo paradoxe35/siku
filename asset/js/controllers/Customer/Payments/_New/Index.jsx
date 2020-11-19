@@ -125,6 +125,8 @@ const CustomerPaymentsNew = () => {
                 </div>
                 <DefaultButton
                     onClick={debounce(payDataHandle, 100, false)}
+                    // @ts-ignore
+                    disabled={!window.confirmed_email}
                     textColor={'p-2'}
                     label={t('Payez maintenant')}
                     loading={fetchLoading} />

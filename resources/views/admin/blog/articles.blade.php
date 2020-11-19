@@ -1,10 +1,5 @@
 @extends('admin.blog')
 
-@section('breadcrumb-items')
-{{-- <li class="breadcrumb-item active text-default" aria-current="page">Cards</li> --}}
-{{-- <li class="breadcrumb-item text-default">Items</li> --}}
-@endsection
-
 @section('blog-content')
 <div class="row mb-3">
     <div class="col-lg-3">
