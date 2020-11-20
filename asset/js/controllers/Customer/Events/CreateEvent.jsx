@@ -30,7 +30,7 @@ const CreateEvent = ({ updateComponentIndex, addEvent }) => {
         fetchAPi('post', URLS.eventStore, form, true)
             .then(({ data }) => {
                 if (data.data) {
-                    Notifier.sussess(Localize({
+                    Notifier.success(Localize({
                         fr: 'Événement créé avec succès',
                         en: 'Event created successfully'
                     }))

@@ -94,7 +94,7 @@ export default class extends Controller {
 
         ApiRequest('post', target.action, form, true)
             .then(({ data }) => {
-                Notifier.sussess(data.message)
+                Notifier.success(data.message)
                     .then(() => TurbolinksApp.reload())
             })
             .finally(() => Btn.hide())

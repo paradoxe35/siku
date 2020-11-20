@@ -20,7 +20,7 @@ class CreateBlogsTable extends Migration
             $table->string('slug')->unique();
             $table->string('image')->nullable();
             $table->json('json');
-            $table->string('decription')->nullable();
+            $table->string('description')->nullable();
             $table->string('author')->nullable();
             $table->foreignId('blog_category_id')->nullable()->constrained();
             $table->integer('views')->default(0);

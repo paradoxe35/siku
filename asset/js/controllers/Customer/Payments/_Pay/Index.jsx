@@ -44,7 +44,7 @@ const ValidateCustomPayment = ({ amount, guests }) => {
         form.append('guests', guests)
         fetchAPi('post', URLS.customPaymentValidate, form, true)
             .then(({ data }) => {
-                Notifier.sussess(t(success))
+                Notifier.success(t(success))
                     .then(() => TurbolinksApp.visit(URLS.paypalReturnUrl))
                 // dispache new redux balance 
                 data.confirmed && dispache(setBalanceAmount(data.new_balance))
@@ -99,7 +99,7 @@ const payPalOptions = (amount, guests, successMsg) => ({
             guests: guests
         }, true)
             .then(({ data: dataResponse }) => {
-                Notifier.sussess(successMsg, 5000)
+                Notifier.success(successMsg, 5000)
                     .then(() => TurbolinksApp.visit(URLS.paypalReturnUrl))
             })
     }

@@ -72,6 +72,16 @@
         "vue-template-compiler": "^2.6.12"
     },
     "dependencies": {
+        "@editorjs/code": "^2.6.0",
+        "@editorjs/delimiter": "^1.2.0",
+        "@editorjs/editorjs": "^2.19.0",
+        "@editorjs/embed": "^2.4.0",
+        "@editorjs/header": "^2.6.1",
+        "@editorjs/link": "^2.3.1",
+        "@editorjs/list": "^1.6.1",
+        "@editorjs/marker": "^1.2.2",
+        "@editorjs/simple-image": "^1.4.0",
+        "@editorjs/underline": "^1.0.0",
         "dotenv": "^8.2.0",
         "email-validator": "^2.0.4",
         "favico.js-slevomat": "^0.3.11",

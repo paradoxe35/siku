@@ -34,7 +34,7 @@ export default class extends Controller {
         // @ts-ignore
         ApiRequest('put', e.target.action, form)
             .then((_) => {
-                Notifier.sussess(Localize({
+                Notifier.success(Localize({
                     fr: 'Modifications enregistrées',
                     en: 'Saved changes'
                 }))

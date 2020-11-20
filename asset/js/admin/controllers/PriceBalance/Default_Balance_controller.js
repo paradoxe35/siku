@@ -29,7 +29,7 @@ export default class extends Controller {
 
         ApiRequest('post', this.url, form, true)
             .then(({ data: { message } }) => {
-                Notifier.sussess(message)
+                Notifier.success(message)
             })
             .finally(() => Btn.hide())
     }
@@ -43,7 +43,7 @@ export default class extends Controller {
         Btn.loading(btn)
         ApiRequest('delete', this.url, {}, true)
             .then(({ data: { message } }) => {
-                Notifier.sussess(message, 3000)
+                Notifier.success(message, 3000)
                     .then(() => TurbolinksApp.reload())
             })
             .finally(() => Btn.hide())

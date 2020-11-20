@@ -6,6 +6,7 @@ use App\Http\Resources\Event\Event;
 use App\Http\View\Composers\AdminSidebarComposer;
 use App\Http\View\Composers\SidebarComposer;
 use App\Infrastructure\BasePrice;
+use App\View\Components\AvatarIcon;
 use App\View\Components\Card;
 use App\View\Components\CardTable;
 use App\View\Components\NavTab;
@@ -40,12 +41,13 @@ class ViewServiceProvider extends ServiceProvider
 
         $this->composers();
     }
-    
+
 
     /**
      * @return void
      */
-    private function components() {
+    private function components()
+    {
         Blade::component('spinning-dots', SpinningDots::class);
 
         Blade::component('card-table', CardTable::class);
@@ -57,12 +59,15 @@ class ViewServiceProvider extends ServiceProvider
         Blade::component('card', Card::class);
 
         Blade::component('nav-tab', NavTab::class);
+
+        Blade::component('avatar-icon', AvatarIcon::class);
     }
 
     /**
      * @return void
      */
-    private function composers() {
+    private function composers()
+    {
         View::composer('*', function ($view) {
             $view->with('app_name', 'SiKu');
 

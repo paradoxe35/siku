@@ -45,7 +45,7 @@ export default class extends Controller {
             subject: form.get('subject')
         })
             .then((_) => {
-                Notifier.sussess(Localize({
+                Notifier.success(Localize({
                     fr: 'Votre requête a bien ete envoyée',
                     en: 'Your request has been sent'
                 }))

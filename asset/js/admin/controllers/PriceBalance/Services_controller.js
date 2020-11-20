@@ -24,7 +24,7 @@ export default class extends Controller {
 
         ApiRequest('post', target.action, new FormData(target), true)
             .then(({ data }) => {
-                Notifier.sussess(data.message)
+                Notifier.success(data.message)
             })
             .finally(() => Btn.hide())
     }

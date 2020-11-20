@@ -69,5 +69,6 @@ class Kernel extends HttpKernel
         'active-event' => \App\Http\Middleware\Mobile\ActiveEvent::class,
         'admin' =>  \App\Http\Middleware\Admin\AuthentificateAdmin::class,
         'check-locale' => \App\Http\Middleware\CheckLocale::class,
+        'optimizeImages' =>  \App\Http\Middleware\ImageOptimize::class,
     ];
 }

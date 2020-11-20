@@ -133,7 +133,7 @@ const Qrcode = () => {
     const saveQrImage = () => {
         fetchAPi('put', URLS.setQrlogo, { data_url: src }, true)
             .then(({ data: { logo_path } }) => {
-                Notifier.sussess(Localize({
+                Notifier.success(Localize({
                     fr: 'Enregisté',
                     en: 'saved'
                 }))

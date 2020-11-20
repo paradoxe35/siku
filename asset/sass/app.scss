@@ -62,6 +62,42 @@ input {
     height: 26px !important;
 }
 
+.acticle-blog {
+    .cdx-underline {
+        text-decoration: underline;
+    }
+
+    .ce-delimiter:before {
+        display: inline-block;
+        content: "***";
+        font-size: 30px;
+        line-height: 65px;
+        height: 30px;
+        letter-spacing: 0.2em;
+    }
+
+    .cdx-simple-image__picture--with-background {
+        background: #eff2f5;
+        padding: 10px;
+    }
+
+    .cdx-simple-image__picture--with-background img {
+        display: block;
+        max-width: 60%;
+        margin: 0 auto;
+    }
+    .cdx-simple-image img {
+        vertical-align: bottom;
+    }
+}
+
+.img-cover-full {
+    border-radius: 4px;
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+}
+
 .clickable-a {
     cursor: pointer;
 }

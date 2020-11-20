@@ -69,7 +69,7 @@ const CreateGuest = () => {
 
         fetchAPi('post', URLS.commonGuestsStore, form, true)
             .then(({ data: { data } }) => {
-                Notifier.sussess(t('Créé avec succès !'))
+                Notifier.success(t('Créé avec succès !'))
                 dispach(commonGuestAdded(data))
                 setFields(e => ({ ...e, [GUEST_FORM.name]: '' }))
                 onPhoneValueChange('')

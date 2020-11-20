@@ -145,7 +145,7 @@ export default () => {
         fetchAPi('put', URLS.update, form, true)
             .then(({ data }) => {
                 setCustomer(data.customer)
-                Notifier.sussess(data.message)
+                Notifier.success(data.message)
                 target.querySelectorAll("[type=password]")
                     .forEach((e) => (e.value = ''))
             })

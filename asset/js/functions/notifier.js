@@ -15,7 +15,7 @@ const asyncTimer = (time = 5000) => new Promise(resolve => {
 })
 
 export const Notifier = {
-    sussess(message = '', time = 5000) {
+    success(message = '', time = 5000) {
         $.notify(message, { position: "bottom left", className: 'success', autoHideDelay: time });
         return asyncTimer(time)
     },
@@ -26,7 +26,7 @@ export const Notifier = {
 }
 
 export const savedChanges = () => {
-    Notifier.sussess(Localize({
+    Notifier.success(Localize({
         fr: 'Modifications enregistrées',
         en: 'Saved changes'
     }))

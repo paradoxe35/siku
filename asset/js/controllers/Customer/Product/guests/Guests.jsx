@@ -281,7 +281,7 @@ const CreateNewGuest = () => {
         fetchAPi('post', URLS.eventGuestsStore, form, true)
             .then(({ data }) => {
                 DispachGuestsDetail(data)
-                Notifier.sussess(t('Créé avec succès !'))
+                Notifier.success(t('Créé avec succès !'))
                 // @ts-ignore
                 updateTextValue({ value: selectedTemplate })
                 setFields(e => ({ ...e, [GUEST_FORM.name]: '' }))

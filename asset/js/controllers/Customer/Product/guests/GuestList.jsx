@@ -27,7 +27,7 @@ export const ShowListGuest = ({ v, handleDelete, canSend = true }) => {
         fetchAPi('post', URLS.eventGuests + '/' + v.id + '/send', {}, true)
             .finally(() => setLoading(false))
             .then((_res) => {
-                Notifier.sussess(t('Envoi en cours...'))
+                Notifier.success(t('Envoi en cours...'))
             })
     }
 
