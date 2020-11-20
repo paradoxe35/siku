@@ -59,7 +59,9 @@ data-controller=Blog--New-Article data-Blog--New-Article-link-endpoint=".route('
                                 <tbody data-target="Blog--New-Article.categoryList">
                                     @foreach ($categories as $category)
                                     <tr>
-                                        <td><x-avatar-icon :icon="$category->icon" /></td>
+                                        <td>
+                                            <x-avatar-icon :icon="$category->icon" />
+                                        </td>
                                         <td>{{ $category->name }}</td>
                                         <td>
                                             <button type="button" data-category-del="{{ $category->id }}"
@@ -116,7 +118,7 @@ data-controller=Blog--New-Article data-Blog--New-Article-link-endpoint=".route('
             </div>
             <div class="form-group">
                 <label>{{ __('Description') }}</label>
-                <textarea class="form-control" name="description" placeholder="{{ __('Meta description') }}"
+                <textarea type="text" class="form-control" name="description" placeholder="{{ __('Meta description') }}"
                     rows="2"></textarea>
             </div>
         </div>
