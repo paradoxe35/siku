@@ -30,18 +30,20 @@
                                 <div class="col-lg-5">
                                     <h3 class="font-weight-bold">{{ __('Nous contacter') }}</h3>
                                     <div class="mt-4">
+                                        @if ($detail)
                                         <p>
                                             <span class="font-weight-bold mr-2">
                                                 {{ __('E-mail') }}:
                                             </span>
-                                            <a href="#">paradox@png.com</a>
+                                            <a href="mailto:{{ $detail->public_email }}">{{ $detail->public_email }}</a>
                                         </p>
                                         <p>
                                             <span class="font-weight-bold mr-2">
                                                 {{ __('Téléphone') }}:
                                             </span>
-                                            <a href="#">+250 786 284 513</a>
+                                            <a href="tel:{{ $detail->public_email }}">{{ $detail->public_email }}</a>
                                         </p>
+                                        @endif
                                         <p class="text-muted">
                                             {{ __('Nous pouvons vous aider à trouver la bonne solution à vos préoccupations. Veuillez remplir le formulaire.') }}
                                         </p>

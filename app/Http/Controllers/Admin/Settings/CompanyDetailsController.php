@@ -46,7 +46,7 @@ class CompanyDetailsController extends Controller
 
         $query = $this->query();
 
-        abort_if($query->count() > 5, 400, trans('Vous pouvez pas enregistrer plus de 5 détails'));
+        abort_if($query->count() > 3, 400, trans('Vous pouvez pas enregistrer plus de :count détails', ['count' => 3]));
 
         $detail = $query->create([
             'public_email' => $request->public_email,

@@ -68,6 +68,7 @@ const Agents = () => {
                     <tbody>
                         {(listData.data || []).map((detail) => (
                             <tr key={detail.id}>
+                                <td>{detail.id}</td>
                                 <td>{detail.private_email}</td>
                                 <td>{detail.public_email}</td>
                                 <td>{detail.public_phone}</td>

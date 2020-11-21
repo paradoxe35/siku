@@ -27,7 +27,7 @@ const ValidateCustomPayment = ({ amount, guests }) => {
     //redux store dispacher
     const dispache = useDispatch()
 
-    const [phones, setPhones] = useState()
+    const [phones, setPhones] = useState([])
 
     const { fetchAPi, fetchLoading: loading, ApiRequest } = useFetch()
 
@@ -59,7 +59,7 @@ const ValidateCustomPayment = ({ amount, guests }) => {
                 <i className="ni ni-bold-right p-0 m-0"></i> {t("Contactez nous pour une autre méthode de paiement")}.
             </div>
             <div className="my-3">
-                <span className="text-success text-sm font-weight-600">{phones}</span>
+                <span className="text-success text-sm font-weight-600">{phones.join(', ')}</span>
             </div>
         </div>
         <form method="post" onSubmit={handleValidation} autoComplete="off">

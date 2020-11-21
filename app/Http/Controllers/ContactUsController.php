@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CompanyDetail;
 use Illuminate\Http\Request;
 
 class ContactUsController extends Controller
@@ -14,6 +15,8 @@ class ContactUsController extends Controller
      */
     public function __invoke(Request $request)
     {
-        return view('contact-us');
+        $detail = CompanyDetail::first();
+
+        return view('contact-us', compact('detail'));
     }
 }

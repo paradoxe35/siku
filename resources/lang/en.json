@@ -236,6 +236,7 @@
 	"Vous pouvez pas enregistrer plus :count utilisateurs": "You cannot save more than :count  users",
 	"Vous pouvez pas enregistrer plus :count événements": "You cannot save more than :count  events",
 	"Vous pouvez pas enregistrer plus de 5 détails": "You can not save more than 5 details",
+	"Vous pouvez pas enregistrer plus de :count détails": "You can not save more than :count details",
 	"Vous recevrez un lien pour créer un nouveau mot de passe par e-mail": "You will receive a link to create a new password by email",
 	"Vues": "Views",
 	"Vérifier": "Check",
