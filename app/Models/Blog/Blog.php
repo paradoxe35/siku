@@ -7,6 +7,7 @@ use App\Models\Blog\BlogCategory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Storage;
 
 class Blog extends Model
 {
@@ -55,5 +56,15 @@ class Blog extends Model
     public function getAuthorAttribute($value)
     {
         return ucfirst(Str::lower($value));
+    }
+
+    /**
+     * Get the image path.
+     *
+     * @return string
+     */
+    public function getImageUrlAttribute()
+    {
+        return Storage::url($this->image);
     }
 }

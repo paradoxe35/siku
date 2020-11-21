@@ -199,10 +199,17 @@ Route::middleware(['auth', 'admin'])
                 Route::get('editor-link', "BlogController@editorLinkData")->name('editor-link');
             });
 
-        Route::namespace('Account')
-            ->prefix('account')
-            ->name('account.')
+        Route::namespace('Settings')
+            ->prefix('settings')
+            ->name('settings.')
             ->group(function () {
-                Route::get('', "AccountController@index")->name('home');
+                Route::get('', "SettingsController@index")->name('home');
+                Route::put('account/update', "AccountController@update")->name('account.update');
+                Route::put('account/update/password', "AccountController@updatePassword")->name('account.update.password');
+
+                Route::apiResource('admins', 'AdminsController');
+
+                Route::apiResource('agents', 'AgentsController');
+                Route::apiResource('cmp-details', 'CompanyDetailsController');
             });
     });

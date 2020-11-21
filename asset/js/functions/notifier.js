@@ -25,10 +25,12 @@ export const Notifier = {
     },
 }
 
-export const savedChanges = () => {
+export const savedChanges = (reload = true) => {
     Notifier.success(Localize({
         fr: 'Modifications enregistrées',
         en: 'Saved changes'
     }))
-    window.setTimeout(() => TurbolinksApp.reload(), 3000)
+    if (reload) {
+        window.setTimeout(() => TurbolinksApp.reload(), 3000)
+    }
 }

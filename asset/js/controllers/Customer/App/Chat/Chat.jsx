@@ -88,7 +88,6 @@ const IconCamera = () => <svg height="19" width="19" focusable="false" aria-hidd
 
 const ChatHeader = ({ chatBox, setChatBox }) => {
     const agent = useContext(ChatAdminProfilContext)
-    const { t } = useTranslation()
 
     const goBack = (e) => {
         e.stopPropagation()
@@ -103,7 +102,7 @@ const ChatHeader = ({ chatBox, setChatBox }) => {
             <span id="chat_head">{agent.name}</span>
             <br />
             <span className="agent">{agent.role}</span>
-            <span className="online">({t(agent.status)})</span>
+            <span className="online">({agent.status})</span>
             <span className="chat_close_ni">
                 {chatBox !== CHAT_BOX.home &&
                     <i className="ni ni-bold-left clickable-a mr-3" onClick={goBack}></i>}

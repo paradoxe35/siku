@@ -70,8 +70,8 @@ export const useListDataPaginator = (datas, fn) => {
 
 
 
-export const usePhoneInput = () => {
-    const [phone, setPhone] = useState('')
+export const usePhoneInput = (defaultPhone = '') => {
+    const [phone, setPhone] = useState(defaultPhone)
     const onPhoneValueChange = useCallback((v) => {
         setPhone(v)
     }, [setPhone])

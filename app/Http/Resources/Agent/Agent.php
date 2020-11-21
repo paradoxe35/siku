@@ -16,10 +16,12 @@ class Agent extends JsonResource
     {
         return  [
             'name' => $this->name,
-            'imageUrl' => $this->image ?: "/img/default-agent-img.jpg",
+            'email' => @$this->email,
+            'imageUrl' => @$this->image_url ?: "/img/default-agent-img.jpg",
             'role' => $this->role,
-            'status' => $this->status,
-            'id' => $this->id
+            'status' => $this->status ? trans('En ligne') : trans('Hors ligne'),
+            'id' => $this->id,
+            'created_at' => @$this->created_at ? @$this->created_at->format('Y-m-d H:i') : null,
         ];
     }
 }

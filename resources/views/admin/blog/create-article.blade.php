@@ -134,7 +134,7 @@ data-controller=Blog--New-Article data-Blog--New-Article-link-endpoint=".route('
             <div class="form-group">
                 <label>{{ __('Image') }}</label>
                 <input type="file" class="dropify"
-                    data-default-file="{{ $articleEdit ? asset($articleEdit->image) : '' }}" accept="image/*"
+                    data-default-file="{{ $articleEdit ? asset($articleEdit->image_url) : '' }}" accept="image/*"
                     data-allowed-file-extensions="jpg jepg png gif" name="image" data-max-file-size="5M" />
             </div>
         </div>

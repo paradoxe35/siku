@@ -285,9 +285,11 @@
     .chat_option img {
         border-radius: 50%;
         width: 55px;
+        height: 55px;
+        object-fit: cover;
         float: left;
         margin: -30px 20px 10px 20px;
-        border: 4px solid rgba(0, 0, 0, 0.21);
+        border: 2px solid rgba(0, 0, 0, 0.21);
     }
 
     .change_img img {

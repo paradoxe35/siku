@@ -16,9 +16,10 @@ import { savedChanges } from '@/js/functions/notifier';
 const Index = () => {
     const { t } = useTranslation()
     const { fetchAPi, fetchLoading: loading } = useFetch()
-    const { phone, onPhoneValueChange } = usePhoneInput()
-    // @ts-ignore
-    const { country_code } = useSelector(s => s.userAuth)
+     // @ts-ignore
+    const { country_code, phone: cphone } = useSelector(s => s.userAuth)
+
+    const { phone, onPhoneValueChange } = usePhoneInput(cphone)
 
     const onChange = useCallback(() => {
         const dataPhone = parsePhoneNumber(phone)

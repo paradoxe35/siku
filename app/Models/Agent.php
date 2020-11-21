@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 class Agent extends Model
 {
@@ -26,5 +27,15 @@ class Agent extends Model
      *
      * @var array
      */
-    protected $fillable = ['name', 'phone', 'status', 'role', 'image'];
+    protected $fillable = ['name', 'phone', 'status', 'role', 'image', 'email'];
+
+    /**
+     * Get the image path.
+     *
+     * @return string
+     */
+    public function getImageUrlAttribute()
+    {
+        return Storage::url($this->image);
+    }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin\Blog;
 
+use App\Files\File;
 use App\Http\Controllers\Controller;
 use App\Models\Blog\Blog;
 use App\Models\Blog\BlogCategory;
@@ -14,22 +15,6 @@ use Illuminate\Validation\Rule;
 
 class BlogController extends Controller
 {
-
-    /**
-     * @var int SIZE
-     */
-    public const SIZE = 1024;
-
-    /**
-     * @var array
-     */
-    public const IMAGE_RULES = ['required', 'file', "max:" . (self::SIZE * 5) . "", 'dimensions:min_width=400,min_height=400', 'mimes:jpeg,jpg,png,gif'];
-
-    /**
-     * @var string MUSIC_IMG_PATH
-     */
-    public const BLOG_IMG_PATH = 'blog/articles';
-
 
     public function __construct()
     {
@@ -135,7 +120,7 @@ class BlogController extends Controller
             'author' => ['required', 'string', 'max:255'],
             'description' => ['nullable', 'string', 'max:255'],
             'category' => ['nullable', 'numeric', 'min:1'],
-            'image' => self::IMAGE_RULES,
+            'image' => File::IMAGE_RULES,
             'json' => ['required', 'json']
         ]);
 
@@ -149,10 +134,8 @@ class BlogController extends Controller
         ]);
 
         if ($request->hasFile('image')) {
-            $path = $request->file('image')->storePublicly(self::BLOG_IMG_PATH . "/{$article->id}");
-
-            $article->image_path = $path;
-            $article->image = Storage::url($path);
+            $path = $request->file('image')->storePublicly(File::BLOG_IMG_PATH . "/{$article->id}");
+            $article->image = $path;
             $article->save();
         }
 
@@ -166,7 +149,7 @@ class BlogController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $imageRule = self::IMAGE_RULES;
+        $imageRule = File::IMAGE_RULES;
 
         $imageRule[0] = 'nullable';
 
@@ -191,11 +174,10 @@ class BlogController extends Controller
         ]);
 
         if ($request->hasFile('image')) {
-            Storage::delete($article->image_path);
+            Storage::delete($article->image);
 
-            $path = $request->file('image')->storePublicly(self::BLOG_IMG_PATH . "/{$article->id}");
-            $filled->image_path = $path;
-            $filled->image = Storage::url($path);
+            $path = $request->file('image')->storePublicly(File::BLOG_IMG_PATH . "/{$article->id}");
+            $filled->image = $path;
         }
 
         $article->save();
@@ -344,7 +326,7 @@ class BlogController extends Controller
 
         $article->forceDelete();
 
-        Storage::delete($article->image_path);
+        Storage::delete($article->image);
 
         return ['redirect_url' => route('admin.blog.index', [], false)];
     }

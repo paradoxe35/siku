@@ -28,6 +28,32 @@ export const ListDatasByFilter = ({ children, url, tabs = null, selectedTab = nu
             .then(({ data }) => setListData(data))
     }
 
+    const deleted = (id) => {
+        setListData(d => {
+            const t = { ...d }
+            t.data = d.data.filter(r => r.id !== id)
+            return t
+        })
+    }
+
+    const added = (item) => {
+        setListData(d => {
+            const t = { ...d }
+            t.data = [item, ...d.data]
+            return t
+        })
+    }
+
+    const updated = (item) => {
+        setListData(d => {
+            const t = { ...d }
+            t.data = d.data.map(r => r.id == item.id ? item : r)
+            return t
+        })
+    }
+
+    const modified = { updated, deleted, added }
+
     return <>
         <div className="mb-3">
             <BtnGroupTab
@@ -36,7 +62,7 @@ export const ListDatasByFilter = ({ children, url, tabs = null, selectedTab = nu
                 defaultv={selectedTab || 'active'} />
         </div>
         <Loader loading={fetchLoading}>
-            <div className="table-responsive">{children(listData, filter.current)}</div>
+            <div className="table-responsive">{children(listData, filter.current, modified)}</div>
         </Loader>
         <div className="my-2">
             <LaravelPagination listData={listData} getDataPaginator={getDataPaginator} />

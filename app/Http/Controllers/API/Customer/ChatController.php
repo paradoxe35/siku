@@ -26,25 +26,26 @@ class ChatController extends Controller
     /**
      * @return \Illuminate\Http\Response
      */
-    public function agent()
+    public function agent(Request $request)
     {
         $appname = config('app.name', 'SiKu');
 
         $default = [
             'name' => "$appname Agent",
-            'imageUrl' => "/img/default-agent-img.jpg",
+            'image' => "/img/default-agent-img.jpg",
             'role' => 'Agent',
-            'status' => 'En ligne',
+            'status' => 1,
             'id' => time()
         ];
 
         $all = Agent::all();
 
         if ($all->count() > 0) {
-            return new AgentResource($all->random(1));
+            return (new AgentResource($all[random_int(0, $all->count() - 1)]))
+                ->toArray($request);
         }
 
-        return $default;
+        return (new AgentResource((object) $default))->toArray($request);
     }
 
     /**

@@ -54,7 +54,7 @@
         <td class="text-center">{{ $article->id }}</td>
         <td>
             <div class="img-container">
-                <img class="img-cover-full" src="{{ asset($article->image) }}">
+                <img class="img-cover-full" src="{{ asset($article->image_url) }}">
             </div>
         </td>
         <td>{{ Str::substr($article->title, 0, 35) }}...</td>

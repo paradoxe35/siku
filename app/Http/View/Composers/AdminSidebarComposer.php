@@ -56,9 +56,9 @@ class AdminSidebarComposer
                 'route' => 'admin.blog.home'
             ],
             [
-                'name' => __('Paramètre'),
+                'name' => __('Paramètres'),
                 'icon' => 'settings-gear-65',
-                'route' => 'admin.account.home'
+                'route' => 'admin.settings.home'
             ],
         ];
         $view->with('adminSidebarLinkList', $sidebarLinkList);
