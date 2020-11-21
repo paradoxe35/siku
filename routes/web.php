@@ -195,7 +195,6 @@ Route::middleware(['auth', 'admin'])
 
                 Route::post('store-caterory', "BlogController@storeCaterory")->name('store-caterory');
                 Route::delete('store-caterory/{id}', "BlogController@destoryCaterory");
-
                 Route::get('editor-link', "BlogController@editorLinkData")->name('editor-link');
             });
 
