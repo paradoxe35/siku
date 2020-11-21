@@ -45,8 +45,8 @@ export default class extends Controller {
      * @param {{ processed: number, total: number }} status 
      */
     showStatus(status) {
-        const p = status.processed || 0
-        const t = status.total || 0
+        const p = status.processed || (!status.total ? 1 : 0)
+        const t = status.total || 1
         this.show()
         const prt = (t > 0 ? (p * 100 / t) : 0);
         this.setPourcentage(Math.floor(prt))
