@@ -83,19 +83,24 @@ data-controller=Blog--New-Article data-Blog--New-Article-link-endpoint=".route('
 @endsection
 
 @section('blog-content')
-<form data-target="Blog--New-Article.store" action="{{ route('admin.blog.store') }}" method="post" autocomplete="off"
-    enctype="multipart/form-data">
+<form data-target="Blog--New-Article.store"
+    action="{{ $articleEdit ? route('admin.blog.update', ['id' => $articleEdit->id]) :route('admin.blog.store') }}"
+    method="post" autocomplete="off" enctype="multipart/form-data">
     <div class="row">
         <div class="col-lg-6">
+
             <div class="form-group">
                 <span>{{ __('Titre') }}</span>
-                <input type="text" name="title" data-target="Blog--New-Article.title" class="form-control"
-                    placeholder="{{ __('Sujet') }}">
+                <input type="text" value="{{ $articleEdit ? $articleEdit->title : '' }}" name="title"
+                    data-target="Blog--New-Article.title" class="form-control" placeholder="{{ __('Sujet') }}">
             </div>
+
             <div class="form-group">
                 <span>{{ __('Auteur') }}</span>
-                <input name="author" class="form-control" value="{{ $app_name }}" placeholder="{{ __('Auteur') }}">
+                <input name="author" class="form-control" value="{{ $articleEdit ? $articleEdit->author : $app_name }}"
+                    placeholder="{{ __('Auteur') }}">
             </div>
+
             <div class="form-group my-3">
                 <div class="w-100">
                     <label for="categories">
@@ -109,7 +114,8 @@ data-controller=Blog--New-Article data-Blog--New-Article-link-endpoint=".route('
                         name="category">
                         <option value=" ">{{ __('Catégories') }}</option>
                         @foreach ($categories as $category)
-                        <option value="{{  $category->id }}">
+                        <option value="{{ $category->id }}"
+                            {{ $articleEdit && $articleEdit->blog_category_id == $category->id ? 'selected': '' }}>
                             {{ $category->name }}
                         </option>
                         @endforeach
@@ -118,17 +124,19 @@ data-controller=Blog--New-Article data-Blog--New-Article-link-endpoint=".route('
             </div>
             <div class="form-group">
                 <label>{{ __('Description') }}</label>
-                <textarea type="text" class="form-control" name="description" placeholder="{{ __('Meta description') }}"
-                    rows="2"></textarea>
+                <textarea class="form-control" name="description" placeholder="{{ __('Meta description') }}"
+                    rows="2">{{ $articleEdit ? $articleEdit->description : '' }}</textarea>
             </div>
         </div>
+
         <div class="col-lg-6">
+
             <div class="form-group">
                 <label>{{ __('Image') }}</label>
-                <input type="file" class="dropify" accept="image/*" data-allowed-file-extensions="jpg jepg png gif"
-                    name="image" data-max-file-size="5M" />
+                <input type="file" class="dropify"
+                    data-default-file="{{ $articleEdit ? asset($articleEdit->image) : '' }}" accept="image/*"
+                    data-allowed-file-extensions="jpg jepg png gif" name="image" data-max-file-size="5M" />
             </div>
-
         </div>
     </div>
 
@@ -151,4 +159,8 @@ data-controller=Blog--New-Article data-Blog--New-Article-link-endpoint=".route('
             class="btn btn-secondary btn-sm text-primary">{{ __('Aperçu') }}</a>
     </div>
 </form>
+
+<script type="text/javascript">
+    window.article_edit = JSON.parse(@json($articleEdit ? $articleEdit->json : null))
+</script>
 @endsection

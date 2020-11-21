@@ -6,6 +6,7 @@ import { ApiRequest } from "@/js/api/api"
 import { Btn, FormBtn } from "@/js/functions/dom"
 import { Notifier } from "@/js/functions/notifier"
 import { Localize } from "@/js/functions/localize"
+import { TurbolinksApp } from "@/js/modules/turbolinks"
 
 export default class extends Controller {
     urls = {
@@ -68,12 +69,15 @@ export default class extends Controller {
     storeCategory = async e => {
         e.preventDefault()
 
-        Btn.loading(FormBtn(e.target))
+        const { target } = e
+
+        Btn.loading(FormBtn(target))
         // @ts-ignore
-        ApiRequest('post', e.target.action, new FormData(e.target), true)
+        ApiRequest('post', target.action, new FormData(e.target), true)
             .then(({ data: { message, datas } }) => {
                 Notifier.success(message)
                 this.categoriesToHtml(datas)
+                this.clearInput(target)
             })
             .finally(() => Btn.hide())
     }
@@ -141,7 +145,8 @@ export default class extends Controller {
 
         this.editor.isReady
             .then(() => {
-                const fl = this.getDataLocalStore()
+                // @ts-ignore
+                const fl = window.article_edit || this.getDataLocalStore()
                 if (fl) {
                     fl.blocks.length && this.editor.render(fl)
                 }
@@ -188,10 +193,15 @@ export default class extends Controller {
 
         // @ts-ignore
         ApiRequest('post', target.action, datas, true)
-            .then(({ data: { message } }) => {
-                Notifier.success(message)
+            .then(({ data: { message, redirect_url } }) => {
+                Notifier.success(message, 3000)
+                    .then(() => {
+                        if (redirect_url) {
+                            TurbolinksApp.replace(redirect_url)
+                        }
+                    })
                 this.editor.clear()
-                this.clearInput()
+                this.clearInput(target)
             })
             .finally(() => Btn.hide())
     }
@@ -217,10 +227,10 @@ export default class extends Controller {
         $(this.modalViewer).modal('show')
     }
 
-    clearInput() {
-        this.element.querySelectorAll('input[type="text"]')
-            // @ts-ignore
-            .forEach(element => element.value = '')
+    clearInput(parent) {
+        const inptus = parent.querySelectorAll('input[type="text"]');
+        const textarea = parent.querySelectorAll('textarea');
+        ([...inptus, ...textarea]).forEach(element => element.value = '')
     }
 
 }

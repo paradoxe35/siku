@@ -4,10 +4,27 @@
         border-radius: 30px;
         padding: 10px 10px;
     }
-    
+
     .icon {
         width: min-content;
         height: min-content;
     }
 }
 
+.telegram-post {
+    .input-link-post {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #e4e4e4;
+        border-radius: 3px;
+        outline: none;
+        font-size: 14px;
+    }
+
+    &.error-link {
+        background-color: #fff3f6;
+        border: 1px solid rgba(169, 90, 90, 0.678);
+        border-radius: 3px;
+        box-shadow: inset 0 1px 3px 0 rgba(146, 62, 62, 0.05);
+    }
+}

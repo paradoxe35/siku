@@ -8,7 +8,9 @@ use App\Models\Blog\BlogCategory;
 use App\Services\Og\OpenGraph;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 
 class BlogController extends Controller
 {
@@ -32,6 +34,12 @@ class BlogController extends Controller
     public function __construct()
     {
         $this->middleware(['optimizeImages']);
+
+        $this->middleware(function (Request $request, \Closure $next) {
+            URL::defaults(['id' => $request->route('id')]);
+
+            return $next($request);
+        })->except(['index', 'create']);
     }
 
     /**
@@ -55,13 +63,50 @@ class BlogController extends Controller
      */
     public function index()
     {
+        $categories = $this->categories();
+
         $query = $this->query()->latest();
 
-        $query =  $query->withTrashed();
+        $q = request('q');
+
+        if ($q && strlen($q) > 2) {
+            $query = $query->search($q);
+        }
+
+        switch (request('active')) {
+            case 'active':
+                # code...
+                break;
+            case 'deleted':
+                $query = $query->onlyTrashed();
+                break;
+            default:
+                $query = $query->withTrashed();
+                break;
+        }
+
+        $category = request('category');
+
+        if ($category) {
+            $c = BlogCategory::query()->find($category);
+            if ($c) {
+                $query = $c->blogs()->latest();
+            }
+        }
+
+
 
         $articles = $query->paginate();
 
-        return view('admin.blog.articles', compact('articles'));
+        return view('admin.blog.articles', compact('articles', 'categories'));
+    }
+
+    /**
+     * @return array
+     */
+    private function categories()
+    {
+        return BlogCategory::query()->latest()->get();
     }
 
     /**
@@ -69,9 +114,15 @@ class BlogController extends Controller
      */
     public function create()
     {
-        $categories = BlogCategory::query()->latest()->get();
+        $categories = $this->categories();
 
-        return view('admin.blog.create-article', compact('categories'));
+        $articleEdit = null;
+
+        if ($id = request('article')) {
+            $articleEdit = $this->queryWithTrash($id);
+        }
+
+        return view('admin.blog.create-article', compact('categories', 'articleEdit'));
     }
 
     /**
@@ -92,13 +143,15 @@ class BlogController extends Controller
             'title' => $request->title,
             'slug' => Str::slug($request->title),
             'json' => $request->json,
-            'decription' => $request->description,
+            'description' => $request->description,
             'author' => $request->author,
             'blog_category_id' => $request->category
         ]);
 
         if ($request->hasFile('image')) {
             $path = $request->file('image')->storePublicly(self::BLOG_IMG_PATH . "/{$article->id}");
+
+            $article->image_path = $path;
             $article->image = Storage::url($path);
             $article->save();
         }
@@ -109,12 +162,51 @@ class BlogController extends Controller
     }
 
     /**
-     * @return array
+     * @return \Illuminate\Http\Response
      */
-    private function categories()
+    public function update(Request $request, $id)
     {
-        return BlogCategory::query()->latest()->get();
+        $imageRule = self::IMAGE_RULES;
+
+        $imageRule[0] = 'nullable';
+
+        $request->validate([
+            'title' => ['required', 'string', 'min:5', 'max:255', Rule::unique('blogs')->ignore($id)],
+            'author' => ['required', 'string', 'max:255'],
+            'description' => ['nullable', 'string', 'max:255'],
+            'category' => ['nullable', 'numeric', 'min:1'],
+            'image' => $imageRule,
+            'json' => ['required', 'json']
+        ]);
+
+        $article = $this->queryWithTrash($id);
+
+        $filled = $article->fill([
+            'title' => $request->title,
+            'slug' => Str::slug($request->title),
+            'json' => $request->json,
+            'description' => $request->description,
+            'author' => $request->author,
+            'blog_category_id' => $request->category
+        ]);
+
+        if ($request->hasFile('image')) {
+            Storage::delete($article->image_path);
+
+            $path = $request->file('image')->storePublicly(self::BLOG_IMG_PATH . "/{$article->id}");
+            $filled->image_path = $path;
+            $filled->image = Storage::url($path);
+        }
+
+        $article->save();
+
+        return [
+            'message' => trans("L'article a été modifié avec succès"),
+            'redirect_url' => route('admin.blog.create', [], false)
+        ];
     }
+
+
 
     /**
      * @return \Illuminate\Http\Response
@@ -174,5 +266,86 @@ class BlogController extends Controller
                 ]
             ]
         ];
+    }
+
+    /**
+     * @return \Illuminate\Http\Response
+     */
+    public function show()
+    {
+        return redirect(route('admin.blog.show.profile'));
+    }
+
+    /**
+     * @param int $id
+     * 
+     * @return static
+     */
+    private function queryWithTrash($id)
+    {
+        return $this->query()->withTrashed()->findOrFail($id);
+    }
+
+    /**
+     * @return \Illuminate\Http\Response
+     */
+    public function showProfile($id)
+    {
+        $article = $this->queryWithTrash($id);
+
+        return view('admin.blog.show.profile', compact('article'));
+    }
+
+
+    /**
+     * @return \Illuminate\Http\Response
+     */
+    public function showContent($id)
+    {
+        $article = $this->queryWithTrash($id);
+
+        return view('admin.blog.show.content', compact('article'));
+    }
+
+    /**
+     * @return \Illuminate\Http\Response
+     */
+    public function showComments($id)
+    {
+        $article = $this->queryWithTrash($id);
+
+        return view('admin.blog.show.comments', compact('article'));
+    }
+
+    /**
+     * @return \Illuminate\Http\Response
+     */
+    public function trash($id)
+    {
+        $article = $this->queryWithTrash($id);
+
+        if ($article->trashed()) {
+
+            $article->restore();
+        } else {
+
+            $article->delete();
+        }
+
+        return [true];
+    }
+
+    /**
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
+    {
+        $article = $this->queryWithTrash($id);
+
+        $article->forceDelete();
+
+        Storage::delete($article->image_path);
+
+        return ['redirect_url' => route('admin.blog.index', [], false)];
     }
 }

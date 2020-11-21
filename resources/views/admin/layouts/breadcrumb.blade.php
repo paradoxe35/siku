@@ -10,6 +10,11 @@
                 <li class="breadcrumb-item">
                     <span class="h2 text-lg">{{ __($page) }}</span>
                 </li>
+                @foreach (($pages ?? []) as $item)
+                <li class="breadcrumb-item text-default">
+                    {{ __($item) }}
+                </li>
+                @endforeach
                 @yield('breadcrumb-items')
             </ol>
         </nav>

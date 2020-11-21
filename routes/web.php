@@ -183,6 +183,16 @@ Route::middleware(['auth', 'admin'])
                 Route::get('create', "BlogController@create")->name('create');
                 Route::post('store', "BlogController@store")->name('store');
 
+                Route::patch('/{id}', "BlogController@trash")->name('trash');
+                Route::delete('/{id}', "BlogController@destroy")->name('destroy');
+
+                Route::post('update/{id}', "BlogController@update")->name('update');
+
+                Route::get('show/{id}', "BlogController@show")->name('show');
+                Route::get('show/{id}/profile', "BlogController@showProfile")->name('show.profile');
+                Route::get('show/{id}/content', "BlogController@showContent")->name('show.content');
+                Route::get('show/{id}/comments', "BlogController@showComments")->name('show.comments');
+
                 Route::post('store-caterory', "BlogController@storeCaterory")->name('store-caterory');
                 Route::delete('store-caterory/{id}', "BlogController@destoryCaterory");
 

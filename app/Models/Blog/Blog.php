@@ -25,7 +25,7 @@ class Blog extends Model
     /**
      * @var array
      */
-    protected $fillable = ['title', 'slug', 'image', 'json', 'description', 'author', 'blog_category_id'];
+    protected $fillable = ['title', 'slug', 'image', 'image_path', 'json', 'description', 'author', 'blog_category_id'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

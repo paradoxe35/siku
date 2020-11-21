@@ -73,7 +73,14 @@ export const jsonToHtml = {
         }
     },
     makeDelimeter(obj) {
-        return `<div class="ce-delimiter cdx-block my-3"></div>\n`
+        return `<div class="text-center"><div class="ce-delimiter cdx-block my-3"></div></div>\n`
+    },
+    makeTelegramPost(obj) {
+        const URI = new URL(obj.data.url)
+        const path = URI.pathname.slice(1)
+        return `<div class="my-3">
+                <script async src="https://telegram.org/js/telegram-widget.js?14" data-telegram-post="${path}" data-width="100%" data-color="5E72E4"></script>
+            </div>`
     },
     makeLinkTool(obj) {
         const meta = obj.data.meta
@@ -135,6 +142,9 @@ export const convertToHtml = (blocks) => {
                 break;
             case 'code':
                 output_HTML += jh.makeCode(o.data);
+                break;
+            case 'telegramPost':
+                output_HTML += jh.makeTelegramPost(o);
                 break;
             default:
                 return '';

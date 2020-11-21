@@ -44,17 +44,7 @@ trait FullTextSearch
     {
         $columns = implode(',', $this->searchable);
         $searchableTerm = $this->fullTextWildcards($term);
-        if (strlen($searchableTerm)) {
-            // $query = $query->where(function ($q) use ($searchableTerm) {
-            //     foreach ($this->searchable as $key => $column) {
-            //         if ($key < 1) {
-            //             $q = $q->where($column, 'like', "%{$searchableTerm}%");
-            //         } else {
-            //             $q = $q->orWhere($column, 'like', "%{$searchableTerm}%");
-            //         }
-            //     }
-            // });
-        } else {
+        if (strlen($searchableTerm) > 2) {
             $query = $query->whereRaw("MATCH ({$columns}) AGAINST (? IN BOOLEAN MODE)", [$searchableTerm]);
         }
         return $query;
