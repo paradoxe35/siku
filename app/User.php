@@ -118,7 +118,7 @@ class User extends Authenticatable implements MustVerifyEmail, CanResetPassword
      */
     public function getNameAttribute($value)
     {
-        return ucwords(Str::lower($value));
+        return Str::title($value);
     }
 
     /**

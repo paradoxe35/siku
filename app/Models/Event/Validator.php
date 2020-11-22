@@ -23,7 +23,7 @@ class Validator extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'username' , 'phone', 'country_code', 'country_call', 'user_id', 'sended_sms'
+        'name', 'username', 'phone', 'country_code', 'country_call', 'user_id', 'sended_sms'
     ];
 
     /**
@@ -34,7 +34,7 @@ class Validator extends Authenticatable
      */
     public function getNameAttribute($value)
     {
-        return ucwords(Str::lower($value));
+        return Str::title($value);
     }
 
     /**

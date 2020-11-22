@@ -36,6 +36,6 @@ class CommonGuest extends Model
      */
     public function getNameAttribute($value)
     {
-        return ucwords(Str::lower($value));
+        return Str::title($value);
     }
 }

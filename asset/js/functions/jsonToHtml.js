@@ -3,9 +3,7 @@ import { loadScript, loadStylesheet } from "./functions"
 
 export const jsonToHtml = {
     makeParagraph(obj) {
-        return `<p class="blog_post_text">
-                        ${obj.data.text}    
-                    </p>`
+        return `<p class="blog_post_text"> ${obj.data.text}</p>`
     },
     makeCode(data) {
         const id = `code-${Math.random()}`
@@ -18,9 +16,7 @@ export const jsonToHtml = {
                 el && hljs.highlightBlock(el);
             }, 500)
         })
-        return `<div style="overflow: auto;max-height: 1000px">
-                <pre id=${id} class="prettyprint"><code>${data.code}</code></pre>
-            </div>`
+        return `<pre id=${id} class="prettyprint"><code>${data.code}</code></pre>`
     },
     makeImage(obj) {
         const caption = obj.data.caption ? `<div class="blog_caption">
@@ -89,13 +85,17 @@ export const jsonToHtml = {
                 <div class="card-body">
                     <div class="d-flex justify-content-between mb-3">
                         <div>
-                            <h5 class="card-title">${meta.title}</h5>
-                            <div class="card-text">${meta.description}</div>
+                            <a href="${obj.data.link}" target="_blank">
+                                <h5 class="card-title">${meta.title}</h5>
+                            </a>
+                            <div class="card-text link-tool__description">${meta.description}</div>
                         </div>
                         ${meta.image.url.constructor === String && meta.image.url.length ? (`
-                            <div style="height: 65px;width: 65px;">
-                                <img src="${meta.image.url}" class="img-cover-full" alt="${meta.title}" />
-                            </div>
+                            <a href="${obj.data.link}" target="_blank">
+                                <div style="height: 65px;width: 65px;">
+                                    <img src="${meta.image.url}" class="img-cover-full" alt="${meta.title}" />
+                                </div>
+                            </a>
                         `) : ''}
                     </div>
                     <div class="mt-2 mb-2">

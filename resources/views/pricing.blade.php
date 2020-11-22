@@ -5,15 +5,9 @@
 @section('content')
 @include('layouts.navbar')
 <div class="main-content" data-controller="Pricing" data-Pricing-country-pricing="{{ route('api.country-pricing') }}">
-    <section id="hero">
-        <div class="inner">
-            <div class="container-fluid">
-                <h1 class="text-center display-2">{{ __('Tarification') }}</h1>
-            </div>
-        </div>
-    </section>
+    @include('layouts.hero', ['title' => 'Tarification'])
 
-    <section class="pb-5 bg-white">
+    <section class="pb-5">
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-lg-10 mt--9">
@@ -79,9 +73,11 @@
     <section>
         <div class="container">
             <div class="d-flex justify-content-lg-center px-3 mt-5">
-                <div class="col-lg-6">
+                <div class="col-lg-7">
                     <p>
-                        {{ __("Si nos tarifs ne vous conviennent pas, veuillez nous contacter pour plus d'informations") }}.
+                        **
+                         {{ __("Si nos tarifs ne vous conviennent pas, veuillez nous contacter pour plus d'informations") }}.
+                        **
                     </p>
                 </div>
             </div>

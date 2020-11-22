@@ -20,7 +20,7 @@
         </div>
     </section>
 
-    <section class="pb-5 bg-white">
+    <section class="pb-5">
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-lg-11 mt--9">
@@ -41,7 +41,7 @@
                                             <span class="font-weight-bold mr-2">
                                                 {{ __('Téléphone') }}:
                                             </span>
-                                            <a href="tel:{{ $detail->public_email }}">{{ $detail->public_email }}</a>
+                                            <a href="tel:{{ $detail->public_phone }}">{{ $detail->public_phone }}</a>
                                         </p>
                                         @endif
                                         <p class="text-muted">

@@ -4,7 +4,8 @@
         <div class="row align-items-center">
             <div class="col-xl-12">
                 <div class="copyright text-center text-muted">
-                    © {{now()->format('Y')}}, <a href="#" class="font-weight-bold ml-1">PNG_</a>,
+                    ©{{now()->format('Y')}}, 
+                    <a href="#" class="text-xs text-default ml-1">PNG_</a>,
                     , {{ __('Tous les droits sont réservés') }}.
                 </div>
             </div>

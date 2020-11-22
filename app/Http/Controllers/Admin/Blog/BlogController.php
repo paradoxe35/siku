@@ -118,7 +118,7 @@ class BlogController extends Controller
         $request->validate([
             'title' => ['required', 'string', 'min:5', 'max:255', 'unique:blogs'],
             'author' => ['required', 'string', 'max:255'],
-            'description' => ['nullable', 'string', 'max:255'],
+            'description' => ['required', 'string', 'min:5', 'max:255'],
             'category' => ['nullable', 'numeric', 'min:1'],
             'image' => File::IMAGE_RULES,
             'json' => ['required', 'json']

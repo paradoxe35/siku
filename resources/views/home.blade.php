@@ -33,7 +33,7 @@
     <div class="container">
         <div class="row justify-content-center text-center">
             <div class="col-md-8">
-                <h2 class="display-3">{{ __('Comment ça marche') }}?</h2>
+                <h2 class="display-3 mt-3">{{ __('Comment ça marche') }}?</h2>
                 <p class="lead">
                     {{ $app_name  }}
                     {{ __("est un tout nouveau produit basé sur une structure de distribution d'annonces intuitive qui vise à la rendre plus réactifs et bien sûr beaucoup plus faciles à gérer") }}.
@@ -147,11 +147,31 @@
         </div>
     </div>
 </section>
+
+@if ($articles->count() > 0)
+<section>
+    <div class="container">
+        <div class="row row-grid justify-content-center">
+            <div class="col-lg-10">
+                <h2 class="display-5 mb-4">{{ __("Les derniers articles") }}</h2>
+                <div class="row">
+                    @foreach ($articles as $article)
+                    <div class="col-lg-6">
+                        @include('layouts.blog.article', ['article' => $article, 'home' => true])
+                    </div>
+                    @endforeach
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+@endif
+
 <section class="py-7">
     <div class="container">
         <div class="row row-grid justify-content-center">
             <div class="col-lg-6 text-center">
-                <h2 class="display-4 mb-4">{{ __("Abonnez-vous à notre newsletter") }}</h2>
+                <h2 class="display-5 mb-4">{{ __("Abonnez-vous à notre newsletter") }}</h2>
                 <div class="form-group d-flex">
                     <input type="email" class="form-control form-control-alternative mr-3 mb-3" placeholder="Email">
                     <button class="btn btn-primary mb-3" type="button">{{ __('Souscrire') }}</button>

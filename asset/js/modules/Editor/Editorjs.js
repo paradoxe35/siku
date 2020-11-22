@@ -9,50 +9,63 @@ import List from '@editorjs/list';
 import Delimiter from '@editorjs/delimiter'
 import CodeTool from '@editorjs/code';
 import Underline from '@editorjs/underline';
+import InlineCode from '@editorjs/inline-code';
+import DragDrop from 'editorjs-drag-drop';
 import './style.scss'
 
 /**
  * @param { EditorConfig } configuration 
  * @param { string } linkToolEndPoint 
  */
-export const EditorJS = (configuration = {}, linkToolEndPoint) => new Ejs({
-    ...configuration,
-    holder: 'editorjs',
-    tools: {
-        header: {
-            class: Header,
-            inlineToolbar: true,
+export const EditorJS = (configuration = {}, linkToolEndPoint) => {
+    const editor = new Ejs({
+        ...configuration,
+        holder: 'editorjs',
+        onReady: () => {
+            new DragDrop(editor);
         },
-        delimiter: Delimiter,
-        list: {
-            class: List,
-            inlineToolbar: true,
-        },
-        embed: {
-            class: Embed,
-            config: {
-                services: {
-                    youtube: true,
-                    coub: true
+        tools: {
+            header: {
+                class: Header,
+                inlineToolbar: true,
+            },
+            delimiter: Delimiter,
+            list: {
+                class: List,
+                inlineToolbar: true,
+            },
+            embed: {
+                class: Embed,
+                config: {
+                    services: {
+                        youtube: true,
+                        coub: true
+                    }
+                },
+            },
+            inlineCode: {
+                class: InlineCode,
+                shortcut: 'CMD+SHIFT+M',
+            },
+            underline: Underline,
+            code: CodeTool,
+            image: SimpleImage,
+            telegramPost: TelegramPost,
+            linkTool: {
+                class: LinkTool,
+                config: {
+                    endpoint: linkToolEndPoint, // Your backend endpoint for url data fetching
                 }
             },
-        },
-        underline: Underline,
-        code: CodeTool,
-        image: SimpleImage,
-        telegramPost: TelegramPost,
-        linkTool: {
-            class: LinkTool,
-            config: {
-                endpoint: linkToolEndPoint, // Your backend endpoint for url data fetching
+            Marker: {
+                class: Marker,
+                shortcut: 'CMD+SHIFT+M',
             }
-        },
-        Marker: {
-            class: Marker,
-            shortcut: 'CMD+SHIFT+M',
         }
-    }
-})
+    })
+
+    return editor
+}
 
 class TelegramPost {
 
@@ -119,7 +132,7 @@ class TelegramPost {
 
         input.classList.add('input-link-post');
 
-        input.placeholder = 'Paste an image URL...';
+        input.placeholder = 'Paste telegram post link...';
 
         input.onpaste = () => {
             window.setTimeout(() => {
@@ -151,7 +164,12 @@ class TelegramPost {
         if (!savedData.url.trim()) {
             return false;
         }
-
+        try {
+            const URI = new URL(savedData.url.trim())
+            if (URI.host !== 't.me') return false
+        } catch (_) {
+            return false
+        }
         return true;
     }
 }

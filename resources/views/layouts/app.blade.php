@@ -14,15 +14,23 @@
     <link rel="manifest" href="{{ asset('favicon/site.webmanifest') }}">
     <meta name="msapplication-TileColor" content="#da532c">
     <meta name="theme-color" content="#ffffff">
-    <!-- section:seometa -->
-    <meta property="og:type" content="website">
+    {{--  section:seometa --}}
     <meta property="og:site_name" content="{{ $app_name }}">
+    <meta property="og:language" content="{{ app()->getLocale() }}">
+    <meta property="og:url" content="{{ request()->url() }}">
+
+    @section('seometa')
+    <meta property="og:type" content="website">
     <meta property="og:title" content="@yield('title'){{ $app_name }}">
     <meta property="og:description" content="{{ $app_description }}">
-    <meta property="og:image" content>
+    <meta property="og:image" content="{{ asset('img/siku/siku.png') }}">
+    <meta name="twitter:image" content="{{ asset('img/siku/siku.png') }}">
+    @show
+
+    <meta name="twitter:creator" content="{{ $app_name }}">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:site" content="{{ '@'.$app_name }}">
-    <meta name="twitter:creator" content="{{ $app_name }}">
+    {{--  section:seometa  --}}
     <link href="{{ mix('css/style.css', 'compiled') }}" data-turbolinks-track="reload" rel="stylesheet">
     <link href="{{ mix('css/module.css', 'compiled') }}" data-turbolinks-track="reload" rel="stylesheet">
     @yield('head-meta')
