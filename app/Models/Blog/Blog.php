@@ -44,7 +44,7 @@ class Blog extends Model
      */
     public function getTitleAttribute($value)
     {
-        return ucfirst(Str::lower($value));
+        return ucwords(Str::lower($value));
     }
 
     /**
@@ -55,7 +55,7 @@ class Blog extends Model
      */
     public function getAuthorAttribute($value)
     {
-        return ucfirst(Str::lower($value));
+        return ucwords(Str::lower($value));
     }
 
     /**

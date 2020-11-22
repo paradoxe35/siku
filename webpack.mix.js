@@ -23,6 +23,13 @@ mix.react('asset/js/app.js', 'js/application.js')
 
 mix.setPublicPath('public/compiled/')
 mix.setResourceRoot('/compiled/')
+
+mix.options({
+    terser: {
+        extractComments: false,
+    }
+});
+
 mix.webpackConfig({
     resolve: {
         alias: {

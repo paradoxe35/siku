@@ -1,1 +1,0 @@
-//!this.touchable && this._handleTap(ev)

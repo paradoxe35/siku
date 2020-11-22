@@ -16,6 +16,12 @@ mix.sass('asset/sass/app.scss', 'css/style.css')
     .sass('asset/sass/module.scss', 'css/module.css')
     .mergeManifest()
 
+mix.options({
+    terser: {
+        extractComments: false,
+    }
+});
+
 if (mix.inProduction()) {
     require('laravel-mix-versionhash')
     mix.versionHash({
