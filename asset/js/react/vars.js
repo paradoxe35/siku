@@ -92,6 +92,6 @@ export const onLoadedSocketLib = () => {
             }
         }
         window.addEventListener(Loaded_Socket_Lib, resolved)
-        window.setTimeout(() => !callResolved && resolve(true), 10000)
+        window.setTimeout(() => !callResolved && resolve(true), (1000 * 60))
     })
 }

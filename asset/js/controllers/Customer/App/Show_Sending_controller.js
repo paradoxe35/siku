@@ -70,10 +70,12 @@ export default class extends Controller {
             this.loadedSocketLib()
             return
         }
-        const { UserChannel } = await import('@js/modules/socket')
-        EchoSocket = UserChannel()
-        this.loadedSocketLib()
-        EchoSocket.listen('.processed.guest', this.onSocketData.bind(this, this.event))
+        import('@js/modules/socket')
+            .then(({ UserChannel }) => {
+                EchoSocket = UserChannel()
+                EchoSocket.listen('.processed.guest', this.onSocketData.bind(this, this.event))
+            })
+            .then(() => this.loadedSocketLib())
     }
 
     dispatchToAppState({ processed, consumed }) {

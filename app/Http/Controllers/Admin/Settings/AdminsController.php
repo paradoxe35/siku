@@ -52,6 +52,8 @@ class AdminsController extends Controller
      */
     public function store(Request $request)
     {
+        $this->authorize('super-admin');
+
         $data =  $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
@@ -63,10 +65,6 @@ class AdminsController extends Controller
         ]);
 
         $super = !!$request->super_admin;
-
-        if ($super) {
-            $this->authorize('super-admin');
-        }
 
         $item = User::create([
             'name' => $data['name'],

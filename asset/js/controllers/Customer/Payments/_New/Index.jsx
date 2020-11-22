@@ -61,8 +61,10 @@ const CustomerPaymentsNew = () => {
 
     const { ApiRequest, fetchAPi, fetchLoading } = useFetch()
 
+    const tx = (x) => +x
+
     useEffect(() => {
-        priceTotal.current = Object.values(prices).reduce((a, b) => a + b, 0)
+        priceTotal.current = Object.values(prices).reduce((a, b) => tx(a) + tx(b), 0)
     }, [prices])
 
     useEffect(() => {
@@ -81,7 +83,7 @@ const CustomerPaymentsNew = () => {
         let price = 0
         services.forEach((v) => {
             if (prices[v] !== undefined) {
-                price += (prices[v] * (isNaN(+guests) ? 0 : +guests))
+                price += (tx(prices[v]) * (isNaN(+guests) ? 0 : +guests))
             }
         })
         setShowPrice(price)
@@ -103,7 +105,7 @@ const CustomerPaymentsNew = () => {
     }, [guests, showPrice])
 
     // @ts-ignore
-    const showP = (isNaN(showPrice) ? 0 : showPrice).nround(3)
+    const showP = (isNaN(showPrice) ? 0 : showPrice).nround(2)
 
     return <>
         <div className="row justify-content-center">
