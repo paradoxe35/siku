@@ -30,6 +30,9 @@ class PostsController extends Controller
     {
         $article = Blog::query()->where('slug', $slug)->firstOrFail();
 
+        $article->views += 1;
+        $article->save();
+
         return view('blog.show', compact('article'));
     }
 }
