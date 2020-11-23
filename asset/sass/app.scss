@@ -75,6 +75,25 @@ input {
         text-decoration: underline;
     }
 
+    .ratio {
+        display: block;
+        position: relative;
+        width: 100%;
+        height: 0;
+        padding-bottom: 56.66%;
+    }
+
+    .ratio iframe,
+    .ratio img:first-child {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        width: 100%;
+        height: 100%;
+    }
+
     .ce-delimiter:before {
         display: inline-block;
         content: "***";

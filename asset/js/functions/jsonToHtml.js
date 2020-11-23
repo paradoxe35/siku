@@ -40,11 +40,12 @@ export const jsonToHtml = {
         const caption = obj.data.caption ? `<div class="blog_caption">
                 <p class="text-sm">${obj.data.caption}</p>
             </div>` : ''
-        return `<div class="mt-5 justify-content-center d-flex" style="max-height: 550px;">
-                <div style="width:90%">
-                    <iframe width="100%" height="450" src="${obj.data.embed}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                    <small><em>${caption}</em></small>
+        return `
+            <div class="my-4">
+                <div class="ratio">
+                    <iframe width="560" height="315" src="${obj.data.embed}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                 </div>
+                <small><em>${caption}</em></small>
             </div>`
     },
     makeHeader(obj) {
