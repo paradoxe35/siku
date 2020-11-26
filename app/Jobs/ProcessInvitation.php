@@ -40,8 +40,10 @@ class ProcessInvitation implements ShouldQueue
         /** @var Send */
         $send = resolve(Send::class);
 
-        $guest = $send->proceed($this->guest);
+        $guest =  $this->guest->refresh();
 
-        event(new ProcessedGuest($guest));
+        $procced = $send->proceed($guest);
+
+        event(new ProcessedGuest($procced));
     }
 }

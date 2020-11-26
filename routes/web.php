@@ -78,6 +78,11 @@ Route::namespace('Webhooks')
     ->prefix('hooks')
     ->group(function () {
         Route::post('{token}/webhook', 'TelegramController');
+        Route::namespace('Twilio')
+            ->prefix('twilio')
+            ->group(function () {
+                Route::post('status-callback/{token}', 'StatusCallbackController');
+            });
     });
 
 

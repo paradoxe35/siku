@@ -26,9 +26,21 @@ class TwilioClient
 
     public function environment()
     {
-        $sid = getenv("TWILIO_ACCOUNT_SID");
-        $token = getenv("TWILIO_AUTH_TOKEN");
+        $sid = env("TWILIO_ACCOUNT_SID");
+        $token = env("TWILIO_AUTH_TOKEN");
 
         return [$sid, $token];
+    }
+
+    /**
+     * @param string $sid
+     * 
+     * @return string
+     */
+    public function statusCallback(string $sid): string
+    {
+        $url = env("TWILIO_STATUS_CALLBACK_URL");
+
+        return !$url ? null : ($url[-1] == '/' ? $url . $sid : $url . '/' . $sid);
     }
 }

@@ -6,9 +6,6 @@ use App\Models\Event\Guest;
 use App\Models\Event\SendHistorical;
 use App\Models\Event\Validator;
 
-/**
- * [Description Send]
- */
 class Send
 {
 
@@ -29,69 +26,51 @@ class Send
     }
 
     /**
+     * @param string $service
      * @param Guest $guest
      * @param SendHistorical $historical
+     * 
+     * @return void
      */
-    protected function sms(Guest $guest, SendHistorical $historical)
+    private function handle(string $service, Guest $guest, SendHistorical $historical)
     {
-        if ($guest->sendedSms()) {
+        $service = strtolower($service);
+
+        $ucf = ucfirst($service);
+
+        $sended = 'sended' . $ucf;
+        if ($guest->$sended()) {
             return true;
         }
 
         $error = false;
+        $errMsg = null;
 
-        $price = $guest->validateSmsPrice();
+        $validate = 'validate' . $ucf . 'Price';
+        $price = $guest->$validate();
 
         if (!is_null($price)) {
             try {
-                $this->sendSms($guest, $price);
+
+                $send = 'send' . $ucf;
+                $this->$send($guest, $price);
             } catch (\Throwable $th) {
+
                 $error = true;
+                $errMsg = $th->getMessage();
             }
         } else {
             $error = true;
         }
 
         $filled = $historical->fill([
-            'sended_sms' => !$error,
-            'error' => $error
+            'sended_' . $service => !$error,
+            'error' => $error,
+            'error_message' => $errMsg
         ]);
 
         $filled->save();
     }
-
-    /**
-     * @param Guest $guest
-     * @param SendHistorical $historical
-     */
-    protected function mail(Guest $guest, SendHistorical $historical)
-    {
-        if ($guest->sendedMail()) {
-            return true;
-        }
-
-        $error = false;
-
-        $price = $guest->validateMailPrice();
-
-        if (!is_null($price)) {
-            try {
-                $this->sendMail($guest, $price);
-            } catch (\Throwable $th) {
-                $error = true;
-            }
-        } else {
-            $error = true;
-        }
-
-        $filled = $historical->fill([
-            'sended_mail' => !$error,
-            'error' => $error
-        ]);
-
-        $filled->save();
-    }
-
 
     /**
      * @param Guest $guest
@@ -112,11 +91,11 @@ class Send
         $guest->refresh();
 
         if ($guest->can_send_sms) {
-            $this->sms($guest, $model);
+            $this->handle('sms', $guest, $model);
         }
 
         if ($guest->can_send_mail) {
-            $this->mail($guest, $model);
+            $this->handle('mail', $guest, $model);
         }
 
         $guest->refresh();
@@ -134,11 +113,11 @@ class Send
     /**
      * @param Guest $item
      * 
-     * @return void
+     * @return \Illuminate\Database\Eloquent\Model
      */
     protected function saveGuestConsumed(Guest $item, $amount, $service)
     {
-        $item->consumeds()->create([
+        return $item->consumeds()->create([
             'amount' => $amount,
             'service' => $service,
             'confirmed' => true,

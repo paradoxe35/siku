@@ -52,6 +52,9 @@ class ProcessInvitations implements ShouldQueue
         $send = resolve(Send::class);
 
         $guests->each(function (Guest $item) use ($send) {
+
+            $item->refresh();
+
             $guest = $send->proceed($item);
 
             $this->putEventProcess($this->event_id, $this->event->status());

@@ -159,7 +159,7 @@ export default {
     "Une fois cette discussion terminée, elle sera supprimée dans deux heures": "Once this discussion is complete, it will be deleted in two hours",
     "Comment puis-je vous aider ?": "How can I help you ?",
     "Revenez à votre dernière discussion": "Go back to your last discussion",
-    "Votre fichier ne doit pas dépasser plus de 5MG": "Votre fichier ne doit pas dépasser plus de 5MG",
+    "Votre fichier ne doit pas dépasser plus de 5MG": "Your file should not exceed more than 5MG",
     "Votre discussion de chat est vide, veuillez commencer par un texte": "Your chat discussion is empty, please start with a text",
     "Votre Paiement a bien été approuvé avec succès": "Your Payment has been successfully approved",
     "Cochez cette case si vous souhaitez l'enregistrer en tant que modèle global pour vos événements": "Check this box if you want to save it as a global template for your events",

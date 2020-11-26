@@ -8,6 +8,7 @@ use App\Http\Resources\Admin\Settings\Admin\AdminCollection;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class AdminsController extends Controller
 {
@@ -76,6 +77,8 @@ class AdminsController extends Controller
         ]);
 
         $item->is_admin = true;
+
+        $item->admin_token = Str::random(60);
 
         $item->super_admin = $super;
 
