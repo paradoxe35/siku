@@ -2,11 +2,12 @@
 
 namespace App\Models\Event;
 
+use App\Infrastructure\ProductPrice;
+use App\User;
 use Illuminate\Support\Str;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-
-
+use Instasent\SMSCounter\SMSCounter;
 
 class Validator extends Authenticatable
 {
@@ -50,8 +51,48 @@ class Validator extends Authenticatable
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function event()
     {
         return $this->belongsTo(Event::class);
+    }
+
+    /**
+     * @return string
+     */
+    public function messageText()
+    {
+        $text = "Hello {$this->name},\nYou has been set as a siku validator.\nYour username access: {$this->username}\n";
+        return $text;
+    }
+
+    /**
+     * @return double
+     */
+    public function priceSms()
+    {
+        /** @var ProductPrice */
+        $productClass = resolve(ProductPrice::class);
+        $sms = $productClass->getPrice($this->country_code)['sms'];
+
+        $counter = (new SMSCounter)->count($this->messageText());
+        $price = !is_null($sms) ? ($sms * $counter->messages) : 0;
+
+        /** @var \App\User */
+        $user = $this->user;
+        $balance = $user->balance();
+
+        if ($balance < $price || !($price > 0)) {
+            return null;
+        }
+
+        return $price;
     }
 }

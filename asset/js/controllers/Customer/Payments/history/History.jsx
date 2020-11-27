@@ -59,7 +59,7 @@ const ConsumptionsView = ({ listData }) => {
             </thead>
             <tbody>
                 {listData.data && listData.data.map((d, i) => (
-                    <tr key={d.date || i}>
+                    <tr key={i}>
                         <td>{d.date}</td>
                         <td>{SYMBOL + d.amount}</td>
                         <td>{d.currency_code}</td>

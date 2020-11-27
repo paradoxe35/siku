@@ -59,6 +59,22 @@ class Guest extends Model
     }
 
     /**
+     * @return bool 
+     */
+    public function canSendSms()
+    {
+        return $this->can_send_sms && $this->phone;
+    }
+
+    /**
+     * @return bool 
+     */
+    public function canSendMail()
+    {
+        return $this->can_send_mail && $this->email;
+    }
+
+    /**
      * @return int
      */
     public function price()
@@ -128,7 +144,7 @@ class Guest extends Model
         $balance = $user->balance();
         $price = $this->smsPrice();
 
-        if ($balance < $price) {
+        if ($balance < $price || !($price > 0)) {
             return null;
         }
 

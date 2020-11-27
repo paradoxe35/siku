@@ -74,6 +74,7 @@ export default class extends Controller {
             .then(({ UserChannel }) => {
                 EchoSocket = UserChannel()
                 EchoSocket.listen('.processed.guest', this.onSocketData.bind(this, this.event))
+                EchoSocket.listen('.user.balance', this.onUserBalanceChange)
             })
             .then(() => this.loadedSocketLib())
     }
@@ -83,6 +84,10 @@ export default class extends Controller {
             used_amount: consumed,
             sended: processed
         }))
+    }
+
+    onUserBalanceChange = ({ balance }) => {
+        ReduxDispatch(setBalanceAmount(balance))
     }
 
     onSocketData = ({ e }, { status, data, new_balance }) => {

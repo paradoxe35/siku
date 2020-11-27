@@ -51,7 +51,7 @@ class ProductPrice
 
         return [
             'sms' => is_null($smsUnitPrice) ? null : BasePrice::roundPrice($smsUnitPrice),
-            'mail' => $mailPrice
+            'mail' => doubleval($mailPrice)
         ];
     }
 }

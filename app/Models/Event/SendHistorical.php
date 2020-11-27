@@ -18,7 +18,8 @@ class SendHistorical extends Model
      * @var array
      */
     protected $fillable = [
-        'user_id', 'event_id', 'guest_id', 'consumeds', 'sended_sms', 'sended_mail', 'retry', 'error', 'error_message'
+        'user_id', 'event_id', 'guest_id',
+        'consumeds', 'sended_sms', 'sended_mail', 'retry', 'error', 'error_message'
     ];
 
 

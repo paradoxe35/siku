@@ -2,11 +2,15 @@
 
 namespace App\Services\Twilio;
 
+use Twilio\Rest\Pricing\V1\Messaging\CountryInstance;
 use Twilio\Rest\Client;
 
 class TwilioClient
 {
 
+    /**
+     * @return Client
+     */
     public function client()
     {
         $env = $this->environment();
@@ -14,7 +18,12 @@ class TwilioClient
     }
 
 
-    public function country($iso)
+    /**
+     * @param string $iso
+     * 
+     * @return CountryInstance
+     */
+    public function country($iso): CountryInstance
     {
         $twilio = $this->client();
 
@@ -23,8 +32,10 @@ class TwilioClient
             ->fetch();
     }
 
-
-    public function environment()
+    /**
+     * @return array
+     */
+    public function environment(): array
     {
         $sid = env("TWILIO_ACCOUNT_SID");
         $token = env("TWILIO_AUTH_TOKEN");
@@ -37,10 +48,20 @@ class TwilioClient
      * 
      * @return string
      */
-    public function statusCallback(string $sid): string
+    public function statusCallback(string $token): ?string
     {
         $url = env("TWILIO_STATUS_CALLBACK_URL");
 
-        return !$url ? null : ($url[-1] == '/' ? $url . $sid : $url . '/' . $sid);
+        return !$url ? null : ($url[-1] == '/' ? $url . $token : $url . '/' . $token);
+    }
+
+    /**
+     * @return string
+     */
+    public function senderId(): string
+    {
+        $appName = config('app.name');
+
+        return env("TWILIO_SENDER_ID", "$appName Events");
     }
 }

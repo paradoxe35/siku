@@ -2,19 +2,25 @@
 
 namespace App\Infrastructure\Send;
 
+use App\Models\Balance\Consumed;
 use App\Models\Event\Guest;
 use App\Models\Event\SendHistorical;
 use App\Models\Event\Validator;
+use App\Models\Twilio\TwilioSms;
+use Illuminate\Support\Facades\Log;
 
 class Send
 {
-
     /**
      * @param Guest $guest
      */
     protected function sendSms(Guest $guest, $price)
     {
-        $this->saveGuestConsumed($guest, $price, 'sms');
+        $sms = new SMS;
+        $message = $sms($guest->phone, $guest->text_sms);
+
+        $consumed = $this->saveGuestConsumed($guest, $price, 'sms');
+        $this->statusCallbackTwilio($message, $consumed, $guest->id, $guest->user_id);
     }
 
     /**
@@ -22,7 +28,32 @@ class Send
      */
     protected function sendMail(Guest $guest, $price)
     {
+        $mail = new Mail;
+        $mail($guest);
         $this->saveGuestConsumed($guest, $price, 'mail');
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param array $message
+     * @param Consumed $consumed
+     * @param string|int $guest_id
+     * @param  string  $user_id
+     * @return void
+     */
+    protected function statusCallbackTwilio(array $message, Consumed $consumed, $guest_id, $user_id)
+    {
+        [$token, $imsg] = $message;
+
+        TwilioSms::query()->create([
+            'sid' => $imsg->sid,
+            'status' => $imsg->status,
+            'token' => $token,
+            'guest_id' => $guest_id,
+            'user_id' => $user_id,
+            'consumed_id' => $consumed->id
+        ]);
     }
 
     /**
@@ -49,7 +80,7 @@ class Send
         $validate = 'validate' . $ucf . 'Price';
         $price = $guest->$validate();
 
-        if (!is_null($price)) {
+        if (!is_null($price) && null != $price) {
             try {
 
                 $send = 'send' . $ucf;
@@ -90,11 +121,11 @@ class Send
 
         $guest->refresh();
 
-        if ($guest->can_send_sms) {
+        if ($guest->canSendSms()) {
             $this->handle('sms', $guest, $model);
         }
 
-        if ($guest->can_send_mail) {
+        if ($guest->canSendMail()) {
             $this->handle('mail', $guest, $model);
         }
 
@@ -104,15 +135,35 @@ class Send
     }
 
     /**
-     * @param Validator $item
+     * @param Validator $validator
      */
-    public function proceedValidator(Validator $item)
+    public function proceedValidator(Validator $validator)
     {
+        $price = $validator->priceSms();
+
+        if (!is_null($price) && null != $price) {
+            try {
+                $sms = new SMS;
+                $message = $sms($validator->phone, $validator->messageText());
+
+                $consumed = $this->saveValidatorConsumed(
+                    $validator,
+                    $price,
+                    'sms'
+                );
+                $this->statusCallbackTwilio($message, $consumed, null, $validator->user_id);
+            } catch (\Throwable $th) {
+                Log::error($th->getMessage());
+            }
+        }
     }
 
     /**
+     * Undocumented function
+     *
      * @param Guest $item
-     * 
+     * @param double $amount
+     * @param string $service
      * @return \Illuminate\Database\Eloquent\Model
      */
     protected function saveGuestConsumed(Guest $item, $amount, $service)
@@ -123,6 +174,24 @@ class Send
             'confirmed' => true,
             'user_id' => $item->user->id,
             'event_id' => $item->event->id
+        ]);
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param Validator $item
+     * @param double $amount
+     * @param string $service
+     * @return \Illuminate\Database\Eloquent\Model
+     */
+    protected function saveValidatorConsumed(Validator $validator, $amount, $service)
+    {
+        return $validator->user->consumeds()->create([
+            'amount' => $amount,
+            'service' => $service,
+            'confirmed' => true,
+            'event_id' => $validator->event->id
         ]);
     }
 }

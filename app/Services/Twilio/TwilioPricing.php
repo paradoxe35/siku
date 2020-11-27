@@ -61,8 +61,11 @@ class TwilioPricing
      */
     public function parseSmsPrice($code)
     {
-        return collect($this->prices())
-            ->firstWhere($this->filterByKey, $code) ?: null;
+        $price = collect($this->prices())
+            ->where($this->filterByKey, $code)
+            ->max($this->priceKey);
+
+        return is_null($price) ? null : [$this->priceKey => $price];
     }
 
     /**
