@@ -53,7 +53,7 @@ class AccountController extends Controller
     {
         $auth = $request->user();
         $request->validate([
-            'current_password' => ['required', 'string', 'max:255', 'password:api'],
+            'current_password' => ['required', 'string', 'max:255', 'password:web'],
             'password' => ['required', 'string', 'max:255', 'min:8', 'confirmed'],
         ]);
 
