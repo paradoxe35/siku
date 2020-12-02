@@ -12,6 +12,7 @@ import { useSelector } from 'react-redux';
 import { InputField } from '@/js/react/components/InputField';
 import CustomCheckbox from '@/js/react/components/CustomCheckbox';
 import { savedChanges } from '@/js/functions/notifier';
+import Cancel from '@/js/react/components/Cancel';
 
 
 const CustomerSettings = () => {
@@ -82,6 +83,7 @@ const CustomerSettings = () => {
                         </div>
                     </div>
                     <DefaultButton label={t('Enregistrer les modifications')} loading={loading} type="submit" />
+                    <Cancel />
                 </form>
             </div>
         </div>

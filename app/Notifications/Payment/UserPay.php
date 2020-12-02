@@ -104,7 +104,7 @@ class UserPay extends Notification implements ShouldQueue
         $content .= "ID: {$user->hashId()} \n";
         $content .= ($user->locale ? "Locale: {$user->locale} \n" : '');
         $content .= "Amount: {$symbol}{$pay->amount}\n";
-        $content .= "Invités: {$pay->guests} \n";
+        $content .= "Guests: {$pay->guests} \n";
         $content .= "Method: {$pay->service} \n";
         $content .= "Revenue: {$symbol}" . round($revenue, 2) . PHP_EOL;
 

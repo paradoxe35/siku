@@ -77,14 +77,14 @@ class UserChatPriority extends Notification implements ShouldQueue
     {
         $user = $this->user;
 
-        $content = "Hello there! " . Emoji::CHARACTER_SPEECH_BALLOON . " \n";
-        $content .= "Customer with name: {$user->name} \n";
-        $content .= "Email: {$user->email} \n";
-        $content .= "ID: {$user->hashId()} \n";
-        $content .= ($user->locale ? "Locale: {$user->locale} \n" : '');
-        $content .= "He Would like to get contact with one of agents \n";
-        $content .= "Content Of his Message:  {$this->message} \n";
-        $content .= "Chat Option:  {$this->chat_option} \n";
+        $content = "Hello there! " . Emoji::CHARACTER_SPEECH_BALLOON . "\n";
+        $content .= "Customer with name: {$user->name}\n";
+        $content .= "Email: {$user->email}\n";
+        $content .= "ID: {$user->hashId()}\n";
+        $content .= ($user->locale ? "Locale: {$user->locale}\n" : '');
+        $content .= "He Would like to get contact with one of agents\n";
+        $content .= "Content Of his Message:  `{$this->message}`\n";
+        $content .= "Chat Option:  {$this->chat_option}\n";
 
         return $content;
     }

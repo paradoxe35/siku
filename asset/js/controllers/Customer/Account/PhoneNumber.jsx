@@ -11,12 +11,13 @@ import { isValidPhoneNumber, parsePhoneNumber } from 'react-phone-number-input';
 import { ReduxDispatch } from '@/js/store';
 import { connectUser } from '@/js/store/features/UserSlice';
 import { savedChanges } from '@/js/functions/notifier';
+import Cancel from '@/js/react/components/Cancel';
 
 
 const Index = () => {
     const { t } = useTranslation()
     const { fetchAPi, fetchLoading: loading } = useFetch()
-     // @ts-ignore
+    // @ts-ignore
     const { country_code, phone: cphone } = useSelector(s => s.userAuth)
 
     const { phone, onPhoneValueChange } = usePhoneInput(cphone)
@@ -51,6 +52,7 @@ const Index = () => {
                     disabled={!isValidPhoneNumber(phone)}
                     onClick={onChange}
                     loading={loading} type="submit" />
+                <Cancel />
             </div>
         </div>
     </>

@@ -15,7 +15,7 @@
         .error-page[data-v-4afff2df] {
             height: 97vh;
             transition: 0.5s;
-            color: #1a1a1a;
+            color: #172b4d;
             display: flex;
             position: relative;
             z-index: 10;
@@ -71,7 +71,7 @@
             line-height: 71px;
             letter-spacing: -3px;
             text-transform: uppercase;
-            color: #1a1a1a;
+            color: #172b4d;
         }
         .error-page .container .main .text[data-v-4afff2df] {
             width: 100%;
@@ -158,7 +158,7 @@
             }
         }
         .button.black {
-            background-color: #000;
+            background-color: #172b4d;
             color: #fff;
         }
         .button {
@@ -182,7 +182,7 @@
         <div data-v-4afff2df class="container error-image-3">
             <div data-v-4afff2df class="main column">
                 <div data-v-4afff2df class="status">@yield('code').</div>
-                <div data-v-4afff2df class="text">@yield('message').</div>
+                <div data-v-4afff2df class="text">@yield('message')</div>
                 <div data-v-4afff2df class="spacer"></div>
                 <a href="{{ route('home') }}" data-v-4afff2df class="button black">
                     <span data-v-4afff2df class="icon">

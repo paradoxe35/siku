@@ -20,7 +20,9 @@ class SetValueForCustomerEventUrls
 
         $user = $request->user();
 
-        $user->events()->findByHashidOrFail($eventId);
+        if (!$user->events()->findByHashid($eventId)) {
+            return redirect(route('customer.events'));
+        }
 
         URL::defaults(['event' => $eventId]);
 

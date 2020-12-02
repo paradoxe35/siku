@@ -34,6 +34,8 @@ Route::group([], function () {
             Route::post('/sign-in', 'LoginController@login');
             Route::get('/sign-up', 'RegisterController@showRegistrationForm')->name('sign-up');
             Route::post('/sign-up', 'RegisterController@register');
+
+            Route::get('/verified', 'VerificationController@verified')->name('verified');
         });
 });
 

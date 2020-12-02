@@ -121,12 +121,12 @@ class Send
 
         $guest->refresh();
 
-        if ($guest->canSendSms()) {
-            $this->handle('sms', $guest, $model);
-        }
-
         if ($guest->canSendMail()) {
             $this->handle('mail', $guest, $model);
+        }
+
+        if ($guest->canSendSms()) {
+            $this->handle('sms', $guest, $model);
         }
 
         $guest->refresh();

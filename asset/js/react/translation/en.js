@@ -135,12 +135,12 @@ export default {
     "Aucun utilisateur enregistré!": "No registered user!",
     "Une erreur s'est produite. Veuillez réessayer en actualisant la page": "An error has occurred. Please try again by refreshing the page",
     "Afficher": "Show",
-    "Besoin d'aide": "Need help",
+    "Besoin d'aide": "Need some help",
     "Cacher": "Hide",
     "Non": "No",
     "Ouais": "Ok",
     "Page non trouvée": "Page not found",
-    "Besoin d'aide ?": "Need help ?",
+    "Besoin d'aide ?": "Need some help?",
     "Estimer Prix": "Estimate Price",
     "Indisponible": "Unavailable",
     "Choisissez un modèle": "Choose a model",
@@ -219,5 +219,5 @@ export default {
     "Téléphone Public": "Public Phone",
     "Téléphone Privé": "Private Phone",
     "En ligne": "Online",
-    "Tout": "All"
+    "Tout": "All",
 }

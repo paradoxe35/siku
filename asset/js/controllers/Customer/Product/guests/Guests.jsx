@@ -118,7 +118,7 @@ const EstimatePrice = ({ disabledTextField, services, textValues, phone }) => {
 
     return <>
         <DefaultButton
-            disabled={disabledTextField}
+            disabled={disabledTextField || !isValidPhoneNumber(phone)}
             onClick={onClick}
             loading={loading}
             textColor="text-primary ml-3"

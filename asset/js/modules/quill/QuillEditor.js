@@ -1,12 +1,10 @@
 import 'quill/dist/quill.snow.css'
 import './style.scss'
 import Quill from 'quill'
+import { Localize } from '@/js/functions/localize';
 import BlotFormatter from "quill-blot-formatter";
-import ImageCompress from 'quill-image-compress';
-
 
 Quill.register("modules/blotFormatter", BlotFormatter);
-Quill.register('modules/imageCompress', ImageCompress);
 
 export const defaultOption = {
     modules: {
@@ -14,22 +12,27 @@ export const defaultOption = {
             container: [
                 [{ header: [1, 2, 3, 4, 5, 6, false] }],
                 ['bold', 'italic', 'underline', 'strike'],
-                ['link', 'blockquote', 'image'],
+                ['link', 'blockquote'],
                 [{ 'script': 'sub' }, { 'script': 'super' }],
                 [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-                ['clean']
+                ['clean'],
+                ['image']
             ],
+            handlers: {
+                image: imageHandler
+            }
         },
         blotFormatter: {},
-        imageCompress: {
-            quality: 0.5,
-            maxWidth: 1000,
-            maxHeight: 1000,
-            imageType: 'image/jpeg',
-            debug: false,
-        },
     },
     theme: 'snow',
+}
+
+function imageHandler() {
+    const range = this.quill.getSelection();
+    const value = prompt(Localize({ en: 'Enter the image link', fr: "Entrez le lien de l'image" }));
+    if (value) {
+        this.quill.insertEmbed(range.index, 'image', value, Quill.sources.USER);
+    }
 }
 
 export default Quill

@@ -2,8 +2,9 @@
 
 namespace App\Infrastructure\Send;
 
+use App\Mail\GuestMessage;
 use App\Models\Event\Guest;
-use Error;
+use Illuminate\Support\Facades\Mail as MailSend;
 
 class Mail
 {
@@ -14,6 +15,7 @@ class Mail
      */
     public function __invoke(Guest $guest)
     {
-        // throw new Error('Error petit frere');
+        MailSend::to($guest->email)
+            ->send(new GuestMessage($guest));
     }
 }
