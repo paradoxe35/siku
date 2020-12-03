@@ -11,7 +11,7 @@ import { URLS, ASYNC, OverFlowStyle } from '@/js/react/vars';
 import { Empty } from '@/js/react/components/Empty';
 import RowDivider from '@/js/react/components/RowDivider';
 import ModalConfirm from '@/js/react/components/ModalConfirm';
-import { caseSection, KeysRequiredInText, List, ListDescriptionText, smsCount, TextAreatEdit, useItemDeletion, useSectionText, validateTemplate } from './Sections';
+import { caseSection, KeysRequiredInText, List, ListDescriptionText, smsCount, TextAreatEdit, toHtml, useItemDeletion, useSectionText, validateTemplate } from './Sections';
 import { useFetch } from '@/js/react/hooks';
 import store from '@js/store'
 import { Loader } from '@/js/react/components/Loader';
@@ -52,7 +52,7 @@ const TextareaFieldAndDetail = () => {
 
     const [textValue, setTextValue] = useState(!templateTextarea.sms ? {
         sms: defaultV,
-        mail: defaultV
+        mail: toHtml(defaultV)
     } : templateTextarea)
 
     const values = useRef(textValue)

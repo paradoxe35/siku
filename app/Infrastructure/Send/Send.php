@@ -96,9 +96,12 @@ class Send
 
         $filled = $historical->fill([
             'sended_' . $service => !$error,
-            'error' => $error,
             'error_message' => $errMsg
         ]);
+
+        if ($error) {
+            $filled->error = $error;
+        }
 
         $filled->save();
     }
@@ -118,6 +121,9 @@ class Send
                 'event_id' => $guest->event_id
             ]);
         }
+
+        $model->error = false;
+        $model->save();
 
         $guest->refresh();
 

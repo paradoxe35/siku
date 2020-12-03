@@ -120,7 +120,7 @@ export const ListDescriptionText = ({ item, onDelete, canShown = null }) => {
     const { handleSection, section, setSection } = useSectionText(defaultv)
 
     const text = stripHtml(caseSectionValue(section, item.text))
-    
+
     useEffect(() => {
         if (!item.show) {
             setSection(defaultv)
@@ -297,7 +297,7 @@ export const SectionView = ({ onChange, icon = true, name = "message_view", canS
 /**
  * @param {string} v 
  */
-const toHtml = (v) => {
+export const toHtml = (v) => {
     const hasNot = v.indexOf('\n') < 0
     return hasNot ? v : v.replace(/\n/g, '<br>')
 }

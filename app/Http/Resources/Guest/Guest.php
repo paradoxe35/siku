@@ -26,6 +26,7 @@ class Guest extends JsonResource
             'sended_sms' => $smsSend,
             'sended_mail' => $mailSend,
             'autorized' => $this->autorized,
+            'failed' => $this->failed(),
             'can_send_sms' =>  $this->canSendSms(),
             'can_send_mail' => $this->canSendMail(),
             'text' => [

@@ -31,6 +31,12 @@ export const ShowListGuest = ({ v, handleDelete, canSend = true }) => {
             })
     }
 
+    const status = (value, failed) => {
+        return value ?
+            <span className="text-success">{t('Envoyé')}</span> :
+            (failed ? <span className="text-danger">{t("Échec d'envoi")}</span> : t('Non Envoyé'))
+    }
+
     return <>
         <div className="d-flex w-100 justify-content-between mb-1" >
             <h4 className="mb-1">
@@ -42,33 +48,36 @@ export const ShowListGuest = ({ v, handleDelete, canSend = true }) => {
                     </>
                 )}
             </h4>
-            {canSend && (
-                <div onClick={e => e.stopPropagation()}>
-                    {
-                        ((!!sms.length && !v.sended_sms) || (!!mail.length && !v.sended_mail)) &&
-                        <DefaultButton
-                            textColor="text-default"
-                            onClick={() => send(v)}
-                            loading={loading}
-                            color="secondary"
-                            label={t('Envoyer')} />
-                    }
-                </div>
-            )}
+            {
+                canSend &&
+                (
+                    <div onClick={e => e.stopPropagation()}>
+                        {
+                            ((!!sms.length && !v.sended_sms) || (!!mail.length && !v.sended_mail)) &&
+                            <DefaultButton
+                                textColor="text-default"
+                                onClick={() => send(v)}
+                                loading={loading}
+                                color="secondary"
+                                label={t('Envoyer')} />
+                        }
+                    </div>
+                )
+            }
         </div>
         <div className="mb-2">
-            {!!sms.length &&
+            {
+                !!sms.length &&
                 <div className="text-sm">
-                    {t('SMS')}: {v.sended_sms ?
-                        <span className="text-success">{t('Envoyé')}</span> :
-                        t('Non Envoyé')}
-                </div>}
-            {!!mail.length &&
+                    {t('SMS')}: {status(v.sended_sms, v.failed)}
+                </div>
+            }
+            {
+                !!mail.length &&
                 <div className="text-sm mt-1">
-                    {t('Mail')}: {v.sended_mail ?
-                        <span className="text-success">{t('Envoyé')}</span> :
-                        t('Non Envoyé')}
-                </div>}
+                    {t('Mail')}: {status(v.sended_mail, v.failed)}
+                </div>
+            }
         </div>
         <ListDescriptionText
             item={v}
