@@ -73,6 +73,16 @@ class Event extends Model
         return boolval($value);
     }
 
+    /**
+     * Qr code image path
+     *
+     * @return string
+     */
+    public function getQrCodePathAttribute()
+    {
+        return asset($this->qrcode_logo ?: 'img/mail.png');
+    }
+
 
     /**
      * Get the event status

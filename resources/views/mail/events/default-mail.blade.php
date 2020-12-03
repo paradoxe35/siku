@@ -102,6 +102,22 @@
                                             <div
                                                 style="font-family:Roboto, Helvetica, sans-serif;font-size:16px;font-weight:300;line-height:24px;text-align:left;color:#616161;">
                                                 {!! $content ?? '' !!}
+                                                @if ($qrcode)
+                                                <a style="border: 0 solid #1a73e8;
+                                                background-color:#1a73e8;
+                                                border-radius: 3px;
+                                                color: #fff;
+                                                display: inline-block;
+                                                font-family: Roboto, Helvetica, Arial, sans-serif;
+                                                font-size: 14px;
+                                                font-weight: 500;
+                                                line-height: 24px;
+                                                margin: 0;
+                                                padding: 8px 16px 8px 16px;
+                                                text-decoration: none;" href="{{ $qrcode }}">
+                                                    {{ __('QR Code Image') }}
+                                                </a>
+                                                @endif
                                             </div>
                                         </td>
                                     </tr>

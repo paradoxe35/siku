@@ -12,6 +12,7 @@ use App\Models\Event\Guest;
 use App\Models\Template\Template;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Instasent\SMSCounter\SMSCounter;
 
 
@@ -111,8 +112,14 @@ class EventGuestsController extends Controller
             'template_id' => ['required', 'numeric'],
             'sms_total' => ['required', 'numeric'],
             'autorized' => ['required', 'numeric', 'min:1'],
-            'email' => ['nullable', 'email', 'max:255'],
-            'phone' => ['nullable', 'string', 'max:255', 'regex:/^[0-9\-\(\)\/\+\s]*$/'],
+            'email' => [
+                'nullable', 'email', 'max:255',
+                Rule::unique('guests')->where('event_id', $event->id)
+            ],
+            'phone' => [
+                'nullable', 'string', 'max:255', 'regex:/^[0-9\-\(\)\/\+\s]*$/',
+                Rule::unique('guests')->where('event_id', $event->id)
+            ],
             'country_code' => ['nullable', 'string'],
             'country_call' => ['nullable', 'string'],
             'text_sms' => ['nullable', 'string'],

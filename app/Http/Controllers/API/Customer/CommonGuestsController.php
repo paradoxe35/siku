@@ -7,6 +7,7 @@ use App\Http\Resources\CommonGuest\CommonGuest as CommonGuestResource;
 use App\Http\Resources\CommonGuest\CommonGuestCollection;
 use App\Models\CommonGuest;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class CommonGuestsController extends Controller
 {
@@ -31,16 +32,24 @@ class CommonGuestsController extends Controller
      */
     public function store(Request $request)
     {
+        /** @var \App\User */
+        $user = $request->user();
+
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['nullable', 'email', 'max:255'],
-            'phone' => ['nullable', 'string', 'max:255', 'regex:/^[0-9\-\(\)\/\+\s]*$/'],
+            'email' => [
+                'nullable', 'email', 'max:255',
+                Rule::unique('common_guests')->where('user_id', $user->id)
+            ],
+            'phone' => [
+                'nullable', 'string', 'max:255', 'regex:/^[0-9\-\(\)\/\+\s]*$/',
+                Rule::unique('common_guests')->where('user_id', $user->id)
+            ],
             'country_code' => ['nullable', 'string'],
             'country_call' => ['nullable', 'string']
         ]);
 
-        /** @var \App\User */
-        $user = $request->user();
+
 
         abort_if(
             $user->commonGuests->count() >= 100,

@@ -9,6 +9,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
+use Spatie\IcalendarGenerator\Components\Alert;
 use Spatie\IcalendarGenerator\Components\Calendar;
 use Spatie\IcalendarGenerator\Components\Event;
 use Spatie\IcalendarGenerator\Enums\Classification;
@@ -61,8 +62,15 @@ class GuestMessage extends Mailable
         $mail = $this
             ->from($email, "{$this->appName}, {$user->name}")
             ->subject($event->name)
-            ->view('mail.events.default-mail')
-            ->with('content', $guest->text_mail);
+            ->view('mail.events.event-mail-v1')
+            ->with([
+                'content' => $guest->text_mail,
+                'qrcode' => ($guest->can_include_qrcode ?
+                    route('qrcode', ['code' => $guest, 'event' => $event]) :  null),
+                'user' => $user,
+                'event' => $event,
+                'app_url' => config('app.url')
+            ]);
 
         if ($guest->can_include_icalendar) {
             $data = $this->calendar($guest);
@@ -89,9 +97,11 @@ class GuestMessage extends Mailable
         return Calendar::create($this->appName)
             ->event(
                 Event::create($event->name)
-                    ->description($event->desciption)
+                    ->description($event->desciption ?: ' ')
                     ->status(EventStatus::confirmed())
                     ->classification($event->is_public ? Classification::public() : Classification::private())
+                    ->alert(Alert::minutesBeforeStart(10, $event->name))
+                    ->alert(Alert::minutesAfterStart(10, $event->name))
                     ->organizer($user->email, $user->name)
                     ->startsAt(Carbon::parse($event->start_time))
                     ->endsAt(Carbon::parse($event->end_time))
