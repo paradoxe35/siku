@@ -224,7 +224,7 @@
                                             <div
                                                 style="font-family:Roboto, Helvetica, sans-serif;font-size:14px;font-weight:300;line-height:24px;text-align:left;color:#3c4043;">
                                                 <h3>Organizer ({{ $user->name }})</h3>
-                                                Email: <a href="mail:{{ $user->email }}">{{ $user->email }}</a><br>
+                                                Email: <a href="mailto:{{ $user->email }}">{{ $user->email }}</a><br>
                                                 Phone: <a href="tel:{{ $user->phone }}">{{ $user->phone }}</a>
                                             </div>
                                         </td>
