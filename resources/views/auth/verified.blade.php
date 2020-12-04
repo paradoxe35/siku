@@ -10,7 +10,7 @@
 </div>
 
 <a href="{{ route('customer.events') }}" class="btn btn-default align-baseline">
-    {{ __("Mes événements") }}.
+    {{ __("Mes événements") }}
 </a>
 @endsection
 
