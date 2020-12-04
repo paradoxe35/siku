@@ -92,6 +92,7 @@ class Send
             }
         } else {
             $error = true;
+            $errMsg = "Low Balance";
         }
 
         $filled = $historical->fill([

@@ -3,6 +3,7 @@
 namespace App\Mail;
 
 use App\Infrastructure\Vars\EmailApp;
+use App\Models\Event\Event as EventModel;
 use App\Models\Event\Guest;
 use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
@@ -66,14 +67,14 @@ class GuestMessage extends Mailable
             ->with([
                 'content' => $guest->text_mail,
                 'qrcode' => ($guest->can_include_qrcode ?
-                    route('qrcode', ['code' => $guest, 'event' => $event]) :  null),
+                    route('qrcode', ['code' => $guest->code, 'event' => $event->hashid()]) :  null),
                 'user' => $user,
                 'event' => $event,
                 'app_url' => config('app.url')
             ]);
 
         if ($guest->can_include_icalendar) {
-            $data = $this->calendar($guest);
+            $data = $this->calendar($guest->event);
 
             $mail->attachData($data, 'Calendar', [
                 'mime' => 'text/calendar',
@@ -85,14 +86,13 @@ class GuestMessage extends Mailable
     }
 
     /**
-     * @param Guest $guest
+     * @param EventModel $event
      * 
      * @return string
      */
-    private function calendar($guest)
+    private function calendar(EventModel $event)
     {
-        $event = $guest->event;
-        $user = $guest->user;
+        $user = $event->user;
 
         return Calendar::create($this->appName)
             ->event(
