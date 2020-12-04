@@ -28,7 +28,7 @@ class AuthServiceProvider extends ServiceProvider
         $this->registerPolicies();
 
         Gate::define('super-admin', function ($user) {
-            return $user->super_admin && $user->admin_token
+            return $user->super_admin && $user->is_admin && $user->admin_token
                 ? Response::allow()
                 : Response::deny(trans("Vous devez être un super administrateur."));
         });
