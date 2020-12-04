@@ -67,14 +67,14 @@ class GuestMessage extends Mailable
             ->with([
                 'content' => $guest->text_mail,
                 'qrcode' => ($guest->can_include_qrcode ?
-                    route('qrcode', ['code' => $guest->code, 'event' => $event->hashid()]) :  null),
+                    route('qrcode', ['code' => $guest->code, 'event' => $event->hashid(), 'full' => '1']) :  null),
                 'user' => $user,
                 'event' => $event,
                 'app_url' => config('app.url')
             ]);
 
         if ($guest->can_include_icalendar) {
-            $data = $this->calendar($guest->event);
+            $data = $this->calendar($event);
 
             $mail->attachData($data, 'Calendar', [
                 'mime' => 'text/calendar',
