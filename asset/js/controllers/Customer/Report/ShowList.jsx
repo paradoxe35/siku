@@ -29,7 +29,7 @@ const ShowList = ({ datas, url }) => {
                                 {!!v.guest.email && <><small>{t('Email')}: {v.guest.email}</small><br /></>}
                                 {!!v.guest.phone && <small>{t('Phone')}: {v.guest.phone}</small>}
                             </h4>
-                            <hr className="py-1" />
+                            <hr className="py-1 my-1" />
                             {v.validator && (
                                 <h4 className="mb-1">
                                     <small><b>{t('Validé par')}</b>: </small><br />
