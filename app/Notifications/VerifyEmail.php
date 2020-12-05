@@ -83,7 +83,7 @@ class VerifyEmail extends Notification implements ShouldQueue
         static::$toMailCallback = $callback;
     }
 
-     /**
+    /**
      * Determine which queues should be used for each notification channel.
      *
      * @return array
