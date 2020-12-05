@@ -29,14 +29,16 @@ const ShowList = ({ datas, url }) => {
                                 {!!v.guest.email && <><small>{t('Email')}: {v.guest.email}</small><br /></>}
                                 {!!v.guest.phone && <small>{t('Phone')}: {v.guest.phone}</small>}
                             </h4>
-                            <hr className="py-1 my-1" />
                             {v.validator && (
-                                <h4 className="mb-1">
-                                    <small><b>{t('Validé par')}</b>: </small><br />
-                                    <small>{v.validator.name}</small><br />
-                                    <small>{v.validator.phone}</small><br />
-                                    <small><b>{t('Validé à')}</b>: {v.created_at}</small>
-                                </h4>
+                                <>
+                                    <hr className="py-1 my-1" />
+                                    <h4 className="mb-1">
+                                        <small><b>{t('Validé par')}</b>: </small><br />
+                                        <small>{v.validator.name}</small><br />
+                                        <small>{v.validator.phone}</small><br />
+                                        <small><b>{t('Validé à')}</b>: {v.created_at}</small>
+                                    </h4>
+                                </>
                             )}
                         </div>
                     </div>
