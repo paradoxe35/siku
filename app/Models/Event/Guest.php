@@ -84,11 +84,11 @@ class Guest extends Model
         list($sms, $mail) = $productClass->getPrice($this->country_code);
         $total = 0;
 
-        if ($this->can_send_sms) {
+        if ($this->canSendSms()) {
             $total += !is_null($sms) ? ($sms * $this->sms_total) : 0;
         }
 
-        if ($this->can_send_mail) {
+        if ($this->canSendMail()) {
             $total += !is_null($mail) ? $mail : 0;
         }
 
@@ -193,9 +193,9 @@ class Guest extends Model
     {
         $h = $this->historical;
 
-        $sended_sms = $this->can_send_sms ? ($h ? $h->sended_sms : false) : true;
+        $sended_sms = $this->canSendSms() ? ($h ? $h->sended_sms : false) : true;
 
-        $sended_mail = $this->can_send_mail ? ($h ? $h->sended_mail : false) : true;
+        $sended_mail = $this->canSendMail() ? ($h ? $h->sended_mail : false) : true;
 
         return ($sended_sms && $sended_mail && ($h && !$h->error));
     }
@@ -207,9 +207,9 @@ class Guest extends Model
     {
         $h = $this->historical;
 
-        $sended_sms = $this->can_send_sms && ($h ? !$h->sended_sms : true);
+        $sended_sms = $this->canSendSms() && ($h ? !$h->sended_sms : true);
 
-        $sended_mail = $this->can_send_mail && ($h ? !$h->sended_mail : true);
+        $sended_mail = $this->canSendMail() && ($h ? !$h->sended_mail : true);
 
         return (($h && $h->error) || $sended_sms || $sended_mail);
     }
@@ -238,11 +238,11 @@ class Guest extends Model
     public function services()
     {
         $arr = [];
-        if ($this->can_send_sms) {
+        if ($this->canSendSms()) {
             $arr[] = 'SMS';
         }
 
-        if ($this->can_send_mail) {
+        if ($this->canSendMail()) {
             $arr[] = 'Mail';
         }
 
