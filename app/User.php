@@ -39,7 +39,8 @@ class User extends Authenticatable implements MustVerifyEmail, CanResetPassword
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'phone', 'country_name', 'country_code', 'timezone'
+        'name', 'email', 'password', 'phone', 'country_name', 'country_code', 'timezone',
+        'locale'
     ];
 
     /**
@@ -79,6 +80,16 @@ class User extends Authenticatable implements MustVerifyEmail, CanResetPassword
     public function getIsAdminAttribute($value)
     {
         return boolval($value);
+    }
+
+    /**
+     * Get the user's preferred locale.
+     *
+     * @return string
+     */
+    public function preferredLocale()
+    {
+        return $this->locale;
     }
 
     /**

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use App\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
@@ -76,7 +77,8 @@ class RegisterController extends Controller
             'password' => Hash::make($data['password']),
             'country_name' => $data['country_name'],
             'country_code' => $data['country_code'],
-            'timezone' => $data['timezone']
+            'timezone' => $data['timezone'],
+            'locale' => App::getLocale()
         ]);
     }
 
