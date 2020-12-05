@@ -91,19 +91,15 @@ export const Btn = {
      */
     loading(element) {
         if (!element) return
-        this.btns.push({
+        const el = {
             element: element,
             html: element.innerHTML
-        })
+        }
+        this.btns.push(el)
         element.disabled = true
         element.innerHTML = `
             <div class="d-flex align-content-center"> 
-                <span>
-                    ${Localize({
-            fr: 'Chargement',
-            en: 'Loading'
-        })}
-                </span>
+                <span>${el.html}</span>
                 <span class="mx-1"></span>
                 <spinning-dots style="width: 20px" />
             <div/>
