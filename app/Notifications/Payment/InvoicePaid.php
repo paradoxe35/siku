@@ -8,6 +8,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
+use Illuminate\Support\Facades\Lang;
 
 class InvoicePaid extends Notification implements ShouldQueue
 {
@@ -54,10 +55,13 @@ class InvoicePaid extends Notification implements ShouldQueue
      */
     public function toMail($notifiable)
     {
-        return (new MailMessage)->markdown('mail.invoice.paid', [
-            'payMeta' => $this->payMeta,
-            'symbol' => $this->symbol
-        ]);
+        return (new MailMessage)
+            ->subject(Lang::get('Transaction invoice'))
+            ->markdown('mail.invoice.paid', [
+                'payMeta' => $this->payMeta,
+                'symbol' => $this->symbol,
+                'user' => $this->payMeta->balance->user
+            ]);
     }
 
     /**

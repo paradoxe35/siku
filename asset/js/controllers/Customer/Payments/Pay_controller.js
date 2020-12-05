@@ -9,6 +9,7 @@ export default class extends Controller {
         paypalCancelUrl: this.data.get('paypalCancelUrl'),
         paypalCreatePaypalTransaction: this.data.get('paypalCreatePaypalTransaction'),
         paypalGetPaypalTransaction: this.data.get('paypalGetPaypalTransaction'),
+        paypalCancelPaypalTransaction: this.data.get('paypalCancelPaypalTransaction')
     }
 
     async connect() {

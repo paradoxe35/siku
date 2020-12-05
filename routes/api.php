@@ -114,6 +114,9 @@ Route::namespace('API')
                                         Route::post('get-paypal-transaction', "PaymentsController@getPaypalTransaction")
                                             ->name('get-paypal-transaction');
 
+                                        Route::post('cancel-paypal-transaction', "PaymentsController@cancelPaypalTransaction")
+                                            ->name('cancel-paypal-transaction');
+
                                         Route::prefix('history')
                                             ->name('history.')
                                             ->group(function () {

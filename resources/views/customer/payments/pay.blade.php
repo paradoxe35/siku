@@ -17,7 +17,8 @@
     data-Customer--Payments--Pay-paypal-return-url="{{ route('customer.event.payments') }}"
     data-Customer--Payments--Pay-paypal-cancel-url="{{ route('customer.event.payments.new.pay') }}"
     data-Customer--Payments--Pay-paypal-create-paypal-transaction="{{ route('api.customer.payments.create-paypal-transaction') }}"
-    data-Customer--Payments--Pay-paypal-get-paypal-transaction="{{ route('api.customer.payments.get-paypal-transaction') }}">
+    data-Customer--Payments--Pay-paypal-get-paypal-transaction="{{ route('api.customer.payments.get-paypal-transaction') }}"
+    data-Customer--Payments--Pay-paypal-cancel-paypal-transaction="{{ route('api.customer.payments.cancel-paypal-transaction') }}">
     <div class="row mb-4">
         <div class="col">
             <h1 class="display-4">{{ __('Choisissez une méthode de paiement') }}</h1>

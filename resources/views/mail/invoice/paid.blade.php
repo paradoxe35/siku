@@ -1,15 +1,16 @@
 @component('mail::message')
-# Invoice
 
-Votre paiement a été approuvé avec succès.
+# @lang('Hello') {{ $user->name }},
+### @lang('Votre transaction a bien été effectuée')
+
 
 @component('mail::table')
-| {{ __('ID DE PAIEMENT') }} | DATE | {{ __('METHODE DE PAIEMENT') }} | {{ __('MONTANT') }} | {{ __('CODE DE DEVISE') }} |
+| {{ __('ID de la facture') }} | Date | {{ __('Méthode') }} | {{ __('Montant') }} | {{ __('Code de devise') }} |
 | ------------- |:-------------:|:------------------:|:-------:| --------------:|
-|{{$payMeta->balance->hashId()}}| {{ $payMeta->created_at->format('Y-m-d H:i') }} |{{ $payMeta->service }} |{{ $symbol.$payMeta->amount }} |{{ $payMeta->currency_code }} |
+| {{$payMeta->balance->hashId()}} | {{ $payMeta->created_at->format('Y-m-d H:i') }} | {{ $payMeta->service }} | {{ $symbol.$payMeta->amount }} | {{ $payMeta->currency_code }} |
 
 @endcomponent
 
-Merci,<br>
+@lang('Regards'),<br>
 {{ config('app.name') }}
 @endcomponent

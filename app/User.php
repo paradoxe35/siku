@@ -11,6 +11,7 @@ use App\Models\DefaultBalance\BalanceDefault;
 use App\Models\Payments\CustomPayment;
 use App\Models\Event\Event;
 use App\Models\Event\Guest;
+use App\Models\Payments\PaypalTransaction;
 use App\Models\Template\Template;
 use App\Notifications\ResetPassword;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -257,5 +258,13 @@ class User extends Authenticatable implements MustVerifyEmail, CanResetPassword,
     public function defaultBalance()
     {
         return $this->hasOne(BalanceDefault::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function paypalTransactions()
+    {
+        return $this->hasMany(PaypalTransaction::class);
     }
 }

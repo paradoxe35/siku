@@ -102,6 +102,14 @@ const payPalOptions = (amount, guests, successMsg) => ({
                 Notifier.success(successMsg, 5000)
                     .then(() => TurbolinksApp.visit(URLS.paypalReturnUrl))
             })
+    },
+    onCancel: (data) => {
+        return ApiRequest('post', URLS.paypalCancelPaypalTransaction, {
+            orderID: data.orderID,
+        }, true)
+    },
+    onError: function (err) {
+        console.error(err);
     }
 })
 

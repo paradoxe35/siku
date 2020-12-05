@@ -2,6 +2,7 @@
 
 namespace App\Models\Payments;
 
+use App\Casts\DateTimeTz;
 use App\Models\Balance\Balance;
 use Illuminate\Database\Eloquent\Model;
 
@@ -23,6 +24,15 @@ class PaymentMeta extends Model
         'currency_code',
         'service',
         'datas'
+    ];
+
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'created_at' => DateTimeTz::class
     ];
 
     /**

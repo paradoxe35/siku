@@ -124,8 +124,7 @@ class PaymentsController extends Controller
             ->route('mail', EmailApp::getAppEmailAddress())
             ->notify(new UserPay($user, $payMeta));
 
-
-        if ($user->email_verified_at) {
+        if ($user->hasVerifiedEmail()) {
             $user->notify(new InvoicePaid($payMeta));
         }
     }
@@ -198,9 +197,38 @@ class PaymentsController extends Controller
             $request->amount
         );
 
-        return (array) $response->result;
+        $result = (array) $response->result;
+
+        /** @var \App\User */
+        $user = $request->user();
+
+        $user->paypalTransactions()->create(['transaction_id' => $result['id']]);
+
+        return $result;
     }
 
+    /**
+     * @param Request $request
+     * 
+     * @return \Illuminate\Http\Response|\PayPalHttp\HttpResponse
+     */
+    public function cancelPaypalTransaction(Request $request)
+    {
+        $request->validate([
+            'orderID' => ['required'],
+        ]);
+
+        /** @var \App\User */
+        $user = $request->user();
+
+        $trans = $user->paypalTransactions()->firstWhere('transaction_id', $request->orderID);
+
+        if ($trans) {
+            $trans->delete();
+        }
+
+        return ['success' => 1];
+    }
 
     /**
      * @param mixed $result
@@ -212,6 +240,14 @@ class PaymentsController extends Controller
     {
         $amount = $result->purchase_units[0]->amount->value;
         $currency_code = $result->purchase_units[0]->amount->currency_code;
+
+
+        $trans = $auth->paypalTransactions()->firstWhere('transaction_id', $result->id);
+
+        if ($trans) {
+            $trans->completed = true;
+            $trans->save();
+        }
 
         /**
          * store in balance in user related
