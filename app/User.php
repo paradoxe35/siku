@@ -23,8 +23,9 @@ use Illuminate\Contracts\Auth\CanResetPassword;
 use Illuminate\Auth\Passwords\CanResetPassword as PasswordTrait;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Mtvs\EloquentHashids\HasHashid;
+use Illuminate\Contracts\Translation\HasLocalePreference;
 
-class User extends Authenticatable implements MustVerifyEmail, CanResetPassword
+class User extends Authenticatable implements MustVerifyEmail, CanResetPassword, HasLocalePreference
 {
     use Notifiable, HasApiTokens, PasswordTrait, CacheUserDataPay, SoftDeletes, HasHashid;
 
