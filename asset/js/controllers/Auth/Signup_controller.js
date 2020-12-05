@@ -90,6 +90,7 @@ export default class extends Controller {
 
         // @ts-ignore
         ApiRequest('post', e.target.action, form, false, 419)
+            .finally(() => Btn.hide())
             .then((res) => {
                 // @ts-ignore
                 res.status === 200 &&
@@ -98,7 +99,7 @@ export default class extends Controller {
             .catch(error => {
                 HtmlAlert.show(this.innerError, error)
             })
-            .finally(() => Btn.hide())
+
     }
 
     async initSelect2() {
