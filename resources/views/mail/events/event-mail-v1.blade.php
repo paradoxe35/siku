@@ -226,8 +226,6 @@
                                                 <h3>Organizer ({{ $user->name }})</h3>
                                                 Email: <a href="mailto:{{ $user->email }}">{{ $user->email }}</a><br>
                                                 Phone: <a href="tel:{{ $user->phone }}">{{ $user->phone }}</a>
-
-                                                <p>{{ $icalendar }}</p>
                                             </div>
                                         </td>
                                     </tr>

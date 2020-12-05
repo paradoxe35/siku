@@ -65,7 +65,6 @@ class GuestMessage extends Mailable
                 'user' => $user,
                 'event' => $event,
                 'app_url' => config('app.url'),
-                'icalendar' => ICalendar::getRoute($event)
             ]);
 
         if ($guest->can_include_icalendar) {
