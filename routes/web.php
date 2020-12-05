@@ -18,16 +18,17 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', 'HomeController')->name('home');
 Route::get('/pricing', 'PricingController')->name('pricing');
 Route::get('/blog', 'PostsController@index')->name('posts');
-Route::get('/blog/{slug}', 'PostsController@show')->name('posts.show');
+Route::get('blog/{slug}', 'PostsController@show')->name('posts.show');
 Route::get('/services', 'ServicesController')->name('services');
 Route::get('/contact-us', 'ContactUsController')->name('contact-us');
 
 Auth::routes(['login' => false, 'regiter' => false, 'verify' => true, 'reset' => true, 'confirm' => true]);
 
-Route::get('/g/{event}/{code}', 'QrCodeController')->name('qrcode');
+Route::get('g/{event}/{code}', 'QrCodeController')->name('qrcode');
+Route::get('_/{event}', 'ICalendarController')->name('icalendar');
 
 Route::group([], function () {
-    Route::get('/get-started', 'GetStartedController')->name('get-started');
+    Route::get('get-started/', 'GetStartedController')->name('get-started');
     Route::namespace('Auth')
         ->group(function () {
             Route::get('/sign-in', 'LoginController@showLoginForm')->name('sign-in');
@@ -54,13 +55,13 @@ Route::middleware(['auth'])
                     ->group(function () {
                         Route::namespace('Event')
                             ->group(function () {
-                                Route::get('/product', 'ProductController@index')->name('.product');
-                                Route::get('/utilization', 'UtilizationController@index')->name('.utilization');
-                                Route::get('/report', 'ReportController@index')->name('.report');
-                                Route::get('/settings', 'SettingsController@index')->name('.settings');
+                                Route::get('product', 'ProductController@index')->name('.product');
+                                Route::get('utilization', 'UtilizationController@index')->name('.utilization');
+                                Route::get('report', 'ReportController@index')->name('.report');
+                                Route::get('settings', 'SettingsController@index')->name('.settings');
                             });
-                        Route::get('/account', 'AccountController@index')->name('.account');
-                        Route::get('/account/password', 'AccountController@password')->name('.account.password');
+                        Route::get('account', 'AccountController@index')->name('.account');
+                        Route::get('account/password', 'AccountController@password')->name('.account.password');
                         Route::get('', "HomeController");
                         //payment routes
 
@@ -68,8 +69,8 @@ Route::middleware(['auth'])
                             ->prefix('payments')
                             ->group(function () {
                                 Route::get('', "PaymentsController@index")->name('.payments');
-                                Route::get('/new', "PaymentsController@new")->name('.payments.new');
-                                Route::get('/new/pay', "PaymentsController@pay")->name('.payments.new.pay');
+                                Route::get('new', "PaymentsController@new")->name('.payments.new');
+                                Route::get('new/pay', "PaymentsController@pay")->name('.payments.new.pay');
                             });
                     });
             });
@@ -146,7 +147,7 @@ Route::middleware(['auth', 'admin'])
                 Route::prefix('custom-payment')
                     ->group(function () {
                         Route::get('', 'CustomPaymentController@index')->name('custom-payment');
-                        Route::patch('/{id}', 'CustomPaymentController@trash')->name('custom-payment.trash');
+                        Route::patch('{id}/', 'CustomPaymentController@trash')->name('custom-payment.trash');
                         Route::post('', 'CustomPaymentController@store')->name('custom-payment.store');
                         Route::get('search-client', 'CustomPaymentController@searchClient')->name('custom-payment.search-client');
                     });

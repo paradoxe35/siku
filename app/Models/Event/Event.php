@@ -2,6 +2,7 @@
 
 namespace App\Models\Event;
 
+use App\Casts\DateTimeTz;
 use App\Infrastructure\Cache\CacheJobEvent;
 use App\Infrastructure\ProductPrice;
 use App\Models\Balance\Balance;
@@ -49,6 +50,7 @@ class Event extends Model
         'event_date' => 'datetime',
         'start_time' => 'datetime',
         'end_time' => 'datetime',
+        'created_at' => DateTimeTz::class
     ];
 
     /**

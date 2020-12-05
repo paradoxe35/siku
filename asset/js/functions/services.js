@@ -1,6 +1,20 @@
 //@ts-check
 import { countriesFlagAndEmojis, customerCountryApi } from '../api/services'
 
+let geoData = null
+
+const fetchIpGeo = async () => {
+    if (geoData) return geoData
+    try {
+        const data = await customerCountryApi()
+        geoData = data
+        return data
+    } catch (error) {
+        return null
+    }
+}
+fetchIpGeo()
+
 /**
  * @param { HTMLElement|Element } select 
  * @param { CallableFunction } callbackData 
@@ -14,8 +28,10 @@ export const clientCountry = async (select, callbackData, defaultValue = null) =
     if (defaultValue) {
         SlimSelect.setData(await callbackData(defaultValue))
     } else {
-        customerCountryApi()
-            .then(async (c) => SlimSelect.setData(await callbackData(c || { code: "CA" })))
+        fetchIpGeo()
+            .then(async (c) => {
+                SlimSelect.setData(await callbackData(c || { code: "CA" }))
+            })
     }
     return SlimSelect
 }

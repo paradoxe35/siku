@@ -10,6 +10,20 @@ export const setI18nLanguage = (lang) => {
 
 setI18nLanguage(document.querySelector('html').getAttribute('lang'))
 
+
+export const getLocaleTz = () => Intl.DateTimeFormat().resolvedOptions().timeZone
+
+export const setTz = ($tz = null) => {
+    try {
+        const tz = $tz || getLocaleTz();
+        axios.defaults.headers.common['CLIENT-TZ'] = tz
+    } catch (error) {
+        console.error(error)
+    }
+}
+setTz()
+
+
 /**
  * @param { { response?:import('axios').AxiosResponse } } error 
  * @param { boolean } mustNotifierErrors 

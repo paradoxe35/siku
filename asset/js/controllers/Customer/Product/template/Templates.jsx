@@ -36,13 +36,13 @@ const NEW_TEMPLATE_FORM = {
 }
 
 
-const TextareaFieldAndDetail = () => {
+const TextareaFieldAndDetail = ({ templateRef }) => {
     /**
     * @type { { sms: string, mail: string }} 
     */
     // @ts-ignore
     const templateTextarea = useSelector(state => state.productTemplateEdit)
-    const dispche = useDispatch()
+    const dispatch = useDispatch()
 
     const { section, handleSection } = useSectionText()
 
@@ -59,6 +59,7 @@ const TextareaFieldAndDetail = () => {
 
     useEffect(() => {
         values.current = textValue
+        templateRef.current = textValue
     }, [textValue])
 
     /**
@@ -68,19 +69,17 @@ const TextareaFieldAndDetail = () => {
         setTextValue(k => caseSection(section, k, value))
     }, [setTextValue, caseSection, section])
 
-    const handleKeyUp = useCallback(() => {
-        dispche(setTemplateTextAreaValue(values.current))
-    }, [textValue, dispche, setTemplateTextAreaValue])
-
     useEffect(() => {
-        handleKeyUp()
+        return () => {
+            dispatch(setTemplateTextAreaValue(values.current))
+        }
     }, [])
 
     return <>
         <TextAreatEdit
             section={section}
             handleTextChange={handleTextChange}
-            handleKeyUp={handleKeyUp}
+            handleKeyUp={null}
             textValue={textValue}
             name={NEW_TEMPLATE_FORM.description}
             handleSection={handleSection} />
@@ -122,15 +121,17 @@ const NewTemplate = () => {
     const { fetchAPi, fetchLoading: loading } = useFetch()
 
     /**
-    * @type { { sms: string, mail: string }} 
+    * @type { { current: { sms: string, mail: string } } } 
     */
     // @ts-ignore
-    const templateTextarea = useSelector(state => state.productTemplateEdit)
+    const templateRef = useRef(null)
 
     /**
      * @param { React.FormEvent<HTMLFormElement> } e 
      */
     const handleSubmittion = async (e) => {
+        const { current: templateTextarea } = templateRef
+
         e.preventDefault()
         if (!validateTemplate(templateTextarea, requiredKeys)) return
 
@@ -152,7 +153,7 @@ const NewTemplate = () => {
 
     return <form ref={formElement} method="post" onSubmit={handleSubmittion} autoComplete="off">
         <TemplateNameField />
-        <TextareaFieldAndDetail />
+        <TextareaFieldAndDetail templateRef={templateRef} />
         <div className="is-global mb-2">
             <div className="text-xs text-muted mt-3 mb-2">
                 {t("Cochez cette case si vous souhaitez l'enregistrer en tant que modèle global pour vos événements")}.
@@ -163,6 +164,20 @@ const NewTemplate = () => {
     </form>
 }
 
+const ShowListTemplate = ({ v, handleDelete }) => {
+    const { t } = useTranslation()
+
+    return <>
+        <div className="d-flex w-100 justify-content-between" >
+            <h4 className="mb-1">{v.name}</h4>
+            <small>
+                {v.global && <span>({t('Global')}) </span>}
+                {t('SMS')} {v.sms}
+            </small>
+        </div>
+        <ListDescriptionText item={v} onDelete={handleDelete} />
+    </>
+}
 
 const TemplatesList = () => {
     const { t } = useTranslation()
@@ -197,36 +212,29 @@ const TemplatesList = () => {
     }, [deletionId]);
     // delete event template
 
-    const datas = ids.map(k => entities[k])
+    const datas = useMemo(() => ids.map(k => entities[k]), [entities])
 
     return <>
         <Loader loading={loading == ASYNC.pending}>
-            {loading == ASYNC.idle && ids.length ? (
+            {
+                loading == ASYNC.idle && !!ids.length &&
                 <>
                     <div style={OverFlowStyle}>
                         <List.Ul>
                             <List.Li data={datas}>
-                                {v => <>
-                                    <div className="d-flex w-100 justify-content-between" >
-                                        <h4 className="mb-1">{v.name}</h4>
-                                        <small>
-                                            {v.global && <span>({t('Global')}) </span>}
-                                            {t('SMS')} {v.sms}
-                                        </small>
-                                    </div>
-                                    <ListDescriptionText item={v} onDelete={handleDelete} />
-                                </>}
+                                {v => <ShowListTemplate v={v} handleDelete={handleDelete} />}
                             </List.Li>
                         </List.Ul>
                     </div>
                     <ModalConfirm loading={deletionLoading} onConfirm={deleteItem} ref={modalConfirm} />
                 </>
-            ) : ''}
-            {loading == ASYNC.idle && !ids.length ? (
+            }
+            {
+                loading == ASYNC.idle && !ids.length &&
                 <div className="mt-5">
                     <Empty message={t('Aucun modèle enregistré!')} />
                 </div>
-            ) : ''}
+            }
         </Loader>
     </>
 }

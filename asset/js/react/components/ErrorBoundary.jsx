@@ -1,6 +1,6 @@
 //@ts-check
+import { Localize } from '@/js/functions/localize';
 import React from 'react'
-import { useTranslation } from 'react-i18next';
 
 class ErrorBoundaryComponent extends React.Component {
     constructor(props) {
@@ -37,9 +37,11 @@ class ErrorBoundaryComponent extends React.Component {
 }
 
 const ErrorBoundary = ({ children, message = null }) => {
-    const { t } = useTranslation()
     return <ErrorBoundaryComponent message={
-        message || t("Une erreur s'est produite. Veuillez réessayer en actualisant la page")
+        message || Localize({
+            fr: "Une erreur s'est produite. Veuillez réessayer en actualisant la page",
+            en: "An error has occurred. Please try again by refreshing the page"
+        })
     }>
         {children}
     </ErrorBoundaryComponent>

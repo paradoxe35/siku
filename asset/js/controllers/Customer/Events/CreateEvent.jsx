@@ -2,7 +2,7 @@
 import React, { useCallback, useState, useContext } from 'react'
 import { useTranslation } from "react-i18next";
 import { DefaultButton } from '@/js/react/components/Buttons';
-import { EVENTS_VIEW, URLS } from '@/js/react/vars';
+import { EVENTS_VIEW, LANG, URLS } from '@/js/react/vars';
 import { EventContext } from '@js/react/contexts';
 import Datetime from '@/js/react/components/Datetime';
 import { Notifier } from '@/js/functions/notifier';
@@ -43,7 +43,7 @@ const CreateEvent = ({ updateComponentIndex, addEvent }) => {
             <div className="row">
                 <div className="col">
                     <InputField
-                        className="form-control form-control-muted"
+                        className="form-control form-control-sm"
                         placeholder={t("Nom d'événement")} name="event_name" required>
                         {t("Nom d'événement")}
                     </InputField>
@@ -53,12 +53,12 @@ const CreateEvent = ({ updateComponentIndex, addEvent }) => {
                 <div className="col-md-6">
                     <div className="form-group">
                         <label className="form-control-label">{t("Temps de début")}</label>
-                        <Datetime locale='fr'
+                        <Datetime locale={LANG}
                             dateFormat="YYYY-MM-DD"
                             defaultValue={new Date()}
                             inputProps={{
                                 placeholder: t("Temps de début"),
-                                className: "form-control form-control-muted",
+                                className: "form-control form-control-sm",
                                 name: "start_time",
                                 required: true
                             }} />
@@ -67,11 +67,11 @@ const CreateEvent = ({ updateComponentIndex, addEvent }) => {
                 <div className="col-md-6">
                     <div className="form-group">
                         <label className="form-control-label">{t("Temps de fin")}</label>
-                        <Datetime locale='fr'
+                        <Datetime locale={LANG}
                             dateFormat="YYYY-MM-DD"
                             inputProps={{
                                 placeholder: t("Temps de fin"),
-                                className: "form-control form-control-muted",
+                                className: "form-control form-control-sm",
                                 name: "end_time",
                                 required: true
                             }} />
@@ -82,7 +82,7 @@ const CreateEvent = ({ updateComponentIndex, addEvent }) => {
                 <div className="col-md-6">
                     <InputField
                         type="number"
-                        className="form-control form-control-muted"
+                        className="form-control form-control-sm"
                         placeholder={t("Nombre d'invité")}
                         name="event_guest" required>
                         {t("Nombre d'invité")}
@@ -95,7 +95,7 @@ const CreateEvent = ({ updateComponentIndex, addEvent }) => {
                             <textarea
                                 placeholder={t('(Optionnel)')}
                                 name="description"
-                                className="form-control form-control-muted"
+                                className="form-control form-control-sm"
                                 rows={2} />
                         </div>
                     </div>

@@ -2,17 +2,29 @@
 import axios from 'axios'
 
 const Axios = axios.create({ headers: {} })
-delete Axios.defaults.headers.common['CLIENT-LANG']
+Object.keys(Axios.defaults.headers.common)
+    .forEach((key) => {
+        if (key.startsWith('CLIENT-')) {
+            delete Axios.defaults.headers.common[key]
+        }
+    })
+
+
 /**
- * @returns { Promise<Object> }
+ * @returns { Promise<{ country_code:any,  }> }
  */
 export async function customerCountryApi() {
     try {
-        const { data } = await Axios.get("http://api.ipstack.com/check?access_key=6de6ff2313c40db8eff256ee23500973&format=1")
+        const { data } = await Axios.get("https://ipapi.co/json")
         return data;
-    } catch (_) {
-        return null
+    } catch (e) {
+        throw Error(e);
     }
+}
+
+
+export function getCountryFlag(code = '') {
+    return `https://flagcdn.com/${code.toLocaleLowerCase()}.svg`
 }
 
 /**

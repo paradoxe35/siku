@@ -55,7 +55,7 @@ const CustomerEvents = ({ setLoading }) => {
                 started={fetchLoading} />
         },
         {
-            title: t("Nouveau Événement"),
+            title: t("Créer un nouvel événement"),
             component: <CreateEvent
                 addEvent={addEvent}
                 updateComponentIndex={updateComponentIndex} />
@@ -73,18 +73,20 @@ const CustomerEvents = ({ setLoading }) => {
     // handling Event session context
     return <>
         <div className="d-flex justify-content-between mb-2">
-            <h4>{components[index].title}</h4>
-            {(index === 0 && !fetchLoading) &&
-                <button type="button" onClick={() => setIndex(EVENTS_VIEW.I_NEW_EVENT)} className="btn btn-sm btn-primary">
-                    {t('Créer')}
-                </button>
-            }
+            <h1 className="h3 font-weight-500">{components[index].title}</h1>
+            <div>
+                {(index === 0 && !fetchLoading) &&
+                    <button type="button" onClick={() => setIndex(EVENTS_VIEW.I_NEW_EVENT)} className="btn btn-sm btn-primary">
+                        {t('Créer')}
+                    </button>
 
-            {(index !== 0 && !fetchLoading) &&
-                <button type="button" onClick={() => setIndex(EVENTS_VIEW.I_EVENTS)} className="btn btn-sm btn-primary">
-                    <i className="ni ni-bold-left"></i>
-                </button>
-            }
+                }
+                {(index !== 0 && !fetchLoading) &&
+                    <button type="button" onClick={() => setIndex(EVENTS_VIEW.I_EVENTS)} className="btn btn-sm btn-primary">
+                        <i className="ni ni-bold-left"></i>
+                    </button>
+                }
+            </div>
         </div>
         <EventContext.Provider value={eventValue}>
             {components[index].component}
@@ -96,13 +98,13 @@ const CustomerEvents = ({ setLoading }) => {
 const Index = () => {
     const { parentElemt, fullLoading: loading, setFullLoading: setLoading } = useFullLoading()
 
-    return <div className="card" ref={parentElemt}>
-        <Suspense fallback={<FullLoader parent={parentElemt.current} />}>
-            <div className="card-body">
+    return <div className="card border border-darken shadow-none" >
+        <div className="card-body" ref={parentElemt}>
+            <Suspense fallback={<FullLoader parent={parentElemt.current} />}>
                 <CustomerEvents setLoading={setLoading} />
-            </div>
-        </Suspense>
-        {loading && <FullLoader parent={parentElemt.current} />}
+            </Suspense>
+            {loading && <FullLoader parent={parentElemt.current} />}
+        </div>
     </div>
 }
 

@@ -220,5 +220,6 @@ export default {
     "Téléphone Privé": "Private Phone",
     "En ligne": "Online",
     "Tout": "All",
-    "Échec d'envoi": "Failure to send"
+    "Échec d'envoi": "Failure to send",
+    "Créer un nouvel événement": "Create new event"
 }

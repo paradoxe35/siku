@@ -56,7 +56,8 @@ class RegisterController extends Controller
             'phone' => ['required', 'regex:/^[0-9\-\(\)\/\+\s]*$/', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
             'country_name' => ['nullable', 'string'],
-            'country_code' => ['nullable', 'string']
+            'country_code' => ['nullable', 'string'],
+            'timezone' => ['nullable', 'string']
         ]);
     }
 
@@ -74,7 +75,8 @@ class RegisterController extends Controller
             'phone' => $data['phone'],
             'password' => Hash::make($data['password']),
             'country_name' => $data['country_name'],
-            'country_code' => $data['country_code']
+            'country_code' => $data['country_code'],
+            'timezone' => $data['timezone']
         ]);
     }
 

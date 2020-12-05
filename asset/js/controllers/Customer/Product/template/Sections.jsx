@@ -72,7 +72,7 @@ export const validateTemplateSms = (templateTextarea, requiredKeys) => {
     if (sms.length) {
         Notifier.error(sms.join(', ') + Localize({
             fr: ' est / sont requis dans vos modèles sms text',
-            en: 'is / are required in your text sms templates'
+            en: ' is / are required in your text sms templates'
         }))
     }
     return !!!sms.length;
@@ -88,7 +88,7 @@ export const validateTemplateMail = (templateTextarea, requiredKeys) => {
     if (mail.length) {
         Notifier.error(mail.join(', ') + Localize({
             fr: ' est / sont requis dans vos modèles mail text',
-            en: 'is / are required in your text mail templates'
+            en: ' is / are required in your text mail templates'
         }))
     }
     return !!!mail.length;
@@ -139,10 +139,8 @@ export const ListDescriptionText = ({ item, onDelete, canShown = null }) => {
                 </div>
                 <div className="col-auto">
                     {onDelete && (
-                        <button type="button" onClick={(e) => {
-                            e.stopPropagation();
-                            onDelete(item.id);
-                        }} className="btn btn-secondary btn-sm text-danger">{t('Supprimer')}</button>
+                        <button type="button" onClick={(_) => onDelete(item.id)}
+                            className="btn btn-secondary btn-sm text-danger">{t('Supprimer')}</button>
                     )}
                 </div>
             </div>
@@ -166,11 +164,11 @@ export const List = ({
      */
     Li: ({ data, children }) => {
         const [datas, setDatas] = useState([])
-        const { t } = useTranslation()
 
         useEffect(() => {
             setDatas(data.map(g => ({ ...g, show: false })))
         }, [data])
+
         /**
          * @param {number} id
          */
@@ -178,6 +176,7 @@ export const List = ({
             // e.target.scrollIntoView()
             setDatas(d => d.map(g => ({ ...g, show: (id === g.id && !g.show) })))
         }
+
         return <>
             {datas.map(v => {
                 return <a key={String(v.id)} onClick={(e) => showItem(v.id, e)} className="list-group-item clickable-a clickable-list flex-column align-items-start py-4 px-4">
@@ -359,40 +358,44 @@ const QuillEditorMail = ({ value, handleTextChange, handleKeyUp }) => {
 
 export const TextAreatEdit = ({ handleSection, section, handleTextChange, handleKeyUp, textValue, name }) => {
     const { t } = useTranslation();
+    const ref = useRef(null)
+
     useEffect(() => {
         const time = setTimeout(() => {
             // @ts-ignore
-            $('#message').countSms('#sms-counter')
+            ref.current && $(ref.current).countSms('#sms-counter')
         }, 500)
         return () => {
             clearTimeout(time)
         }
-    }, [])
+    }, [section])
     return <>
         <SectionView onChange={handleSection} />
-        {section === TEMPLATE_SECTION.mail ? (
-            <>
-                <QuillEditorMail
-                    handleKeyUp={handleKeyUp}
-                    handleTextChange={handleTextChange}
-                    value={caseSectionValue(section, textValue)} />
-            </>
-        ) : (
-                <div className="form-group">
-                    <SmsDetail section={section} />
-                    <div className="input-group input-group-merge">
-                        <textarea required
-                            id="message"
-                            onChange={handleTextChange}
-                            onKeyUp={handleKeyUp}
-                            value={caseSectionValue(section, textValue)}
-                            placeholder={t("Entrez votre modèle texte ici") + '...'}
-                            is="textarea-autogrow"
-                            name={name}
-                            className="form-control text-default"
-                            rows={8} />
+        {
+            section === TEMPLATE_SECTION.mail ? (
+                <>
+                    <QuillEditorMail
+                        handleKeyUp={handleKeyUp}
+                        handleTextChange={handleTextChange}
+                        value={caseSectionValue(section, textValue)} />
+                </>
+            ) : (
+                    <div className="form-group">
+                        <SmsDetail section={section} />
+                        <div className="input-group input-group-merge">
+                            <textarea required
+                                ref={ref}
+                                onChange={handleTextChange}
+                                onKeyUp={handleKeyUp}
+                                value={caseSectionValue(section, textValue)}
+                                placeholder={t("Entrez votre modèle texte ici") + '...'}
+                                is="textarea-autogrow"
+                                name={name}
+                                className="form-control text-default"
+                                rows={8} />
+                        </div>
                     </div>
-                </div>
-            )}
+                )
+        }
     </>
 }

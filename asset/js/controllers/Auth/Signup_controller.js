@@ -3,14 +3,16 @@ import { Controller } from "stimulus"
 import { clientCountry } from "@/js/functions/services"
 import { FormBtn, HtmlAlert, Btn } from "@/js/functions/dom"
 import { TurbolinksApp } from "@/js/modules/turbolinks"
-import { ApiRequest } from "@/js/api/api"
+import { ApiRequest, getLocaleTz } from "@/js/api/api"
 import { Localize } from "@/js/functions/localize"
+import { getCountryFlag } from "@/js/api/services"
 
 export default class extends Controller {
     calling_code = null
     country = {
         name: null,
-        code: null
+        code: null,
+        timezone: null
     }
 
 
@@ -55,7 +57,8 @@ export default class extends Controller {
             const lastCode = this.country.code
             this.country = {
                 code: parsed.country,
-                name: lastCode == parsed.country ? this.country.name : parsed.country
+                name: lastCode == parsed.country ? this.country.name : parsed.country,
+                timezone: this.country.timezone
             }
             return parsed.number
         }
@@ -77,11 +80,14 @@ export default class extends Controller {
         }
         HtmlAlert.hide()
         Btn.loading(FormBtn(e.target))
+
         // @ts-ignore
         const form = new FormData(e.target)
         form.set('phone', phone)
         form.set('country_name', this.country.name)
         form.set('country_code', this.country.code)
+        form.set('timezone', this.country.timezone || getLocaleTz())
+
         // @ts-ignore
         ApiRequest('post', e.target.action, form, false, 419)
             .then((res) => {
@@ -98,16 +104,17 @@ export default class extends Controller {
     async initSelect2() {
         // @ts-ignore
         this.select = await clientCountry(this.countryCodeBtn, (c) => {
-            const code = `${c.location.calling_code}`
+            const code = `${c.country_calling_code}`
             this.calling_code = code
             this.country = {
                 name: c.country_name,
-                code: c.country_code
+                code: c.country_code,
+                timezone: c.timezone
             }
             return [
                 { text: Localize({ fr: 'Autre pays', en: 'Other country' }), value: ' ' },
                 {
-                    text: `<img src="${c.location.country_flag}" style="margin-right:2px" height="12" width="12" /> ${c.country_code} +${code}`,
+                    text: `<img src="${getCountryFlag(c.country_code)}" style="margin-right:2px" height="12" width="12" /> ${c.country_code} ${code}`,
                     value: code,
                     selected: true
                 }
