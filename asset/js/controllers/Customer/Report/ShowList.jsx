@@ -25,8 +25,11 @@ const ShowList = ({ datas, url }) => {
                     <div className="row mb-1">
                         <div className="col">
                             <h4 className="mb-1">
-                                {v.guest.name} <small>({v.guest.phone})</small>
+                                {v.guest.name} <br />
+                                {!!v.guest.email && <><small>{t('Email')}: {v.guest.email}</small><br /></>}
+                                {!!v.guest.phone && <small>{t('Phone')}: {v.guest.phone}</small>}
                             </h4>
+                            <hr className="py-1" />
                             {v.validator && (
                                 <h4 className="mb-1">
                                     <small><b>{t('Validé par')}</b>: </small><br />

@@ -26,6 +26,7 @@
             <th rowspan="2">No.</th>
             <th rowspan="2">{{ __('Nom') }}</th>
             <th rowspan="2">{{ __('Numéro de téléphone') }}</th>
+            <th rowspan="2">{{ __('E-Mail Adresse') }}</th>
             <th rowspan="2">{{ __('Autorisés') }}</th>
             <th rowspan="2">{{ __("Code d'autorisation") }}</th>
             <th rowspan="2">{{ __("Service utilisé") }}</th>
@@ -40,6 +41,7 @@
             <td>{{ $attend->id }}</td>
             <td>{{ $attend->guest->name }}</td>
             <td>{{ $attend->guest->phone }}</td>
+            <td>{{ $attend->guest->email }}</td>
             <td>{{ $attend->guest->autorized }}</td>
             <td>{{ $attend->guest->code }}</td>
             <td>{{ implode(', ',$attend->guest->services()) }}</td>
@@ -57,6 +59,7 @@
             <th rowspan="2">No.</th>
             <th rowspan="2">{{ __('Nom') }}</th>
             <th rowspan="2">{{ __('Numéro de téléphone') }}</th>
+            <th rowspan="2">{{ __('E-Mail Adresse') }}</th>
             <th rowspan="2">{{ __('Autorisés') }}</th>
             <th rowspan="2">{{ __("Service utilisé") }}</th>
         </tr>
@@ -68,6 +71,7 @@
             <td>{{ $guest->id }}</td>
             <td>{{ $guest->name }}</td>
             <td>{{ $guest->phone }}</td>
+            <td>{{ $guest->email }}</td>
             <td>{{ $guest->autorized }}</td>
             <td>{{ implode(', ',$guest->services()) }}</td>
         </tr>
