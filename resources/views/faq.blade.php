@@ -5,6 +5,6 @@
 @section('content')
 @include('layouts.navbar')
 <div class="main-content" data-controller="Services">
-    @include('layouts.hero', ['title' => 'Services'])
+    @include('layouts.hero', ['title' => 'Questions fréquemment posées'])
 </div>
 @endsection

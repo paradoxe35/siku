@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class ServicesController extends Controller
+class FAQController extends Controller
 {
     /**
      * Handle the incoming request.
@@ -14,6 +14,6 @@ class ServicesController extends Controller
      */
     public function __invoke(Request $request)
     {
-        return view('services');
+        return view('faq');
     }
 }

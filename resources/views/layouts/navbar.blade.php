@@ -37,8 +37,8 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ route('services') }}" class="nav-link">
-                            <span class="nav-link-inner--text">{{ __('Services') }}</span>
+                        <a href="{{ route('faq') }}" class="nav-link">
+                            <span class="nav-link-inner--text">{{ __('FAQ') }}</span>
                         </a>
                     </li>
                     <li class="nav-item">
