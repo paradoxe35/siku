@@ -4,7 +4,6 @@ namespace App\Http\Controllers\API\Customer\Event;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Guest\GuestCollection;
-use App\Jobs\ProcessInvitations;
 use App\Jobs\ProcessInvitation;
 use App\Models\CommonGuest;
 use App\Models\Event\Event;
@@ -14,10 +13,14 @@ use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Instasent\SMSCounter\SMSCounter;
-
+use Illuminate\Bus\Batch;
+use Illuminate\Support\Facades\Bus;
+use App\Infrastructure\Cache\CacheJobEvent;
 
 class EventGuestsController extends Controller
 {
+    use CacheJobEvent;
+
     /**
      * @var SMSCounter
      */
@@ -326,6 +329,33 @@ class EventGuestsController extends Controller
     }
 
     /**
+     * Send all event invitation guest use bus batch
+     * 
+     * @param Event $event
+     * @return \Illuminate\Bus\Batch
+     */
+    protected function proceedBatchableInvitation(Event $event)
+    {
+        $eventId = $event->id;
+
+        $guests = $event->unprocessedGuests()
+            ->map(fn (Guest $guest) => new ProcessInvitation($guest))
+            ->values()
+            ->toArray();
+
+        $batch = Bus::batch($guests)
+            ->finally(function (Batch $batch) use ($eventId) {
+                $this->deleteEventProcess($eventId);
+            })->onQueue('invitation')->dispatch();
+
+        if (!empty($guests)) {
+            $this->putEventProcess($eventId, array_merge(['batch' => $batch->id], $event->status()));
+        }
+
+        return $batch;
+    }
+
+    /**
      * send all resource in storage.
      * @param  \App\Models\Event\Event  $event
      * @return \Illuminate\Http\Response
@@ -335,15 +365,15 @@ class EventGuestsController extends Controller
         $process = !$event->InQueueProcess();
 
         if ($process) {
-            ProcessInvitations::dispatch($event, $event->id)
-                ->onQueue('invitation');
+            $batch = $this->proceedBatchableInvitation($event);
         }
 
         $processed = $event->processedGuests()->count();
 
         return [
             'processed' => $processed,
-            'total' => $event->guests->count()
+            'total' => $event->guests->count(),
+            'batch' => isset($batch) ? $batch->id : null
         ];
     }
 }
