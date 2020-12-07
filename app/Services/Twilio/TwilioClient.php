@@ -62,6 +62,6 @@ class TwilioClient
     {
         $appName = config('app.name');
 
-        return env("TWILIO_SENDER_ID", "$appName Events");
+        return env("TWILIO_SENDER_ID", "$appName-Event");
     }
 }

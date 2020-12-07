@@ -58,6 +58,7 @@ class GuestMessage extends Mailable
             ->from($email, "{$this->appName}, {$user->name}")
             ->subject($event->name)
             ->view('mail.events.event-mail-v1')
+            ->replyTo($user->email, $user->name)
             ->with([
                 'content' => $guest->text_mail,
                 'qrcode' => ($guest->can_include_qrcode ?

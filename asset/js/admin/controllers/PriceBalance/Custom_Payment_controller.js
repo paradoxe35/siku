@@ -88,9 +88,9 @@ export default class extends Controller {
         const form = new FormData(target)
         Btn.loading(FormBtn(target))
 
-        form.set('client_id', client ? client.id : null)
-        form.set('guests', client ? client.pay_data.guests : null)
-        form.set('amount', client ? client.pay_data.price : null)
+        form.set('client_id', client ? client.id : '')
+        form.set('guests', client ? client.pay_data.guests : '')
+        form.set('amount', client ? client.pay_data.price : '')
 
         ApiRequest('post', target.action, form, true)
             .then(({ data }) => {

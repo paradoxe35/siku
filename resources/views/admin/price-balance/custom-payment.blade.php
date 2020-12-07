@@ -35,6 +35,11 @@
                             <div class="mt-3" data-target="PriceBalance--Custom-Payment.clientPay"></div>
                         </div>
                     </div>
+
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" name="notify" class="custom-control-input" id="nofify">
+                        <label class="custom-control-label" for="nofify">{{ __('Notifier') }}</label>
+                    </div>
                 </div>
 
                 <div class="modal-footer">

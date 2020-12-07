@@ -5,9 +5,9 @@ namespace App\Http\Controllers\Admin\PriceBalance;
 use App\Http\Controllers\Controller;
 use App\Infrastructure\Cache\CacheUserDataPay;
 use App\Models\Payments\CustomPayment;
+use App\Notifications\Payment\CustomPaymentNotify;
 use App\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
 
 class CustomPaymentController extends Controller
 {
@@ -78,11 +78,14 @@ class CustomPaymentController extends Controller
         /** @var \Illuminate\Support\Collection */
         $clients = User::query()->where('email', 'like', "%{$search}%")->limit(10)->get();
 
-        return $clients->map(function ($client) {
+        return $clients->map(function (User $client) {
 
             $data = [
                 'id' => $client->id,
                 'email' => $client->email,
+                'name' => $client->name,
+                'country' => $client->country_name . "({$client->country_code})",
+                'balance' => $client->balance(),
                 'hash' => $client->hashId(),
                 'pay_data' => $this->getUserDataPay($client->id)
             ];
@@ -104,6 +107,7 @@ class CustomPaymentController extends Controller
             'client_id' => ['required', 'numeric', 'min:1'],
             'guests' => ['required', 'numeric', 'min:1'],
             'amount' => ['required', 'numeric', 'min:1'],
+            'notify' => ['nullable'],
         ]);
 
         $payData = $this->getUserDataPay($request->client_id);
@@ -112,9 +116,9 @@ class CustomPaymentController extends Controller
             abort(422, trans('Les détails de paiement sont incorrects'));
         }
 
-        $paymentCode = Str::random(6);
+        $paymentCode = bin2hex(random_bytes(5));
 
-        $this->query()->create([
+        $pay = $this->query()->create([
             'amount' => $request->amount,
             'payment_code' => $paymentCode,
             'active' => true,
@@ -122,9 +126,24 @@ class CustomPaymentController extends Controller
             'user_id' => $request->client_id
         ]);
 
+        if (!!$request->notify) {
+            $this->notify($pay);
+        }
+
         return [
             'message' => trans('Paiement personnalisé enregistré avec succès, code paiement') . ': ' . $paymentCode
         ];
+    }
+
+    /**
+     * Nofify customer after storing of his custom payment 
+     * 
+     * @param User $user
+     * @return void
+     */
+    public function notify(CustomPayment $customPayment)
+    {
+        $customPayment->user->notify(new CustomPaymentNotify($customPayment));
     }
 
     /**
