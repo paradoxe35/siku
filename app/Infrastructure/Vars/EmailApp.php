@@ -17,6 +17,6 @@ class EmailApp
      */
     public static function getAppSuperAdminEmailAddress()
     {
-        return config('app.super_admin_email', "siku.admin@gmail.com");
+        return config('app.super_admin_email') ?: "siku.admin@gmail.com";
     }
 }
