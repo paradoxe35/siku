@@ -11,6 +11,7 @@
         "php": "^7.4.0",
         "ext-gd": "*",
         "ext-gmp": "*",
+        "ext-pcntl": "*",
         "aws/aws-sdk-php": "~3.0",
         "barryvdh/laravel-dompdf": "^0.8.7",
         "box/spout": "^3.1",
