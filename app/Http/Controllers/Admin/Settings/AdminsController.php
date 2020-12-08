@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin\Settings;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Admin\Settings\Admin\Admin;
 use App\Http\Resources\Admin\Settings\Admin\AdminCollection;
+use App\Infrastructure\Vars\EmailApp;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -67,6 +68,10 @@ class AdminsController extends Controller
 
         $super = !!$request->super_admin;
 
+        if ($super) {
+            $this->abortIfIsAppSuperAdmin($request->user()->email, false);
+        }
+
         $item = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
@@ -108,6 +113,8 @@ class AdminsController extends Controller
 
         $item = $this->query()->findOrFail($id);
 
+        $this->abortIfIsAppSuperAdmin($item->email, true);
+
         if (request('trash')) {
             if ($item->trashed()) {
                 $item->restore();
@@ -120,5 +127,22 @@ class AdminsController extends Controller
         }
 
         return new Admin($item);
+    }
+
+    /**
+     * @param string|null $email
+     * @param bool $isSuper
+     * 
+     * @return void
+     */
+    private function abortIfIsAppSuperAdmin(?string $email, bool $isSuper = true)
+    {
+        abort_if(
+            $isSuper ?
+                $email == EmailApp::getAppSuperAdminEmailAddress() :
+                $email != EmailApp::getAppSuperAdminEmailAddress(),
+            402,
+            trans("Action non autorisée")
+        );
     }
 }

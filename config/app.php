@@ -15,6 +15,11 @@ return [
 
     'name' => env('APP_NAME', 'SiKu'),
 
+    /**
+     * App super admin email
+     */
+    'super_admin_email' => env('APP_SUPER_ADMIN_EMAIL'),
+
     /*
     |--------------------------------------------------------------------------
     | Application Environment
@@ -173,7 +178,9 @@ return [
         App\Providers\AuthServiceProvider::class,
         App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
+        App\Providers\HorizonServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        App\Providers\TelescopeServiceProvider::class,
         App\Providers\ViewServiceProvider::class,
         App\Providers\JobServiceProvider::class,
         Barryvdh\DomPDF\ServiceProvider::class,

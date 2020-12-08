@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Infrastructure\Vars\EmailApp;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -18,7 +19,7 @@ class AdminSeeder extends Seeder
     {
         DB::table('users')->insert([
             'name' => 'Siku Admin',
-            'email' => 'siku.admin@gmail.com',
+            'email' => EmailApp::getAppSuperAdminEmailAddress(),
             'password' => Hash::make('siku07860'),
             'phone' => '+250786081431',
             'is_admin' => true,
