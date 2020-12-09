@@ -62,7 +62,7 @@
                 <li class="nav-item mr-3">
                     @include('layouts.change-locale')
                 </li>
-                <li class="nav-item">
+                <li class="nav-item d-none d-md-block">
                     <a class="text-decoration-none text-default"
                         href="{{ !empty($event) ? route('customer.event.account'): 'javascript:;' }}">
                         <div class="media align-items-center">

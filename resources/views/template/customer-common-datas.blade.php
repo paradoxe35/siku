@@ -7,8 +7,6 @@
         chatStore: "{{ route('api.customer.chat.store') }}",
         chatAgent: "{{ route('api.customer.chat.agent') }}"
     };
-    window.customerBalance = @json([
-        'balance' => Auth::user()->balance()
-    ]);
+    window.customerBalance = @json(Auth::user()->balance(true));
     window.customerEvent = @json($event ?? null);
 </script>

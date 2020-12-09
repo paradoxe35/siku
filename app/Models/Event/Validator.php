@@ -2,6 +2,7 @@
 
 namespace App\Models\Event;
 
+use App\Infrastructure\Prices;
 use App\Infrastructure\ProductPrice;
 use App\User;
 use Illuminate\Support\Str;
@@ -74,22 +75,31 @@ class Validator extends Authenticatable
     }
 
     /**
+     * get service prices
+     * 
+     * @return double|null
+     */
+    protected function productPrices(string $key)
+    {
+        /** @var ProductPrice */
+        $productClass = resolve(ProductPrice::class);
+        $prices = $productClass->getPrice($this->country_code);
+
+        return $prices[$key];
+    }
+
+    /**
      * @return double
      */
     public function priceSms()
     {
-        /** @var ProductPrice */
-        $productClass = resolve(ProductPrice::class);
-        $sms = $productClass->getPrice($this->country_code)['sms'];
-
+        $sms = $this->productPrices('sms');
         $counter = (new SMSCounter)->count($this->messageText());
         $price = !is_null($sms) ? ($sms * $counter->messages) : 0;
 
-        /** @var \App\User */
-        $user = $this->user;
-        $balance = $user->balance();
+        $isValid = Prices::validatePrice($this->user, $price, 'sms');
 
-        if ($balance < $price || !($price > 0)) {
+        if (!$isValid || !($price > 0)) {
             return null;
         }
 

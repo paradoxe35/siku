@@ -2,6 +2,7 @@
 
 namespace App\Models\Event;
 
+use App\Infrastructure\Prices;
 use App\Infrastructure\ProductPrice;
 use App\Models\Balance\Consumed;
 use App\Models\Template\Template;
@@ -36,6 +37,12 @@ class Guest extends Model
     protected $attributes = [
         'autorized' => '1',
     ];
+
+    /**
+     * @var string
+     */
+    protected $servicesPrices = null;
+
 
     /**
      * Get the user's first name.
@@ -79,20 +86,40 @@ class Guest extends Model
      */
     public function price()
     {
-        /** @var ProductPrice */
-        $productClass = resolve(ProductPrice::class);
-        list($sms, $mail) = $productClass->getPrice($this->country_code);
         $total = 0;
 
         if ($this->canSendSms()) {
-            $total += !is_null($sms) ? ($sms * $this->sms_total) : 0;
+            $total += $this->smsPrice('sms');
         }
 
         if ($this->canSendMail()) {
-            $total += !is_null($mail) ? $mail : 0;
+            $total += $this->mailPrice('mail');;
         }
 
         return $total;
+    }
+
+    /**
+     * get service prices
+     * 
+     * @return double|null
+     */
+    protected function productPrices(string $key)
+    {
+        $mail = null;
+
+        if (!is_null($this->servicesPrices)) {
+            $mail = $this->servicesPrices[$key];
+        } else {
+            /** @var ProductPrice */
+            $productClass = resolve(ProductPrice::class);
+            $prices = $productClass->getPrice($this->country_code);
+            $this->servicesPrices = $prices;
+
+            $mail = $prices[$key];
+        }
+
+        return $mail;
     }
 
     /**
@@ -100,9 +127,8 @@ class Guest extends Model
      */
     public function mailPrice()
     {
-        /** @var ProductPrice */
-        $productClass = resolve(ProductPrice::class);
-        $mail = $productClass->getPrice($this->country_code)['mail'];
+        $mail = $this->productPrices('mail');
+
         return !is_null($mail) ? $mail : 0;
     }
 
@@ -111,9 +137,8 @@ class Guest extends Model
      */
     public function smsPrice()
     {
-        /** @var ProductPrice */
-        $productClass = resolve(ProductPrice::class);
-        $sms = $productClass->getPrice($this->country_code)['sms'];
+        $sms = $this->productPrices('sms');
+
         return !is_null($sms) ? ($sms * $this->sms_total) : 0;
     }
 
@@ -122,12 +147,10 @@ class Guest extends Model
      */
     public function validateMailPrice()
     {
-        /** @var \App\User */
-        $user = $this->user;
-        $balance = $user->balance();
         $price = $this->mailPrice();
+        $isValid = Prices::validatePrice($this->user, $price, 'mail');
 
-        if ($balance < $price) {
+        if (!$isValid) {
             return null;
         }
 
@@ -139,29 +162,10 @@ class Guest extends Model
      */
     public function validateSmsPrice()
     {
-        /** @var \App\User */
-        $user = $this->user;
-        $balance = $user->balance();
         $price = $this->smsPrice();
+        $isValid = Prices::validatePrice($this->user, $price, 'sms');
 
-        if ($balance < $price || !($price > 0)) {
-            return null;
-        }
-
-        return $price;
-    }
-
-    /**
-     * @return int|null
-     */
-    public function validatePrice()
-    {
-        /** @var \App\User */
-        $user = $this->user;
-        $balance = $user->balance();
-        $price = $this->price();
-
-        if ($balance < $price) {
+        if (!$isValid || !($price > 0)) {
             return null;
         }
 

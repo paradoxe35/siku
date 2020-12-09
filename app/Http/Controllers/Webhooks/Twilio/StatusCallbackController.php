@@ -9,6 +9,7 @@ use App\Models\Balance\Consumed;
 use App\Models\Event\SendHistorical;
 use App\Models\Twilio\TwilioSms;
 use App\Services\Twilio\TwilioClient;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
@@ -73,7 +74,7 @@ class StatusCallbackController extends Controller
         $price = $message->price;
         if ($price && is_numeric($price)) {
 
-            $this->updateConsumedPrice(abs($price), $model->consumed);
+            $this->updateConsumedPrice(abs($price), $model->consumed, $model->user);
         }
 
         $this->updateModelStatus($model, $message, $status);
@@ -118,17 +119,23 @@ class StatusCallbackController extends Controller
 
     /**
      * @param float $price
-     * @param Consumed $consumed
+     * @param Consumed|null $consumed
+     * @param User $user
      * 
      * @return void
      */
-    private function updateConsumedPrice($price, Consumed $consumed)
+    private function updateConsumedPrice($price, ?Consumed $consumed, User $user)
     {
+        if (!$consumed) {
+            event(new UserBalance($user));
+            return null;
+        }
+
         $finalPrice = (BasePrice::getAmountSms() + $price);
 
         $consumed->fill(['amount' => $finalPrice, 'confirmed' => true])->save();
 
-        event(new UserBalance($consumed->user));
+        event(new UserBalance($user));
     }
 
     /**

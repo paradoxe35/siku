@@ -7,6 +7,7 @@ use App\Models\Event\Guest;
 use App\Models\Event\SendHistorical;
 use App\Models\Event\Validator;
 use App\Models\Twilio\TwilioSms;
+use App\User;
 use Illuminate\Support\Facades\Log;
 
 class Send
@@ -14,35 +15,45 @@ class Send
     /**
      * @param Guest $guest
      */
-    protected function sendSms(Guest $guest, $price)
+    protected function sendSms(Guest $guest, $price, string $service)
     {
         $sms = new SMS;
         $message = $sms($guest->phone, $guest->text_sms);
 
-        $consumed = $this->saveGuestConsumed($guest, $price, 'sms');
-        $this->statusCallbackTwilio($message, $consumed, $guest->id, $guest->user_id);
+        if ($guest->user->hasWorkingOnDefaultBalance()) {
+            $this->saveGuestConsumedDefaultBalance($guest->user, $price, $service);
+        } else {
+            $consumed = $this->saveGuestConsumed($guest, $price, $service);
+        }
+
+        $this->statusCallbackTwilio($message, $consumed ?? null, $guest->id, $guest->user_id);
     }
 
     /**
      * @param Guest $guest
      */
-    protected function sendMail(Guest $guest, $price)
+    protected function sendMail(Guest $guest, $price, string $service)
     {
         $mail = new Mail;
         $mail($guest);
-        $this->saveGuestConsumed($guest, $price, 'mail');
+
+        if ($guest->user->hasWorkingOnDefaultBalance()) {
+            $this->saveGuestConsumedDefaultBalance($guest->user, $price, $service);
+        } else {
+            $this->saveGuestConsumed($guest, $price, $service);
+        }
     }
 
     /**
      * Undocumented function
      *
      * @param array $message
-     * @param Consumed $consumed
+     * @param Consumed|null $consumed
      * @param string|int $guest_id
      * @param  string  $user_id
      * @return void
      */
-    protected function statusCallbackTwilio(array $message, Consumed $consumed, $guest_id, $user_id)
+    protected function statusCallbackTwilio(array $message, ?Consumed $consumed, $guest_id, $user_id)
     {
         [$token, $imsg] = $message;
 
@@ -52,7 +63,7 @@ class Send
             'token' => $token,
             'guest_id' => $guest_id,
             'user_id' => $user_id,
-            'consumed_id' => $consumed->id
+            'consumed_id' => $consumed ? $consumed->id : null
         ]);
     }
 
@@ -84,7 +95,7 @@ class Send
             try {
 
                 $send = 'send' . $ucf;
-                $this->$send($guest, $price);
+                $this->$send($guest, $price, $service);
             } catch (\Throwable $th) {
 
                 $error = true;
@@ -152,13 +163,19 @@ class Send
             try {
                 $sms = new SMS;
                 $message = $sms($validator->phone, $validator->messageText());
+                $service = 'sms';
 
-                $consumed = $this->saveValidatorConsumed(
-                    $validator,
-                    $price,
-                    'sms'
-                );
-                $this->statusCallbackTwilio($message, $consumed, null, $validator->user_id);
+                if ($validator->user->hasWorkingOnDefaultBalance()) {
+                    $this->saveGuestConsumedDefaultBalance($validator->user, $price, $service);
+                } else {
+                    $consumed = $this->saveValidatorConsumed(
+                        $validator,
+                        $price,
+                        $service
+                    );
+                }
+
+                $this->statusCallbackTwilio($message, $consumed ?? null, null, $validator->user_id);
             } catch (\Throwable $th) {
                 Log::error($th->getMessage());
             }
@@ -182,6 +199,25 @@ class Send
             'user_id' => $item->user->id,
             'event_id' => $item->event->id
         ]);
+    }
+
+    /**
+     * @param User $user
+     * @param mixed $amount
+     * @param string $service
+     * 
+     * @return void
+     */
+    protected function saveGuestConsumedDefaultBalance(User $user, $amount, string $service)
+    {
+        $balance = $user->defaultBalance;
+        if ($balance) {
+            $total = $balance->$service;
+
+            $user->defaultBalance->$service = $total - $amount;
+
+            $user->defaultBalance->save();
+        }
     }
 
     /**

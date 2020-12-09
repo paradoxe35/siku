@@ -151,9 +151,9 @@ class User extends Authenticatable implements MustVerifyEmail, CanResetPassword,
     }
 
     /**
-     * @return double
+     * @return double|array
      */
-    public function balance()
+    public function balance($group = false)
     {
         /**
          * @var double $total
@@ -161,22 +161,47 @@ class User extends Authenticatable implements MustVerifyEmail, CanResetPassword,
          */
         $total = $this->AllBalance()->where('confirmed', true)->sum('amount');
         $consumed = $this->consumeds()->where('confirmed', true)->sum('amount');
-        return round(($total - $consumed), 2);
+
+        $balance = round(($total - $consumed), 2);
+
+        $default = $group ? $this->defaultBalanceTotal() : ($total ? $balance : $this->defaultBalanceTotal()['balance']);
+        if ($group) {
+            $default['default_balance'] = $total <= 0;
+            $default['balance'] = ($total <= 0 ? $default['balance'] : $balance);
+        }
+
+        return $default;
+    }
+
+    /**
+     * @return object|null
+     */
+    public function hasWorkingOnDefaultBalance()
+    {
+        $total = $this->AllBalance()->where('confirmed', true)->sum('amount');
+
+        return $total <= 0;
     }
 
     /**
      * @return int
      */
-    private function defaultBalanceTotal()
+    public function defaultBalanceTotal($gettotal = false)
     {
         $default = $this->defaultBalance;
 
         $total = 0;
+        $service = [];
+
         if ($default) {
             $total += ($default->mail + $default->sms);
+            $service = (!$default->mail && $default->sms || !$default->sms && $default->mail) ?
+                [...($default->sms ? ['sms'] : []), ...($default->mail ? ['mail'] : [])] : [];
         }
 
-        return $total;
+        $service = !empty($service) ? $service[0] : null;
+
+        return $gettotal  ? $total : ['service' => $service, 'balance' => $total];
     }
 
 

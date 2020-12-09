@@ -7,6 +7,7 @@ import { ReduxDispatch } from "@/js/store/index.js"
 import { DESTROY_SESSION } from "@/js/store/action/types.js"
 import { TurbolinksApp } from "@/js/modules/turbolinks.js"
 import { confirmed } from "@/js/functions/functions.js"
+import { Btn } from "@/js/functions/dom.js"
 
 export default class extends Controller {
     urls = {
@@ -29,7 +30,7 @@ export default class extends Controller {
 
     /**
      * @param {*} el 
-     * @returns { HTMLElement }
+     * @returns { HTMLButtonElement }
      */
     el = (el) => el
 
@@ -58,7 +59,9 @@ export default class extends Controller {
      */
     deactivateEvent = ({ }) => {
         const el = this.el(this.deactivate)
+        Btn.loading(el)
         ApiRequest('patch', this.urls.eventUpdate, {}, true)
+            .finally(() => Btn.hide())
             .then(({ data: { data } }) => {
                 ReduxDispatch(setCurrentEvent(data));
                 this.statusEvent(el, data.active)
@@ -72,7 +75,9 @@ export default class extends Controller {
         if (!confirmed()) return;
 
         const el = this.el(this.delete)
+        Btn.loading(el)
         ApiRequest('delete', el.getAttribute('data-url'), {}, true)
+            .finally(() => Btn.hide())
             .then((_) => {
                 ReduxDispatch({ type: DESTROY_SESSION });
                 TurbolinksApp.isc.visit(el.getAttribute('data-redirect'), { action: 'replace' })

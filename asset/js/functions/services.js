@@ -30,7 +30,7 @@ export const clientCountry = async (select, callbackData, defaultValue = null) =
     } else {
         fetchIpGeo()
             .then(async (c) => {
-                SlimSelect.setData(await callbackData(c || { code: "CA" }))
+                c && SlimSelect.setData(await callbackData(c))
             })
     }
     return SlimSelect
