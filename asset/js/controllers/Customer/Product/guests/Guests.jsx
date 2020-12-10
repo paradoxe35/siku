@@ -30,6 +30,7 @@ import { stripHtml, SYMBOL } from '@/js/functions/functions';
 import { GuestField, ServicesField, validServiceFields } from './GuestField';
 import { IncludeCommonGuests } from './IncludeCommonGuests';
 import { Loader } from '@/js/react/components/Loader';
+import { Localize } from '@/js/functions/localize';
 
 const SERVICES = {
     ...TEMPLATE_SECTION,
@@ -410,6 +411,7 @@ const GuestsListProvider = () => {
                 DispachEventProcessQueueDetail({
                     status: data
                 })
+                Notifier.success(Localize({ fr: "Envoi en cours...", en: "Sending in progress..." }))
             })
     }, [setSending, DispachEventProcessQueueDetail])
 

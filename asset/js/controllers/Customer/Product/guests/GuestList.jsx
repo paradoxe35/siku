@@ -10,6 +10,7 @@ import { Notifier } from '@/js/functions/notifier'
 import { DefaultButton } from '@/js/react/components/Buttons'
 import { useTranslation } from 'react-i18next'
 import { LaravelPagination } from '@/js/react/components/Pagination'
+import { Localize } from '@/js/functions/localize'
 
 
 export const ShowListGuest = ({ v, handleDelete, canSend = true }) => {
@@ -27,7 +28,7 @@ export const ShowListGuest = ({ v, handleDelete, canSend = true }) => {
         fetchAPi('post', URLS.eventGuests + '/' + v.id + '/send', {}, true)
             .finally(() => setLoading(false))
             .then((_res) => {
-                Notifier.success(t('Envoi en cours...'))
+                Notifier.success(Localize({ fr: "Envoi en cours...", en: "Sending in progress..." }))
             })
     }
 
