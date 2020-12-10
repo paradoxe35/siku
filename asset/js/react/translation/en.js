@@ -74,7 +74,7 @@ export default {
     "Envoi en cours...": "Sending in progress...",
     "Envoyer": "Send",
     "Envoyé": "Send",
-    "Non Envoyé": "Not Send",
+    "Non Envoyé": "Not Sent",
     "Entrez le nombre d'invités qui seront autorisés utiliser cette invitation": "Enter the number of guests who will be allowed to use this invitation",
     "Choisissez un de vos modèles enregistrés comme message d'envoi, vous pouvez également le modifier à votre guise": "Choose one of your saved models as a send message, you can also modify it as you wish",
     "Autorisés": "Authorized",

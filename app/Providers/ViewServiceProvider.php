@@ -40,6 +40,11 @@ class ViewServiceProvider extends ServiceProvider
         $this->components();
 
         $this->composers();
+
+        Blade::if('livewire', function ($value = null) {
+            $lw = request('livewire');
+            return  !is_null($value) ? $value === $lw : !!$lw;
+        });
     }
 
 

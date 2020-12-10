@@ -34,6 +34,7 @@
         "laravel/ui": "^3.0",
         "league/flysystem-aws-s3-v3": "~1.0",
         "livewire/livewire": "^2.3",
+        "mediconesystems/livewire-datatables": "^0.4.3",
         "mtvs/eloquent-hashids": "^3.0",
         "nexmo/laravel": "^2.3",
         "paypal/paypal-checkout-sdk": "1.0.1",

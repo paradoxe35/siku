@@ -16,11 +16,11 @@ const asyncTimer = (time = 5000) => new Promise(resolve => {
 
 export const Notifier = {
     success(message = '', time = 5000) {
-        $.notify(message, { position: "bottom left", className: 'success', autoHideDelay: time });
+        $.notify(message, { position: "top right", className: 'success', autoHideDelay: time });
         return asyncTimer(time)
     },
     error(message = '', time = 5000) {
-        $.notify(message, { position: "bottom left", className: 'error', autoHideDelay: time });
+        $.notify(message, { position: "top right", className: 'error', autoHideDelay: time });
         return asyncTimer(time)
     },
 }
