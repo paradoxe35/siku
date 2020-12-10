@@ -5,7 +5,7 @@ import { Localize } from './localize'
 const bootstrap = { ...$.notify.getStyle('bootstrap') }
 $.notify.addStyle('bootstrap', {
     ...bootstrap,
-    html: `<div style="white-space: normal;word-wrap: break-word;font-size: 13px; max-width: 250px;min-width: 150px;">
+    html: `<div style="white-space: normal;word-wrap: break-word;font-size: 13px; max-width: 270px;min-width: 190px;">
             <span data-notify-text></span>
         </div>`,
 })
@@ -16,11 +16,11 @@ const asyncTimer = (time = 5000) => new Promise(resolve => {
 
 export const Notifier = {
     success(message = '', time = 5000) {
-        $.notify(message, { position: "top right", className: 'success', autoHideDelay: time });
+        $.notify(message, { position: "bottom center", className: 'success', autoHideDelay: time });
         return asyncTimer(time)
     },
     error(message = '', time = 5000) {
-        $.notify(message, { position: "top right", className: 'error', autoHideDelay: time });
+        $.notify(message, { position: "bottom center", className: 'error', autoHideDelay: time });
         return asyncTimer(time)
     },
 }
