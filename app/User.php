@@ -178,7 +178,7 @@ class User extends Authenticatable implements MustVerifyEmail, CanResetPassword,
     /**
      * @return object|null
      */
-    public function hasWorkingOnDefaultBalance()
+    public function itWorkingOnDefaultBalance()
     {
         $total = $this->AllBalance()->where('confirmed', true)->sum('amount');
 

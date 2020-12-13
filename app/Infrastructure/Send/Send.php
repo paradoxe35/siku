@@ -20,7 +20,7 @@ class Send
         $sms = new SMS;
         $message = $sms($guest->phone, $guest->text_sms);
 
-        if ($guest->user->hasWorkingOnDefaultBalance()) {
+        if ($guest->user->itWorkingOnDefaultBalance()) {
             $this->saveGuestConsumedDefaultBalance($guest->user, $price, $service);
         } else {
             $consumed = $this->saveGuestConsumed($guest, $price, $service);
@@ -37,7 +37,7 @@ class Send
         $mail = new Mail;
         $mail($guest);
 
-        if ($guest->user->hasWorkingOnDefaultBalance()) {
+        if ($guest->user->itWorkingOnDefaultBalance()) {
             $this->saveGuestConsumedDefaultBalance($guest->user, $price, $service);
         } else {
             $this->saveGuestConsumed($guest, $price, $service);
@@ -165,7 +165,7 @@ class Send
                 $message = $sms($validator->phone, $validator->messageText());
                 $service = 'sms';
 
-                if ($validator->user->hasWorkingOnDefaultBalance()) {
+                if ($validator->user->itWorkingOnDefaultBalance()) {
                     $this->saveGuestConsumedDefaultBalance($validator->user, $price, $service);
                 } else {
                     $consumed = $this->saveValidatorConsumed(
