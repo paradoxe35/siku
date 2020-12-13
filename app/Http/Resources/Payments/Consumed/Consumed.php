@@ -19,7 +19,7 @@ class Consumed extends JsonResource
             'amount' => round($this->total_amount, 2),
             'date' => $this->date,
             'currency_code' => BasePrice::$currency_code,
-            'event' => $this->event->name,
+            'event' => $this->event ? $this->event->name : null,
             'meta' => ['meta' => []]
         ];
     }
