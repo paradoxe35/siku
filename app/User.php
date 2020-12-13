@@ -165,7 +165,7 @@ class User extends Authenticatable implements MustVerifyEmail, CanResetPassword,
         $balance = $total - $consumed;
 
         $default = $group ? $this->defaultBalanceTotal() :
-            round(($total ? $balance : $this->defaultBalanceTotal()['balance']), 2);
+            round(($total > 0 ? $balance : $this->defaultBalanceTotal()['balance']), 2);
 
         if ($group) {
             $default['default_balance'] = $total <= 0;
