@@ -6,7 +6,7 @@ import { Localize } from "./localize"
  */
 export const removeChilds = (parent) => {
     Array.from(parent.children)
-        .forEach(element => element.parentNode.removeChild(element))
+        .forEach(element => parent.removeChild(element))
 }
 
 export const HtmlAlert = {
@@ -95,7 +95,7 @@ export const Btn = {
             element: element,
             html: element.innerHTML
         }
-        this.btns.push(el)
+        this.btns.unshift(el)
         element.disabled = true
         element.innerHTML = `
             <div class="d-flex align-content-center"> 
@@ -106,13 +106,16 @@ export const Btn = {
         `
     },
     hide() {
-        const h = [...this.btns.reverse()]
+        const h = this.btns
         if (h.length) {
             const n = (h[h.length - 1])
             const el = this.get(n.element)
-            el.disabled = false
-            el && removeChilds(el)
-            el.innerHTML = n.html
+            if (el) {
+                el.disabled = false
+                removeChilds(el)
+                el.innerHTML = n.html
+            }
+
             this.btns = this.btns.slice(0, h.length - 1)
         }
     },

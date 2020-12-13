@@ -36,9 +36,9 @@ export const SigninOrAuthMixin = {
             })
             .catch(error => {
                 HtmlAlert.show(this.innerError(), error)
-                Btn.hide()
                 this.logout('error')
             })
+            .finally(() => Btn.hide())
     },
     getUrl(url) {
         let u = null
