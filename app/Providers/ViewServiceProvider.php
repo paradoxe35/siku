@@ -9,6 +9,7 @@ use App\Infrastructure\BasePrice;
 use App\View\Components\AvatarIcon;
 use App\View\Components\Card;
 use App\View\Components\CardTable;
+use App\View\Components\Livewire\Frame;
 use App\View\Components\NavTab;
 use App\View\Components\RForm;
 use App\View\Components\SpinningDots;
@@ -41,9 +42,8 @@ class ViewServiceProvider extends ServiceProvider
 
         $this->composers();
 
-        Blade::if('livewire', function ($value = null) {
-            $lw = request('livewire');
-            return  !is_null($value) ? $value === $lw : !!$lw;
+        Blade::if('iflivewire', function () {
+            return !is_null(session('livewire'));
         });
     }
 
@@ -66,6 +66,8 @@ class ViewServiceProvider extends ServiceProvider
         Blade::component('nav-tab', NavTab::class);
 
         Blade::component('avatar-icon', AvatarIcon::class);
+
+        Blade::component('frame', Frame::class);
     }
 
     /**

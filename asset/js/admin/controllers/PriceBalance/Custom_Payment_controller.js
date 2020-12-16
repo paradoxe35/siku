@@ -1,6 +1,6 @@
 //@ts-check
 import { ApiRequest } from "@/js/api/api"
-import { Btn, FormBtn } from "@/js/functions/dom"
+import { Btn, FormBtn, innerDump } from "@/js/functions/dom"
 import { confirmed, debounce } from "@/js/functions/functions"
 import { Localize } from "@/js/functions/localize"
 import { Notifier } from "@/js/functions/notifier"
@@ -41,8 +41,7 @@ export default class extends Controller {
         })
 
         this.slim.onChange = (info) => {
-            this.targets.find('clientPay')
-                .innerHTML = this.clients[info.value].html
+            innerDump(this.targets.find('clientPay'), this.clients[info.value].html)
         }
     }
 

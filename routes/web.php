@@ -90,6 +90,13 @@ Route::namespace('Webhooks')
 
 
 Route::middleware(['auth', 'admin'])
+    ->namespace('Livewire')
+    ->prefix('livewire')
+    ->group(function () {
+        Route::get('', 'LivewireController')->name('livewire');
+    });
+
+Route::middleware(['auth', 'admin'])
     ->prefix('dash')
     ->name('admin.')
     ->namespace('Admin')
@@ -180,6 +187,12 @@ Route::middleware(['auth', 'admin'])
             ->name('reports.')
             ->group(function () {
                 Route::get('', "ReportsController@index")->name('home');
+                Route::get('/customers', "ReportsController@customers")->name('customers');
+                Route::get('/events', "ReportsController@events")->name('events');
+                Route::get('/sales', "ReportsController@sales")->name('sales');
+                Route::get('/twilio-sms-status', "ReportsController@twilioSmsStatus")->name('twilio-sms-status');
+                Route::get('/paypal-transactions', "ReportsController@paypalTransactions")->name('paypal-transactions');
+                Route::get('/general', "ReportsController@general")->name('general');
             });
 
         Route::namespace('Blog')

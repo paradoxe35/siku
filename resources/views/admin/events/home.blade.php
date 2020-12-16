@@ -39,7 +39,7 @@
         <td>{{ $evnt->created_at }}</td>
         <td>{{ $evnt->event_date }}</td>
         <td>
-            <x-status :value="!$evnt->deleted_at" />
+            <x-status :value="!$evnt->trashed()" />
         </td>
     </tr>
     @endforeach

@@ -7,13 +7,22 @@ use Illuminate\View\Component;
 class SpinningDots extends Component
 {
 
+    /**
+     * @var string
+     */
     public $color;
+
+    /**
+     * @var string
+     */
+    public $id;
+
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct(?string $color =  '#5e72e4')
+    public function __construct(?string $color =  '#5e72e4', ?string $id = null)
     {
         $this->color = $color;
     }
@@ -26,7 +35,9 @@ class SpinningDots extends Component
     public function render()
     {
         return <<<'blade'
-            <spinning-dots style="width:35px;stroke-width:5px;color: {{ $color }};" />
+            <div {{ $id ? "id='".$id."'": '' }}>
+                <spinning-dots style="width:30px;stroke-width:4px;color: {{ $color }};" />
+            </div>
         blade;
     }
 }

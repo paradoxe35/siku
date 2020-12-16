@@ -57,6 +57,7 @@ export default {
     "Historique de paiement": "Payment history",
     "Historique d'utilisation": "Usage history",
     "Télécharger Rapport": "Download Report",
+    "Rapport": "Report",
     "Alertes de solde faible": "Low balance alerts",
     "Créé avec succès !": "Successfully Created!",
     "Supprimer": "Remove",

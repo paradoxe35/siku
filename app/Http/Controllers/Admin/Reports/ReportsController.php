@@ -12,6 +12,54 @@ class ReportsController extends Controller
      */
     public function index()
     {
-        return view('admin.reports');
+        return redirect(route('admin.reports.customers'));;
+    }
+
+    /**
+     * @return \Illuminate\Http\Response
+     */
+    public function customers()
+    {
+        return view('admin.reports.customers');
+    }
+
+    /**
+     * @return \Illuminate\Http\Response
+     */
+    public function events()
+    {
+        return view('admin.reports.events');
+    }
+
+    /**
+     * @return \Illuminate\Http\Response
+     */
+    public function sales()
+    {
+        return view('admin.reports.sales');
+    }
+
+    /**
+     * @return \Illuminate\Http\Response
+     */
+    public function twilioSmsStatus()
+    {
+        return view('admin.reports.twilio-sms-status');
+    }
+
+    /**
+     * @return \Illuminate\Http\Response
+     */
+    public function paypalTransactions()
+    {
+        return view('admin.reports.paypal-transactions');
+    }
+
+    /**
+     * @return \Illuminate\Http\Response
+     */
+    public function general()
+    {
+        return view('admin.reports.general');
     }
 }

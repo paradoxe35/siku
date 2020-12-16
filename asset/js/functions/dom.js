@@ -9,6 +9,13 @@ export const removeChilds = (parent) => {
         .forEach(element => parent.removeChild(element))
 }
 
+
+export const innerDump = (parent, data) => {
+    removeChilds(parent)
+    parent.innerHTML = ''
+    parent.appendChild(document.createRange().createContextualFragment(data))
+}
+
 export const HtmlAlert = {
     parents: [],
     /**
@@ -143,4 +150,32 @@ export const resetFormFields = (form, parent) => {
         // @ts-ignore
         h && (h.value = '')
     })
+}
+
+let modal = null
+export const openModal = (data) => {
+    if (modal) {
+        innerDump(modal.querySelector('.modal-body'), data)
+        // @ts-ignore
+        $(modal).modal('show')
+        return
+    }
+    const html = `<div class="modal fade"tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable" role="document">
+                <div class="modal-content">
+                    <div class="modal-body pb-0">${data}</div>
+                    <div class="modal-footer">
+                        <button
+                            type="button"
+                            class="btn btn-secondary btn-sm"
+                            data-dismiss="modal">${Localize({ fr: 'Fermer', en: 'Close' })}</button>
+                    </div>
+                </div>
+            </div>
+        </div>`
+    const doc = document.createRange().createContextualFragment(html)
+    modal = doc.firstChild
+    document.body.appendChild(modal)
+    // @ts-ignore
+    $(modal).modal('show')
 }

@@ -1,4 +1,5 @@
 import { TurbolinksApp } from "../modules/turbolinks";
+import { openModal } from "./dom";
 
 Number.prototype.nround = function (places) {
     return +(Math.round(this + "e+" + places) + "e-" + places);
@@ -19,3 +20,16 @@ window.rform = (form) => {
 window.tvisit = (link) => {
     TurbolinksApp.visit(link)
 }
+
+window.resizeIframe = async (obj) => {
+    const f = await import('iframe-resizer')
+    f.iframeResizer({}, obj)
+}
+
+(() => {
+    window.addEventListener('routeFromChild', (e) => {
+        TurbolinksApp.visit(e.detail)
+    })
+
+    window.addEventListener('openModal', (e) => openModal(atob(e.detail)))
+})()

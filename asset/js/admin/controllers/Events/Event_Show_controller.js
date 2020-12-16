@@ -9,6 +9,9 @@ export default class extends Controller {
         validators: this.data.get('validators'),
         eventMenuProfile: this.data.get('eventMenuProfile'),
         eventProfileItems: this.data.get('eventProfileItems'),
+        eventReportOverview: this.data.get('eventReportOverview'),
+        eventReportAttended: this.data.get('eventReportAttended'),
+        eventReportAbsent: this.data.get('eventReportAbsent'),
         eventReportDownload: this.data.get('eventReportDownload'),
     }
 

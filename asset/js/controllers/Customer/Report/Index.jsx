@@ -73,3 +73,5 @@ const CustomerReport = () => {
  */
 export const init = (element, locale, urls = {}) =>
     InitReact(<CustomerReport />, element, locale, urls);
+
+export default CustomerReport;

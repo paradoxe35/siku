@@ -21,7 +21,11 @@ class EventsController extends Controller
     public function __construct()
     {
         $this->middleware(function (Request $request, \Closure $next) {
-            URL::defaults(['id' => $request->route('id')]);
+            $id = $request->route('id');
+
+            $event  = $this->queryWithTrashed($id);
+
+            URL::defaults(['id' => $id, 'event' => $event->hashid()]);
 
             return $next($request);
         })->except('index');

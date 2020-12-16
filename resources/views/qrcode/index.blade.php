@@ -43,7 +43,7 @@
         </div>
         <img id="image" style="display: none">
     </div>
-    <script src="{{ mix('js/manifest.js', 'compiled') }}" defer></script>
+    <script src="{{ mix('js/manifest.js', 'compiled') }}"></script>
     <script src="{{ mix('js/qrcode-app.js', 'compiled') }}"></script>
 </body>
 

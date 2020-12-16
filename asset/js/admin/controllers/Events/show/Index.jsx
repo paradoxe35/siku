@@ -9,6 +9,7 @@ const Templates = lazy(() => import('./templates/Templates'))
 const Guests = lazy(() => import('./guests/Guests'))
 const SendStatus = lazy(() => import('./send-status/SendStatus'))
 const Validators = lazy(() => import('./validators/Validators'))
+const Report = lazy(() => import('@js/controllers/Customer/Report/Index'))
 
 const CustomerPayments = () => {
     const { t } = useTranslation();
@@ -37,11 +38,19 @@ const CustomerPayments = () => {
                 to: '/send-status',
                 name: t("Statut d'envoi")
             },
+            {
+                to: '/report',
+                name: t('Rapport')
+            },
         ]}
             routes={[
                 {
                     component: <Profile />,
                     path: '/profile'
+                },
+                {
+                    component: <Report />,
+                    path: '/report'
                 },
                 {
                     component: <Templates />,

@@ -1,6 +1,5 @@
 //@ts-check
 import { confirmed, SYMBOL } from '@/js/functions/functions';
-import { BtnDownload } from '@/js/react/components/BtnDownload';
 import { DefaultButton } from '@/js/react/components/Buttons';
 import Status from '@/js/react/components/Status';
 import { useFetch } from '@/js/react/hooks';
@@ -155,11 +154,6 @@ export default () => {
             })
     }
 
-    const download = () => {
-        const locale = document.querySelector('html').lang
-        window.location.href = URLS.eventReportDownload + '?locale=' + locale
-    }
-
     return <>
         <div className="row">
             <ProfileTable event={event} />
@@ -173,9 +167,6 @@ export default () => {
                     label={t(!!event.deleted_at ? 'Restorer' : 'Supprimer')}
                     color="secondary"
                     textColor={'text-' + (!!event.deleted_at ? 'primary' : 'danger')} />
-            </div>
-            <div className="col-auto">
-                <BtnDownload onClick={download} alt={t('Télécharger Rapport')} />
             </div>
         </div>
     </>

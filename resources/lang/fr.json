@@ -3,7 +3,9 @@
 	"Acceuil": "Accueil",
 	"Accueil": "Accueil",
 	"Achat": "Achat",
+	"Actif": "Actif",
 	"Actifs": "Actifs",
+	"Action non autorisée": "Action non autorisée",
 	"Activer": "Activer",
 	"Administrateurs": "Administrateurs",
 	"Ajouter": "Ajouter",
@@ -177,6 +179,7 @@
 	"Prix et balance": "Prix et balance",
 	"Produit": "Produit",
 	"Profil": "Profil",
+	"Questions fréquemment posées": "Questions fréquemment posées",
 	"Rapport": "Rapport",
 	"Receipt for your personalized payment": "Reçu pour votre paiement personnalisé",
 	"Recherche": "Recherche",
@@ -222,6 +225,7 @@
 	"Tout": "Tout",
 	"Transaction invoice": "Facture de transaction",
 	"Trouver l'application sur": "Trouver l'application sur",
+	"Twilio Price": "Prix Twilio",
 	"Télécharger": "Télécharger",
 	"Téléphone": "Téléphone",
 	"Un nouveau lien de vérification a été envoyé à votre adresse e-mail": "Un nouveau lien de vérification a été envoyé à votre adresse e-mail",
@@ -266,6 +270,7 @@
 	"est livré avec une application mobile et autres équipements destinés à vous aider dans le processus de validation d'invitations": "est livré avec une application mobile et autres équipements destinés à vous aider dans le processus de validation d'invitations",
 	"est un tout nouveau produit basé sur une structure de distribution d'annonces intuitive qui vise à la rendre plus réactifs et bien sûr beaucoup plus faciles à gérer": "est un tout nouveau produit basé sur une structure de distribution d'annonces intuitive qui vise à la rendre plus réactifs et bien sûr beaucoup plus faciles à gérer",
 	"est un tout nouveau produit basé sur une structure de distribution d\\'annonces intuitive qui vise à la rendre plus réactifs et bien sûr beaucoup plus faciles à gérer": "est un tout nouveau produit basé sur une structure de distribution d\\'annonces intuitive qui vise à la rendre plus réactifs et bien sûr beaucoup plus faciles à gérer",
+	"général": "général",
 	"invités enregistrés": "Invités enregistrés",
 	"téléphone": "téléphone",
 	"vous donne la possibilité d’un moyen d'envoi. Le partage des images, fichiers cadrant avec la validation d’un invité.": "vous donne la possibilité d’un moyen d'envoi. Le partage des images, fichiers cadrant avec la validation d’un invité.",
@@ -273,7 +278,5 @@
 	"vous offre un choix pour vérifier et valider vos invités via une application mobile.": "vous offre un choix pour vérifier et valider vos invités via une application mobile.",
 	"Échec de vérification": "Échec de vérification",
 	"Événement": "Événement",
-	"Événements": "Événements",
-	"Questions fréquemment posées": "Questions fréquemment posées",
-	"Action non autorisée": "Action non autorisée"
+	"Événements": "Événements"
 }
