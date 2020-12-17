@@ -90,7 +90,7 @@ class CustomersController extends Controller
     }
 
     /**
-     * @param mixed $customer
+     * @param \App\User $customer
      * 
      * @return void
      */
@@ -122,6 +122,15 @@ class CustomersController extends Controller
         return view('admin.customers.show', compact('customer'));
     }
 
+    /**
+     * @param \App\User $customer
+     * @return boolean
+     */
+    private function abortIfIsAdmin($customer)
+    {
+        abort_if($customer->isAdmin(), 400, trans("L'utilisateur administrateur ne peut pas être modifié"));
+    }
+
 
     /**
      * @param int $id
@@ -140,7 +149,7 @@ class CustomersController extends Controller
 
         $customer = $this->queryWithTrashed($id);
 
-        abort_if($customer->isAdmin(), 400, trans("L'utilisateur administrateur ne peut pas être modifié"));
+        $this->abortIfIsAdmin($customer);
 
         $filled = $customer->fill([
             'name' => $request->name,
@@ -172,6 +181,8 @@ class CustomersController extends Controller
     public function trash($id)
     {
         $customer = $this->queryWithTrashed($id);
+
+        $this->abortIfIsAdmin($customer);
 
         if ($customer->trashed()) {
             $customer->restore();
