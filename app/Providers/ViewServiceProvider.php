@@ -9,6 +9,7 @@ use App\Infrastructure\BasePrice;
 use App\View\Components\AvatarIcon;
 use App\View\Components\Card;
 use App\View\Components\CardTable;
+use App\View\Components\Collapse;
 use App\View\Components\Livewire\Frame;
 use App\View\Components\NavTab;
 use App\View\Components\RForm;
@@ -68,6 +69,8 @@ class ViewServiceProvider extends ServiceProvider
         Blade::component('avatar-icon', AvatarIcon::class);
 
         Blade::component('frame', Frame::class);
+        
+        Blade::component('collapse', Collapse::class);
     }
 
     /**

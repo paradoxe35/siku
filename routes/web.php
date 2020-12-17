@@ -21,6 +21,7 @@ Route::get('/blog', 'PostsController@index')->name('posts');
 Route::get('blog/{slug}', 'PostsController@show')->name('posts.show');
 Route::get('/faq', 'FAQController')->name('faq');
 Route::get('/contact-us', 'ContactUsController')->name('contact-us');
+Route::get('/privacy-policy', 'PrivacyPolicyController')->name('privacy-policy');
 
 Auth::routes(['login' => false, 'regiter' => false, 'verify' => true, 'reset' => true, 'confirm' => true]);
 

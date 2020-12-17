@@ -115,12 +115,12 @@ class Send
         }
 
         $filled = $historical->fill([
-            'sended_' . $service => !$error,
-            'error_message' => $errMsg
+            'sended_' . $service => !$error
         ]);
 
         if ($error) {
             $filled->error = $error;
+            $filled->error_message = $errMsg;
         }
 
         $filled->save();

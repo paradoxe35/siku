@@ -25,7 +25,7 @@ class StatusCallbackController extends Controller
     {
         $this->handle($token, $request->get('SmsSid'), $request->get('SmsStatus'));
 
-        return response();
+        return [true];
     }
 
     /**
@@ -192,7 +192,7 @@ class StatusCallbackController extends Controller
 
         $filled = $consumed->fill(['confirmed' => true]);
 
-        if (doubleval($consumed->amount) < $finalPrice) {
+        if ($finalPrice > doubleval($consumed->amount)) {
             $filled->amount = $finalPrice;
         }
 

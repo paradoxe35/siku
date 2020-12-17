@@ -8,7 +8,7 @@
     <div class="inner text-center">
         <h1>{{ __('Bienvenue chez') }} {{ $app_name }} !</h1>
         <p>{{ __('Inscrivez-vous ou connectez-vous pour gérer vos invités et autres données connexes') }}.</p>
-        <div class="form">{{ __('En vous inscrivant, vous acceptez notre') }} <a href="#"
+        <div class="form">{{ __('En vous inscrivant, vous acceptez notre') }} <a href="{{ route('privacy-policy') }}"
                 target="_blank">{{ __('Termes et conditions') }}</a>.
         </div>
         <div class="main-cta mt-4">

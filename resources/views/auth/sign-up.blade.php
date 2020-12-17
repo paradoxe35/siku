@@ -14,8 +14,8 @@
         @csrf
         <div class="form-group row">
             <div class="col-lg-5">
-                <input id="name" type="text" class="form-control" placeholder="{{ __("Nom") }}"
-                    name="name" value="{{ old('name') }}" required>
+                <input id="name" type="text" class="form-control" placeholder="{{ __("Nom") }}" name="name"
+                    value="{{ old('name') }}" required>
             </div>
             <div class="col-lg-7">
                 <div class="input-group input-group-merge">
@@ -55,7 +55,7 @@
     <p class="mt-3">
         <small class="Vlt-grey-darker text-muted">
             <div class="form text-sm">{{ __('En vous inscrivant, vous acceptez notre') }}
-                <a href="javascript:;" target="_blank">{{ __('Termes et conditions') }}</a>.
+                <a href="{{ route('privacy-policy') }}" target="_blank">{{ __('Termes et conditions') }}</a>.
             </div>
         </small>
     </p>
