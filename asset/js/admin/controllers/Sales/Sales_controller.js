@@ -2,6 +2,7 @@
 import { ApiRequest } from "@/js/api/api"
 import { Btn } from "@/js/functions/dom"
 import { confirmed } from "@/js/functions/functions"
+import { savedChanges } from "@/js/functions/notifier"
 import { TurbolinksApp } from "@/js/modules/turbolinks"
 import { Controller } from "stimulus"
 
@@ -28,9 +29,7 @@ export default class extends Controller {
         const confirmed = this.confirmed
 
         ApiRequest('patch', this.url, { ...(confirmed.checked ? { confirmed: true } : {}) }, true)
-            .then(({ data: { redirect_url } }) => {
-                TurbolinksApp.visit(redirect_url)
-            })
+            .then(() => savedChanges(false))
             .finally(() => Btn.hide())
     }
 
@@ -39,9 +38,7 @@ export default class extends Controller {
         // @ts-ignore
         Btn.loading(this.deleteEl)
         ApiRequest('delete', this.url, {}, true)
-            .then(({ data: { redirect_url } }) => {
-                TurbolinksApp.reload()
-            })
+            .then(() => TurbolinksApp.reload())
             .finally(() => Btn.hide())
     }
 }
