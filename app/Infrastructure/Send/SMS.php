@@ -20,7 +20,7 @@ class SMS
         $twilio = new TwilioClient();
         $callback = $twilio->statusCallback($token);
 
-        throw new Error;
+        // throw new Error;
 
         throw_if(!$callback, "Twilio status callback url is required");
 
