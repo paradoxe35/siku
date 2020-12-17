@@ -190,9 +190,13 @@ class StatusCallbackController extends Controller
 
         $finalPrice = ((BasePrice::getAmountSms() * $model->messages_count) + $price);
 
+        $filled = $consumed->fill(['confirmed' => true]);
+
         if (doubleval($consumed->amount) < $finalPrice) {
-            $consumed->fill(['amount' => $finalPrice, 'confirmed' => true])->save();
+            $filled->amount = $finalPrice;
         }
+
+        $filled->save();
 
         event(new UserBalance($user));
     }
