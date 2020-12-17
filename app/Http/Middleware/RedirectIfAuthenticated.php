@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use App\Providers\RouteServiceProvider;
 use Closure;
 use Illuminate\Support\Facades\Auth;
+use \App\User;
 
 class RedirectIfAuthenticated
 {
@@ -18,8 +19,16 @@ class RedirectIfAuthenticated
      */
     public function handle($request, Closure $next, $guard = null)
     {
-        if (Auth::guard($guard)->check()) {
-            return redirect(RouteServiceProvider::HOME);
+        $auth = Auth::guard($guard);
+
+        if ($auth->check()) {
+            $user = $auth->user();
+
+            if ($user instanceof User && $user->isAdmin()) {
+                return redirect(route('admin.home', [], false));
+            } else {
+                return redirect(RouteServiceProvider::HOME);
+            }
         }
 
         return $next($request);
