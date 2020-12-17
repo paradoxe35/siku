@@ -120,7 +120,7 @@ class User extends Authenticatable implements MustVerifyEmail, CanResetPassword,
      */
     public function isAdmin()
     {
-        return $this->is_admin === true && null !== $this->admin_token;
+        return $this->is_admin == true && null !== $this->admin_token;
     }
 
     /**

@@ -52,7 +52,7 @@ class LoginController extends Controller
      * The user has been authenticated.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  mixed  $user
+     * @param  \App\User  $user
      * @return mixed
      */
     protected function authenticated($request, $user)
@@ -60,10 +60,8 @@ class LoginController extends Controller
         // $request->int
         return response()->json([
             'redirect_url' =>
-            $user->is_admin ?
-                route('admin.home', [], false) :
-                redirect()->intended(route('customer.events', [], false))
-                ->getTargetUrl()
+            $user->isAdmin() ?  route('admin.home', [], false) :
+                redirect()->intended(route('customer.events', [], false))->getTargetUrl()
         ]);
     }
 

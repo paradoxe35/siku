@@ -138,7 +138,9 @@ class CustomersController extends Controller
             'password' => ['nullable', 'string', 'max:255', 'min:8', 'confirmed'],
         ]);
 
-        $customer = $this->queryWithTrashed($id);;
+        $customer = $this->queryWithTrashed($id);
+
+        abort_if($customer->isAdmin(), 400, trans("L'utilisateur administrateur ne peut pas être modifié"));
 
         $filled = $customer->fill([
             'name' => $request->name,
