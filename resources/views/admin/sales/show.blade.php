@@ -70,8 +70,13 @@
                     <button type="button" data-url="{{ route('admin.sales.show', ['id' => $sale->id]) }}"
                         data-target="Sales--Sales.update"
                         class="btn btn-primary btn-sm">{{ __('Enregistrer') }}</button>
+                    @if ($sale->trashed())
+                    <button type="button" data-target="Sales--Sales.delete"
+                        class="btn btn-secondary text-primary btn-sm">{{ __('Restaurer') }}</button>
+                    @else
                     <button type="button" data-target="Sales--Sales.delete"
                         class="btn btn-secondary text-danger btn-sm">{{ __('Supprimer') }}</button>
+                    @endif
                 </div>
             </x-slot>
         </x-card>

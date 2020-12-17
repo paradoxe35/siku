@@ -29,13 +29,18 @@ class SalesTable extends LivewireDatatable
     public $exportable = true;
 
 
+    public function builder()
+    {
+        return Balance::withTrashed();
+    }
+
     public function columns()
     {
         return [
             NumberColumn::name('id')
                 ->hide(),
 
-            Column::callback(['id', 'created_at'], fn ($id) => Balance::find($id)->hashId())
+            Column::callback(['id', 'created_at'], fn ($id) => $this->builder()->find($id)->hashId())
                 ->label(trans('Hash')),
 
             NumberColumn::callback(['amount'], fn ($amount) => BasePrice::$symbol . $amount)
@@ -52,6 +57,9 @@ class SalesTable extends LivewireDatatable
 
             BooleanColumn::name('confirmed')
                 ->label(trans('Confirmé')),
+
+            BooleanColumn::raw('ISNULL(balances.deleted_at) AS active')
+                ->label(trans('Actif')),
 
             DateColumn::name('created_at')
                 ->filterable()

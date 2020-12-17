@@ -9,10 +9,11 @@ use App\Models\Payments\PaymentMeta;
 use App\User;
 use Illuminate\Database\Eloquent\Model;
 use Mtvs\EloquentHashids\HasHashid;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Balance extends Model
 {
-    use HasHashid;
+    use HasHashid, SoftDeletes;
 
     /**
      * @var string

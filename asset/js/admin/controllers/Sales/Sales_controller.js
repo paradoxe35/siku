@@ -40,7 +40,7 @@ export default class extends Controller {
         Btn.loading(this.deleteEl)
         ApiRequest('delete', this.url, {}, true)
             .then(({ data: { redirect_url } }) => {
-                TurbolinksApp.replace(redirect_url)
+                TurbolinksApp.reload()
             })
             .finally(() => Btn.hide())
     }

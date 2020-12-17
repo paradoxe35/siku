@@ -26,17 +26,20 @@
     </div>
 </div>
 
-<x-card-table :paginate="$sales" :sort="true" :ths="['ID', 'Client Email', 'Créé à', 'Méthode', 'Confirmé', 'Montant']">
+<x-card-table :paginate="$sales" :sort="true" :ths="['ID', 'Client Email', 'Créé à', 'Méthode',  'Montant', 'Confirmé','Actif']">
     @foreach ($sales as $sale)
     <tr class="clickable-a" onclick="tvisit('{{ route('admin.sales.show', ['id' => $sale->id]) }}')">
         <td>{{ $sale->hashId() }}</td>
         <td>{{ $sale->user->email }}</td>
         <td>{{ $sale->created_at }}</td>
         <td>{{ $sale->paymentMeta->service }}</td>
+        <td>{{ $symbol.$sale->amount }}</td>
         <td>
             <x-status :value="$sale->confirmed" />
         </td>
-        <td>{{ $symbol.$sale->amount }}</td>
+        <td>
+            <x-status :value="!$sale->trashed()" />
+        </td>
     </tr>
     @endforeach
 </x-card-table>

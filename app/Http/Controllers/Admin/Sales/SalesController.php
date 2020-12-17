@@ -14,11 +14,15 @@ class SalesController extends Controller
     /**
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    private function query()
+    private function query($trashed = true)
     {
-        return Balance::query()
+        $builder = Balance::query()
             ->with('paymentMeta')
             ->with('user');
+
+        $builder  = $trashed ? $builder->withTrashed() : $builder;
+
+        return $builder;
     }
 
     /**
@@ -74,14 +78,15 @@ class SalesController extends Controller
      */
     public function index()
     {
-        $query = $this->query();
+        $query = $this->query(false);
 
-        if (request('confirmed') != 'unconfirmed') {
+        $q = request('confirmed');
+
+        if ($q != 'unconfirmed' && $q != 'trashed') {
 
             $query = $this->confirmed($query);
         } else {
-
-            $query = $this->unconfirmed($query);
+            $query = $q == 'trashed' ? $query->onlyTrashed() : $this->unconfirmed($query);
         }
 
         if (request('ym')) {
@@ -139,7 +144,11 @@ class SalesController extends Controller
 
         $sale = $this->query()->findOrFail($id);
 
-        $sale->delete();
+        if ($sale->trashed()) {
+            $sale->restore();
+        } else {
+            $sale->delete();
+        }
 
         return ['redirect_url' => route('admin.sales.home', [], false)];
     }

@@ -12,7 +12,7 @@ class ReportsController extends Controller
      */
     public function index()
     {
-        return redirect(route('admin.reports.customers'));;
+        return redirect(route('admin.reports.customers'));
     }
 
     /**
