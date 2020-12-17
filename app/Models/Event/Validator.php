@@ -89,13 +89,21 @@ class Validator extends Authenticatable
     }
 
     /**
+     * @return int
+     */
+    public function smsTotal()
+    {
+        return (new SMSCounter)->count($this->messageText())->messages;
+    }
+
+    /**
      * @return double
      */
     public function priceSms()
     {
         $sms = $this->productPrices('sms');
-        $counter = (new SMSCounter)->count($this->messageText());
-        $price = !is_null($sms) ? ($sms * $counter->messages) : 0;
+        $counter = $this->smsTotal();
+        $price = !is_null($sms) ? ($sms * $counter) : 0;
 
         $isValid = Prices::validatePrice($this->user, $price, 'sms');
 

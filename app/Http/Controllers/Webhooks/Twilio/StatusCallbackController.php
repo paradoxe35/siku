@@ -23,9 +23,23 @@ class StatusCallbackController extends Controller
      */
     public function __invoke(Request $request, $token)
     {
+        $this->handle($token, $request->get('SmsSid'), $request->get('SmsStatus'));
+
+        return response();
+    }
+
+    /**
+     * @param string $token
+     * @param string $smsSid
+     * @param string $smsStatus
+     * 
+     * @return void
+     */
+    public function handle(string $token, string $smsSid, string $smsStatus, bool $shoudCheckQueued = false)
+    {
         $model = $this->query()
             ->where('token', $token)
-            ->where('sid', $request->get('SmsSid'))
+            ->where('sid', $smsSid)
             ->first();
 
         if (!$model) {
@@ -33,18 +47,23 @@ class StatusCallbackController extends Controller
         }
 
         try {
-            switch ($request->get('SmsStatus')) {
+            switch ($smsStatus) {
                 case 'delivered':
-                    $this->delivered($model, 'delivered');
+                    $this->delivered($model);
                     break;
                 case 'send':
-                    $this->delivered($model, 'send');
+                    $this->delivered($model);
+                    break;
+                case 'queued':
+                    if ($shoudCheckQueued) {
+                        $this->queued($model);
+                    }
                     break;
                 case 'failed':
-                    $this->failed($model, 'failed');
+                    $this->failed($model);
                     break;
                 case 'undelivered':
-                    $this->failed($model, 'undelivered');
+                    $this->failed($model);
                     break;
             }
         } catch (\Throwable $th) {
@@ -63,24 +82,59 @@ class StatusCallbackController extends Controller
 
     /**
      * @param TwilioSms $model
-     * @param string $status
      * 
      * @return void
      */
-    private function delivered(TwilioSms $model, string $status)
+    private function delivered(TwilioSms $model)
     {
         $message = $this->getMessage($model->sid);
 
         $price = $message->price;
-        if ($price && is_numeric($price)) {
 
-            $this->updateConsumedPrice(abs($price), $model->consumed, $model->user);
-        }
-
-        $this->updateModelStatus($model, $message, $status);
+        $this->updateModelStatus($model, $message, $message->status);
 
         if ($model->guest) {
             $this->updateGuestHistorical($model->guest->historical, null);
+        }
+
+        if ($price && is_numeric($price)) {
+
+            $this->updateConsumedPrice(abs($price), $model);
+        }
+    }
+
+    /**
+     * @param TwilioSms $model
+     * 
+     * @return void
+     */
+    private function queued(TwilioSms $model)
+    {
+        $message = $this->getMessage($model->sid);
+
+        $this->handle($model->token, $model->sid, $message->status);
+    }
+
+    /**
+     * @param TwilioSms $model
+     * 
+     * @return void
+     */
+    private function failed(TwilioSms $model)
+    {
+        $message = $this->getMessage($model->sid);
+
+        $this->updateModelStatus($model, $message, $message->status);
+
+        if ($model->guest) {
+            $this->updateGuestHistorical(
+                $model->guest->historical,
+                $message->errorMessage ?: "Error"
+            );
+        }
+
+        if ($model->consumed) {
+            $model->consumed->fill(['confirmed' => false])->save();
         }
     }
 
@@ -119,49 +173,28 @@ class StatusCallbackController extends Controller
 
     /**
      * @param float $price
-     * @param Consumed|null $consumed
-     * @param User $user
+     * @param TwilioSms $consumed
      * 
      * @return void
      */
-    private function updateConsumedPrice($price, ?Consumed $consumed, User $user)
+    private function updateConsumedPrice($price, TwilioSms $model)
     {
+        $consumed = $model->consumed;
+
+        $user = $model->user;
+
         if (!$consumed) {
             event(new UserBalance($user));
             return null;
         }
 
-        $finalPrice = (BasePrice::getAmountSms() + $price);
+        $finalPrice = ((BasePrice::getAmountSms() * $model->messages_count) + $price);
 
         if (doubleval($consumed->amount) < $finalPrice) {
             $consumed->fill(['amount' => $finalPrice, 'confirmed' => true])->save();
         }
 
         event(new UserBalance($user));
-    }
-
-    /**
-     * @param TwilioSms $model
-     * @param string $status
-     * 
-     * @return void
-     */
-    private function failed(TwilioSms $model, string $status)
-    {
-        $message = $this->getMessage($model->sid);
-
-        $this->updateModelStatus($model, $message, $status);
-
-        if ($model->guest) {
-            $this->updateGuestHistorical(
-                $model->guest->historical,
-                $message->errorMessage ?: "Error"
-            );
-        }
-
-        if ($model->consumed) {
-            $model->consumed->fill(['confirmed' => false])->save();
-        }
     }
 
     /**

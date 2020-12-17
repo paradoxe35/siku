@@ -26,7 +26,13 @@ class Send
             $consumed = $this->saveGuestConsumed($guest, $price, $service);
         }
 
-        $this->statusCallbackTwilio($message, $consumed ?? null, $guest->id, $guest->user_id);
+        $this->statusCallbackTwilio(
+            $message,
+            $consumed ?? null,
+            $guest->id,
+            $guest->user_id,
+            $guest->sms_total
+        );
     }
 
     /**
@@ -51,9 +57,10 @@ class Send
      * @param Consumed|null $consumed
      * @param string|int $guest_id
      * @param  string  $user_id
+     * @param  int  $sms_total
      * @return void
      */
-    protected function statusCallbackTwilio(array $message, ?Consumed $consumed, $guest_id, $user_id)
+    protected function statusCallbackTwilio(array $message, ?Consumed $consumed, $guest_id, $user_id, $sms_total)
     {
         [$token, $imsg] = $message;
 
@@ -63,7 +70,8 @@ class Send
             'token' => $token,
             'guest_id' => $guest_id,
             'user_id' => $user_id,
-            'consumed_id' => $consumed ? $consumed->id : null
+            'consumed_id' => $consumed ? $consumed->id : null,
+            'messages_count' => $sms_total
         ]);
     }
 
@@ -175,7 +183,13 @@ class Send
                     );
                 }
 
-                $this->statusCallbackTwilio($message, $consumed ?? null, null, $validator->user_id);
+                $this->statusCallbackTwilio(
+                    $message,
+                    $consumed ?? null,
+                    null,
+                    $validator->user_id,
+                    $validator->smsTotal()
+                );
             } catch (\Throwable $th) {
                 Log::error($th->getMessage());
             }

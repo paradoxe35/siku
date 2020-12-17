@@ -152,8 +152,9 @@ export const resetFormFields = (form, parent) => {
     })
 }
 
-let modal = null
+let modalId = null
 export const openModal = (data) => {
+    const modal = modalId ? document.getElementById(modalId) : null
     if (modal) {
         innerDump(modal.querySelector('.modal-body'), data)
         // @ts-ignore
@@ -173,9 +174,15 @@ export const openModal = (data) => {
                 </div>
             </div>
         </div>`
+
+    modalId = `mo-${Math.random()}`
+
     const doc = document.createRange().createContextualFragment(html)
-    modal = doc.firstChild
-    document.body.appendChild(modal)
+    const el = doc.firstElementChild
+
+    el.id = modalId;
+    document.body.appendChild(el)
+
     // @ts-ignore
-    $(modal).modal('show')
+    $(el).modal('show')
 }

@@ -23,7 +23,7 @@ class TwilioSms extends Model
     protected $fillable = [
         'sid', 'status', 'token', 'data',
         'price', 'unit_price', 'guest_id', 'user_id',
-        'consumed', 'consumed_id'
+        'consumed', 'consumed_id', 'messages_count'
     ];
 
     /**

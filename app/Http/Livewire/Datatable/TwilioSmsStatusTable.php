@@ -4,6 +4,7 @@ namespace App\Http\Livewire\Datatable;
 
 use App\Models\Balance\Consumed;
 use App\Models\Twilio\TwilioSms;
+use App\Services\Twilio\StatusCallbackQueue;
 use Mediconesystems\LivewireDatatables\Http\Livewire\LivewireDatatable;
 use Mediconesystems\LivewireDatatables\BooleanColumn;
 use Mediconesystems\LivewireDatatables\Column;
@@ -81,5 +82,11 @@ class TwilioSmsStatusTable extends LivewireDatatable
     private function view($m, $d)
     {
         return view($m, $d);
+    }
+
+
+    public function retryUndeliveredPrices()
+    {
+        StatusCallbackQueue::proceed();
     }
 }
