@@ -111,7 +111,7 @@ class AdminsController extends Controller
 
         abort_if($user->id == $id, 402, trans("Impossible de supprimer l'utilisateur actuellement authentifié"));
 
-        $item = $this->query()->findOrFail($id);
+        $item = $this->query()->withTrashed()->findOrFail($id);
 
         $this->abortIfIsAppSuperAdmin($item->email, true);
 
