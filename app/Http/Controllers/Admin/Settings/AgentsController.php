@@ -50,7 +50,7 @@ class AgentsController extends Controller
             'phone' => ['required', 'regex:/^[0-9\-\(\)\/\+\s]*$/', 'unique:agents'],
             'role' => ['required', 'string'],
             'image' => File::IMAGE_RULES,
-            'status' => ['required'],
+            'status' => ['nullable'],
         ]);
 
         $agent = $this->query()->create([
