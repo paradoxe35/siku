@@ -15,7 +15,7 @@ class AgentsController extends Controller
 
     public function __construct()
     {
-        $this->middleware(['optimizeImages']);
+        $this->middleware('optimizeImages:60')->only('store');
     }
 
     /**
