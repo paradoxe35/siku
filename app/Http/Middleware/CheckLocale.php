@@ -17,20 +17,14 @@ class CheckLocale
      */
     public function handle($request, Closure $next)
     {
-        $user = $request->user();
         if ($request->expectsJson()) {
 
             App::setLocale($request->header('CLIENT-LANG', 'fr'));
         } else {
 
-            if ($user && $user->locale) {
-                App::setLocale($user->locale);
-            } else {
-                $locale = $this->getAcceptedLocale($request);
-
-                App::setLocale($locale);
-            }
+            App::setLocale($this->getAcceptedLocale($request));
         }
+
         return $next($request);
     }
 
@@ -38,8 +32,14 @@ class CheckLocale
      * @param Request $request
      * @return String
      */
-    protected function getAcceptedLocale($request)
+    public static function getAcceptedLocale($request)
     {
+        $user = $request->user();
+
+        if ($user && $user->locale) {
+            return $user->locale;
+        }
+
         $locale = explode(',', $request->server('HTTP_ACCEPT_LANGUAGE'));
 
         $lang = isset($locale[0]) ? explode('-', $locale[0]) : null;

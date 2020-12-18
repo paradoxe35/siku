@@ -2,7 +2,9 @@
 
 namespace App\Exceptions;
 
+use App\Http\Middleware\CheckLocale;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Support\Facades\App;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -50,6 +52,10 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Throwable $exception)
     {
+        if ($request) {
+            App::setLocale(CheckLocale::getAcceptedLocale($request));
+        }
+
         return parent::render($request, $exception);
     }
 }
