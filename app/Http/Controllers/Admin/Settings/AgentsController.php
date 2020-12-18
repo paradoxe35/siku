@@ -44,12 +44,16 @@ class AgentsController extends Controller
      */
     public function store(Request $request)
     {
+        $imgRules = File::IMAGE_RULES;
+
+        $imgRules[3] = "dimensions:min_width=60";
+
         $request->validate([
             'name' => ['required', 'string', 'max:255', 'unique:agents'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:agents'],
             'phone' => ['required', 'regex:/^[0-9\-\(\)\/\+\s]*$/', 'unique:agents'],
             'role' => ['required', 'string'],
-            'image' => File::IMAGE_RULES,
+            'image' => $imgRules,
             'status' => ['nullable'],
         ]);
 

@@ -12,7 +12,7 @@ class File
     /**
      * @var array
      */
-    public const IMAGE_RULES = ['required', 'file', "max:" . (self::SIZE * 5) . "", 'dimensions:min_width=400,min_height=400', 'mimes:jpeg,jpg,png,gif'];
+    public const IMAGE_RULES = ['required', 'file', "max:" . (self::SIZE * 5) . "", 'dimensions:min_width=400', 'mimes:jpeg,jpg,png,gif'];
 
     /**
      * @var string MUSIC_IMG_PATH
