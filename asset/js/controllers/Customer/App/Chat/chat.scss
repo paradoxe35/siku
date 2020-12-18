@@ -294,6 +294,7 @@
 
     .change_img img {
         width: 35px;
+        object-fit: cover;
         margin: 0px 20px 0px 20px;
     }
     .chat_option .agent {
@@ -535,6 +536,7 @@
     .chat_avatar img {
         width: 40px;
         height: 40px;
+        object-fit: cover;
         text-align: center;
         border-radius: 50%;
     }
@@ -689,16 +691,15 @@
 
     @keyframes fadeInDown {
         from {
-          opacity: 0;
-          transform: translate3d(0, -10%, 0);
+            opacity: 0;
+            transform: translate3d(0, -10%, 0);
         }
-      
+
         to {
-          opacity: 1;
-          transform: translate3d(0, 0, 0);
+            opacity: 1;
+            transform: translate3d(0, 0, 0);
         }
-      }
-      
+    }
 
     @keyframes fadeInUp {
         from {
