@@ -6,7 +6,7 @@
 @section('head-secondary')
 <meta name="turbolinks-visit-control" content="reload">
 <script defer id="paypay-script"
-    src="https://www.paypal.com/sdk/js?currency={{ $basePice::$currency_code }}&client-id={{ getenv("PAYPAL_CLIENT_ID") }}">
+    src="https://www.paypal.com/sdk/js?currency={{ $basePice::$currency_code }}&client-id={{ env("PAYPAL_CLIENT_ID") }}">
 </script>
 @endsection
 
