@@ -1,3 +1,10 @@
+*,
+:after,
+:before {
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
 @font-face {
     font-family: Poppins;
     src: url("./fonts/Poppins/Poppins-Regular.ttf");
@@ -5,29 +12,15 @@
     font-style: normal;
 }
 
-body,
-html {
+body {
+    font-family: Poppins, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
+        Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue,
+        sans-serif;
     padding: 0;
     margin: 0;
     background-color: #f8f9fe;
     color: #525f7f;
-}
-body {
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
     font-size: 16px;
-}
-body,
-button,
-input {
-    font-family: Poppins, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
-        Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue,
-        sans-serif;
-}
-* {
-    box-sizing: border-box;
-    outline: none;
-    -webkit-tap-highlight-color: transparent;
 }
 
 @import "@lib/argon/scss/argon";
