@@ -1,6 +1,5 @@
 import Turbolinks from 'turbolinks'
 import { debounce } from '../functions/functions'
-// import { LozadObserver } from './Lozad';
 
 export class TurbolinksApp {
     /**
