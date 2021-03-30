@@ -44,10 +44,15 @@
 
 <body>
     @livewireScripts
-    <script src="{{ mix('js/manifest.js', 'compiled') }}"></script>
-    <script src="{{ mix('js/livewire-frame.js', 'compiled') }}"></script>
+    @include('assets.assets', [
+        'entries' => 'DEV_SERVER_FRAME_ENTRIES',
+        'assets' => [
+            ['tag' => 'script', 'src' => 'manifest.js'],
+            ['tag' => 'script', 'src' => 'livewire-frame.js'],
+        ]
+    ])
 
-    @livewire($component, $attribute)
+    @livewire($component, array_merge($attribute, ['params' => $attribute]))
 
 </body>
 

@@ -1,1 +1,1 @@
-@include('layouts.app', ['app_file' => 'admin.js'])
+@include('layouts.app', ['app_file' => 'admin.js', 'dev_entries' => 'DEV_SERVER_ADMIN_ENTRIES'])

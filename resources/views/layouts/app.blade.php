@@ -36,14 +36,17 @@
     <meta name="ws-host" content="{{ env('WS_HOST') }}">
     <meta name="ws-port" content="{{ env('WS_PORT') }}">
     <meta name="turbolinks-cache-control" content="no-cache">
-
-    <link href="{{ mix('css/style.css', 'compiled') }}" data-turbolinks-track="reload" rel="stylesheet">
-    <link href="{{ mix('css/module.css', 'compiled') }}" data-turbolinks-track="reload" rel="stylesheet">
-
-    <script src="{{ mix('js/manifest.js', 'compiled') }}" data-turbolinks-track="reload" defer></script>
-    <script src="{{ mix('js/vendor.js', 'compiled') }}" data-turbolinks-track="reload" defer></script>
-    <script src="{{ mix('js/'. ($app_file ?? 'application.js'), 'compiled') }}" data-turbolinks-track="reload" defer>
-    </script>
+    {{-- section:assets --}}
+    @include('assets.assets', [
+        'entries' => ($dev_entries ?? 'DEV_SERVER_ENTRIES'),
+        'react' => true,
+        'assets' => [
+            ['tag' => 'link', 'src' => 'app.css'],
+            ['tag' => 'script', 'src' => 'manifest.js'],
+            ['tag' => 'script', 'src' => 'vendor.js'],
+            ['tag' => 'script', 'src' => ($app_file ?? 'app.js')],
+        ]
+    ])
 </head>
 
 <body @yield('body-attr') class="@yield('body-class')">

@@ -11,31 +11,28 @@
         "target": "es5",
         "paths": {
             "@/*": [
-                "asset/*"
+                "assets/*"
             ],
             "@lib/*": [
-                "asset/lib/*"
+                "assets/lib/*"
             ],
             "@js/*": [
-                "asset/js/*"
+                "assets/js/*"
             ],
             "@admin/*": [
-                "asset/js/admin/*"
+                "assets/js/admin/*"
             ],
             "@sass/*": [
-                "asset/sass/*"
+                "assets/sass/*"
             ],
             "@img/*": [
-                "asset/img/*"
+                "assets/img/*"
             ],
             "@fonts/*": [
-                "asset/img/fonts/*"
+                "assets/img/fonts/*"
             ],
         }
     },
-    "include": [
-        "asset/js/**/*.js",
-        "asset/js/**/*.jsx",
-    ],
-    "exclude": ["node_modules", "**/node_modules/*"]
+    "include": [ "assets/**/*"],
+    "exclude": ["node_modules"]
 }

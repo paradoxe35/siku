@@ -43,8 +43,13 @@
         </div>
         <img id="image" style="display: none">
     </div>
-    <script src="{{ mix('js/manifest.js', 'compiled') }}"></script>
-    <script src="{{ mix('js/qrcode-app.js', 'compiled') }}"></script>
+    @include('assets.assets', [
+        'entries' => 'DEV_SERVER_QRCODE_ENTRIES',
+        'assets' => [
+            ['tag' => 'script', 'src' => 'manifest.js'],
+            ['tag' => 'script', 'src' => 'qrcode.js'],
+        ]
+    ])
 </body>
 
 </html>

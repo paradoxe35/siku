@@ -1,8 +1,8 @@
 const mix = require('laravel-mix');
 const path = require('path');
 
-require('laravel-mix-merge-manifest');
 require('laravel-mix-clean');
+require('laravel-mix-versionhash');
 
 /*
  |--------------------------------------------------------------------------
@@ -15,65 +15,35 @@ require('laravel-mix-clean');
  |
  */
 
-mix.react('asset/js/app.js', 'js/application.js')
-    .react('asset/js/admin/admin.js', 'js/admin.js')
-    .js("asset/modules/qrcode.js", "js/qrcode-app.js")
-    .js("asset/modules/livewire-frame.js", "js/livewire-frame.js")
-    .extract(['jquery', 'bootstrap', 'stimulus', '@grafikart/spinning-dots-element', 'dropify', 'notify-js-lib'])
-    .mergeManifest()
-
-mix.setPublicPath('public/compiled/')
-mix.setResourceRoot('/compiled/')
-
-mix.options({
-    terser: {
-        extractComments: false,
-    }
-});
-
-mix.webpackConfig({
-    resolve: {
-        alias: {
-            '@': path.resolve(__dirname, 'asset/'),
-            '@js': path.resolve(__dirname, 'asset/js/'),
-            '@admin': path.resolve(__dirname, 'asset/js/admin'),
-            '@sass': path.resolve(__dirname, 'asset/sass/'),
-            '@lib': path.resolve(__dirname, 'asset/lib/'),
+mix.js('assets/js/app.js', '')
+    .js('assets/js/admin/admin.js', '')
+    .react()
+    .js("assets/modules/qrcode.js", '')
+    .js("assets/modules/livewire-frame.js", '')
+    .sass("assets/sass/app.scss", '')
+    .setPublicPath('public/compiled/')
+    .setResourceRoot('/compiled/')
+    .options({
+        terser: {
+            extractComments: false,
         }
-    },
-    output: {
-        publicPath: '/compiled/',
-    }
-});
-
-
-if (!mix.inProduction()) {
-    mix.sourceMaps(false)
-}
-
-if (mix.inProduction()) {
-    mix.clean()
-    require('laravel-mix-versionhash')
-    mix.versionHash({
-        length: 16
     })
-}
-
-mix.disableNotifications();
-mix.browserSync({
-    proxy: 'localhost:8000',
-    watch: true,
-    files: ["./resources", "./asset"],
-    notify: false,
-    open: false,
-    snippetOptions: {
-        rule: {
-            match: /<\/head>/i,
-            fn: function (snippet, match) {
-                return snippet + match;
+    .webpackConfig({
+        resolve: {
+            alias: {
+                '@': path.resolve(__dirname, 'assets/'),
+                '@js': path.resolve(__dirname, 'assets/js/'),
+                '@admin': path.resolve(__dirname, 'assets/js/admin'),
+                '@sass': path.resolve(__dirname, 'assets/sass/'),
+                '@lib': path.resolve(__dirname, 'assets/lib/'),
             }
+        },
+        output: {
+            publicPath: '/compiled/',
         }
-    }
-});
-
-mix.copyDirectory('asset/img', 'public/img');
+    })
+    .sourceMaps(false)
+    .disableNotifications()
+    .extract(['jquery', 'bootstrap', 'stimulus', '@grafikart/spinning-dots-element', 'dropify', 'notify-js-lib'])
+    .clean()
+    .versionHash({ length: 16 });

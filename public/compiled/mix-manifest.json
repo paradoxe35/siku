@@ -1,11 +1,9 @@
 {
-    "/css/module.css": "/css/module.020072377fd337d2.css",
-    "/css/style.css": "/css/style.020072377fd337d2.css",
-    "/js/admin.js": "/js/admin.c1d0f12172406dc3.js",
-    "/js/application.js": "/js/application.c69f08f7aeaf4264.js",
-    "/js/livewire-frame.js": "/js/livewire-frame.39927f430b4d50aa.js",
-    "/js/manifest.js": "/js/manifest.fce391691dda9c78.js",
-    "/js/qrcode-app.js": "/js/qrcode-app.856c0f756a41ceee.js",
-    "/js/vendor.js": "/js/vendor.3e8658e1af964c88.js",
-    "/mix.js": "/mix.4216ef52510c5156.js"
+    "/admin.js": "/admin.1c7268f35ca97865.js",
+    "/app.css": "/app.016cf14f704ca4ab.css",
+    "/app.js": "/app.2017f3ee10bf10c2.js",
+    "/livewire-frame.js": "/livewire-frame.732d5023adc9cdb1.js",
+    "/manifest.js": "/manifest.47d65eac82d1c9a4.js",
+    "/qrcode.js": "/qrcode.a9c53ba38c178a32.js",
+    "/vendor.js": "/vendor.c9bc4c5d5367cbaf.js"
 }
