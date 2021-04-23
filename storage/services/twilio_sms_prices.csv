@@ -4,12 +4,12 @@ AD,Andorra,ANDORRA Outbound SMS - Other,0.09950
 AE,United Arab Emirates,UNITED ARAB EMIRATES Outbound SMS - Etisalat,0.03100
 AE,United Arab Emirates,UNITED ARAB EMIRATES Outbound SMS - Other,0.03100
 AE,United Arab Emirates,UNITED ARAB EMIRATES Outbound SMS - du,0.03100
-AF,Afghanistan,AFGHANISTAN Outbound SMS - AWCC,0.09950
-AF,Afghanistan,AFGHANISTAN Outbound SMS - Afghan Telecom,0.09950
+AF,Afghanistan,AFGHANISTAN Outbound SMS - AWCC,0.10250
+AF,Afghanistan,AFGHANISTAN Outbound SMS - Afghan Telecom,0.10250
 AF,Afghanistan,AFGHANISTAN Outbound SMS - Etisalat,0.09950
-AF,Afghanistan,AFGHANISTAN Outbound SMS - MTN,0.09950
+AF,Afghanistan,AFGHANISTAN Outbound SMS - MTN,0.10250
 AF,Afghanistan,AFGHANISTAN Outbound SMS - Other,0.09950
-AF,Afghanistan,AFGHANISTAN Outbound SMS - Roshan,0.09950
+AF,Afghanistan,AFGHANISTAN Outbound SMS - Roshan,0.10250
 AG,Antigua and Barbuda,ANTIGUA AND BARBUDA Outbound SMS - APUA,0.04500
 AG,Antigua and Barbuda,ANTIGUA AND BARBUDA Outbound SMS - Cable & Wireless,0.04500
 AG,Antigua and Barbuda,ANTIGUA AND BARBUDA Outbound SMS - Digicel,0.04500
@@ -90,9 +90,9 @@ BE,Belgium,BELGIUM Outbound SMS - Other,0.10000
 BE,Belgium,BELGIUM Outbound SMS - Proximus,0.10000
 BE,Belgium,BELGIUM Outbound SMS - Telenet Mobile,0.10000
 BF,Burkina Faso,BURKINA FASO Outbound SMS - Airtel,0.05000
-BF,Burkina Faso,BURKINA FASO Outbound SMS - Onatel,0.03467
+BF,Burkina Faso,BURKINA FASO Outbound SMS - Onatel,0.05000
 BF,Burkina Faso,BURKINA FASO Outbound SMS - Other,0.03467
-BF,Burkina Faso,BURKINA FASO Outbound SMS - Telecel Faso,0.03467
+BF,Burkina Faso,BURKINA FASO Outbound SMS - Telecel Faso,0.05000
 BG,Bulgaria,BULGARIA Outbound SMS - M-Tel,0.10617
 BG,Bulgaria,BULGARIA Outbound SMS - Other,0.08000
 BG,Bulgaria,BULGARIA Outbound SMS - TELENOR,0.13000
@@ -125,15 +125,15 @@ BO,Bolivia,BOLIVIA Outbound SMS - Entel,0.07950
 BO,Bolivia,BOLIVIA Outbound SMS - NuevaTel PCS,0.07950
 BO,Bolivia,BOLIVIA Outbound SMS - Other,0.07950
 BO,Bolivia,BOLIVIA Outbound SMS - Tigo,0.05910
-BR,Brazil,BRAZIL Outbound SMS - CTBC,0.05700
-BR,Brazil,BRAZIL Outbound SMS - Claro,0.05700
-BR,Brazil,BRAZIL Outbound SMS - NEXTEL,0.05700
-BR,Brazil,BRAZIL Outbound SMS - Oi,0.05700
-BR,Brazil,BRAZIL Outbound SMS - Other,0.05700
-BR,Brazil,BRAZIL Outbound SMS - Sercomtel,0.05700
-BR,Brazil,BRAZIL Outbound SMS - Surf Telecom,0.05700
-BR,Brazil,BRAZIL Outbound SMS - TIM,0.05700
-BR,Brazil,BRAZIL Outbound SMS - Vivo,0.05700
+BR,Brazil,BRAZIL Outbound SMS - CTBC,0.02900
+BR,Brazil,BRAZIL Outbound SMS - Claro,0.02900
+BR,Brazil,BRAZIL Outbound SMS - NEXTEL,0.02900
+BR,Brazil,BRAZIL Outbound SMS - Oi,0.02900
+BR,Brazil,BRAZIL Outbound SMS - Other,0.02900
+BR,Brazil,BRAZIL Outbound SMS - Sercomtel,0.02900
+BR,Brazil,BRAZIL Outbound SMS - Surf Telecom,0.02900
+BR,Brazil,BRAZIL Outbound SMS - TIM,0.02900
+BR,Brazil,BRAZIL Outbound SMS - Vivo,0.02900
 BS,Bahamas,BAHAMAS Outbound SMS - BTC,0.05000
 BS,Bahamas,BAHAMAS Outbound SMS - NewCo2015,0.05000
 BS,Bahamas,BAHAMAS Outbound SMS - Other,0.05000
@@ -155,11 +155,11 @@ CA,Canada,CANADA Local Outgoing SMS - Bell & Virgin,0.00750
 CA,Canada,CANADA Local Outgoing SMS - Other,0.00750
 CA,Canada,CANADA Local Outgoing SMS - Rogers,0.00750
 CA,Canada,CANADA Local Outgoing SMS - Telus,0.00750
-CD,DR Congo,"CONGO, DEMOCRATIC REPUBLIC OF THE Outbound SMS - Airtel",0.08000
-CD,DR Congo,"CONGO, DEMOCRATIC REPUBLIC OF THE Outbound SMS - Orange",0.09000
+CD,DR Congo,"CONGO, DEMOCRATIC REPUBLIC OF THE Outbound SMS - Airtel",0.07950
+CD,DR Congo,"CONGO, DEMOCRATIC REPUBLIC OF THE Outbound SMS - Orange",0.07950
 CD,DR Congo,"CONGO, DEMOCRATIC REPUBLIC OF THE Outbound SMS - Other",0.03467
-CD,DR Congo,"CONGO, DEMOCRATIC REPUBLIC OF THE Outbound SMS - Supercell",0.08000
-CD,DR Congo,"CONGO, DEMOCRATIC REPUBLIC OF THE Outbound SMS - Vodacom",0.03000
+CD,DR Congo,"CONGO, DEMOCRATIC REPUBLIC OF THE Outbound SMS - Supercell",0.07950
+CD,DR Congo,"CONGO, DEMOCRATIC REPUBLIC OF THE Outbound SMS - Vodacom",0.04950
 CF,Central Africa,CENTRAL AFRICAN REPUBLIC Outbound SMS - Moov,0.01900
 CF,Central Africa,CENTRAL AFRICAN REPUBLIC Outbound SMS - Nationlink,0.01900
 CF,Central Africa,CENTRAL AFRICAN REPUBLIC Outbound SMS - Orange,0.01900
@@ -252,7 +252,6 @@ DM,Dominica,DOMINICA Outbound SMS - Other,0.04800
 DO,Dominican Republic,DOMINICAN REPUBLIC Outbound SMS - Claro,0.05700
 DO,Dominican Republic,DOMINICAN REPUBLIC Outbound SMS - Orange,0.05700
 DO,Dominican Republic,DOMINICAN REPUBLIC Outbound SMS - Other,0.05700
-DO,Dominican Republic,DOMINICAN REPUBLIC Outbound SMS - Tricom,0.05700
 DO,Dominican Republic,DOMINICAN REPUBLIC Outbound SMS - Viva,0.05700
 DZ,Algeria,ALGERIA Outbound SMS - Djezzy,0.09950
 DZ,Algeria,ALGERIA Outbound SMS - Mobilis,0.09950
@@ -291,7 +290,7 @@ ES,Spain,SPAIN Outbound SMS - Tuenti,0.08330
 ES,Spain,SPAIN Outbound SMS - Vodafone,0.08330
 ES,Spain,SPAIN Outbound SMS - Yoigo,0.08330
 ES,Spain,SPAIN Outbound SMS - fonYou,0.08330
-ET,Ethiopia,ETHIOPIA Outbound SMS - ETH-MTN,0.10950
+ET,Ethiopia,ETHIOPIA Outbound SMS - ETH-MTN,0.11250
 ET,Ethiopia,ETHIOPIA Outbound SMS - Other,0.06510
 FI,Finland,ALAND ISLANDS Outbound SMS - Nokia,0.08200
 FI,Finland,FINLAND Outbound SMS - Alands Mobiltelefon,0.08200
@@ -369,8 +368,8 @@ GI,Gibraltar,GIBRALTAR Outbound SMS - Gibtel,0.03000
 GI,Gibraltar,GIBRALTAR Outbound SMS - Other,0.03000
 GL,Greenland,GREENLAND Outbound SMS - Other,0.03900
 GL,Greenland,GREENLAND Outbound SMS - TELE Greenland,0.03900
-GM,Gambia,GAMBIA Outbound SMS - Africell,0.01950
-GM,Gambia,GAMBIA Outbound SMS - Comium,0.01950
+GM,Gambia,GAMBIA Outbound SMS - Africell,0.07950
+GM,Gambia,GAMBIA Outbound SMS - Comium,0.02950
 GM,Gambia,GAMBIA Outbound SMS - Gamtel,0.02950
 GM,Gambia,GAMBIA Outbound SMS - Other,0.01950
 GM,Gambia,GAMBIA Outbound SMS - Qcell,0.02950
@@ -390,10 +389,10 @@ GR,Greece,GREECE Outbound SMS - CyTa,0.05900
 GR,Greece,GREECE Outbound SMS - Other,0.05900
 GR,Greece,GREECE Outbound SMS - Vodafone,0.05900
 GR,Greece,GREECE Outbound SMS - Wind,0.05900
-GT,Guatemala,GUATEMALA Outbound SMS - Claro,0.04983
+GT,Guatemala,GUATEMALA Outbound SMS - Claro,0.05950
 GT,Guatemala,GUATEMALA Outbound SMS - Other,0.04983
-GT,Guatemala,GUATEMALA Outbound SMS - Tigo,0.04983
-GT,Guatemala,GUATEMALA Outbound SMS - movistar,0.04983
+GT,Guatemala,GUATEMALA Outbound SMS - Tigo,0.05950
+GT,Guatemala,GUATEMALA Outbound SMS - movistar,0.05950
 GU,Guam,GUAM & NORTHERN MARIANA ISLANDS Outbound SMS - Docomo Pacific,0.09000
 GU,Guam,GUAM & NORTHERN MARIANA ISLANDS Outbound SMS - MPULSE,0.05100
 GW,Guinea-Bissau,GUINEA Outbound SMS - Other Unused,0.05633
@@ -433,15 +432,15 @@ HU,Hungary,HUNGARY Outbound SMS - Vodafone,0.09000
 IA,Unknown,SATELLITE Outbound SMS - Com4 Sweden,0.10000
 IA,Unknown,SATELLITE Outbound SMS - Iridium Communications,0.10000
 IA,Unknown,SATELLITE Outbound SMS - Other,0.10000
-ID,Indonesia,INDONESIA Outbound SMS - 3,0.11250
+ID,Indonesia,INDONESIA Outbound SMS - 3,0.13500
 ID,Indonesia,INDONESIA Outbound SMS - Axis,0.02880
 ID,Indonesia,INDONESIA Outbound SMS - Bakrie Telecom,0.02880
-ID,Indonesia,INDONESIA Outbound SMS - Ceria Mobile,0.11250
-ID,Indonesia,INDONESIA Outbound SMS - Indosat,0.11250
-ID,Indonesia,INDONESIA Outbound SMS - Other,0.11250
-ID,Indonesia,INDONESIA Outbound SMS - Smartfren,0.11250
-ID,Indonesia,INDONESIA Outbound SMS - Telkomsel,0.11250
-ID,Indonesia,INDONESIA Outbound SMS - XL Axiata,0.07140
+ID,Indonesia,INDONESIA Outbound SMS - Ceria Mobile,0.13500
+ID,Indonesia,INDONESIA Outbound SMS - Indosat,0.13500
+ID,Indonesia,INDONESIA Outbound SMS - Other,0.13500
+ID,Indonesia,INDONESIA Outbound SMS - Smartfren,0.13500
+ID,Indonesia,INDONESIA Outbound SMS - Telkomsel,0.14500
+ID,Indonesia,INDONESIA Outbound SMS - XL Axiata,0.11000
 IE,Ireland,IRELAND Outbound SMS - 3,0.07000
 IE,Ireland,IRELAND Outbound SMS - Carphone Warehouse,0.07000
 IE,Ireland,IRELAND Outbound SMS - LIffey Telecom,0.07000
@@ -450,14 +449,14 @@ IE,Ireland,IRELAND Outbound SMS - O2,0.07000
 IE,Ireland,IRELAND Outbound SMS - Other,0.07000
 IE,Ireland,IRELAND Outbound SMS - UPC Mobile,0.07000
 IE,Ireland,IRELAND Outbound SMS - Vodafone,0.07000
-IL,Israel,ISRAEL Outbound SMS - Azi Communications,0.04750
-IL,Israel,ISRAEL Outbound SMS - Beezz,0.04750
-IL,Israel,ISRAEL Outbound SMS - Cellcom,0.04750
-IL,Israel,ISRAEL Outbound SMS - Golan Telecom,0.04750
-IL,Israel,ISRAEL Outbound SMS - Hot Mobile,0.10950
-IL,Israel,ISRAEL Outbound SMS - Orange,0.04750
-IL,Israel,ISRAEL Outbound SMS - Other,0.04750
-IL,Israel,ISRAEL Outbound SMS - Pelephone,0.04750
+IL,Israel,ISRAEL Outbound SMS - Azi Communications,0.05950
+IL,Israel,ISRAEL Outbound SMS - Beezz,0.05950
+IL,Israel,ISRAEL Outbound SMS - Cellcom,0.05950
+IL,Israel,ISRAEL Outbound SMS - Golan Telecom,0.05950
+IL,Israel,ISRAEL Outbound SMS - Hot Mobile,0.08750
+IL,Israel,ISRAEL Outbound SMS - Orange,0.05950
+IL,Israel,ISRAEL Outbound SMS - Other,0.05950
+IL,Israel,ISRAEL Outbound SMS - Pelephone,0.05950
 IN,India,INDIA Outbound SMS - Aircel,0.01750
 IN,India,INDIA Outbound SMS - Airtel,0.01750
 IN,India,INDIA Outbound SMS - BSNL,0.01750
@@ -536,17 +535,17 @@ KG,Kyrgyzstan,KYRGYZSTAN Outbound SMS - Beeline,0.11950
 KG,Kyrgyzstan,KYRGYZSTAN Outbound SMS - MegaCom,0.11950
 KG,Kyrgyzstan,KYRGYZSTAN Outbound SMS - O!,0.11950
 KG,Kyrgyzstan,KYRGYZSTAN Outbound SMS - Other,0.11950
-KH,Cambodia,CAMBODIA Outbound SMS - Beeline,0.06950
-KH,Cambodia,CAMBODIA Outbound SMS - Cootel,0.09450
-KH,Cambodia,CAMBODIA Outbound SMS - Hello,0.09450
-KH,Cambodia,CAMBODIA Outbound SMS - Metfone,0.06950
+KH,Cambodia,CAMBODIA Outbound SMS - Beeline,0.08450
+KH,Cambodia,CAMBODIA Outbound SMS - Cootel,0.08450
+KH,Cambodia,CAMBODIA Outbound SMS - Hello,0.08450
+KH,Cambodia,CAMBODIA Outbound SMS - Metfone,0.08450
 KH,Cambodia,CAMBODIA Outbound SMS - Mfone,0.06950
-KH,Cambodia,CAMBODIA Outbound SMS - MobiTel,0.06950
+KH,Cambodia,CAMBODIA Outbound SMS - MobiTel,0.08450
 KH,Cambodia,CAMBODIA Outbound SMS - Other,0.06950
-KH,Cambodia,CAMBODIA Outbound SMS - Seatel,0.06950
+KH,Cambodia,CAMBODIA Outbound SMS - Seatel,0.08450
 KH,Cambodia,CAMBODIA Outbound SMS - Smart Mobile,0.06950
 KH,Cambodia,CAMBODIA Outbound SMS - Star Cell,0.04400
-KH,Cambodia,CAMBODIA Outbound SMS - qb,0.06950
+KH,Cambodia,CAMBODIA Outbound SMS - qb,0.08450
 KI,Kiribati,KIRIBATI Outbound SMS - Frigate Net,0.08000
 KI,Kiribati,KIRIBATI Outbound SMS - TSKL,0.08000
 KM,Comoros,COMOROS Outbound SMS - HURI,0.03750
@@ -561,10 +560,10 @@ KR,Korea Republic of,SOUTH KOREA Outbound SMS - LG U+,0.04700
 KR,Korea Republic of,SOUTH KOREA Outbound SMS - Other,0.04700
 KR,Korea Republic of,SOUTH KOREA Outbound SMS - SK Telecom,0.04700
 KR,Korea Republic of,SOUTH KOREA Outbound SMS - olleh KT,0.04700
-KW,Kuwait,KUWAIT Outbound SMS - Other,0.10450
-KW,Kuwait,KUWAIT Outbound SMS - VIVA,0.10450
-KW,Kuwait,KUWAIT Outbound SMS - Wataniya,0.05450
-KW,Kuwait,KUWAIT Outbound SMS - Zain,0.05450
+KW,Kuwait,KUWAIT Outbound SMS - Other,0.07950
+KW,Kuwait,KUWAIT Outbound SMS - VIVA,0.07950
+KW,Kuwait,KUWAIT Outbound SMS - Wataniya,0.07950
+KW,Kuwait,KUWAIT Outbound SMS - Zain,0.07950
 KY,Cayman Islands,CAYMAN ISLANDS Outbound SMS - Digicel,0.04983
 KY,Cayman Islands,CAYMAN ISLANDS Outbound SMS - LIME,0.04900
 KY,Cayman Islands,CAYMAN ISLANDS Outbound SMS - Other,0.04900
@@ -640,10 +639,10 @@ ME,Montenegro,MONTENEGRO Outbound SMS - Other,0.04300
 ME,Montenegro,MONTENEGRO Outbound SMS - T-Mobile,0.04300
 ME,Montenegro,MONTENEGRO Outbound SMS - Telenor,0.04300
 ME,Montenegro,MONTENEGRO Outbound SMS - m:tel,0.04300
-MG,Madagascar,MADAGASCAR Outbound SMS - Airtel,0.09000
-MG,Madagascar,MADAGASCAR Outbound SMS - Orange,0.04500
-MG,Madagascar,MADAGASCAR Outbound SMS - Other,0.04500
-MG,Madagascar,MADAGASCAR Outbound SMS - Telma Mobile,0.04500
+MG,Madagascar,MADAGASCAR Outbound SMS - Airtel,0.06950
+MG,Madagascar,MADAGASCAR Outbound SMS - Orange,0.06950
+MG,Madagascar,MADAGASCAR Outbound SMS - Other,0.06950
+MG,Madagascar,MADAGASCAR Outbound SMS - Telma Mobile,0.06950
 MH,Marshall Islands,MARSHALL ISLANDS Outbound SMS - NTA,0.12000
 MK,Macedonia,MACEDONIA Outbound SMS - Lycamobile,0.08667
 MK,Macedonia,MACEDONIA Outbound SMS - ONE,0.05900
@@ -654,16 +653,16 @@ ML,Mali,MALI Outbound SMS - Malitel,0.10000
 ML,Mali,MALI Outbound SMS - Orange,0.10000
 ML,Mali,MALI Outbound SMS - Other,0.08600
 ML,Mali,MALI Outbound SMS - Telecel,0.10000
-MM,Myanmar,MYANMAR Outbound SMS - MPT,0.08000
-MM,Myanmar,MYANMAR Outbound SMS - MyTel,0.04000
-MM,Myanmar,MYANMAR Outbound SMS - Ooredoo,0.10833
+MM,Myanmar,MYANMAR Outbound SMS - MPT,0.08900
+MM,Myanmar,MYANMAR Outbound SMS - MyTel,0.08900
+MM,Myanmar,MYANMAR Outbound SMS - Ooredoo,0.08900
 MM,Myanmar,MYANMAR Outbound SMS - Other,0.08000
-MM,Myanmar,MYANMAR Outbound SMS - Telenor,0.10833
-MN,Mongolia,MONGOLIA Outbound SMS - G Mobile,0.06950
-MN,Mongolia,MONGOLIA Outbound SMS - Mobicom,0.06950
+MM,Myanmar,MYANMAR Outbound SMS - Telenor,0.08900
+MN,Mongolia,MONGOLIA Outbound SMS - G Mobile,0.07750
+MN,Mongolia,MONGOLIA Outbound SMS - Mobicom,0.07750
 MN,Mongolia,MONGOLIA Outbound SMS - Other,0.06950
-MN,Mongolia,MONGOLIA Outbound SMS - Skytel,0.06950
-MN,Mongolia,MONGOLIA Outbound SMS - Unitel,0.06950
+MN,Mongolia,MONGOLIA Outbound SMS - Skytel,0.07750
+MN,Mongolia,MONGOLIA Outbound SMS - Unitel,0.07750
 MO,Macau,MACAU Outbound SMS - 3,0.03100
 MO,Macau,MACAU Outbound SMS - CTM,0.03100
 MO,Macau,MACAU Outbound SMS - Other,0.03100
@@ -690,9 +689,9 @@ MU,Mauritius,MAURITIUS Outbound SMS - Other,0.06500
 MV,Maldives,MALDIVES Outbound SMS - Dhiraagu,0.01950
 MV,Maldives,MALDIVES Outbound SMS - Other,0.02950
 MV,Maldives,MALDIVES Outbound SMS - Wataniya,0.02950
-MW,Malawi,MALAWI Outbound SMS - Airtel,0.09950
-MW,Malawi,MALAWI Outbound SMS - Other,0.09950
-MW,Malawi,MALAWI Outbound SMS - TNM,0.06450
+MW,Malawi,MALAWI Outbound SMS - Airtel,0.08750
+MW,Malawi,MALAWI Outbound SMS - Other,0.08750
+MW,Malawi,MALAWI Outbound SMS - TNM,0.07450
 MX,Mexico,MEXICO Outbound SMS - AT&T ,0.04900
 MX,Mexico,MEXICO Outbound SMS - Other,0.04900
 MX,Mexico,MEXICO Outbound SMS - Telcel,0.04900
@@ -709,10 +708,10 @@ MY,Malaysia,MALAYSIA Outbound SMS - Tron,0.04900
 MY,Malaysia,MALAYSIA Outbound SMS - Tune Talk,0.04900
 MY,Malaysia,MALAYSIA Outbound SMS - U Mobile,0.04900
 MY,Malaysia,MALAYSIA Outbound SMS - Yes 4G,0.04900
-MZ,Mozambique,MOZAMBIQUE Outbound SMS - Movitel,0.04000
+MZ,Mozambique,MOZAMBIQUE Outbound SMS - Movitel,0.03750
 MZ,Mozambique,MOZAMBIQUE Outbound SMS - Other,0.03000
-MZ,Mozambique,MOZAMBIQUE Outbound SMS - Vodacom,0.04000
-MZ,Mozambique,MOZAMBIQUE Outbound SMS - mCel,0.03000
+MZ,Mozambique,MOZAMBIQUE Outbound SMS - Vodacom,0.03750
+MZ,Mozambique,MOZAMBIQUE Outbound SMS - mCel,0.03750
 NA,Namibia,NAMIBIA Outbound SMS - MTC,0.06067
 NA,Namibia,NAMIBIA Outbound SMS - Other,0.04000
 NA,Namibia,NAMIBIA Outbound SMS - Telecom Namibia,0.04000
@@ -770,9 +769,9 @@ NZ,New Zealand,NEW ZEALAND Outbound SMS - 2degrees,0.10000
 NZ,New Zealand,NEW ZEALAND Outbound SMS - Other,0.10000
 NZ,New Zealand,NEW ZEALAND Outbound SMS - Telecom,0.10000
 NZ,New Zealand,NEW ZEALAND Outbound SMS - Vodafone,0.10000
-OM,Oman,OMAN Outbound SMS - Nawras,0.05000
-OM,Oman,OMAN Outbound SMS - Oman Mobile,0.07800
-OM,Oman,OMAN Outbound SMS - Other,0.05000
+OM,Oman,OMAN Outbound SMS - Nawras,0.06450
+OM,Oman,OMAN Outbound SMS - Oman Mobile,0.06450
+OM,Oman,OMAN Outbound SMS - Other,0.06450
 PA,Panama,PANAMA Outbound SMS - Claro,0.05900
 PA,Panama,PANAMA Outbound SMS - Digicel,0.05900
 PA,Panama,PANAMA Outbound SMS - Mas Movil,0.05900
@@ -793,12 +792,12 @@ PH,Philippines,PHILIPPINES Outbound SMS - Globe Telecom,0.04000
 PH,Philippines,PHILIPPINES Outbound SMS - Other,0.04950
 PH,Philippines,PHILIPPINES Outbound SMS - Smart Communications,0.04950
 PH,Philippines,PHILIPPINES Outbound SMS - Sun Cellular,0.04950
-PK,Pakistan,PAKISTAN Outbound SMS - Mobilink,0.05450
-PK,Pakistan,PAKISTAN Outbound SMS - Other,0.05450
-PK,Pakistan,PAKISTAN Outbound SMS - Telenor,0.05450
-PK,Pakistan,PAKISTAN Outbound SMS - Ufone,0.05450
-PK,Pakistan,PAKISTAN Outbound SMS - Warid,0.05450
-PK,Pakistan,PAKISTAN Outbound SMS - ZONG,0.05450
+PK,Pakistan,PAKISTAN Outbound SMS - Mobilink,0.07250
+PK,Pakistan,PAKISTAN Outbound SMS - Other,0.07250
+PK,Pakistan,PAKISTAN Outbound SMS - Telenor,0.07250
+PK,Pakistan,PAKISTAN Outbound SMS - Ufone,0.07250
+PK,Pakistan,PAKISTAN Outbound SMS - Warid,0.07250
+PK,Pakistan,PAKISTAN Outbound SMS - ZONG,0.07250
 PL,Poland,POLAND Outbound SMS - Aero2,0.04100
 PL,Poland,POLAND Outbound SMS - Cyfrowy Polsat,0.04100
 PL,Poland,POLAND Outbound SMS - Lycamobile,0.04100
@@ -912,12 +911,12 @@ SK,Slovakia,SLOVAKIA Outbound SMS - Orange,0.09750
 SK,Slovakia,SLOVAKIA Outbound SMS - Other,0.06500
 SK,Slovakia,SLOVAKIA Outbound SMS - Swan,0.06500
 SK,Slovakia,SLOVAKIA Outbound SMS - Telekom,0.09750
-SL,Sierra Leone,SIERRA LEONE Outbound SMS - Africell,0.03000
-SL,Sierra Leone,SIERRA LEONE Outbound SMS - Airtel,0.05000
+SL,Sierra Leone,SIERRA LEONE Outbound SMS - Africell,0.06950
+SL,Sierra Leone,SIERRA LEONE Outbound SMS - Airtel,0.06950
 SL,Sierra Leone,SIERRA LEONE Outbound SMS - Comium,0.03000
 SL,Sierra Leone,SIERRA LEONE Outbound SMS - Datatel,0.03000
 SL,Sierra Leone,SIERRA LEONE Outbound SMS - Mobitel,0.03000
-SL,Sierra Leone,SIERRA LEONE Outbound SMS - Other,0.05000
+SL,Sierra Leone,SIERRA LEONE Outbound SMS - Other,0.06950
 SL,Sierra Leone,SIERRA LEONE Outbound SMS - Tigo,0.05000
 SM,San Marino,SAN MARINO Outbound SMS - Other,0.08667
 SM,San Marino,SAN MARINO Outbound SMS - Prima,0.08667
@@ -996,9 +995,9 @@ TR,Turkey,TURKEY Outbound SMS - Avea,0.02900
 TR,Turkey,TURKEY Outbound SMS - Other,0.02900
 TR,Turkey,TURKEY Outbound SMS - Turkcell,0.02900
 TR,Turkey,TURKEY Outbound SMS - Vodafone,0.02900
-TT,Trinidad and Tobago,TRINIDAD AND TOBAGO Outbound SMS - Digicel,0.08000
-TT,Trinidad and Tobago,TRINIDAD AND TOBAGO Outbound SMS - Other,0.02000
-TT,Trinidad and Tobago,TRINIDAD AND TOBAGO Outbound SMS - bMobile,0.02000
+TT,Trinidad and Tobago,TRINIDAD AND TOBAGO Outbound SMS - Digicel,0.04750
+TT,Trinidad and Tobago,TRINIDAD AND TOBAGO Outbound SMS - Other,0.04750
+TT,Trinidad and Tobago,TRINIDAD AND TOBAGO Outbound SMS - bMobile,0.04750
 TV,Tuvalu,TUVALU Outbound SMS - Tuvalu Telecommunications Corporation,0.10000
 TW,Taiwan,TAIWAN Outbound SMS - APT,0.05400
 TW,Taiwan,TAIWAN Outbound SMS - Chunghwa Telecom,0.05400

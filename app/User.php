@@ -151,13 +151,13 @@ class User extends Authenticatable implements MustVerifyEmail, CanResetPassword,
     }
 
     /**
-     * @return double|array
+     * @return float|array
      */
     public function balance($group = false)
     {
         /**
-         * @var double $total
-         * @var double $consumed
+         * @var float $total
+         * @var float $consumed
          */
         $total = $this->AllBalance()->where('confirmed', true)->sum('amount');
         $consumed = $this->consumeds()->where('confirmed', true)->sum('amount');

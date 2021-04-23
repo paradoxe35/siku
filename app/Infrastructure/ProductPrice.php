@@ -27,7 +27,7 @@ class ProductPrice
 
     /**
      * @param float $sms
-     * @return double
+     * @return float
      */
     private function smsPrice($sms)
     {
