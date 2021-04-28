@@ -39,7 +39,7 @@ trait CacheAutorizedUser
      */
     protected function putAutorizedChatId($chatId, $value = [])
     {
-        $this->cache()->put($this->redisKeyCache . $chatId, $value, now()->addHours(2));
+        $this->cache()->put($this->redisKeyCache . $chatId, $value, now()->addHours(168));
     }
 
     /**

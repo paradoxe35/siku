@@ -40,11 +40,12 @@ class ChatCommand extends Chat
 
         $user = User::query()->findByHashid($client_id);
 
-        $id = $user->id;
 
         if (!$user) {
             return $this->replyWithMessage(['text' => $err]);
         }
+
+        $id = $user->id;
 
         $this->storeAsReference($id, $client_id);
 
