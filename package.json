@@ -1,10 +1,14 @@
 {
     "private": true,
     "scripts": {
-        "dev": "concurrently \"serve.bat\" \"browser-sync\" \"npm:vite-dev\" ",
-        "browser-sync": "browser-sync start --proxy \"http://localhost:8000\"  --files \"resources/**/*.blade.php\" --no-notify --no-open --no-ui",
-        "vite-dev": "vite --port 8080",
+        "dev": "concurrently \"npm:server\" \"browser-sync\" \"npm:dev:assets\"",
+        "server": "php artisan serve --host=0.0.0.0",
+        "server:echo": "laravel-echo-server start",
+        "server:queue": "php artisan queue:listen --queue=high,default,invitation,notifications",
+        "dev:assets": "npm run assets-link && pnpm run dev",
+        "vite": "vite --port 8080",
         "assets-link": "symlink-dir ./assets ./public/dev",
+        "browser-sync": "browser-sync start --proxy \"http://localhost:8000\"  --files \"resources/**/*.blade.php\" --no-notify --no-open --no-ui",
         "development": "mix",
         "watch": "mix watch",
         "watch-poll": "mix watch -- --watch-options-poll=1000",
