@@ -53,7 +53,7 @@ const CustomerSettings = () => {
                                 <label className="form-control-label">{t("Temps de début")}</label>
                                 <Datetime locale='fr'
                                     dateFormat="YYYY-MM-DD"
-                                    defaultValue={event.start_time}
+                                    initialValue={event.start_time}
                                     inputProps={{
                                         placeholder: t("Temps de début"),
                                         className: "form-control",
@@ -67,7 +67,7 @@ const CustomerSettings = () => {
                                 <label className="form-control-label">{t("Temps de fin")}</label>
                                 <Datetime locale='fr'
                                     dateFormat="YYYY-MM-DD"
-                                    defaultValue={event.end_time}
+                                    initialValue={event.end_time}
                                     inputProps={{
                                         placeholder: t("Temps de fin"),
                                         className: "form-control",
@@ -91,9 +91,9 @@ const CustomerSettings = () => {
 }
 
 /**
- * @param { HTMLElement|Element } element 
- * @param { string } locale 
- * @param { Object } urls 
+ * @param { HTMLElement|Element } element
+ * @param { string } locale
+ * @param { Object } urls
  */
 export const init = (element, locale, urls = {}) =>
     InitReact(<CustomerSettings />, element, locale, urls);

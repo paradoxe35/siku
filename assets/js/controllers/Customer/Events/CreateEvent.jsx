@@ -55,7 +55,7 @@ const CreateEvent = ({ updateComponentIndex, addEvent }) => {
                         <label className="form-control-label">{t("Temps de début")}</label>
                         <Datetime locale={LANG}
                             dateFormat="YYYY-MM-DD"
-                            defaultValue={new Date()}
+                            initialValue={new Date()}
                             inputProps={{
                                 placeholder: t("Temps de début"),
                                 className: "form-control form-control-sm",

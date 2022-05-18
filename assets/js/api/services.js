@@ -46,7 +46,7 @@ export async function countriesFlagAndEmojis() {
 }
 
 /**
- * @param { Object } parameters 
+ * @param { Object } parameters
  */
 export async function customerRequestByEmailJs(parameters) {
     const emailjs = (await import('emailjs-com')).default

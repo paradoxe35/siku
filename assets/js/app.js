@@ -8,7 +8,6 @@ import startStimulus from "./utils/stimulus";
 // @ts-ignore
 window.$ = window.jQuery = $;
 import "bootstrap";
-import "notify-js-lib";
 
 startStimulus(
     function () {

@@ -1,8 +1,12 @@
 import { TurbolinksApp } from "../modules/turbolinks";
 import { Localize } from "./localize";
+import notify from "@lib/notify/notify";
+import $ from "jquery";
 
-const bootstrap = { ...window.$.notify.getStyle("bootstrap") };
-window.$.notify.addStyle("cbootstrap", {
+notify($);
+
+const bootstrap = { ...$.notify.getStyle("bootstrap") };
+$.notify.addStyle("cbootstrap", {
     ...bootstrap,
     html: `<div style="white-space: normal;word-wrap: break-word;font-size: 13px; max-width: 270px;min-width: 190px;">
             <span data-notify-text></span>
