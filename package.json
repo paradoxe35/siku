@@ -4,7 +4,7 @@
         "dev": "concurrently \"serve.bat\" \"browser-sync\" \"npm:vite-dev\" ",
         "browser-sync": "browser-sync start --proxy \"http://localhost:8000\"  --files \"resources/**/*.blade.php\" --no-notify --no-open --no-ui",
         "vite-dev": "vite --port 8080",
-        "assets-link": "mklink /j \".\\public\\dev\" \".\\assets\"",
+        "assets-link": "symlink-dir ./assets ./public/dev",
         "development": "mix",
         "watch": "mix watch",
         "watch-poll": "mix watch -- --watch-options-poll=1000",
@@ -27,7 +27,8 @@
         "resolve-url-loader": "^3.1.2",
         "sass": "^1.32.8",
         "sass-loader": "^11.0.1",
-        "vite": "^2.1.4"
+        "symlink-dir": "^5.0.1",
+        "vite": "^2.9.9"
     },
     "dependencies": {
         "@editorjs/code": "^2.6.0",
@@ -76,7 +77,7 @@
         "react-router-dom": "^5.2.0",
         "redux-devtools": "^3.7.0",
         "redux-thunk": "^2.3.0",
-        "slim-select": "^1.26.0",
+        "slim-select": "^1.27.1",
         "socket.io-client": "^2.3.1",
         "stimulus": "^1.1.1",
         "turbolinks": "^5.2.0"
