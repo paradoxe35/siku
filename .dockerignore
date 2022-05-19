@@ -1,0 +1,8 @@
+vendor/
+.vscode
+.env
+node_modules/
+.tmp.drivedownload/
+.phpintel/
+
+public/compiled/
