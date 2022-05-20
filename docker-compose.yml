@@ -3,34 +3,50 @@ version: '3.9'
 services:
   siku-db:
     image: mariadb:10.7.1
-    restart: always
+    restart: unless-stopped
+    container_name: siku-db
+    tty: true
     volumes:
       - db-data:/var/lib/mysql
     environment:
-      - MYSQL_ROOT_PASSWORD=siku
-      - MYSQL_DATABASE=siku
+      - MYSQL_ROOT_PASSWORD=sikupass
+      - MYSQL_DATABASE=sikudb
+    networks:
+      - app-network
 
   siku-redis:
     image: redis:latest
-    restart: always
+    restart: unless-stopped
+    tty: true
+    container_name: siku-redis
     volumes:
       - redis-data:/data
+    networks:
+      - app-network
 
   siku-web:
     build: .
-    restart: always
+    restart: unless-stopped
+    tty: true
     env_file:
       - .env.docker
     working_dir: /usr/src/siku
     volumes:
-      - web-storage:./storage
+      - web-storage:/usr/src/siku/storage
     ports:
       - "8000:8000"
     depends_on:
       - siku-db
       - siku-redis
+    networks:
+      - app-network
 
 volumes:
   db-data:
   web-storage:
   redis-data:
+
+
+networks:
+  app-network:
+    driver: bridge

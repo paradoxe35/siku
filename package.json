@@ -63,6 +63,7 @@
         "iframe-resizer": "^4.2.11",
         "jquery": "^3.5.1",
         "laravel-echo": "^1.9.0",
+        "laravel-echo-server": "^1.6.3",
         "nprogress": "^0.2.0",
         "popper.js": "^1.16.1",
         "qrcode-with-logos": "^1.0.2",
