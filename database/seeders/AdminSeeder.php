@@ -17,11 +17,17 @@ class AdminSeeder extends Seeder
      */
     public function run()
     {
+        $email = env('APP_SUPER_ADMIN_EMAIL');
+        $password = env('APP_SUPER_ADMIN_PASSWORD');
+        if (!$email || !$password) {
+            throw new \Exception('Email or password is empty');
+            return;
+        }
         DB::table('users')->insert([
             'name' => 'Siku Admin',
-            'email' => EmailApp::getAppSuperAdminEmailAddress(),
-            'password' => Hash::make('siku07860'),
-            'phone' => '+250786081431',
+            'email' => $email,
+            'password' => Hash::make($password),
+            'phone' => '+250780000000',
             'is_admin' => true,
             'super_admin' => true,
             'admin_token' => Str::random(60),
